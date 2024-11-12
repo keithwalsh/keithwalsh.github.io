@@ -166,7 +166,10 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
 
 /** Root application component with responsive drawer layout, theme management, and navigation */
 export function App() {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(() => {
+        // Initialize drawer as open on desktop, closed on mobile
+        return window.innerWidth >= 600 // 600px is MUI's 'sm' breakpoint
+    });
     const [isDarkMode, setIsDarkMode] = useState(() => {
         const savedMode = localStorage.getItem("darkMode");
         return savedMode ? JSON.parse(savedMode) : false;
