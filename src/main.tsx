@@ -25,22 +25,25 @@ import {
     Divider,
     ListItemIcon,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
-import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
-import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
-import ContrastIcon from "@mui/icons-material/Contrast";
-import AccessibleIcon from "@mui/icons-material/Accessible";
+import {
+    Menu as MenuIcon,
+    MenuOpen as MenuOpenIcon,
+    DarkMode as DarkModeIcon,
+    LightMode as LightModeIcon,
+    AccessibilityNew as AccessibilityNewIcon,
+    TextIncrease as TextIncreaseIcon,
+    TextDecrease as TextDecreaseIcon,
+    Contrast as ContrastIcon,
+    Accessible as AccessibleIcon,
+    Home as HomeIcon,
+    ContactMail as ContactMailIcon,
+    Build as BuildIcon,
+    Architecture as ArchitectureIcon,
+} from "@mui/icons-material";
 import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { ListItemButtonProps } from "@mui/material";
-import { AboutPage, ContactPage, ToolsPage } from "./components/pages";
-import HomeIcon from "@mui/icons-material/Home";
-import ContactMailIcon from "@mui/icons-material/ContactMail";
-import BuildIcon from "@mui/icons-material/Build";
+import { AboutPage, ContactPage, ToolsPage, ProjectsPage } from "./components/pages";
 
 const DRAWER_WIDTH = 240;
 
@@ -100,6 +103,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
     { path: "/", label: "About", icon: <HomeIcon /> },
     { path: "/contact", label: "Contact", icon: <ContactMailIcon /> },
     { path: "/tools", label: "Tools", icon: <BuildIcon /> },
+    { path: "/projects", label: "Projects", icon: <ArchitectureIcon /> },
 ];
 
 export function App() {
@@ -325,6 +329,7 @@ export function App() {
                 <Main open={open}>
                     <Routes>
                         <Route path="/" element={<AboutPage />} />
+                        <Route path="/projects" element={<ProjectsPage />} />
                         <Route path="/contact" element={<ContactPage />} />
                         <Route path="/tools" element={<ToolsPage />} />
                     </Routes>

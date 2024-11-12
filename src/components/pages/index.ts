@@ -6,3 +6,4 @@
 export { AboutPage } from "./AboutPage";
 export { ContactPage } from "./ContactPage";
 export { ToolsPage } from "./ToolsPage";
+export { ProjectsPage } from "./ProjectsPage";
