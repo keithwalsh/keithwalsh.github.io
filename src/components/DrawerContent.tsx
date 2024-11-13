@@ -1,7 +1,7 @@
 import React from "react"
 import { Box, List, Divider, ListItemIcon } from "@mui/material"
 import { StyledListItem, StyledListItemText, NavigationListItemButton } from "./StyledComponents"
-import { NAVIGATION_ITEMS } from "./navigationItems"
+import { NAVIGATION_ITEMS } from "./NavigationItems"
 import { useMatch, Link as RouterLink } from "react-router-dom"
 
 interface DrawerContentProps {
