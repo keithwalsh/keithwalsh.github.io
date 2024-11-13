@@ -1,55 +1,139 @@
-import { Menu, MenuItem, ListItemIcon, Divider, Paper } from "@mui/material"
-import TextIncreaseIcon from "@mui/icons-material/TextIncrease"
-import TextDecreaseIcon from "@mui/icons-material/TextDecrease"
-import ContrastIcon from "@mui/icons-material/Contrast"
-import AccessibleIcon from "@mui/icons-material/Accessible"
+/**
+ * @fileoverview Accessibility menu component providing font size controls, high
+ * contrast mode, and screen reader optimization settings. Settings persist in
+ * localStorage.
+ */
 
+import { Menu, MenuItem, ListItemIcon, Divider, Paper, ListItemText } from "@mui/material";
+import { TextIncrease, TextDecrease, Cached, Contrast, Accessible } from "@mui/icons-material";
+import { useState, useEffect } from "react";
+
+/** Props for the AccessibilityMenu component */
 interface AccessibilityMenuProps {
-    anchorEl: null | HTMLElement
-    isAccessibilityMenuOpen: boolean
-    handleAccessibilityClose: () => void
+    anchorEl: HTMLElement | null;
+    open: boolean;
+    onClose: () => void;
 }
 
-export function AccessibilityMenu({ anchorEl, isAccessibilityMenuOpen, handleAccessibilityClose }: AccessibilityMenuProps) {
+/** User accessibility preferences for font size, contrast and screen reader settings */
+interface AccessibilitySettings {
+    fontSize: number;
+    highContrast: boolean;
+    screenReader: boolean;
+}
+
+/** Font size constraints and increment value for accessibility settings */
+const MIN_FONT_SIZE = 12;
+const MAX_FONT_SIZE = 24;
+const FONT_SIZE_STEP = 1;
+const DEFAULT_FONT_SIZE = 16;
+
+export function AccessibilityMenu({ anchorEl, open, onClose }: AccessibilityMenuProps) {
+    const [settings, setSettings] = useState<AccessibilitySettings>(() => {
+        const savedSettings = localStorage.getItem("accessibilitySettings");
+        return savedSettings
+            ? JSON.parse(savedSettings)
+            : {
+                  fontSize: DEFAULT_FONT_SIZE,
+                  highContrast: false,
+                  screenReader: false,
+              };
+    });
+
+    useEffect(() => {
+        // Apply font size to root element
+        document.documentElement.style.fontSize = `${settings.fontSize}px`;
+
+        // Apply high contrast theme
+        document.documentElement.classList.toggle("high-contrast", settings.highContrast);
+
+        // Save settings to localStorage
+        localStorage.setItem("accessibilitySettings", JSON.stringify(settings));
+    }, [settings]);
+
+    const handleFontSizeChange = (increase: boolean) => {
+        setSettings((prev) => ({
+            ...prev,
+            fontSize: Math.min(Math.max(prev.fontSize + (increase ? FONT_SIZE_STEP : -FONT_SIZE_STEP), MIN_FONT_SIZE), MAX_FONT_SIZE),
+        }));
+    };
+
+    const handleToggleSetting = (setting: keyof Omit<AccessibilitySettings, "fontSize">) => {
+        setSettings((prev) => ({
+            ...prev,
+            [setting]: !prev[setting],
+        }));
+    };
+
     return (
         <Menu
             anchorEl={anchorEl}
             id="accessibility-menu"
-            open={isAccessibilityMenuOpen}
-            onClose={handleAccessibilityClose}
-            onClick={handleAccessibilityClose}
-            PaperProps={{
-                component: Paper,
-                elevation: 3,
+            open={open}
+            onClose={onClose}
+            slotProps={{
+                paper: {
+                    component: Paper,
+                    elevation: 3,
+                },
             }}
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            aria-label="Accessibility settings menu"
         >
-            <MenuItem onClick={handleAccessibilityClose}>
+            <MenuItem
+                sx={{
+                    py: 1,
+                    px: 2,
+                    fontSize: "0.875rem",
+                    fontWeight: 500,
+                    "&:hover": {
+                        backgroundColor: "transparent",
+                        cursor: "default",
+                    },
+                }}
+                disableRipple
+            >
+                <ListItemText secondary="Accessibility Settings" />
+            </MenuItem>
+            <MenuItem onClick={() => handleFontSizeChange(true)} disabled={settings.fontSize >= MAX_FONT_SIZE} aria-label="Increase font size">
                 <ListItemIcon>
-                    <TextIncreaseIcon fontSize="small" />
+                    <TextIncrease fontSize="small" />
                 </ListItemIcon>
                 Increase Font Size
             </MenuItem>
-            <MenuItem onClick={handleAccessibilityClose}>
+
+            <MenuItem onClick={() => handleFontSizeChange(false)} disabled={settings.fontSize <= MIN_FONT_SIZE} aria-label="Decrease font size">
                 <ListItemIcon>
-                    <TextDecreaseIcon fontSize="small" />
+                    <TextDecrease fontSize="small" />
                 </ListItemIcon>
                 Decrease Font Size
             </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleAccessibilityClose}>
+
+            <MenuItem
+                onClick={() => setSettings((prev) => ({ ...prev, fontSize: DEFAULT_FONT_SIZE }))}
+                disabled={settings.fontSize === DEFAULT_FONT_SIZE}
+                aria-label="Reset font size"
+            >
                 <ListItemIcon>
-                    <ContrastIcon fontSize="small" />
+                    <Cached fontSize="small" />
+                </ListItemIcon>
+                Reset Font Size
+            </MenuItem>
+
+            <Divider />
+            <MenuItem onClick={() => handleToggleSetting("highContrast")} aria-label="Toggle high contrast mode">
+                <ListItemIcon>
+                    <Contrast fontSize="small" />
                 </ListItemIcon>
                 High Contrast
             </MenuItem>
-            <MenuItem onClick={handleAccessibilityClose}>
+            <MenuItem onClick={() => handleToggleSetting("screenReader")} aria-label="Toggle screen reader optimization">
                 <ListItemIcon>
-                    <AccessibleIcon fontSize="small" />
+                    <Accessible fontSize="small" />
                 </ListItemIcon>
                 Screen Reader
             </MenuItem>
         </Menu>
-    )
+    );
 }

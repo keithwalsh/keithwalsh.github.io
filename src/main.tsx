@@ -12,7 +12,13 @@ import { AboutPage, ContactPage, ToolsPage, ProjectsPage } from "./components/pa
 import { StyledAppBar, StyledTitle, AccessibilityIconButton, StyledDrawer, Main } from "./components/StyledComponents";
 import { DrawerContent } from "./components/DrawerContent";
 import { AccessibilityMenu } from "./components/AccessibilityMenu";
-import { Menu as MenuIcon, MenuOpen as MenuOpenIcon, DarkMode as DarkModeIcon, LightMode as LightModeIcon, AccessibilityNew as AccessibilityNewIcon } from "@mui/icons-material";
+import {
+    Menu as MenuIcon,
+    MenuOpen as MenuOpenIcon,
+    DarkMode as DarkModeIcon,
+    LightMode as LightModeIcon,
+    AccessibilityNew as AccessibilityNewIcon,
+} from "@mui/icons-material";
 
 export function App() {
     const [open, setOpen] = useState(() => window.innerWidth >= 600);
@@ -76,11 +82,7 @@ export function App() {
                         >
                             <AccessibilityNewIcon />
                         </AccessibilityIconButton>
-                        <AccessibilityMenu
-                            anchorEl={anchorEl}
-                            isAccessibilityMenuOpen={isAccessibilityMenuOpen}
-                            handleAccessibilityClose={handleAccessibilityClose}
-                        />
+                        <AccessibilityMenu anchorEl={anchorEl} open={isAccessibilityMenuOpen} onClose={handleAccessibilityClose} />
                         <IconButton
                             color="inherit"
                             onClick={toggleDarkMode}
