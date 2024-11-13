@@ -7,7 +7,7 @@ import React, { useState, useMemo } from "react";
 import ReactDOM from "react-dom/client";
 import { ThemeProvider, CssBaseline, Box, IconButton, Toolbar, useMediaQuery } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import { AboutPage, ContactPage, ToolsPage, ProjectsPage } from "./components/pages";
 import { StyledAppBar, StyledTitle, AccessibilityIconButton, StyledDrawer, Main } from "./components/StyledComponents";
 import { DrawerContent } from "./components/DrawerContent";
@@ -122,8 +122,8 @@ export function App() {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <BrowserRouter>
+        <HashRouter>
             <App />
-        </BrowserRouter>
+        </HashRouter>
     </React.StrictMode>
 );

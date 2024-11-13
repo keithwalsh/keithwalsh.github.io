@@ -15,25 +15,28 @@
 - 🎨 Custom themed Material UI components
 
 
-## ProjectStructure
+## Project Structure
 
 ```
 website/
 ├── index.html
-└── src/
-    ├── components/
-    │   ├── AccessibilityMenu.tsx
-    │   ├── DrawerContent.tsx
-    │   ├── NavigationItems.tsx
-    │   ├── StyledComponents.tsx
-    │   └── pages/
-    │       ├── AboutPage.tsx
-    │       ├── ContactPage.tsx
-    │       ├── ProjectsPage.tsx
-    │       ├── ToolsPage.tsx
-    │       └── index.ts
-    ├── main.tsx
-    └── vite-env.d.ts
+├── public/
+│   └── 404.html
+├── src/
+│   ├── components/
+│   │   ├── AccessibilityMenu.tsx
+│   │   ├── DrawerContent.tsx
+│   │   ├── NavigationItems.tsx
+│   │   ├── StyledComponents.tsx
+│   │   └── pages/
+│   │       ├── AboutPage.tsx
+│   │       ├── ContactPage.tsx
+│   │       ├── ProjectsPage.tsx
+│   │       ├── ToolsPage.tsx
+│   │       └── index.ts
+│   ├── main.tsx
+│   └── vite-env.d.ts
+└── vite.config.ts
 ```
 
 ## Getting Started
