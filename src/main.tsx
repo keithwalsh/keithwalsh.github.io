@@ -19,6 +19,9 @@ import {
     LightMode as LightModeIcon,
     AccessibilityNew as AccessibilityNewIcon,
 } from "@mui/icons-material";
+import emailjs from '@emailjs/browser'
+
+emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
 export function App() {
     const [open, setOpen] = useState(() => window.innerWidth >= 600);
