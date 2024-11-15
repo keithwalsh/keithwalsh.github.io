@@ -114,7 +114,8 @@ export function App() {
                             <Route path="/" element={<AboutPage />} />
                             <Route path="/projects" element={<ProjectsPage />} />
                             <Route path="/contact" element={<ContactPage />} />
-                            <Route path="/tools" element={<ToolsPage />} />
+                            <Route path="/tools/development" element={<ToolsPage type="development" />} />
+                            <Route path="/tools/analytics" element={<ToolsPage type="analytics" />} />
                         </Routes>
                     </Main>
                 </Box>
