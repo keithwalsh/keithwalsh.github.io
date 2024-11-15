@@ -44,7 +44,13 @@ export const StyledDrawer = styled(Drawer, {
         position: isDesktop ? "relative" : "fixed",
         height: "100%",
         borderRight: theme.palette.mode === "dark" ? "1px solid rgba(255, 255, 255, 0.12)" : "1px solid rgba(0, 0, 0, 0.12)",
+        zIndex: theme.zIndex.drawer,
+        marginTop: isDesktop ? 0 : "56px",
     },
+    "& .MuiBackdrop-root": {
+        zIndex: theme.zIndex.drawer - 1,
+        marginTop: isDesktop ? 0 : "56px"
+    }
 }))
 
 export const Main = styled("main", {

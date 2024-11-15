@@ -2,7 +2,7 @@ import React from "react"
 import { Box, List, Divider, ListItemIcon } from "@mui/material"
 import { StyledListItem, StyledListItemText, NavigationListItemButton } from "./StyledComponents"
 import { NAVIGATION_ITEMS } from "./NavigationItems"
-import { useMatch, Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink, useLocation } from "react-router-dom"
 
 interface DrawerContentProps {
     isDesktop: boolean
@@ -10,18 +10,23 @@ interface DrawerContentProps {
 }
 
 export function DrawerContent({ isDesktop, setOpen }: DrawerContentProps) {
+    const location = useLocation();
+    
     return (
         <Box sx={{ p: 2 }}>
             <List sx={{ padding: 0 }}>
                 {NAVIGATION_ITEMS.map(({ path, label, icon, showDividerBelow }) => {
-                    const match = useMatch({ path, end: true })
+                    const isSelected = path === "/" 
+                        ? location.pathname === "/" 
+                        : location.pathname === path;
+                        
                     return (
                         <React.Fragment key={path}>
                             <StyledListItem disablePadding>
                                 <NavigationListItemButton
                                     component={RouterLink}
                                     to={path}
-                                    selected={Boolean(match)}
+                                    selected={isSelected}
                                     onClick={() => !isDesktop && setOpen(false)}
                                     sx={{
                                         px: 1.4,

@@ -1,0 +1,25 @@
+#folders
+build/
+dist/
+dist-ssr/
+logs/
+node_modules/
+storybook-static/
+test/
+
+# files
+.vscode/*
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.log*
+.treeignore
+*/stories/
+.*rules*
+*.py
+.versionrc
+.env
