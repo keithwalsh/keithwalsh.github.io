@@ -109,7 +109,7 @@ export function App() {
                         <DrawerContent isDesktop={isDesktop} setOpen={setOpen} />
                     </StyledDrawer>
 
-                    <Main open={open}>
+                    <Main>
                         <Routes>
                             <Route path="/" element={<AboutPage />} />
                             <Route path="/projects" element={<ProjectsPage />} />

@@ -53,25 +53,18 @@ export const StyledDrawer = styled(Drawer, {
     }
 }))
 
-export const Main = styled("main", {
-    shouldForwardProp: (prop) => prop !== "open",
-})<{ open?: boolean }>(({ theme, open }) => ({
+export const Main = styled("main")(({ theme }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
+    paddingLeft: 'max(24px, min(5%, 24px))',
+    paddingRight: 'max(24px, min(5%, 24px))',
+    transition: theme.transitions.create(["margin", "padding"], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: 0,
     height: "100%",
     overflow: "auto",
-    ...(open && {
-        transition: theme.transitions.create("margin", {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: DRAWER_WIDTH,
-    }),
 }))
 
 export const NavigationListItemButton = styled(ListItemButton)<ListItemButtonProps<typeof RouterLink>>(({ theme }) => ({
