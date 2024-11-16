@@ -9,6 +9,9 @@ import * as yup from "yup"
 import emailjs from "@emailjs/browser" 
 import { EMAIL_CONFIG } from "./pages/config"
 import { MuiTelInput } from 'mui-tel-input'
+import type { MuiTelInputProps } from 'mui-tel-input'
+
+type CountryCode = MuiTelInputProps['defaultCountry']
 
 interface FormValues {
     name: string
@@ -42,9 +45,13 @@ const initialValues: FormValues = {
 
 interface ContactFormProps {
     onAlert: (message: string, severity: 'success' | 'error') => void
+    defaultCountry?: CountryCode
 }
 
-export function ContactForm({ onAlert }: ContactFormProps) {
+export function ContactForm({ 
+    onAlert, 
+    defaultCountry = 'US' as CountryCode
+}: ContactFormProps) {
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -56,7 +63,7 @@ export function ContactForm({ onAlert }: ContactFormProps) {
                     {
                         from_name: values.name,
                         from_email: values.email,
-                        phone: values.phone,
+                        phone_number: values.phone,
                         message: values.message
                     },
                     EMAIL_CONFIG.PUBLIC_KEY
@@ -123,7 +130,7 @@ export function ContactForm({ onAlert }: ContactFormProps) {
                     onBlur={formik.handleBlur}
                     error={formik.touched.phone && Boolean(formik.errors.phone)}
                     helperText={formik.touched.phone && formik.errors.phone}
-                    defaultCountry="US"
+                    defaultCountry={defaultCountry}
                     preferredCountries={['US', 'GB', 'CA']}
                     label="Phone (optional)"
                     sx={{ mb: 2 }}

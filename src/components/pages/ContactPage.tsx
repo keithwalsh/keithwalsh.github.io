@@ -1,17 +1,25 @@
 /**
  * @fileoverview Contact page component providing contact information and a form for
- * user inquiries.
+ * user inquiries. Includes IP-based country detection for phone input.
  */
 
 import { Box, Container, Typography, Alert } from "@mui/material"
 import { SocialLinks } from "../SocialLinks"
 import { ContactForm } from "../ContactForm"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+import type { MuiTelInputProps } from 'mui-tel-input'
+
+type CountryCode = MuiTelInputProps['defaultCountry']
 
 interface AlertState {
     open: boolean
     message: string
     severity: 'success' | 'error'
+}
+
+interface GeoLocation {
+    country_code: string
 }
 
 export function ContactPage() {
@@ -20,6 +28,21 @@ export function ContactPage() {
         message: '',
         severity: 'success' as const
     })
+    const [countryCode, setCountryCode] = useState<CountryCode>('US')
+
+    useEffect(() => {
+        const detectCountry = async () => {
+            try {
+                const { data } = await axios.get<GeoLocation>('https://ipapi.co/json/')
+                setCountryCode(data.country_code.toUpperCase() as CountryCode)
+            } catch (error) {
+                console.error('Failed to detect country:', error)
+                setCountryCode('US')
+            }
+        }
+
+        detectCountry()
+    }, [])
 
     const handleAlert = (message: string, severity: 'success' | 'error') => {
         setAlert({ open: true, message, severity })
@@ -65,7 +88,7 @@ export function ContactPage() {
                     padding: 4,
                     boxShadow: 3
                 }}>
-                    <ContactForm onAlert={handleAlert} />
+                    <ContactForm onAlert={handleAlert} defaultCountry={countryCode} />
                 </Box>
 
                 <Box sx={{ mt: 2, width: '100%' }}>
