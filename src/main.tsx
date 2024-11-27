@@ -114,8 +114,8 @@ export function App() {
                             <Route path="/" element={<AboutPage />} />
                             <Route path="/projects" element={<ProjectsPage />} />
                             <Route path="/contact" element={<ContactPage />} />
-                            <Route path="/tools/development" element={<ToolsPage type="development" />} />
-                            <Route path="/tools/analytics" element={<ToolsPage type="analytics" />} />
+                            <Route path="/tools/json-explorer" element={<ToolsPage type="json-explorer" />} />
+                            <Route path="/tools/markdown-table" element={<ToolsPage type="markdown-table" />} />
                         </Routes>
                     </Main>
                 </Box>

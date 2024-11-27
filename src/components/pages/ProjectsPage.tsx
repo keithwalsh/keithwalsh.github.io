@@ -1,94 +1,65 @@
 /**
- * @fileoverview Projects page component showcasing portfolio projects and
- * professional work.
+ * @fileoverview Projects page component with a retro 1990s GeoCities style under
+ * construction theme.
  */
 
-import { Box, Container, Typography } from "@mui/material";
-import Spreadsheet from 'react-spreadsheet-ts'
-
-import { useState } from "react"
-
-interface SpreadsheetRow {
-    value: string
-    format: {
-        bold: boolean
-        italic: boolean
-        code: boolean
-        alignment: 'left' | 'center' | 'right'
-    }
-}
+import { Box, Container, Typography } from "@mui/material"
+import { useTheme } from '@mui/material/styles'
+import ConstructionIcon from '@mui/icons-material/Construction'
 
 export function ProjectsPage() {
-    const [spreadsheetData, setSpreadsheetData] = useState<SpreadsheetRow[][]>([
-        [
-            { value: 'Project Name', format: { bold: true, alignment: 'center', italic: false, code: false } },
-            { value: 'Description', format: { bold: true, alignment: 'center', italic: false, code: false } },
-            { value: 'Technologies', format: { bold: true, alignment: 'center', italic: false, code: false } },
-            { value: 'Status', format: { bold: true, alignment: 'center', italic: false, code: false } }
-        ],
-        [
-            { value: 'Portfolio Website', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'Personal portfolio and blog', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'React, TypeScript, MUI', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'Completed', format: { bold: true, italic: false, code: false, alignment: 'left' } }
-        ],
-        [
-            { value: 'Task Manager', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'Project management application', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'Node.js, Express, MongoDB', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'In Progress', format: { italic: true, bold: false, code: false, alignment: 'left' } }
-        ],
-        [
-            { value: 'Weather App', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'Real-time weather dashboard', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'React, Redux, OpenWeather API', format: { bold: false, italic: false, code: false, alignment: 'left' } },
-            { value: 'Planning', format: { italic: true, bold: false, code: false, alignment: 'left' } }
-        ]
-    ])
-
-    const stringData = spreadsheetData.map(row => 
-        row.map(cell => cell.value)
-    )
-
-    const handleSpreadsheetChange = (newData: string[][]) => {
-        const formattedData = newData.map((row, rowIndex) =>
-            row.map((value, colIndex) => ({
-                value,
-                format: spreadsheetData[rowIndex]?.[colIndex]?.format || {
-                    bold: false,
-                    italic: false,
-                    code: false,
-                    alignment: 'left'
-                }
-            }))
-        )
-        setSpreadsheetData(formattedData)
-    }
+    const theme = useTheme()
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ mt: 4 }}>
-                <Typography variant="h4" gutterBottom>
-                    Projects
+            <Box 
+                sx={{ 
+                    mt: 4,
+                    textAlign: 'center',
+                    animation: 'blink 1s infinite',
+                    '@keyframes blink': {
+                        '0%': { opacity: 1 },
+                        '50%': { opacity: 0 },
+                        '100%': { opacity: 1 }
+                    }
+                }}
+            >
+                <Typography variant="h4" gutterBottom sx={{ color: '#FF0000' }}>
+                    <ConstructionIcon sx={{ fontSize: 40, mr: 1 }} />
+                    UNDER CONSTRUCTION
+                    <ConstructionIcon sx={{ fontSize: 40, ml: 1 }} />
                 </Typography>
-                <Spreadsheet
-                    toolbarOrientation="horizontal"
-                    initialRows={4}
-                    initialColumns={10}
-                    tableHeight="250px"
-                    value={stringData}
-                    onChange={handleSpreadsheetChange}
-                />
-                <Box sx={{ mt: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Spreadsheet Data:
-                    </Typography>
-                    <pre>
-                        {JSON.stringify(spreadsheetData, null, 2)}
-                    </pre>
+                
+                <Box sx={{ my: 4 }}>
+                    <img 
+                        src="https://stryvemarketing.com/wp-content/uploads/2016/04/image.gif"
+                        alt="Under Construction"
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                    />
                 </Box>
-                <Typography variant="body1">
-                    Here you'll find a collection of my projects and professional work.
+
+                <Typography 
+                    variant="h6" 
+                    sx={{ 
+                        fontFamily: '"Comic Sans MS", cursive',
+                        color: theme.palette.mode === 'dark' ? '#00FF00' : '#0000FF',
+                        textShadow: '2px 2px #FF0000'
+                    }}
+                >
+                    🚧 Please excuse our dust! 🚧
+                    <br />
+                    This page is being updated to serve you better!
+                </Typography>
+
+                <Typography 
+                    variant="body1" 
+                    sx={{ 
+                        mt: 2,
+                        fontFamily: '"Comic Sans MS", cursive',
+                        color: '#800080'
+                    }}
+                >
+                    Best viewed with Netscape Navigator™
                 </Typography>
             </Box>
         </Container>

@@ -1,5 +1,6 @@
 import React from "react"
-import { Home, ContactMail, Build, Work, Code, Analytics } from "@mui/icons-material"
+import { Home, ContactMail, Build, Work, DataObject } from "@mui/icons-material"
+import { IoLogoMarkdown } from "react-icons/io5"
 
 export interface NavigationSubItem {
     path: string
@@ -23,8 +24,17 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
         label: "Tools", 
         icon: <Build />,
         subItems: [
-            { path: "/tools/development", label: "Development", icon: <Code /> },
-            { path: "/tools/analytics", label: "Analytics", icon: <Analytics /> }
+            { path: "/tools/json-explorer", label: "JSON Explorer", icon: <DataObject /> },
+            { 
+                path: "/tools/markdown-table", 
+                label: "Markdown Table", 
+                icon: <IoLogoMarkdown style={{ 
+                    fontSize: "1.25rem",
+                    position: "relative",
+                    left: "2px",
+                    top: "-1px",
+                }} />
+            }
         ]
     },
     { path: "/projects", label: "Projects", icon: <Work /> },
