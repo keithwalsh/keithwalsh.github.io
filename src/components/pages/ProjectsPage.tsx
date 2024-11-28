@@ -15,13 +15,7 @@ export function ProjectsPage() {
             <Box 
                 sx={{ 
                     mt: 4,
-                    textAlign: 'center',
-                    animation: 'blink 1s infinite',
-                    '@keyframes blink': {
-                        '0%': { opacity: 1 },
-                        '50%': { opacity: 0 },
-                        '100%': { opacity: 1 }
-                    }
+                    textAlign: 'center'
                 }}
             >
                 <Typography variant="h4" gutterBottom sx={{ color: '#FF0000' }}>
