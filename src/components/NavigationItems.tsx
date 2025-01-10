@@ -37,5 +37,13 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
             }
         ]
     },
-    { path: "/projects", label: "Projects", icon: <Work /> },
+    { 
+        path: "/projects", 
+        label: "Projects", 
+        icon: <Work />,
+        subItems: [
+            { path: "/projects/personal", label: "Personal", icon: <Work /> },
+            { path: "/projects/work", label: "Work", icon: <Work /> }
+        ]
+    },
 ]
