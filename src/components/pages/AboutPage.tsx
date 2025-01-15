@@ -68,9 +68,110 @@ export function AboutPage() {
                 <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
                     About Me
                 </Typography>
-                <Typography variant="body1" paragraph sx={{ fontSize: '1.1rem', maxWidth: '800px' }}>
-                    I'm a software developer passionate about creating elegant solutions to complex problems.
-                </Typography>
+                
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 4,
+                        mb: 6,
+                        position: 'relative'
+                    }}
+                >
+                    <Box
+                        sx={{
+                            position: 'relative',
+                            width: 200,
+                            height: 200,
+                            '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                top: -4,
+                                left: -4,
+                                right: -4,
+                                bottom: -4,
+                                background: 'linear-gradient(45deg, primary.main, secondary.main)',
+                                borderRadius: '50%',
+                                animation: 'spin 10s linear infinite',
+                                opacity: 0.7
+                            },
+                            '@keyframes spin': {
+                                '0%': {
+                                    transform: 'rotate(0deg)',
+                                },
+                                '100%': {
+                                    transform: 'rotate(360deg)',
+                                }
+                            }
+                        }}
+                    >
+                        <Box
+                            component="img"
+                            src="/photo.jpg"
+                            alt="Profile photo"
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                borderRadius: '50%',
+                                position: 'relative',
+                                zIndex: 1,
+                                border: '4px solid white',
+                                boxShadow: theme => `0 8px 32px ${theme.palette.primary.main}25`
+                            }}
+                        />
+                    </Box>
+                    <Box 
+                        sx={{ 
+                            flex: 1,
+                            position: 'relative',
+                            '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                left: -20,
+                                top: 0,
+                                bottom: 0,
+                                width: 4,
+                                background: 'linear-gradient(to bottom, transparent, primary.main, transparent)',
+                                opacity: 0.3
+                            }
+                        }}
+                    >
+                        <Typography 
+                            variant="body1" 
+                            paragraph 
+                            sx={{ 
+                                fontSize: '1.1rem', 
+                                maxWidth: '800px',
+                                position: 'relative',
+                                pl: 2,
+                                pr: 1,
+                                '&::before': {
+                                    content: 'open-quote',
+                                    fontSize: '4rem',
+                                    color: 'primary.main',
+                                    opacity: 0.2,
+                                    position: 'absolute',
+                                    top: -20,
+                                    left: -20
+                                },
+                                '&::after': {
+                                    content: 'close-quote',
+                                    fontSize: '4rem',
+                                    color: 'primary.main',
+                                    opacity: 0.2,
+                                    position: 'absolute',
+                                    bottom: -50,
+                                    right: -20
+                                }
+                            }}
+                        >
+                            I'm a software developer passionate about creating elegant solutions to complex problems.
+                            With over 5 years of experience in full-stack development, I specialize in building
+                            scalable applications using modern technologies.
+                        </Typography>
+                    </Box>
+                </Box>
                 
                 <Typography variant="h5" sx={{ mt: 6, mb: 3, fontWeight: 'bold' }}>
                     Professional Journey
