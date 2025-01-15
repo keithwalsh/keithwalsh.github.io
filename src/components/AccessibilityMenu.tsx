@@ -5,7 +5,7 @@
  */
 
 import { Menu, MenuItem, ListItemIcon, Divider, Paper, ListItemText } from "@mui/material";
-import { TextIncrease, TextDecrease, Cached, Contrast, Accessible } from "@mui/icons-material";
+import { TextIncrease, TextDecrease, Cached } from "@mui/icons-material";
 import { useState, useEffect } from "react";
 
 /** Props for the AccessibilityMenu component */
@@ -57,13 +57,14 @@ export function AccessibilityMenu({ anchorEl, open, onClose }: AccessibilityMenu
             fontSize: Math.min(Math.max(prev.fontSize + (increase ? FONT_SIZE_STEP : -FONT_SIZE_STEP), MIN_FONT_SIZE), MAX_FONT_SIZE),
         }));
     };
-
+{/* Temporarily disabled until implementation is complete
     const handleToggleSetting = (setting: keyof Omit<AccessibilitySettings, "fontSize">) => {
         setSettings((prev) => ({
             ...prev,
             [setting]: !prev[setting],
         }));
     };
+*/}
 
     return (
         <Menu
@@ -122,6 +123,7 @@ export function AccessibilityMenu({ anchorEl, open, onClose }: AccessibilityMenu
             </MenuItem>
 
             <Divider />
+            {/* Temporarily disabled until implementation is complete
             <MenuItem onClick={() => handleToggleSetting("highContrast")} aria-label="Toggle high contrast mode">
                 <ListItemIcon>
                     <Contrast fontSize="small" />
@@ -134,6 +136,7 @@ export function AccessibilityMenu({ anchorEl, open, onClose }: AccessibilityMenu
                 </ListItemIcon>
                 Screen Reader
             </MenuItem>
+            */}
         </Menu>
     );
 }
