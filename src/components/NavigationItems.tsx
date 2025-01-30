@@ -1,6 +1,9 @@
 import React from "react"
-import { Home, ContactMail, Build, Work, DataObject } from "@mui/icons-material"
+import { RocketLaunch, Home, ContactMail, Work, Coffee } from "@mui/icons-material"
+/* Temporarily disabled until implementation is complete
+import { Build, DataObject } from "@mui/icons-material"
 import { IoLogoMarkdown } from "react-icons/io5"
+*/
 
 export interface NavigationSubItem {
     path: string
@@ -19,6 +22,7 @@ export interface NavigationItem {
 export const NAVIGATION_ITEMS: NavigationItem[] = [
     { path: "/", label: "About", icon: <Home /> },
     { path: "/contact", label: "Contact", icon: <ContactMail />, showDividerBelow: true },
+    /* Temporarily disabled until implementation is complete
     { 
         path: "/tools", 
         label: "Tools", 
@@ -37,13 +41,14 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
             }
         ]
     },
+    */
     { 
         path: "/projects", 
         label: "Projects", 
-        icon: <Work />,
+        icon: <RocketLaunch />,
         subItems: [
-            { path: "/projects/personal", label: "Personal", icon: <Work /> },
-            { path: "/projects/work", label: "Work", icon: <Work /> }
+            { path: "/projects/professional", label: "Professional", icon: <Work /> },
+            { path: "/projects/personal", label: "Personal", icon: <Coffee /> }
         ]
     },
 ]

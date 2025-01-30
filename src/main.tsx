@@ -8,7 +8,7 @@ import ReactDOM from "react-dom/client";
 import { ThemeProvider, CssBaseline, Box, IconButton, Toolbar, useMediaQuery } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { Routes, Route, HashRouter } from "react-router-dom";
-import { AboutPage, ContactPage, ToolsPage, ProjectsPage, PersonalProjects, WorkProjects } from "./components/pages";
+import { AboutPage, ContactPage, ToolsPage, PersonalProjects, WorkProjects } from "./components/pages";
 import { StyledAppBar, StyledTitle, AccessibilityIconButton, StyledDrawer, Main } from "./components/StyledComponents";
 import { DrawerContent } from "./components/DrawerContent";
 import { AccessibilityMenu } from "./components/AccessibilityMenu";
@@ -112,9 +112,8 @@ export function App() {
                     <Main>
                         <Routes>
                             <Route path="/" element={<AboutPage />} />
-                            <Route path="/projects" element={<ProjectsPage />} />
                             <Route path="/projects/personal" element={<PersonalProjects />} />
-                            <Route path="/projects/work" element={<WorkProjects />} />
+                            <Route path="/projects/professional" element={<WorkProjects />} />
                             <Route path="/contact" element={<ContactPage />} />
                             <Route path="/tools/json-explorer" element={<ToolsPage type="json-explorer" />} />
                             <Route path="/tools/markdown-table" element={<ToolsPage type="markdown-table" />} />

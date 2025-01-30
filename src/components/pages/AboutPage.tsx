@@ -2,11 +2,10 @@
  * @fileoverview About page component containing professional timeline and information.
  */
 
-import { Box, Container, Typography, Paper } from "@mui/material"
-import Grid from "@mui/material/Grid2"
+import { Box, Container, Typography, Paper, Grid } from "@mui/material"
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab"
-import { FaReact, FaNodeJs, FaAws, FaDocker } from "react-icons/fa"
-import { SiTypescript, SiGraphql } from "react-icons/si"
+import { FaPython, FaDatabase, FaChartBar } from "react-icons/fa"
+import { SiPowerbi, SiSnowflake, SiGooglebigquery } from "react-icons/si"
 
 interface Skill {
     name: string
@@ -19,46 +18,46 @@ interface Skill {
 export function AboutPage() {
     const skills: Skill[] = [
         { 
-            name: "React", 
+            name: "Python", 
             level: 90, 
-            category: "Frontend",
-            icon: <FaReact />,
-            color: "#61DAFB"
+            category: "Data Analytics",
+            icon: <FaPython />,
+            color: "#3776AB"
         },
         { 
-            name: "TypeScript", 
+            name: "SQL", 
+            level: 90, 
+            category: "Database",
+            icon: <FaDatabase />,
+            color: "#336791"
+        },
+        { 
+            name: "Tableau", 
             level: 85, 
-            category: "Languages",
-            icon: <SiTypescript />,
-            color: "#3178C6"
+            category: "Visualization",
+            icon: <FaChartBar />,
+            color: "#E97627"
         },
         { 
-            name: "Node.js", 
+            name: "Power BI", 
+            level: 85, 
+            category: "Visualization",
+            icon: <SiPowerbi />,
+            color: "#F2C811"
+        },
+        { 
+            name: "Snowflake", 
             level: 80, 
-            category: "Backend",
-            icon: <FaNodeJs />,
-            color: "#339933"
+            category: "Data Warehouse",
+            icon: <SiSnowflake />,
+            color: "#29B5E8"
         },
         { 
-            name: "AWS", 
-            level: 75, 
-            category: "Cloud",
-            icon: <FaAws />,
-            color: "#FF9900"
-        },
-        { 
-            name: "Docker", 
-            level: 70, 
-            category: "DevOps",
-            icon: <FaDocker />,
-            color: "#2496ED"
-        },
-        { 
-            name: "GraphQL", 
-            level: 85, 
-            category: "API",
-            icon: <SiGraphql />,
-            color: "#E535AB"
+            name: "BigQuery", 
+            level: 80, 
+            category: "Data Warehouse",
+            icon: <SiGooglebigquery />,
+            color: "#4285F4"
         }
     ]
 
@@ -166,9 +165,11 @@ export function AboutPage() {
                                 }
                             }}
                         >
-                            I'm a software developer passionate about creating elegant solutions to complex problems.
-                            With over 5 years of experience in full-stack development, I specialize in building
-                            scalable applications using modern technologies.
+                            Data Analyst with 15+ years of experience delivering actionable insights, automating data workflows, 
+                            and developing advanced data solutions. Skilled at transforming complex datasets into intuitive 
+                            dashboards and analytical reports that drive strategic decisions. Adept at collaborating across 
+                            departments, bridging technical and non-technical perspectives, and optimising operations through 
+                            Python, SQL, and leading analytics tools.
                         </Typography>
                     </Box>
                 </Box>
@@ -184,9 +185,10 @@ export function AboutPage() {
                             <TimelineConnector />
                         </TimelineSeparator>
                         <TimelineContent>
-                            <Typography variant="h6">Senior Developer</Typography>
-                            <Typography>2022 - Present</Typography>
-                            <Typography variant="body2">Leading development of enterprise applications</Typography>
+                            <Typography variant="h6">Data Analyst</Typography>
+                            <Typography>Mar. 2024 - Present</Typography>
+                            <Typography variant="body2">Pitney Bowes, Dublin</Typography>
+                            <Typography variant="body2">Developing data solutions and analytics tools for invoice processing and client engagement</Typography>
                         </TimelineContent>
                     </TimelineItem>
 
@@ -196,9 +198,23 @@ export function AboutPage() {
                             <TimelineConnector />
                         </TimelineSeparator>
                         <TimelineContent>
-                            <Typography variant="h6">Full Stack Developer</Typography>
-                            <Typography>2019 - 2022</Typography>
-                            <Typography variant="body2">Built scalable web applications using React and Node.js</Typography>
+                            <Typography variant="h6">Client Support Manager</Typography>
+                            <Typography>Nov. 2019 - Feb. 2021</Typography>
+                            <Typography variant="body2">Pitney Bowes, Dublin</Typography>
+                            <Typography variant="body2">Led a team of 13 agents and developed automated KPI reporting systems</Typography>
+                        </TimelineContent>
+                    </TimelineItem>
+
+                    <TimelineItem>
+                        <TimelineSeparator>
+                            <TimelineDot color="primary" />
+                            <TimelineConnector />
+                        </TimelineSeparator>
+                        <TimelineContent>
+                            <Typography variant="h6">Client Support Business Analyst</Typography>
+                            <Typography>Jun. 2018 - Oct. 2019</Typography>
+                            <Typography variant="body2">Pitney Bowes, Dublin</Typography>
+                            <Typography variant="body2">Created automation tools and performance tracking systems</Typography>
                         </TimelineContent>
                     </TimelineItem>
 
@@ -207,13 +223,14 @@ export function AboutPage() {
                             <TimelineDot />
                         </TimelineSeparator>
                         <TimelineContent>
-                            <Typography variant="h6">Junior Developer</Typography>
-                            <Typography>2017 - 2019</Typography>
-                            <Typography variant="body2">Started career with front-end development</Typography>
+                            <Typography variant="h6">Payments & Risk Management Analyst</Typography>
+                            <Typography>Apr. 2015 - Jun. 2018</Typography>
+                            <Typography variant="body2">BetBright / 888, Dublin</Typography>
+                            <Typography variant="body2">Led risk assessment and fraud prevention initiatives</Typography>
                         </TimelineContent>
                     </TimelineItem>
                 </Timeline>
-                
+
                 <Typography variant="h5" sx={{ mt: 6, mb: 4, fontWeight: 'bold' }}>
                     Skills & Expertise
                 </Typography>
@@ -221,85 +238,154 @@ export function AboutPage() {
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid 
                         container 
-                        spacing={3} 
-                        sx={{ 
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(3, 1fr)',  // Forces 3 columns
-                            gap: 3
-                        }}
+                        spacing={3}
                     >
                         {skills.map((skill) => (
+                            <Grid key={skill.name} item xs={12} sm={6} md={4}>
+                                <Paper 
+                                    elevation={2}
+                                    sx={{
+                                        p: 3,
+                                        height: '160px',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'translateY(-4px)',
+                                            boxShadow: (theme) => `0 8px 24px ${theme.palette.action.hover}`,
+                                        },
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'space-between'
+                                    }}
+                                >
+                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                        <Box 
+                                            sx={{ 
+                                                fontSize: '2.5rem', 
+                                                mr: 2,
+                                                color: skill.color,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                opacity: 0.9
+                                            }}
+                                        >
+                                            {skill.icon}
+                                        </Box>
+                                        <Box>
+                                            <Typography 
+                                                variant="h6" 
+                                                sx={{ 
+                                                    mb: 0.5,
+                                                    fontWeight: 'medium'
+                                                }}
+                                            >
+                                                {skill.name}
+                                            </Typography>
+                                            <Typography 
+                                                variant="caption" 
+                                                color="text.secondary"
+                                                sx={{ fontSize: '0.875rem' }}
+                                            >
+                                                {skill.category}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            height: 8,
+                                            width: '100%',
+                                            bgcolor: 'grey.100',
+                                            borderRadius: 4,
+                                            overflow: 'hidden',
+                                            position: 'relative'
+                                        }}
+                                    >
+                                        <Box
+                                            sx={{
+                                                height: '100%',
+                                                width: `${skill.level}%`,
+                                                bgcolor: skill.color,
+                                                transition: 'width 1.5s ease-in-out',
+                                                opacity: 0.8,
+                                                boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
+                                            }}
+                                        />
+                                    </Box>
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+
+                <Typography variant="h5" sx={{ mt: 6, mb: 4, fontWeight: 'bold' }}>
+                    Education & Certifications
+                </Typography>
+
+                <Box sx={{ mb: 4 }}>
+                    <Grid container spacing={3}>
+                        <Grid container xs={12} md={6}>
                             <Paper 
-                                key={skill.name}
                                 elevation={2}
                                 sx={{
                                     p: 3,
-                                    height: '160px',
+                                    height: '100%',
                                     transition: 'all 0.3s ease',
                                     '&:hover': {
                                         transform: 'translateY(-4px)',
                                         boxShadow: (theme) => `0 8px 24px ${theme.palette.action.hover}`,
-                                    },
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between'
+                                    }
                                 }}
                             >
-                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                    <Box 
-                                        sx={{ 
-                                            fontSize: '2.5rem', 
-                                            mr: 2,
-                                            color: skill.color,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            opacity: 0.9
-                                        }}
-                                    >
-                                        {skill.icon}
-                                    </Box>
-                                    <Box>
-                                        <Typography 
-                                            variant="h6" 
-                                            sx={{ 
-                                                mb: 0.5,
-                                                fontWeight: 'medium'
-                                            }}
-                                        >
-                                            {skill.name}
-                                        </Typography>
-                                        <Typography 
-                                            variant="caption" 
-                                            color="text.secondary"
-                                            sx={{ fontSize: '0.875rem' }}
-                                        >
-                                            {skill.category}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        height: 8,
-                                        width: '100%',
-                                        bgcolor: 'grey.100',
-                                        borderRadius: 4,
-                                        overflow: 'hidden',
-                                        position: 'relative'
-                                    }}
-                                >
-                                    <Box
-                                        sx={{
-                                            height: '100%',
-                                            width: `${skill.level}%`,
-                                            bgcolor: skill.color,
-                                            transition: 'width 1.5s ease-in-out',
-                                            opacity: 0.8,
-                                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.1)'
-                                        }}
-                                    />
+                                <Typography variant="h6" gutterBottom>Education</Typography>
+                                <Box sx={{ mb: 2 }}>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
+                                        B.Sc. Engineering with Management
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Trinity College Dublin, 2010
+                                    </Typography>
                                 </Box>
                             </Paper>
-                        ))}
+                        </Grid>
+                        <Grid container xs={12} md={6}>
+                            <Paper 
+                                elevation={2}
+                                sx={{
+                                    p: 3,
+                                    height: '100%',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        transform: 'translateY(-4px)',
+                                        boxShadow: (theme) => `0 8px 24px ${theme.palette.action.hover}`,
+                                    }
+                                }}
+                            >
+                                <Typography variant="h6" gutterBottom>Recent Certifications</Typography>
+                                <Box sx={{ mb: 2 }}>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
+                                        GCP Associate Cloud Engineer
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Google, 2025
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ mb: 2 }}>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
+                                        Google Data Analytics Professional Certificate
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        Google, 2025
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
+                                        GitHub Foundations Certification
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        GitHub, 2025
+                                    </Typography>
+                                </Box>
+                            </Paper>
+                        </Grid>
                     </Grid>
                 </Box>
             </Box>
