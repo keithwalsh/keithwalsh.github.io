@@ -2,10 +2,13 @@
  * @fileoverview About page component containing professional timeline and information.
  */
 
-import { Box, Container, Typography, Paper, Grid } from "@mui/material"
-import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineSeparator } from "@mui/lab"
+import { Box, Container, Typography, Paper, Grid, useTheme } from "@mui/material"
+import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from "@mui/lab"
 import { FaPython, FaDatabase, FaChartBar } from "react-icons/fa"
 import { SiPowerbi, SiSnowflake, SiGooglebigquery } from "react-icons/si"
+import { useState } from "react"
+import { Collapse, List, ListItem } from "@mui/material"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 interface Skill {
     name: string
@@ -15,7 +18,54 @@ interface Skill {
     color: string
 }
 
+interface TimelinePosition {
+    year: string
+    title: string
+    company: string
+    details: string[]
+    dateRange?: string  // Optional date range field
+}
+
 export function AboutPage() {
+    const theme = useTheme()
+    const [expandedItem, setExpandedItem] = useState<string | null>(null)
+    
+    const positions: TimelinePosition[] = [
+        {
+            year: "2024",
+            title: "Data Analyst",
+            company: "Pitney Bowes",
+            dateRange: "Jan. 2024 – Present",
+            details: [
+                "●  Led development of automated reporting solutions using Python and SQL",
+                "●  Designed and maintained Power BI dashboards for executive stakeholders",
+                "●  Implemented data quality monitoring frameworks"
+            ]
+        },
+        {
+            year: "2019",
+            title: "Client Support Manager",
+            company: "Pitney Bowes",
+            dateRange: "Mar. 2019 – Dec. 2023",
+            details: [
+                "●  Managed team of 10 support specialists",
+                "●  Reduced average resolution time by 35%",
+                "●  Implemented new support workflow system"
+            ]
+        },
+        {
+            year: "2018",
+            title: "Client Support Business Analyst",
+            company: "Pitney Bowes",
+            details: [
+                "●  Developed business intelligence reports",
+                "●  Automated key business processes",
+                "●  Improved customer satisfaction metrics"
+            ]
+        },
+        // Add the rest of your positions with their details
+    ]
+
     const skills: Skill[] = [
         { 
             name: "Python", 
@@ -106,7 +156,7 @@ export function AboutPage() {
                     >
                         <Box
                             component="img"
-                            src="/photo.jpg"
+                            src="/photo2.jpg"
                             alt="Profile photo"
                             sx={{
                                 width: '100%',
@@ -116,7 +166,10 @@ export function AboutPage() {
                                 position: 'relative',
                                 zIndex: 1,
                                 border: '4px solid white',
-                                boxShadow: theme => `0 8px 32px ${theme.palette.primary.main}25`
+                                boxShadow: `0 8px 32px ${theme.palette.primary.main}25`,
+                                ...(theme.palette.mode === 'dark' && {
+                                    filter: 'brightness(0.8)'
+                                })
                             }}
                         />
                     </Box>
@@ -148,8 +201,7 @@ export function AboutPage() {
                                 '&::before': {
                                     content: 'open-quote',
                                     fontSize: '4rem',
-                                    color: 'primary.main',
-                                    opacity: 0.2,
+                                    color: 'info.main',
                                     position: 'absolute',
                                     top: -20,
                                     left: -20
@@ -157,11 +209,10 @@ export function AboutPage() {
                                 '&::after': {
                                     content: 'close-quote',
                                     fontSize: '4rem',
-                                    color: 'primary.main',
-                                    opacity: 0.2,
+                                    color: 'info.main',
                                     position: 'absolute',
                                     bottom: -50,
-                                    right: -20
+                                    right: 0
                                 }
                             }}
                         >
@@ -179,56 +230,102 @@ export function AboutPage() {
                 </Typography>
                 
                 <Timeline position="alternate" sx={{ mb: 6 }}>
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineDot color="primary" />
-                            <TimelineConnector />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            <Typography variant="h6">Data Analyst</Typography>
-                            <Typography>Mar. 2024 - Present</Typography>
-                            <Typography variant="body2">Pitney Bowes, Dublin</Typography>
-                            <Typography variant="body2">Developing data solutions and analytics tools for invoice processing and client engagement</Typography>
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineDot color="secondary" />
-                            <TimelineConnector />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            <Typography variant="h6">Client Support Manager</Typography>
-                            <Typography>Nov. 2019 - Feb. 2021</Typography>
-                            <Typography variant="body2">Pitney Bowes, Dublin</Typography>
-                            <Typography variant="body2">Led a team of 13 agents and developed automated KPI reporting systems</Typography>
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineDot color="primary" />
-                            <TimelineConnector />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            <Typography variant="h6">Client Support Business Analyst</Typography>
-                            <Typography>Jun. 2018 - Oct. 2019</Typography>
-                            <Typography variant="body2">Pitney Bowes, Dublin</Typography>
-                            <Typography variant="body2">Created automation tools and performance tracking systems</Typography>
-                        </TimelineContent>
-                    </TimelineItem>
-
-                    <TimelineItem>
-                        <TimelineSeparator>
-                            <TimelineDot />
-                        </TimelineSeparator>
-                        <TimelineContent>
-                            <Typography variant="h6">Payments & Risk Management Analyst</Typography>
-                            <Typography>Apr. 2015 - Jun. 2018</Typography>
-                            <Typography variant="body2">BetBright / 888, Dublin</Typography>
-                            <Typography variant="body2">Led risk assessment and fraud prevention initiatives</Typography>
-                        </TimelineContent>
-                    </TimelineItem>
+                    {positions.map((position, index) => (
+                        <TimelineItem 
+                            key={position.year}
+                            onClick={() => setExpandedItem(expandedItem === position.year ? null : position.year)}
+                            sx={{ 
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    '& .MuiTimelineDot-root': {
+                                        transform: 'scale(1.2)',
+                                    }
+                                }
+                            }}
+                        >
+                            <TimelineOppositeContent sx={{ m: "auto 0" }} align="right" variant="body2" color="text.secondary">
+                                {position.year}
+                            </TimelineOppositeContent>
+                            <TimelineSeparator>
+                                <TimelineDot 
+                                    color={position.year === "2024" ? "primary" : "secondary"}
+                                    sx={{ transition: 'transform 0.2s' }}
+                                />
+                                <TimelineConnector />
+                            </TimelineSeparator>
+                            <TimelineContent>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    gap: 1,
+                                    flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
+                                    textAlign: index % 2 === 0 ? 'left' : 'right'
+                                }}>
+                                    <Box sx={{ 
+                                        textAlign: 'inherit',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                        flexDirection: index % 2 === 0 ? 'row' : 'row-reverse'
+                                    }}>
+                                        <Box>
+                                            <Typography variant="h6">{position.title}</Typography>
+                                            <Typography color="text.secondary">{position.company}</Typography>
+                                        </Box>
+                                        <ExpandMoreIcon 
+                                            sx={{ 
+                                                transform: expandedItem === position.year ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                transition: 'transform 0.2s ease',
+                                                opacity: 0.6
+                                            }} 
+                                        />
+                                    </Box>
+                                </Box>
+                                <Box sx={{ 
+                                    display: 'flex', 
+                                    justifyContent: index % 2 === 0 ? 'flex-start' : 'flex-end'
+                                }}>
+                                    <Collapse in={expandedItem === position.year}>
+                                        <Paper 
+                                            elevation={1}
+                                            sx={{ 
+                                                mt: 2, 
+                                                p: 2,
+                                                bgcolor: 'background.default',
+                                                maxWidth: 'fit-content'
+                                            }}
+                                        >
+                                            {position.dateRange && (
+                                                <Typography 
+                                                    variant="caption" 
+                                                    color="text.secondary"
+                                                    sx={{ 
+                                                        display: 'block',
+                                                        mb: 1,
+                                                        fontStyle: 'italic'
+                                                    }}
+                                                >
+                                                    {position.dateRange}
+                                                </Typography>
+                                            )}
+                                            <List dense disablePadding>
+                                                {position.details.map((detail, index) => (
+                                                    <ListItem 
+                                                        key={index}
+                                                        sx={{ p: 0 }}
+                                                    >
+                                                        <Typography variant="caption" color="text.secondary">
+                                                            {detail}
+                                                        </Typography>
+                                                    </ListItem>
+                                                ))}
+                                            </List>
+                                        </Paper>
+                                    </Collapse>
+                                </Box>
+                            </TimelineContent>
+                        </TimelineItem>
+                    ))}
                 </Timeline>
 
                 <Typography variant="h5" sx={{ mt: 6, mb: 4, fontWeight: 'bold' }}>
