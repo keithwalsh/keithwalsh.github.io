@@ -1,5 +1,7 @@
 # Personal Website
 
+[![Code Climate](https://codeclimate.com/github/keithwalsh/keithwalsh.github.io/badges/gpa.svg)](https://codeclimate.com/github/keithwalsh/keithwalsh.github.io)
+
 ## Tech Stack
 
 - **React** - Frontend Framework

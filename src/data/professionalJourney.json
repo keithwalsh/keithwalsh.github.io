@@ -1,0 +1,36 @@
+{
+  "positions": [
+    {
+      "year": "2024",
+      "title": "Data Analyst",
+      "company": "Pitney Bowes",
+      "dateRange": "Jan. 2024 – Present",
+      "details": [
+        "●  Led development of automated reporting solutions using Python and SQL",
+        "●  Designed and maintained Power BI dashboards for executive stakeholders",
+        "●  Implemented data quality monitoring frameworks"
+      ]
+    },
+    {
+      "year": "2019",
+      "title": "Client Support Manager",
+      "company": "Pitney Bowes",
+      "dateRange": "Mar. 2019 – Dec. 2023",
+      "details": [
+        "●  Managed team of 10 support specialists",
+        "●  Reduced average resolution time by 35%",
+        "●  Implemented new support workflow system"
+      ]
+    },
+    {
+      "year": "2018",
+      "title": "Client Support Business Analyst",
+      "company": "Pitney Bowes",
+      "details": [
+        "●  Developed business intelligence reports",
+        "●  Automated key business processes",
+        "●  Improved customer satisfaction metrics"
+      ]
+    }
+  ]
+}
