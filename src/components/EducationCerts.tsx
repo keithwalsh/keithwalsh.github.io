@@ -3,6 +3,13 @@
  */
 
 import { Box, Grid, Paper, Typography } from "@mui/material"
+import certData from "../data/certifications.json"
+
+interface Certification {
+    title: string
+    issuer: string
+    year: number
+}
 
 export function EducationCerts() {
     return (
@@ -51,30 +58,16 @@ export function EducationCerts() {
                                 }}
                             >
                                 <Typography variant="h6" gutterBottom>Recent Certifications</Typography>
-                                <Box sx={{ mb: 2 }}>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
-                                        GCP Associate Cloud Engineer
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Google, 2025
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ mb: 2 }}>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
-                                        Google Data Analytics Professional Certificate
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Google, 2025
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
-                                        GitHub Foundations Certification
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        GitHub, 2025
-                                    </Typography>
-                                </Box>
+                                {certData.certifications.map((cert: Certification, index) => (
+                                    <Box key={`${cert.title}-${index}`} sx={{ mb: index !== certData.certifications.length - 1 ? 2 : 0 }}>
+                                        <Typography variant="subtitle1" sx={{ fontWeight: 'medium' }}>
+                                            {cert.title}
+                                        </Typography>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {cert.issuer}, {cert.year}
+                                        </Typography>
+                                    </Box>
+                                ))}
                             </Paper>
                         </Grid>
                 </Grid>
