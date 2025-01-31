@@ -77,7 +77,7 @@ function FormField({ id, label, multiline = false, rows, formik }: FormFieldProp
 
 export function ContactForm({ 
     onAlert, 
-    defaultCountry = 'US' as CountryCode
+    defaultCountry = 'IE' as CountryCode
 }: ContactFormProps) {
     const formik = useFormik<FormValues>({
         initialValues,
@@ -136,7 +136,7 @@ export function ContactForm({
                     error={formik.touched.phone && Boolean(formik.errors.phone)}
                     helperText={formik.touched.phone && formik.errors.phone}
                     defaultCountry={defaultCountry}
-                    preferredCountries={['US', 'GB', 'CA']}
+                    preferredCountries={['IE', 'US', 'GB', 'CA']}
                     label="Phone (optional)"
                     sx={{ mb: 2 }}
                 />

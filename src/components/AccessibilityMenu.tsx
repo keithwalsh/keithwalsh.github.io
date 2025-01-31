@@ -28,6 +28,29 @@ const MAX_FONT_SIZE = 24;
 const FONT_SIZE_STEP = 1;
 const DEFAULT_FONT_SIZE = 16;
 
+/** Configuration for font size control menu items */
+interface FontSizeControl {
+    action: boolean
+    label: string
+    icon: typeof TextIncrease | typeof TextDecrease
+    disabledCondition: (fontSize: number) => boolean
+}
+
+const fontSizeControls: FontSizeControl[] = [
+    {
+        action: true,
+        label: "Increase Font Size",
+        icon: TextIncrease,
+        disabledCondition: (fontSize) => fontSize >= MAX_FONT_SIZE
+    },
+    {
+        action: false,
+        label: "Decrease Font Size",
+        icon: TextDecrease,
+        disabledCondition: (fontSize) => fontSize <= MIN_FONT_SIZE
+    }
+]
+
 export function AccessibilityMenu({ anchorEl, open, onClose }: AccessibilityMenuProps) {
     const [settings, setSettings] = useState<AccessibilitySettings>(() => {
         const savedSettings = localStorage.getItem("accessibilitySettings");
@@ -97,19 +120,19 @@ export function AccessibilityMenu({ anchorEl, open, onClose }: AccessibilityMenu
             >
                 <ListItemText secondary="Accessibility Settings" />
             </MenuItem>
-            <MenuItem onClick={() => handleFontSizeChange(true)} disabled={settings.fontSize >= MAX_FONT_SIZE} aria-label="Increase font size">
-                <ListItemIcon>
-                    <TextIncrease fontSize="small" />
-                </ListItemIcon>
-                Increase Font Size
-            </MenuItem>
-
-            <MenuItem onClick={() => handleFontSizeChange(false)} disabled={settings.fontSize <= MIN_FONT_SIZE} aria-label="Decrease font size">
-                <ListItemIcon>
-                    <TextDecrease fontSize="small" />
-                </ListItemIcon>
-                Decrease Font Size
-            </MenuItem>
+            {fontSizeControls.map(({ action, label, icon: Icon, disabledCondition }) => (
+                <MenuItem 
+                    key={label}
+                    onClick={() => handleFontSizeChange(action)}
+                    disabled={disabledCondition(settings.fontSize)}
+                    aria-label={label.toLowerCase()}
+                >
+                    <ListItemIcon>
+                        <Icon fontSize="small" />
+                    </ListItemIcon>
+                    {label}
+                </MenuItem>
+            ))}
 
             <MenuItem
                 onClick={() => setSettings((prev) => ({ ...prev, fontSize: DEFAULT_FONT_SIZE }))}
