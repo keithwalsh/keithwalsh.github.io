@@ -4,8 +4,9 @@
  */
 
 import { Box, Container, Typography } from "@mui/material";
+/* Temporarily disabled until implementation is complete
 import { MarkdownTablePage } from './MarkdownTable'
-
+*/
 interface ToolsPageProps {
     type?: 'json-explorer' | 'markdown-table'
 }
@@ -33,7 +34,9 @@ export function ToolsPage({ type }: ToolsPageProps) {
                     {type === 'markdown-table' && 'Convert tabular data into markdown tables.'}
                     {!type && 'This is the Tools page. Learn more about our app here.'}
                 </Typography>
+                {/* Temporarily disabled until implementation is complete
                 {type === 'markdown-table' && <MarkdownTablePage />}
+                */}
             </Box>
         </Container>
     )

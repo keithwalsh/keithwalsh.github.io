@@ -48,11 +48,38 @@ interface ContactFormProps {
     defaultCountry?: CountryCode
 }
 
+interface FormFieldProps {
+    id: keyof FormValues
+    label: string
+    multiline?: boolean
+    rows?: number
+    formik: ReturnType<typeof useFormik<FormValues>>
+}
+
+function FormField({ id, label, multiline = false, rows, formik }: FormFieldProps) {
+    return (
+        <TextField
+            fullWidth
+            id={id}
+            name={id}
+            label={label}
+            value={formik.values[id]}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched[id] && Boolean(formik.errors[id])}
+            helperText={formik.touched[id] && (formik.errors[id] as string)}
+            multiline={multiline}
+            rows={rows}
+            sx={{ mb: 2 }}
+        />
+    )
+}
+
 export function ContactForm({ 
     onAlert, 
     defaultCountry = 'US' as CountryCode
 }: ContactFormProps) {
-    const formik = useFormik({
+    const formik = useFormik<FormValues>({
         initialValues,
         validationSchema,
         onSubmit: async (values, { setSubmitting, resetForm }) => {
@@ -99,30 +126,8 @@ export function ContactForm({
                 }}
                 sx={{ width: '100%' }}
             >
-                <TextField
-                    fullWidth
-                    id="name"
-                    name="name"
-                    label="Name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
-                    sx={{ mb: 2 }}
-                />
-                <TextField
-                    fullWidth
-                    id="email"
-                    name="email"
-                    label="Email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.email && Boolean(formik.errors.email)}
-                    helperText={formik.touched.email && formik.errors.email}
-                    sx={{ mb: 2 }}
-                />
+                <FormField id="name" label="Name" formik={formik} />
+                <FormField id="email" label="Email" formik={formik} />
                 <MuiTelInput
                     fullWidth
                     value={formik.values.phone}
@@ -135,19 +140,12 @@ export function ContactForm({
                     label="Phone (optional)"
                     sx={{ mb: 2 }}
                 />
-                <TextField
-                    fullWidth
-                    id="message"
-                    name="message"
-                    label="Message"
-                    multiline
-                    rows={4}
-                    value={formik.values.message}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    error={formik.touched.message && Boolean(formik.errors.message)}
-                    helperText={formik.touched.message && formik.errors.message}
-                    sx={{ mb: 2 }}
+                <FormField 
+                    id="message" 
+                    label="Message" 
+                    multiline 
+                    rows={4} 
+                    formik={formik} 
                 />
                 <Button
                     color="primary"
