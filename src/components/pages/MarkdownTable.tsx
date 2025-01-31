@@ -3,6 +3,8 @@
  * professional work, integrating a spreadsheet and a markdown table.
  */
 
+/* Temporarily disabled until implementation is complete
+
 import { Box, Container, Button, Snackbar, Collapse, Checkbox, FormControlLabel, IconButton, Tooltip } from "@mui/material";
 import { useState, useEffect } from "react";
 import Spreadsheet from 'react-spreadsheet-ts';
@@ -497,3 +499,5 @@ export function MarkdownTablePage() {
         </Container>
     );
 }
+
+ */

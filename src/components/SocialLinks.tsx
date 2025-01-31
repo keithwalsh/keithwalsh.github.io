@@ -5,13 +5,24 @@
 import { Box, Typography, Stack } from "@mui/material"
 import { GitHub, LinkedIn } from "@mui/icons-material"
 import { FaStackOverflow } from "react-icons/fa"
+import socialLinksData from "../data/socialLinks.json"
 
-interface SocialLinkProps {
+interface SocialLink {
     href: string
-    icon: React.ReactNode
+    iconKey: string
     label: string
     bgColor: string
     hoverColor: string
+}
+
+interface SocialLinkProps extends Omit<SocialLink, 'iconKey'> {
+    icon: React.ReactNode
+}
+
+const iconMap: Record<string, React.ReactNode> = {
+    github: <GitHub sx={{ fontSize: 20 }} />,
+    stackoverflow: <FaStackOverflow style={{ fontSize: 20 }} />,
+    linkedin: <LinkedIn sx={{ fontSize: 20 }} />
 }
 
 function SocialLink({ href, icon, label, bgColor, hoverColor }: SocialLinkProps) {
@@ -65,30 +76,6 @@ function SocialLink({ href, icon, label, bgColor, hoverColor }: SocialLinkProps)
 }
 
 export function SocialLinks() {
-    const links = [
-        {
-            href: "https://github.com/keithwalsh",
-            icon: <GitHub sx={{ fontSize: 20 }} />,
-            label: "GitHub",
-            bgColor: '#424242',
-            hoverColor: '#616161'
-        },
-        {
-            href: "https://stackoverflow.com/users/27294211/keithwalsh",
-            icon: <FaStackOverflow style={{ fontSize: 20 }} />,
-            label: "Stack Overflow",
-            bgColor: '#f48024',
-            hoverColor: '#ff9033'
-        },
-        {
-            href: "https://linkedin.com/in/keithjwalsh",
-            icon: <LinkedIn sx={{ fontSize: 20 }} />,
-            label: "LinkedIn",
-            bgColor: '#0077b5',
-            hoverColor: '#0091dd'
-        }
-    ]
-
     return (
         <Stack
             direction={{ xs: 'column', sm: 'row' }}
@@ -97,8 +84,12 @@ export function SocialLinks() {
             alignItems="center"
             sx={{ width: '100%' }}
         >
-            {links.map(link => (
-                <SocialLink key={link.label} {...link} />
+            {(socialLinksData.links as SocialLink[]).map(link => (
+                <SocialLink 
+                    key={link.label} 
+                    {...link} 
+                    icon={iconMap[link.iconKey]} 
+                />
             ))}
         </Stack>
     )

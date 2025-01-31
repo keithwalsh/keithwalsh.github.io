@@ -1,0 +1,25 @@
+{
+    "links": [
+        {
+            "href": "https://github.com/keithwalsh",
+            "iconKey": "github",
+            "label": "GitHub",
+            "bgColor": "#424242",
+            "hoverColor": "#616161"
+        },
+        {
+            "href": "https://stackoverflow.com/users/27294211/keithwalsh",
+            "iconKey": "stackoverflow",
+            "label": "Stack Overflow",
+            "bgColor": "#f48024",
+            "hoverColor": "#ff9033"
+        },
+        {
+            "href": "https://linkedin.com/in/keithjwalsh",
+            "iconKey": "linkedin",
+            "label": "LinkedIn",
+            "bgColor": "#0077b5",
+            "hoverColor": "#0091dd"
+        }
+    ]
+} 
