@@ -22,26 +22,6 @@ export function AboutPhotoSection() {
                     position: 'relative',
                     width: 200,
                     height: 200,
-                    '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        top: -4,
-                        left: -4,
-                        right: -4,
-                        bottom: -4,
-                        background: 'linear-gradient(45deg, primary.main, secondary.main)',
-                        borderRadius: '50%',
-                        animation: 'spin 10s linear infinite',
-                        opacity: 0.7
-                    },
-                    '@keyframes spin': {
-                        '0%': {
-                            transform: 'rotate(0deg)',
-                        },
-                        '100%': {
-                            transform: 'rotate(360deg)',
-                        }
-                    }
                 }}
             >
                 <Box
@@ -53,10 +33,7 @@ export function AboutPhotoSection() {
                         height: '100%',
                         objectFit: 'cover',
                         borderRadius: '50%',
-                        position: 'relative',
-                        zIndex: 1,
-                        border: '4px solid white',
-                        boxShadow: `0 8px 32px ${theme.palette.primary.main}25`,
+                        border: '1px solid #E0E0E0',
                         ...(theme.palette.mode === 'dark' && {
                             filter: 'brightness(0.8)'
                         })
@@ -106,11 +83,11 @@ export function AboutPhotoSection() {
                         }
                     }}
                 >
-                    Data Analyst with 15+ years of experience delivering actionable insights, automating data workflows, 
-                    and developing advanced data solutions. Skilled at transforming complex datasets into intuitive 
-                    dashboards and analytical reports that drive strategic decisions. Adept at collaborating across 
-                    departments, bridging technical and non-technical perspectives, and optimising operations through 
-                    Python, SQL, and leading analytics tools.
+                    Data Analyst and Strategic Operations Leader focused on delivering actionable insights, 
+                    automating data workflows, and developing advanced data solutions. Skilled at transforming complex 
+                    datasets into intuitive dashboards and analytical reports that drive strategic decisions. Adept at 
+                    collaborating across departments, bridging technical and non-technical perspectives, and optimising 
+                    operations through Python, SQL, and leading analytics tools.
                 </Typography>
             </Box>
         </Box>

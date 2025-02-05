@@ -12,14 +12,17 @@ interface TimelinePosition {
     year: string
     title: string
     company: string
+    companyDescription?: string
+    companyDescription2?: string
     details: string[]
     dateRange?: string
+    location?: string
 }
 
 export function ProfessionalJourney() {
     const [expandedItem, setExpandedItem] = useState<string | null>(null)
     const positions: TimelinePosition[] = professionalJourneyData.positions
-
+    
     return (
         <>
             <Typography variant="h5" sx={{ mt: 6, mb: 3, fontWeight: 'bold' }}>
@@ -36,12 +39,26 @@ export function ProfessionalJourney() {
                                 '&:hover': {
                                     '& .MuiTimelineDot-root': {
                                         transform: 'scale(1.2)',
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        transform: expandedItem === position.year 
+                                            ? 'rotate(180deg) scale(1.2)' 
+                                            : 'scale(1.2)',
+                                        color: position.year === "2024" ? 'primary.main' : 'secondary.main'
                                     }
                                 }
                             }}
                         >
                             <TimelineOppositeContent sx={{ m: "auto 0" }} align="right" variant="body2" color="text.secondary">
-                                {position.year}
+                                <Typography>{position.year}</Typography>
+                                <Collapse in={expandedItem === position.year}>
+                                    <Typography variant="body1" display="block" color="text.primary" sx={{ fontSize: "1.1rem" }}>
+                                        {position.dateRange}
+                                    </Typography>
+                                    <Typography variant="body1" display="block" color="text.secondary">
+                                        {position.location}
+                                    </Typography>
+                                </Collapse>
                             </TimelineOppositeContent>
                             <TimelineSeparator>
                                 <TimelineDot 
@@ -92,30 +109,55 @@ export function ProfessionalJourney() {
                                                 maxWidth: 'fit-content'
                                             }}
                                         >
-                                            {position.dateRange && (
-                                                <Typography 
-                                                    variant="caption" 
-                                                    color="text.secondary"
-                                                    sx={{ 
-                                                        display: 'block',
-                                                        mb: 1,
-                                                        fontStyle: 'italic'
-                                                    }}
-                                                >
-                                                    {position.dateRange}
-                                                </Typography>
-                                            )}
                                             <List dense disablePadding>
-                                                {position.details.map((detail, index) => (
-                                                    <ListItem 
-                                                        key={index}
-                                                        sx={{ p: 0 }}
-                                                    >
-                                                        <Typography variant="caption" color="text.secondary">
-                                                            {detail}
+                                                {position.companyDescription && (
+                                                    <ListItem sx={{ p: 0, mb: 1 }}>
+                                                        <Typography 
+                                                            variant="caption" 
+                                                            color="text.secondary"
+                                                            sx={{ 
+                                                                fontWeight: 500
+                                                            }}
+                                                        >
+                                                            {position.companyDescription}
                                                         </Typography>
                                                     </ListItem>
-                                                ))}
+                                                )}
+                                                {position.companyDescription2 && (
+                                                    <ListItem sx={{ p: 0, mb: 1, mt: -1 }}>
+                                                        <Typography 
+                                                            variant="caption" 
+                                                            color="text.secondary"
+                                                            sx={{ 
+                                                                fontWeight: 500
+                                                            }}
+                                                        >
+                                                            {position.companyDescription2}
+                                                        </Typography>
+                                                    </ListItem>
+                                                )}
+                                                <List 
+                                                    dense 
+                                                    component="ul" 
+                                                    sx={{ 
+                                                        listStyleType: 'disc',
+                                                        pl: 2 // Add left padding for bullets
+                                                    }}
+                                                >
+                                                    {position.details.map((detail, index) => (
+                                                        <ListItem 
+                                                            key={index}
+                                                            sx={{ 
+                                                                p: 0,
+                                                                display: 'list-item' // This enables the bullet points
+                                                            }}
+                                                        >
+                                                            <Typography variant="caption" color="text.secondary">
+                                                                {detail}
+                                                            </Typography>
+                                                        </ListItem>
+                                                    ))}
+                                                </List>
                                             </List>
                                         </Paper>
                                     </Collapse>

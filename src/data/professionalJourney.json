@@ -2,34 +2,92 @@
   "positions": [
     {
       "year": "2024",
-      "title": "Data Analyst",
+      "title": "Data Analyst", 
       "company": "Pitney Bowes",
-      "dateRange": "Jan. 2024 – Present",
+      "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
+      "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
+      "dateRange": "March 2024 – December 2024",
+      "location": "Dublin, Ireland",
       "details": [
-        "●  Led development of automated reporting solutions using Python and SQL",
-        "●  Designed and maintained Power BI dashboards for executive stakeholders",
-        "●  Implemented data quality monitoring frameworks"
+        "Developed a rerate tool using Python and SQL to recalculate client invoices, integrating multiple pricing structures and data sources.",
+        "Built automated Python/SQL scripts to detect invoice errors and validate refund calculations, cutting manual effort by ~50%.",
+        "Provided data analysis solutions that enabled the Claims team to expedite claim adjudications, and created dashboards for the Client Engagement team to improve retention strategies.",
+        "Developed algorithms and reporting tools to streamline the Loss Prevention team’s operations and inform risk assessments",
+        "Designed and maintained both internal and client-facing dashboards using Tableau and Power BI, offering real-time insights.",
+        "Automated workflows with Power Automate, Jira automation rules, and Python scripts, saving significant administrative time.",
+        "Worked with various teams to identify operational bottlenecks and provide data-led solutions, improving overall efficiency."
       ]
     },
     {
       "year": "2019",
       "title": "Client Support Manager",
       "company": "Pitney Bowes",
-      "dateRange": "Mar. 2019 – Dec. 2023",
+      "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
+      "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
+      "dateRange": "November 2019 – February 2021",
+      "location": "Dublin, Ireland",
       "details": [
-        "●  Managed team of 10 support specialists",
-        "●  Reduced average resolution time by 35%",
-        "●  Implemented new support workflow system"
+        "Oversaw a team of 13 agents, driving performance reviews, career development plans, and resource allocation.",
+        "Developed automated KPI reports to monitor performance metrics and identify service delivery gaps.",
+        "Led daily stand-ups and one-on-ones to clarify goals, provide feedback, and align with company objectives.",
+        "Collaborated with department leaders to refine cross-functional workflows, improving communication and reducing escalations by 25%.",
+        "Implemented training for new tools and processes, enhancing team efficiency and client engagement quality."
       ]
     },
     {
-      "year": "2018",
+      "year": "2017",
       "title": "Client Support Business Analyst",
       "company": "Pitney Bowes",
+      "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
+      "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
+      "dateRange": "June 2017 – October 2019",
+      "location": "Dublin, Ireland",
       "details": [
-        "●  Developed business intelligence reports",
-        "●  Automated key business processes",
-        "●  Improved customer satisfaction metrics"
+        "Created Agent Proficiency Score (APS) system, enabling better performance tracking and weekly trend analysis.",
+        "Developed browser extension to automate tasks, boosting productivity 23% and improving accuracy.",
+        "Deployed custom scripts to streamline agent tasks, reducing average handling times by 15%."
+      ]
+    },
+    {
+      "year": "2015",
+      "title": "Payments & Risk Management Analyst",
+      "company": "BetBright / 888",
+      "companyDescription": "Dublin-based Irish startup which specialized in online sports betting.",
+      "companyDescription2": "BetBright was acquired by 888 Holdings in 2017.",
+      "dateRange": "April 2015 – June 2017",
+      "location": "Dublin, Ireland",
+      "details": [
+        "Led risk assessment initiatives and fraud prevention systems, reducing payment disputes by 28%",
+        "Streamlined KYC/AML processes, halving client verification times while maintaining compliance",
+        "Collaborated with IT on payment gateway API integrations to enhance transaction security"
+      ]
+    },
+    {
+      "year": "2013",
+      "title": "Fraud Analyst",
+      "company": "GVC / Sportingbet",
+      "companyDescription": "International sports betting and gambling company.",
+      "companyDescription2": "Acquired by Entain in 2021.",
+      "dateRange": "January 2013 – March 2015",
+      "location": "Dublin, Ireland",
+      "details": [
+        "Analysed transaction data using Oracle to identify fraud patterns and prevent financial loss",
+        "Monitored multi-channel activity to assess fraud risk, collaborating with law enforcement and payment processors when needed",
+        "Processed chargeback notifications and analyzed account histories to take preventive action against suspicious accounts"
+      ]
+    },
+    {
+      "year": "2011",
+      "title": "Payments Analyst",
+      "company": "GVC / Sportingbet",
+      "companyDescription": "International sports betting and gambling company.",
+      "companyDescription2": "Acquired by Entain in 2021.",
+      "dateRange": "November 2011 – January 2013",
+      "location": "Dublin, Ireland",
+      "details": [
+        "Performed transaction-level reconciliation and customer journal adjustments to maintain financial accuracy",
+        "Monitored payment systems across website and internal platforms to ensure operational reliability",
+        "Collaborated with VIP, Risk & Fraud and Finance teams on process improvements and compliance checks"
       ]
     }
   ]
