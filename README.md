@@ -20,29 +20,42 @@
 ## Project Structure
 
 ```
-website/
+keithwalsh.github.io/
 ├── index.html
 ├── public/
-│   └── 404.html
+│   ├── 404.html
+│   ├── apple-touch-icon.png
+│   ├── favicon-96x96.png
+│   ├── favicon.ico
+│   ├── favicon.svg
+│   ├── photo.jpg
+│   ├── site.webmanifest
+│   ├── web-app-manifest-192x192.png
+│   └── web-app-manifest-512x512.png
 ├── src/
 │   ├── components/
+│   │   ├── AboutPhotoSection.tsx
 │   │   ├── AccessibilityMenu.tsx
+│   │   ├── ContactForm.tsx
 │   │   ├── DrawerContent.tsx
+│   │   ├── EducationCerts.tsx
 │   │   ├── NavigationItems.tsx
+│   │   ├── ProfessionalJourney.tsx
+│   │   ├── SkillList.tsx
+│   │   ├── SocialLinks.tsx
 │   │   ├── StyledComponents.tsx
 │   │   └── pages/
 │   │       ├── AboutPage.tsx
 │   │       ├── ContactPage.tsx
+│   │       ├── MarkdownTable.tsx
+│   │       ├── PersonalProjects.tsx
 │   │       ├── ProjectsPage.tsx
 │   │       ├── ToolsPage.tsx
+│   │       ├── WorkProjects.tsx
+│   │       ├── config.ts
 │   │       └── index.ts
+│   ├── data/
 │   ├── main.tsx
 │   └── vite-env.d.ts
 └── vite.config.ts
 ```
-
-## Getting Started
-
-1. Clone the repository
-2. Install dependencies with `npm install`
-3. Start the development server with `npm run dev`
