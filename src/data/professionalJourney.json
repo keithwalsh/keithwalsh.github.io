@@ -6,7 +6,7 @@
       "company": "Pitney Bowes",
       "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
       "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
-      "dateRange": "March 2024 – December 2024",
+      "dateRange": "March 2021 – December 2024",
       "location": "Dublin, Ireland",
       "details": [
         "Developed a rerate tool using Python and SQL to recalculate client invoices, integrating multiple pricing structures and data sources.",
