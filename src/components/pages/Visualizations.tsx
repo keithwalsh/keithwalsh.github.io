@@ -28,7 +28,7 @@ export const Visualizations: React.FC = () => {
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Temperature Visualizations
+          Temperature and Humidity Visualizations
         </Typography>
         
         {error && (
@@ -42,13 +42,27 @@ export const Visualizations: React.FC = () => {
             <LineChart
               sx={{
                 '& .MuiAreaElement-series-max': {
-                  fill: "#DEE5F8",
+                  fill: "#FFB399",
                 },
                 '& .MuiAreaElement-series-min': {
                   fill: theme => theme.palette.mode === 'light' ? '#ffffff' : '#121212',
                 },
+                '& .MuiChartsAxis-left .MuiChartsAxis-label': {
+                  fill: '#FF5733',
+                },
+                '& .MuiChartsAxis-right .MuiChartsAxis-label': {
+                  fill: '#1E90FF',
+                },
               }}
               series={[
+                {
+                  data: recentData.map(d => d.rel_humidity),
+                  id: 'humidity',
+                  label: 'Relative Humidity (%)',
+                  color: '#1E90FF',
+                  yAxisId: 'right',
+                  valueFormatter: (value) => `${value}%`,
+                },
                 {
                   data: recentData.map(d => d.max_temp),
                   id: 'max',
@@ -58,12 +72,14 @@ export const Visualizations: React.FC = () => {
                   area: true,
                   baseline: 'min',
                   valueFormatter: (value) => `${value}°C`,
+                  yAxisId: 'left',
                 },
                 {
                   data: recentData.map(d => d.mean_temp),
                   id: 'mean',
                   label: 'Mean Temperature (°C)',
-                  color: '#4269D0',
+                  color: '#FF5733',
+                  yAxisId: 'left',
                 },
                 {
                   data: recentData.map(d => d.min_temp),
@@ -74,26 +90,39 @@ export const Visualizations: React.FC = () => {
                   area: true,
                   baseline: 'min',
                   valueFormatter: (value) => `${value}°C`,
+                  yAxisId: 'left',
                 }
               ]}
               xAxis={[{
                 data: recentData.map(d => new Date(d.date).toLocaleDateString()),
                 scaleType: 'band',
               }]}
-              leftAxis={{
-                label: 'Temperature (°C)'
-              }}
+              yAxis={[
+                { 
+                  id: 'left',
+                  label: 'Temperature (°C)',
+                },
+                { 
+                  id: 'right',
+                  label: 'Relative Humidity (%)',
+                  min: 0,
+                  max: 100
+                }
+              ]}
+              rightAxis="right"
               height={300}
-              margin={{ left: 70, right: 30, top: 50, bottom: 50 }}
+              margin={{ left: 70, right: 70, top: 50, bottom: 50 }}
               slotProps={{
-                legend: { hidden: true },
+                legend: {
+                  hidden: true,
+                },
               }}
             />
           </Box>
         )}
         
         <Typography variant="body1" sx={{ mt: 4 }}>
-          This chart shows the temperature trends over the last 30 days, displaying maximum, minimum, and mean temperatures.
+          This chart shows temperature and humidity trends over the last 30 days. The left axis displays temperature (°C), while the right axis shows relative humidity (%).
         </Typography>
       </Box>
     </Container>
