@@ -40,29 +40,54 @@ export const Visualizations: React.FC = () => {
         {data.length > 0 && (
           <Box sx={{ width: '100%', height: 400, mt: 4 }}>
             <LineChart
+              sx={{
+                '& .MuiAreaElement-series-max': {
+                  fill: "#DEE5F8",
+                },
+                '& .MuiAreaElement-series-min': {
+                  fill: theme => theme.palette.mode === 'light' ? '#ffffff' : '#121212',
+                },
+              }}
               series={[
                 {
                   data: recentData.map(d => d.max_temp),
+                  id: 'max',
                   label: 'Max Temperature (°C)',
-                  color: '#e57373',
-                },
-                {
-                  data: recentData.map(d => d.min_temp),
-                  label: 'Min Temperature (°C)',
-                  color: '#64b5f6',
+                  showMark: false,
+                  color: 'transparent',
+                  area: true,
+                  baseline: 'min',
+                  valueFormatter: (value) => `${value}°C`,
                 },
                 {
                   data: recentData.map(d => d.mean_temp),
+                  id: 'mean',
                   label: 'Mean Temperature (°C)',
-                  color: '#81c784',
+                  color: '#4269D0',
+                },
+                {
+                  data: recentData.map(d => d.min_temp),
+                  id: 'min',
+                  label: 'Min Temperature (°C)',
+                  showMark: false,
+                  color: 'transparent',
+                  area: true,
+                  baseline: 'min',
+                  valueFormatter: (value) => `${value}°C`,
                 }
               ]}
               xAxis={[{
                 data: recentData.map(d => new Date(d.date).toLocaleDateString()),
                 scaleType: 'band',
               }]}
+              leftAxis={{
+                label: 'Temperature (°C)'
+              }}
               height={300}
               margin={{ left: 70, right: 30, top: 50, bottom: 50 }}
+              slotProps={{
+                legend: { hidden: true },
+              }}
             />
           </Box>
         )}
