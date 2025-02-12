@@ -9,3 +9,4 @@ export { ToolsPage } from "./ToolsPage";
 export { ProjectsPage } from "./ProjectsPage";
 export { default as PersonalProjects } from "./PersonalProjects";
 export { default as WorkProjects } from "./WorkProjects";
+export { Visualizations } from "./Visualizations";
