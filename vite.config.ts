@@ -9,7 +9,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  assetsInclude: ['**/*.csv'],
+  base: './',
   build: {
     outDir: 'dist',
     sourcemap: true

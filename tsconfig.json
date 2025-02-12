@@ -19,7 +19,10 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
 
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        
+        /* Custom Types */
+        "typeRoots": ["./node_modules/@types", "./src/types"]
     },
-    "include": ["src"]
+    "include": ["src", "src/types/custom.d.ts"]
 }
