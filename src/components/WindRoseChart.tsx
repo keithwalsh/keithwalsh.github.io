@@ -74,6 +74,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     const height = 385
     const margin = 20
     const radius = Math.min(width, height) / 2 - margin
+    const centerRadius = 10 // Radius for the white circle at center
 
     // Calculate total frequency for each direction to normalize
     const directionTotals = new Map<string, number>()
@@ -82,8 +83,36 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       directionTotals.set(d.direction, current + d.frequency)
     })
 
+    // Calculate total hours for percentage calculation
+    const totalHours = Array.from(directionTotals.values()).reduce(
+      (sum, val) => sum + val,
+      0
+    )
+
     // Find the maximum total frequency across all directions
     const maxTotalFrequency = Math.max(...Array.from(directionTotals.values()))
+
+    // Calculate max percentage and determine number of circles needed
+    const maxPercentage = Math.ceil((maxTotalFrequency * 100) / totalHours)
+    const roundedMaxPercentage = Math.ceil(maxPercentage / 2) * 2 // Round up to nearest 2%
+    const numberOfCircles = Math.min(
+      4,
+      Math.max(3, Math.ceil(roundedMaxPercentage / 2))
+    ) // Force 3 or 4 circles
+    const percentagePerCircle =
+      Math.ceil(roundedMaxPercentage / numberOfCircles / 2) * 2 // Ensure even numbers
+    const maxScaleValue = maxTotalFrequency // Use actual maximum frequency
+
+    // Debug log
+    console.log('Scaling values:', {
+      maxPercentage,
+      roundedMaxPercentage,
+      numberOfCircles,
+      percentagePerCircle,
+      maxScaleValue,
+      maxTotalFrequency,
+      totalHours,
+    })
 
     const svg = d3
       .select(svgRef.current)
@@ -94,13 +123,26 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       .append('g')
       .attr('transform', `translate(${width / 2},${height / 2})`)
 
-    // Add background circle
-    svg
-      .append('circle')
-      .attr('r', radius)
-      .attr('fill', 'none')
-      .attr('stroke', '#eee')
-      .attr('stroke-width', '1px')
+    // Adjust radiusScale to account for center circle
+    const radiusScale = d3
+      .scaleLinear()
+      .domain([0, maxScaleValue])
+      .range([centerRadius, radius])
+
+    // Add concentric circles for reference
+    for (let i = 1; i <= numberOfCircles; i++) {
+      const currentRadius =
+        ((radius - centerRadius) * i) / numberOfCircles + centerRadius
+
+      // Draw circle
+      svg
+        .append('circle')
+        .attr('r', currentRadius)
+        .attr('fill', 'none')
+        .attr('stroke', i === numberOfCircles ? '#BABABA' : '#E3E8F2')
+        .attr('stroke-width', i === numberOfCircles ? '1px' : '1px')
+        .attr('stroke-dasharray', 'none')
+    }
 
     // Group data by direction
     const directionGroups = d3.group(data, d => d.direction)
@@ -111,18 +153,28 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       .domain([0, 360])
       .range([0, 2 * Math.PI])
 
-    // Adjust radiusScale to account for total frequencies
-    const radiusScale = d3
-      .scaleLinear()
-      .domain([0, maxTotalFrequency])
-      .range([0, radius])
-
     const colorScale = d3
       .scaleSequential()
       .domain([0, 25])
       .interpolator(d3.interpolateViridis)
 
     const barWidth = (2 * Math.PI) / 16 // 16 directions
+
+    // Add direction lines BEFORE creating the stacked bars
+    const directions = Array.from(directionGroups.keys())
+    directions.forEach(direction => {
+      const angle = angleScale(getDirectionDegrees(direction))
+
+      // Add the radial line
+      svg
+        .append('line')
+        .attr('x1', 0)
+        .attr('y1', 0)
+        .attr('x2', radius * Math.sin(angle))
+        .attr('y2', -radius * Math.cos(angle))
+        .attr('stroke', '#BABABA')
+        .attr('stroke-width', '1px')
+    })
 
     // Create stacked bars for each direction
     directionGroups.forEach((speedBins, direction) => {
@@ -149,8 +201,6 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
             })
           )
           .attr('fill', colorScale(bin.speed))
-          .attr('stroke', 'white')
-          .attr('stroke-width', '1px')
           .on('mouseover', event => {
             const tooltipContent = getTooltipContent(direction, speedBins)
             setTooltip({
@@ -174,8 +224,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       })
     })
 
-    // Direction labels remain centered on the lines
-    const directions = Array.from(directionGroups.keys())
+    // Direction labels
     directions.forEach(direction => {
       const angle = angleScale(getDirectionDegrees(direction))
       const labelRadius = radius + 15
@@ -191,6 +240,31 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .attr('font-size', '12px')
         .text(direction)
     })
+
+    // Add percentage labels last so they appear on top
+    for (let i = 1; i <= numberOfCircles; i++) {
+      const currentRadius =
+        ((radius - centerRadius) * i) / numberOfCircles + centerRadius
+      const currentValue = (maxTotalFrequency * i) / numberOfCircles
+      const percentage = Math.round((currentValue * 100) / totalHours)
+      svg
+        .append('text')
+        .attr('x', 0)
+        .attr('y', -currentRadius)
+        .attr('dy', '1em')
+        .attr('text-anchor', 'start')
+        .attr('font-size', '10px')
+        .attr('fill', 'rgba(0, 0, 0, 0.87)')
+        .text(`${percentage}%`)
+    }
+
+    // Add white circle at center
+    svg
+      .append('circle')
+      .attr('r', centerRadius)
+      .attr('fill', 'white')
+      .attr('stroke', '#E3E8F2')
+      .attr('stroke-width', '1px')
   }, [data])
 
   function getDirectionDegrees(direction: string): number {
