@@ -1,10 +1,5 @@
-/**
- * @fileoverview Circular histogram visualization showing wind direction and speed
- * frequency distribution using D3.js.
- */
-
-import { useEffect, useRef } from 'react'
-import { Box, Paper, Typography } from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
+import { Box, Paper, Typography, Popper } from '@mui/material'
 import * as d3 from 'd3'
 import { WindRoseData } from '../utils/csvLoader'
 
@@ -12,8 +7,21 @@ interface WindRoseChartProps {
   data: WindRoseData[]
 }
 
+interface TooltipState {
+  open: boolean
+  x: number
+  y: number
+  content: Array<{ text: string; color?: string }>
+}
+
 export function WindRoseChart({ data }: WindRoseChartProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  const [tooltip, setTooltip] = useState<TooltipState>({
+    open: false,
+    x: 0,
+    y: 0,
+    content: [],
+  })
 
   const speedRanges = [
     { range: '0-5', label: '0-5 km/h' },
@@ -24,6 +32,33 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     { range: '25-30', label: '25-30 km/h' },
     { range: '>=30', label: '>30 km/h' },
   ]
+
+  function getTooltipContent(
+    direction: string,
+    bins: WindRoseData[]
+  ): Array<{ text: string; color?: string }> {
+    const lines = []
+    // Direction header
+    lines.push({ text: direction })
+
+    speedRanges.forEach(range => {
+      let freq = 0
+      if (range.range === '>=30') {
+        bins.filter(b => b.speed >= 30).forEach(b => (freq += b.frequency))
+      } else {
+        const lower = parseFloat(range.range.split('-')[0])
+        bins.filter(b => b.speed === lower).forEach(b => (freq += b.frequency))
+      }
+      const color = d3.interpolateViridis(
+        range.range === '>=30' ? 1 : parseInt(range.range.split('-')[1]) / 30
+      )
+      lines.push({
+        text: `${range.label}: ${Math.round(freq).toLocaleString()} hrs.`,
+        color,
+      })
+    })
+    return lines
+  }
 
   useEffect(() => {
     if (!data || data.length === 0) return
@@ -37,7 +72,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     // Adjust dimensions
     const width = 385
     const height = 385
-    const margin = 60
+    const margin = 20
     const radius = Math.min(width, height) / 2 - margin
 
     // Calculate total frequency for each direction to normalize
@@ -116,7 +151,25 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
           .attr('fill', colorScale(bin.speed))
           .attr('stroke', 'white')
           .attr('stroke-width', '1px')
-
+          .on('mouseover', event => {
+            const tooltipContent = getTooltipContent(direction, speedBins)
+            setTooltip({
+              open: true,
+              x: event.clientX,
+              y: event.clientY,
+              content: tooltipContent,
+            })
+          })
+          .on('mousemove', event => {
+            setTooltip(prev => ({
+              ...prev,
+              x: event.clientX,
+              y: event.clientY,
+            }))
+          })
+          .on('mouseout', () => {
+            setTooltip(prev => ({ ...prev, open: false }))
+          })
         cumFrequency += bin.frequency
       })
     })
@@ -162,6 +215,20 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     return directionMap[direction] || 0
   }
 
+  const virtualElement = {
+    getBoundingClientRect: () => ({
+      x: tooltip.x,
+      y: tooltip.y,
+      top: tooltip.y,
+      left: tooltip.x,
+      bottom: tooltip.y,
+      right: tooltip.x,
+      width: 0,
+      height: 0,
+      toJSON: () => '',
+    }),
+  }
+
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
@@ -173,6 +240,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
           flexDirection: { xs: 'column', lg: 'row' },
           alignItems: { xs: 'center', lg: 'flex-start' },
           gap: 2,
+          height: '100%',
         }}
       >
         <svg
@@ -188,12 +256,13 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         {/* Legend */}
         <Box
           sx={{
-            mt: 4,
             display: 'flex',
             flexDirection: { xs: 'row', lg: 'column' },
-            gap: 1,
+            gap: 0.5,
             flexWrap: 'wrap',
             justifyContent: 'center',
+            alignSelf: 'center',
+            mt: { xs: 2, lg: 0 },
           }}
         >
           {speedRanges.map(item => (
@@ -202,13 +271,13 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1,
+                gap: 0.5,
               }}
             >
               <Box
                 sx={{
-                  width: 20,
-                  height: 20,
+                  width: 16,
+                  height: 16,
                   backgroundColor: d3.interpolateViridis(
                     item.range === '>=30'
                       ? 1
@@ -217,11 +286,53 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                   border: '1px solid white',
                 }}
               />
-              <Typography variant="body2">{item.label}</Typography>
+              <Typography variant="caption">{item.label}</Typography>
             </Box>
           ))}
         </Box>
       </Box>
+      <Popper
+        open={tooltip.open}
+        anchorEl={virtualElement}
+        placement="top"
+        style={{ pointerEvents: 'none' }}
+      >
+        <Paper
+          sx={{
+            p: 1.5,
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            boxShadow: '0px 2px 6px rgba(0,0,0,0.15)',
+          }}
+        >
+          {tooltip.content.map((line, index) => (
+            <Box
+              key={index}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                fontSize: '0.875rem',
+                lineHeight: '1.4',
+                color: 'text.primary',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {line.color && (
+                <Box
+                  sx={{
+                    width: 12,
+                    height: 12,
+                    backgroundColor: line.color,
+                    borderRadius: '50%',
+                    border: '1px solid white',
+                  }}
+                />
+              )}
+              <Typography variant="body2">{line.text}</Typography>
+            </Box>
+          ))}
+        </Paper>
+      </Popper>
     </Paper>
   )
 }
