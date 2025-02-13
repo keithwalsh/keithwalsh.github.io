@@ -105,36 +105,63 @@ export async function loadRainData(): Promise<RainData[]> {
 
 export async function loadWindRoseData(): Promise<WindRoseData[]> {
   try {
-    const data = await d3.csv('/src/data/wind_rose.csv');
+    const data = await d3.csv('/src/data/wind_rose.csv')
+    
+    // Define speed ranges
+    const speedRanges = [0, 5, 10, 15, 20, 25]
     
     // Create a map to store direction and speed bin combinations
-    const windRoseMap = new Map<string, { count: number, totalSpeed: number }>();
+    const windRoseMap = new Map<string, Map<number, number>>()
     
-    // Count occurrences of each direction-speed combination
+    // Count occurrences for each direction and speed range
     data.forEach(row => {
-      const key = row.direction_bin;
-      if (!windRoseMap.has(key)) {
-        windRoseMap.set(key, { count: 0, totalSpeed: 0 });
+      const direction = row.direction_bin
+      const speed = Number(row.mean_wind_speed_kph)
+      
+      if (!direction || isNaN(speed)) return // Skip invalid data
+      
+      if (!windRoseMap.has(direction)) {
+        windRoseMap.set(direction, new Map())
       }
-      const entry = windRoseMap.get(key)!;
-      entry.count += 1;
-      entry.totalSpeed += Number(row.mean_wind_speed_kph);
-    });
+      
+      // Find the appropriate speed bin
+      let speedBin = speedRanges.length - 1 // Default to highest bin
+      for (let i = 0; i < speedRanges.length - 1; i++) {
+        if (speed >= speedRanges[i] && speed < speedRanges[i + 1]) {
+          speedBin = i
+          break
+        }
+      }
+      
+      const speedCounts = windRoseMap.get(direction)!
+      const currentCount = speedCounts.get(speedBin) || 0
+      speedCounts.set(speedBin, currentCount + 1)
+    })
 
     // Calculate total records for frequency calculation
-    const totalRecords = data.length;
+    const totalRecords = data.length
 
     // Convert to WindRoseData format
-    const windRoseData = Array.from(windRoseMap.entries()).map(([direction, stats]) => ({
-      direction,
-      speed: stats.totalSpeed / stats.count, // average speed for this direction
-      frequency: (stats.count / totalRecords) * 100 // convert to percentage
-    }));
+    const windRoseData: WindRoseData[] = []
+    
+    windRoseMap.forEach((speedCounts, direction) => {
+      for (let i = 0; i < speedRanges.length - 1; i++) {
+        const count = speedCounts.get(i) || 0
+        windRoseData.push({
+          direction,
+          speed: speedRanges[i], // Lower bound of the range
+          frequency: (count / totalRecords) * 100
+        })
+      }
+    })
 
-    return windRoseData;
+    // Debug log
+    console.log('Wind Rose Data:', windRoseData)
+
+    return windRoseData
 
   } catch (error) {
-    console.error('Error loading wind rose data:', error);
-    return [];
+    console.error('Error loading wind rose data:', error)
+    return []
   }
 }
