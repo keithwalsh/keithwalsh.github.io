@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Box, Paper, Typography, Popper } from '@mui/material'
 import * as d3 from 'd3'
 import { WindRoseData } from '../utils/csvLoader'
+import { useTheme } from '@mui/material/styles'
 
 interface WindRoseChartProps {
   data: WindRoseData[]
@@ -22,6 +23,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     y: 0,
     content: [],
   })
+  const theme = useTheme()
 
   const speedRanges = [
     { range: '0-5', label: '0-5 km/h' },
@@ -32,6 +34,17 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     { range: '25-30', label: '25-30 km/h' },
     { range: '>=30', label: '>30 km/h' },
   ]
+
+  // Move colorScale outside useEffect
+  const colorScale = (speed: number) => {
+    if (speed >= 30) return '#1a237e' // indigo[900]
+    if (speed >= 25) return '#303f9f' // indigo[700]
+    if (speed >= 20) return '#3f51b5' // indigo[500]
+    if (speed >= 15) return '#5c6bc0' // indigo[400]
+    if (speed >= 10) return '#7986cb' // indigo[300]
+    if (speed >= 5) return '#9fa8da' // indigo[200]
+    return '#c5cae9' // indigo[100]
+  }
 
   function getTooltipContent(
     direction: string,
@@ -153,11 +166,6 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       .domain([0, 360])
       .range([0, 2 * Math.PI])
 
-    const colorScale = d3
-      .scaleSequential()
-      .domain([0, 25])
-      .interpolator(d3.interpolateViridis)
-
     const barWidth = (2 * Math.PI) / 16 // 16 directions
 
     // Add direction lines BEFORE creating the stacked bars
@@ -176,20 +184,26 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .attr('stroke-width', '1px')
     })
 
+    // Create a container for all outlines that will be added last
+    // const outlinesContainer = svg.append('g').attr('class', 'outlines-container')
+
     // Create stacked bars for each direction
     directionGroups.forEach((speedBins, direction) => {
-      let cumFrequency = 0
+      // Create a group for all segments of this direction
+      const directionGroup = svg
+        .append('g')
+        .attr('class', `direction-group-${direction}`)
 
-      // Sort speed bins by speed value
+      let cumFrequency = 0
       const sortedBins = speedBins.sort((a, b) => a.speed - b.speed)
 
       sortedBins.forEach(bin => {
         if (bin.frequency === 0) return
 
         const directionDegrees = getDirectionDegrees(direction)
-        const startAngle = angleScale(directionDegrees) - barWidth / 2 // Offset by half width
+        const startAngle = angleScale(directionDegrees) - barWidth / 2
 
-        svg
+        directionGroup
           .append('path')
           .attr(
             'd',
@@ -201,27 +215,38 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
             })
           )
           .attr('fill', colorScale(bin.speed))
-          .on('mouseover', event => {
-            const tooltipContent = getTooltipContent(direction, speedBins)
-            setTooltip({
-              open: true,
-              x: event.clientX,
-              y: event.clientY,
-              content: tooltipContent,
-            })
-          })
-          .on('mousemove', event => {
-            setTooltip(prev => ({
-              ...prev,
-              x: event.clientX,
-              y: event.clientY,
-            }))
-          })
-          .on('mouseout', () => {
-            setTooltip(prev => ({ ...prev, open: false }))
-          })
+          .style('opacity', 0.8)
+
         cumFrequency += bin.frequency
       })
+
+      // Add hover effects to the direction group
+      directionGroup
+        .on('mouseover', event => {
+          // Show outline
+          svg.select(`.direction-outline-${direction}`).style('opacity', 1)
+
+          const tooltipContent = getTooltipContent(direction, speedBins)
+          setTooltip({
+            open: true,
+            x: event.clientX,
+            y: event.clientY,
+            content: tooltipContent,
+          })
+        })
+        .on('mousemove', event => {
+          setTooltip(prev => ({
+            ...prev,
+            x: event.clientX,
+            y: event.clientY,
+          }))
+        })
+        .on('mouseout', () => {
+          // Hide outline
+          svg.select(`.direction-outline-${direction}`).style('opacity', 0)
+
+          setTooltip(prev => ({ ...prev, open: false }))
+        })
     })
 
     // Direction labels
@@ -238,6 +263,10 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'middle')
         .attr('font-size', '12px')
+        .attr(
+          'fill',
+          theme.palette.mode === 'dark' ? '#fff' : 'rgba(0, 0, 0, 0.87)'
+        )
         .text(direction)
     })
 
@@ -249,23 +278,69 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       const percentage = Math.round((currentValue * 100) / totalHours)
       svg
         .append('text')
-        .attr('x', 0)
+        .attr('x', 3)
         .attr('y', -currentRadius)
         .attr('dy', '1em')
         .attr('text-anchor', 'start')
         .attr('font-size', '10px')
-        .attr('fill', 'rgba(0, 0, 0, 0.87)')
+        .attr(
+          'fill',
+          theme.palette.mode === 'dark' ? '#fff' : 'rgba(0, 0, 0, 0.87)'
+        )
         .text(`${percentage}%`)
     }
+
+    // Add "Frequency (%)" label vertically
+    svg
+      .append('text')
+      .attr('x', -7)
+      .attr('y', -radius / 1.5) // Position halfway up the north line
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr(
+        'fill',
+        theme.palette.mode === 'dark' ? '#fff' : 'rgba(0, 0, 0, 0.87)'
+      )
+      .text('Frequency (%)')
+      .attr('transform', `rotate(-90, -7, -${radius / 1.5})`) // Updated rotation point to match new x position
 
     // Add white circle at center
     svg
       .append('circle')
       .attr('r', centerRadius)
-      .attr('fill', 'white')
+      .attr('fill', theme.palette.mode === 'dark' ? '#262626' : 'white')
       .attr('stroke', '#E3E8F2')
       .attr('stroke-width', '1px')
-  }, [data])
+
+    // Create outlines LAST - after ALL other elements
+    const outlinesGroup = svg.append('g').attr('class', 'outlines-group')
+
+    // Add outlines for each direction
+    directionGroups.forEach((speedBins, direction) => {
+      const directionDegrees = getDirectionDegrees(direction)
+      const startAngle = angleScale(directionDegrees) - barWidth / 2
+
+      outlinesGroup
+        .append('path')
+        .attr('class', `direction-outline-${direction}`)
+        .attr(
+          'd',
+          d3.arc()({
+            innerRadius: centerRadius,
+            outerRadius: radiusScale(
+              speedBins.reduce((sum, bin) => sum + bin.frequency, 0)
+            ),
+            startAngle: startAngle,
+            endAngle: startAngle + barWidth,
+          })
+        )
+        .attr('fill', 'none')
+        .attr('stroke', theme.palette.mode === 'dark' ? '#fff' : '#000')
+        .attr('stroke-width', 2)
+        .style('opacity', 0)
+        .style('pointer-events', 'none')
+    })
+  }, [data, theme.palette.mode])
 
   function getDirectionDegrees(direction: string): number {
     const directionMap: { [key: string]: number } = {
@@ -352,10 +427,10 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                 sx={{
                   width: 16,
                   height: 16,
-                  backgroundColor: d3.interpolateViridis(
+                  backgroundColor: colorScale(
                     item.range === '>=30'
-                      ? 1
-                      : parseInt(item.range.split('-')[1]) / 30
+                      ? 30
+                      : parseInt(item.range.split('-')[0])
                   ),
                   border: '1px solid white',
                 }}
@@ -375,8 +450,9 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
           sx={{
             boxShadow:
               '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
-            backgroundColor: '#fff',
-            color: 'rgba(0, 0, 0, 0.87)',
+            backgroundColor: theme.palette.mode === 'dark' ? '#121212' : '#fff',
+            color:
+              theme.palette.mode === 'dark' ? '#fff' : 'rgba(0, 0, 0, 0.87)',
             borderRadius: '4px',
             mx: 2,
           }}
@@ -391,7 +467,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
             <thead>
               <tr
                 style={{
-                  borderBottom: '1px solid #E0E0E0',
+                  borderBottom: `1px solid ${theme.palette.mode === 'dark' ? '#2F2F2F' : '#E0E0E0'}`,
                   width: '100%',
                 }}
               >
@@ -399,7 +475,10 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                   colSpan={3}
                   style={{
                     padding: '8px 16px',
-                    color: 'rgba(0, 0, 0, 0.6)',
+                    color:
+                      theme.palette.mode === 'dark'
+                        ? '#B0B0B0'
+                        : 'rgba(0, 0, 0, 0.6)',
                   }}
                 >
                   <Typography>{tooltip.content[0]?.text}</Typography>
@@ -418,7 +497,10 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                       paddingLeft: '16px',
                       paddingTop: '4px',
                       paddingBottom: '4px',
-                      color: 'rgba(0, 0, 0, 0.6)',
+                      color:
+                        theme.palette.mode === 'dark'
+                          ? '#B0B0B0'
+                          : 'rgba(0, 0, 0, 0.6)',
                     }}
                   >
                     <div
@@ -427,7 +509,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                         height: 8,
                         borderRadius: '50%',
                         backgroundColor: line.color,
-                        border: '2px solid #fff',
+                        border: `2px solid ${theme.palette.mode === 'dark' ? '#121212' : '#fff'}`,
                         boxShadow:
                           '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
                         boxSizing: 'content-box',
@@ -440,7 +522,10 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                       paddingLeft: '8px',
                       paddingTop: '2px',
                       paddingBottom: '2px',
-                      color: 'rgba(0, 0, 0, 0.6)',
+                      color:
+                        theme.palette.mode === 'dark'
+                          ? '#B0B0B0'
+                          : 'rgba(0, 0, 0, 0.6)',
                     }}
                   >
                     <Typography sx={{ fontSize: '0.875rem', lineHeight: 1.2 }}>
@@ -454,7 +539,10 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                       paddingRight: '16px',
                       paddingTop: '2px',
                       paddingBottom: '2px',
-                      color: 'rgba(0, 0, 0, 0.87)',
+                      color:
+                        theme.palette.mode === 'dark'
+                          ? '#FFFFFF'
+                          : 'rgba(0, 0, 0, 0.87)',
                     }}
                   >
                     <Typography sx={{ fontSize: '0.875rem', lineHeight: 1.2 }}>
