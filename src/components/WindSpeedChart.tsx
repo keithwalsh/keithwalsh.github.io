@@ -28,13 +28,27 @@ export function WindSpeedChart({ data }: WindSpeedChartProps) {
                 '& .MuiAreaElement-series-min': {
                   fill: theme => theme.palette.mode === 'light' ? '#ffffff' : '#252525',
                 },
+                '& .MuiLineElement-series-ten-min': {
+                  strokeDasharray: '5 5',
+                },
+                '& .MuiLineElement-series-gust': {
+                    strokeDasharray: '1 3',
+                },
               }}
             series={[
               {
+                data: data.map(d => d.highest_gust_speed_kph),
+                id: 'gust',
+                label: 'Max. Gust',
+                color: '#9e9e9e',
+                valueFormatter: (value) => `${value} km/h`,
+                showMark: false,
+              },
+              {
                 data: data.map(d => d.high_ten_min_mean_wind_speed_kph),
                 id: 'ten-min',
-                label: 'Max. 10-min Mean (km/h)',
-                color: '#9e9e9e',
+                label: 'Max. 10-min Mean',
+                color: '#009688',
                 valueFormatter: (value) => `${value} km/h`,
                 showMark: false,
               },

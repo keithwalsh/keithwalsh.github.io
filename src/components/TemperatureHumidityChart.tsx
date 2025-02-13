@@ -3,9 +3,10 @@
  * using MUI X-Charts LineChart with dual axes.
  */
 
-import { Box, Typography, Paper } from '@mui/material'
+import { Box, Typography, Paper, Stack } from '@mui/material'
 import { LineChart } from '@mui/x-charts'
 import { TemperatureData } from '../utils/csvLoader'
+import ThermostatIcon from '@mui/icons-material/Thermostat'
 
 interface TemperatureHumidityChartProps {
   data: TemperatureData[]
@@ -14,15 +15,19 @@ interface TemperatureHumidityChartProps {
 export function TemperatureHumidityChart({ data }: TemperatureHumidityChartProps) {
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
-        Temperature and Humidity Trends
-      </Typography>
+      <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+        <ThermostatIcon/>
+        <Typography variant="h6">
+          Temperature and Humidity
+        </Typography>
+      </Stack>
       {data.length > 0 && (
         <Box sx={{ width: '100%', height: 300 }}>
           <LineChart
             sx={{
               '& .MuiAreaElement-series-max': {
-                fill: "#ffb199",
+                fill: "#ff5722",
+                fillOpacity: 0.3,
               },
               '& .MuiAreaElement-series-min': {
                 fill: theme => theme.palette.mode === 'light' ? '#ffffff' : '#252525',
