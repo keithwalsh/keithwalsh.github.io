@@ -22,7 +22,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     { range: '15-20', label: '15-20 km/h' },
     { range: '20-25', label: '20-25 km/h' },
     { range: '25-30', label: '25-30 km/h' },
-    { range: '>=30', label: '>30 km/h' }
+    { range: '>=30', label: '>30 km/h' },
   ]
 
   useEffect(() => {
@@ -50,7 +50,8 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     // Find the maximum total frequency across all directions
     const maxTotalFrequency = Math.max(...Array.from(directionTotals.values()))
 
-    const svg = d3.select(svgRef.current)
+    const svg = d3
+      .select(svgRef.current)
       .attr('width', width)
       .attr('height', height)
       .attr('viewBox', `0 0 ${width} ${height}`)
@@ -59,7 +60,8 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       .attr('transform', `translate(${width / 2},${height / 2})`)
 
     // Add background circle
-    svg.append('circle')
+    svg
+      .append('circle')
       .attr('r', radius)
       .attr('fill', 'none')
       .attr('stroke', '#eee')
@@ -67,43 +69,50 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
 
     // Group data by direction
     const directionGroups = d3.group(data, d => d.direction)
-    
+
     // Scales
-    const angleScale = d3.scaleLinear()
+    const angleScale = d3
+      .scaleLinear()
       .domain([0, 360])
       .range([0, 2 * Math.PI])
 
     // Adjust radiusScale to account for total frequencies
-    const radiusScale = d3.scaleLinear()
+    const radiusScale = d3
+      .scaleLinear()
       .domain([0, maxTotalFrequency])
       .range([0, radius])
 
-    const colorScale = d3.scaleSequential()
+    const colorScale = d3
+      .scaleSequential()
       .domain([0, 25])
       .interpolator(d3.interpolateViridis)
 
     const barWidth = (2 * Math.PI) / 16 // 16 directions
-    
+
     // Create stacked bars for each direction
     directionGroups.forEach((speedBins, direction) => {
       let cumFrequency = 0
-      
+
       // Sort speed bins by speed value
       const sortedBins = speedBins.sort((a, b) => a.speed - b.speed)
-      
+
       sortedBins.forEach(bin => {
         if (bin.frequency === 0) return
 
         const directionDegrees = getDirectionDegrees(direction)
         const startAngle = angleScale(directionDegrees) - barWidth / 2 // Offset by half width
-        
-        svg.append('path')
-          .attr('d', d3.arc()({
-            innerRadius: radiusScale(cumFrequency),
-            outerRadius: radiusScale(cumFrequency + bin.frequency),
-            startAngle: startAngle,
-            endAngle: startAngle + barWidth
-          }))
+
+        svg
+          .append('path')
+          .attr(
+            'd',
+            d3.arc()({
+              innerRadius: radiusScale(cumFrequency),
+              outerRadius: radiusScale(cumFrequency + bin.frequency),
+              startAngle: startAngle,
+              endAngle: startAngle + barWidth,
+            })
+          )
           .attr('fill', colorScale(bin.speed))
           .attr('stroke', 'white')
           .attr('stroke-width', '1px')
@@ -119,8 +128,9 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       const labelRadius = radius + 15
       const x = labelRadius * Math.sin(angle)
       const y = -labelRadius * Math.cos(angle)
-      
-      svg.append('text')
+
+      svg
+        .append('text')
         .attr('x', x)
         .attr('y', y)
         .attr('text-anchor', 'middle')
@@ -128,15 +138,26 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .attr('font-size', '12px')
         .text(direction)
     })
-
   }, [data])
 
   function getDirectionDegrees(direction: string): number {
     const directionMap: { [key: string]: number } = {
-      'N': 0, 'NNE': 22.5, 'NE': 45, 'ENE': 67.5,
-      'E': 90, 'ESE': 112.5, 'SE': 135, 'SSE': 157.5,
-      'S': 180, 'SSW': 202.5, 'SW': 225, 'WSW': 247.5,
-      'W': 270, 'WNW': 292.5, 'NW': 315, 'NNW': 337.5
+      N: 0,
+      NNE: 22.5,
+      NE: 45,
+      ENE: 67.5,
+      E: 90,
+      ESE: 112.5,
+      SE: 135,
+      SSE: 157.5,
+      S: 180,
+      SSW: 202.5,
+      SW: 225,
+      WSW: 247.5,
+      W: 270,
+      WNW: 292.5,
+      NW: 315,
+      NNW: 337.5,
     }
     return directionMap[direction] || 0
   }
@@ -146,37 +167,42 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       <Typography variant="h6" gutterBottom>
         Wind Rose
       </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+          alignItems: { xs: 'center', lg: 'flex-start' },
+          gap: 2,
+        }}
+      >
+        <svg
+          ref={svgRef}
+          style={{
+            display: 'block',
+            margin: '0 auto',
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
+
+        {/* Legend */}
         <Box
-          sx={{ 
-            p: 0,
+          sx={{
+            mt: 4,
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            minHeight: 385,
-            maxWidth: 385,
-            marginTop: -6,
-            marginBottom: -4.7,
+            flexDirection: { xs: 'row', lg: 'column' },
+            gap: 1,
+            flexWrap: 'wrap',
+            justifyContent: 'center',
           }}
         >
-          <svg ref={svgRef} style={{ maxWidth: '100%', height: 'auto'}} />
-        </Box>
-        
-        {/* Legend */}
-        <Box sx={{ 
-          minWidth: 120,
-          mt: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1 
-        }}>
-          {speedRanges.map((item) => (
-            <Box 
+          {speedRanges.map(item => (
+            <Box
               key={item.range}
-              sx={{ 
+              sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1 
+                gap: 1,
               }}
             >
               <Box
@@ -184,18 +210,18 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                   width: 20,
                   height: 20,
                   backgroundColor: d3.interpolateViridis(
-                    item.range === '>=30' ? 1 : parseInt(item.range.split('-')[1]) / 30
+                    item.range === '>=30'
+                      ? 1
+                      : parseInt(item.range.split('-')[1]) / 30
                   ),
-                  border: '1px solid white'
+                  border: '1px solid white',
                 }}
               />
-              <Typography variant="body2">
-                {item.label}
-              </Typography>
+              <Typography variant="body2">{item.label}</Typography>
             </Box>
           ))}
         </Box>
       </Box>
     </Paper>
   )
-} 
+}

@@ -1,27 +1,39 @@
-#folders
+# Build and Distribution
 build/
 dist/
 dist-ssr/
-logs/
-node_modules/
 storybook-static/
-test/
 
-# files
+# Dependencies
+node_modules/
+
+# Development
+logs/
+test/
+*/stories/
+*.py
+.env
+.versionrc
+CV.md
+colors.md
+
+# IDE and Editor
 .vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# System Files
+.DS_Store
 *.log*
 .treeignore
-*/stories/
 .*rules*
-*.py
-.versionrc
-.env
-CV.md
-colors.md
+
+# Cache and Temporary
+.eslintcache
+.prettier-cache
