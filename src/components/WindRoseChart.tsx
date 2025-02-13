@@ -15,6 +15,16 @@ interface WindRoseChartProps {
 export function WindRoseChart({ data }: WindRoseChartProps) {
   const svgRef = useRef<SVGSVGElement>(null)
 
+  const speedRanges = [
+    { range: '0-5', label: '0-5 km/h' },
+    { range: '5-10', label: '5-10 km/h' },
+    { range: '10-15', label: '10-15 km/h' },
+    { range: '15-20', label: '15-20 km/h' },
+    { range: '20-25', label: '20-25 km/h' },
+    { range: '25-30', label: '25-30 km/h' },
+    { range: '>=30', label: '>30 km/h' }
+  ]
+
   useEffect(() => {
     if (!data || data.length === 0) return
 
@@ -136,21 +146,55 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       <Typography variant="h6" gutterBottom>
         Wind Rose
       </Typography>
-      <Box
-            sx={{ 
-              p: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              minHeight: 385,
-              maxWidth: 385,
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              marginTop: -6,
-              marginBottom: -4.7,
-            }}
-      >
-        <svg ref={svgRef} style={{ maxWidth: '100%', height: 'auto'}} />
+      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+        <Box
+          sx={{ 
+            p: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            minHeight: 385,
+            maxWidth: 385,
+            marginTop: -6,
+            marginBottom: -4.7,
+          }}
+        >
+          <svg ref={svgRef} style={{ maxWidth: '100%', height: 'auto'}} />
+        </Box>
+        
+        {/* Legend */}
+        <Box sx={{ 
+          minWidth: 120,
+          mt: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1 
+        }}>
+          {speedRanges.map((item) => (
+            <Box 
+              key={item.range}
+              sx={{ 
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1 
+              }}
+            >
+              <Box
+                sx={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: d3.interpolateViridis(
+                    item.range === '>=30' ? 1 : parseInt(item.range.split('-')[1]) / 30
+                  ),
+                  border: '1px solid white'
+                }}
+              />
+              <Typography variant="body2">
+                {item.label}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
       </Box>
     </Paper>
   )
