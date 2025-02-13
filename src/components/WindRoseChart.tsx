@@ -299,38 +299,101 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       >
         <Paper
           sx={{
-            p: 1.5,
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
-            boxShadow: '0px 2px 6px rgba(0,0,0,0.15)',
+            boxShadow:
+              '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+            backgroundColor: '#fff',
+            color: 'rgba(0, 0, 0, 0.87)',
+            borderRadius: '4px',
+            mx: 2,
           }}
         >
-          {tooltip.content.map((line, index) => (
-            <Box
-              key={index}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                fontSize: '0.875rem',
-                lineHeight: '1.4',
-                color: 'text.primary',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {line.color && (
-                <Box
-                  sx={{
-                    width: 12,
-                    height: 12,
-                    backgroundColor: line.color,
-                    borderRadius: '50%',
-                    border: '1px solid white',
+          <table
+            style={{
+              borderSpacing: 0,
+              fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+              borderCollapse: 'collapse',
+            }}
+          >
+            <thead>
+              <tr
+                style={{
+                  borderBottom: '1px solid #E0E0E0',
+                  width: '100%',
+                }}
+              >
+                <td
+                  colSpan={3}
+                  style={{
+                    padding: '8px 16px',
+                    color: 'rgba(0, 0, 0, 0.6)',
                   }}
-                />
-              )}
-              <Typography variant="body2">{line.text}</Typography>
-            </Box>
-          ))}
+                >
+                  <Typography>{tooltip.content[0]?.text}</Typography>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ height: '8px' }}>
+                <td colSpan={3}></td>
+              </tr>
+              {tooltip.content.slice(1).map((line, index) => (
+                <tr key={index}>
+                  <td
+                    style={{
+                      verticalAlign: 'middle',
+                      paddingLeft: '16px',
+                      paddingTop: '4px',
+                      paddingBottom: '4px',
+                      color: 'rgba(0, 0, 0, 0.6)',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        backgroundColor: line.color,
+                        border: '2px solid #fff',
+                        boxShadow:
+                          '0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12)',
+                        boxSizing: 'content-box',
+                      }}
+                    />
+                  </td>
+                  <td
+                    style={{
+                      verticalAlign: 'middle',
+                      paddingLeft: '8px',
+                      paddingTop: '2px',
+                      paddingBottom: '2px',
+                      color: 'rgba(0, 0, 0, 0.6)',
+                    }}
+                  >
+                    <Typography sx={{ fontSize: '0.875rem', lineHeight: 1.2 }}>
+                      {line.text.split(':')[0]}
+                    </Typography>
+                  </td>
+                  <td
+                    style={{
+                      verticalAlign: 'middle',
+                      paddingLeft: '32px',
+                      paddingRight: '16px',
+                      paddingTop: '2px',
+                      paddingBottom: '2px',
+                      color: 'rgba(0, 0, 0, 0.87)',
+                    }}
+                  >
+                    <Typography sx={{ fontSize: '0.875rem', lineHeight: 1.2 }}>
+                      {line.text.split(':')[1]}
+                    </Typography>
+                  </td>
+                </tr>
+              ))}
+              <tr style={{ height: '8px' }}>
+                <td colSpan={3}></td>
+              </tr>
+            </tbody>
+          </table>
         </Paper>
       </Popper>
     </Paper>
