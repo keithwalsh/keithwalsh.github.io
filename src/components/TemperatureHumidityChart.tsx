@@ -6,11 +6,60 @@
 import { Box, Typography, Paper, Stack, Slider } from '@mui/material'
 import { LineChart } from '@mui/x-charts'
 import { TemperatureData } from '../utils/csvLoader'
-import ThermostatIcon from '@mui/icons-material/Thermostat'
 import React from 'react'
 
 interface TemperatureHumidityChartProps {
   data: TemperatureData[]
+}
+
+interface LegendItemProps {
+  color: string
+  label: string
+  dashArray?: string
+}
+
+function LegendItem({ color, label, dashArray }: LegendItemProps) {
+  return (
+    <Stack direction="row" alignItems="center" spacing={1}>
+      {color === 'area' ? (
+        <Box
+          sx={{
+            width: 10,
+            height: 10,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            bgcolor: '#ff5722',
+            opacity: 0.3,
+          }}
+        />
+      ) : (
+        <Box
+          component="svg"
+          sx={{
+            width: 20,
+            height: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <line
+            x1="0"
+            y1="10"
+            x2="20"
+            y2="10"
+            stroke={color}
+            strokeWidth={3}
+            strokeDasharray={dashArray}
+          />
+        </Box>
+      )}
+      <Typography variant="caption" sx={{ fontSize: '0.7rem' }}>
+        {label}
+      </Typography>
+    </Stack>
+  )
 }
 
 export function TemperatureHumidityChart({
@@ -46,11 +95,10 @@ export function TemperatureHumidityChart({
   }, [data, visibleRange])
 
   return (
-    <Paper elevation={3} sx={{ p: 3 }}>
-      <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-        <ThermostatIcon />
+    <Paper elevation={3} sx={{ pt: 3, pb: 0, px: 3, height: '100%' }}>
+      <Typography variant="h6" gutterBottom>
         <Typography variant="h6">Temperature and Humidity</Typography>
-      </Stack>
+      </Typography>
       {data.length > 0 && (
         <Box sx={{ width: '100%' }}>
           <Box sx={{ height: 300 }}>
@@ -135,8 +183,8 @@ export function TemperatureHumidityChart({
                 },
               ]}
               rightAxis="right"
-              height={300}
-              margin={{ left: 50, right: 50, top: 30, bottom: 30 }}
+              height={310}
+              margin={{ left: 50, right: 50, top: 30, bottom: 50 }}
               slotProps={{
                 legend: {
                   hidden: true,
@@ -145,17 +193,39 @@ export function TemperatureHumidityChart({
             />
           </Box>
 
-          {/* Add slider control */}
-          <Box
+          {/* Custom Legend */}
+          <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="center"
+            flexWrap="wrap"
             sx={{
-              px: 2,
-              pb: 1,
-              mt: 2,
-              display: 'flex',
-              justifyContent: 'center',
+              mt: 1,
+              mb: 1,
+              '& > *': {
+                flex: {
+                  xs: '0 0 calc(50% - 16px)',
+                  sm: '0 0 auto',
+                },
+                textAlign: 'left',
+                mb: { xs: 1, sm: 0 },
+              },
             }}
           >
-            <Box sx={{ width: '80%' }}>
+            <LegendItem color="#ff5722" label="Mean Temperature" />
+            <LegendItem color="area" label="Max/Min Temperature" />
+            <LegendItem color="#2196f3" label="Relative Humidity" />
+          </Stack>
+
+          {/* Date Range Zoom with Label */}
+          <Box sx={{ px: 2, pb: 1, mt: 2 }}>
+            <Typography
+              variant="caption"
+              sx={{ mb: -1, display: 'block', textAlign: 'center' }}
+            >
+              Date Range Zoom
+            </Typography>
+            <Box sx={{ width: '80%', mx: 'auto' }}>
               <Slider
                 value={visibleRange}
                 onChange={(_, newValue) =>
@@ -163,6 +233,19 @@ export function TemperatureHumidityChart({
                 }
                 valueLabelDisplay="auto"
                 valueLabelFormat={getDateLabel}
+                componentsProps={{
+                  valueLabel: {
+                    style: {
+                      zIndex: 2000,
+                      transform: 'translateY(-25px)',
+                      ...{
+                        '[data-index="1"]': {
+                          transform: 'translateY(-25px) translateX(-100%)',
+                        },
+                      },
+                    },
+                  },
+                }}
               />
             </Box>
           </Box>
