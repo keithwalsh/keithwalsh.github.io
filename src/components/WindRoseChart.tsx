@@ -54,6 +54,9 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     // Direction header
     lines.push({ text: direction })
 
+    // Calculate total hours for percentage
+    const totalHours = data.reduce((sum, d) => sum + d.frequency, 0)
+
     speedRanges.forEach(range => {
       let freq = 0
       if (range.range === '>=30') {
@@ -62,11 +65,12 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         const lower = parseFloat(range.range.split('-')[0])
         bins.filter(b => b.speed === lower).forEach(b => (freq += b.frequency))
       }
-      const color = d3.interpolateViridis(
-        range.range === '>=30' ? 1 : parseInt(range.range.split('-')[1]) / 30
+      const percentage = ((freq / totalHours) * 100).toFixed(1)
+      const color = colorScale(
+        range.range === '>=30' ? 30 : parseFloat(range.range.split('-')[0])
       )
       lines.push({
-        text: `${range.label}: ${Math.round(freq).toLocaleString()} hrs.`,
+        text: `${range.label}: ${Math.round(freq).toLocaleString()} hrs (${percentage}%)`,
         color,
       })
     })
@@ -152,8 +156,17 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .append('circle')
         .attr('r', currentRadius)
         .attr('fill', 'none')
-        .attr('stroke', i === numberOfCircles ? '#BABABA' : '#E3E8F2')
-        .attr('stroke-width', i === numberOfCircles ? '1px' : '1px')
+        .attr(
+          'stroke',
+          i === numberOfCircles
+            ? theme.palette.mode === 'dark'
+              ? '#FFFFFF'
+              : '#000000'
+            : theme.palette.mode === 'dark'
+              ? 'rgba(255, 255, 255, 0.3)'
+              : 'rgba(0, 0, 0, 0.3)'
+        )
+        .attr('stroke-width', '1px')
         .attr('stroke-dasharray', 'none')
     }
 
@@ -180,7 +193,12 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .attr('y1', 0)
         .attr('x2', radius * Math.sin(angle))
         .attr('y2', -radius * Math.cos(angle))
-        .attr('stroke', '#BABABA')
+        .attr(
+          'stroke',
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.3)'
+            : 'rgba(0, 0, 0, 0.3)'
+        )
         .attr('stroke-width', '1px')
     })
 
@@ -287,7 +305,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
           'fill',
           theme.palette.mode === 'dark' ? '#fff' : 'rgba(0, 0, 0, 0.87)'
         )
-        .text(`${percentage}%`)
+        .text(`${percentage}`)
     }
 
     // Add "Frequency (%)" label vertically
@@ -302,7 +320,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         theme.palette.mode === 'dark' ? '#fff' : 'rgba(0, 0, 0, 0.87)'
       )
       .text('Frequency (%)')
-      .attr('transform', `rotate(-90, -7, -${radius / 1.5})`) // Updated rotation point to match new x position
+      .attr('transform', `rotate(-90, -7, -${radius / 1.5})`)
 
     // Add white circle at center
     svg
@@ -336,7 +354,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         )
         .attr('fill', 'none')
         .attr('stroke', theme.palette.mode === 'dark' ? '#fff' : '#000')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 1)
         .style('opacity', 0)
         .style('pointer-events', 'none')
     })
@@ -420,24 +438,54 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0.5,
+                gap: 1,
               }}
             >
               <Box
                 sx={{
-                  width: 16,
-                  height: 16,
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
                   backgroundColor: colorScale(
                     item.range === '>=30'
                       ? 30
                       : parseInt(item.range.split('-')[0])
                   ),
-                  border: '1px solid white',
                 }}
               />
-              <Typography variant="caption">{item.label}</Typography>
+              <Typography variant="caption" sx={{ fontSize: '0.7rem' }}>
+                {item.label}
+              </Typography>
             </Box>
           ))}
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 2,
+              fontSize: '0.75rem',
+              maxWidth: { xs: '100%', lg: '200px' },
+              textAlign: 'left',
+              color: 'text.secondary',
+            }}
+          >
+            The directional sector lengths indicate the frequency of wind from
+            each direction (shown as a percentage). The colour bands within each
+            sector represent the wind speed ranges.
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              mt: 1,
+              fontSize: '0.75rem',
+              maxWidth: { xs: '100%', lg: '200px' },
+              textAlign: 'left',
+              color: 'text.secondary',
+            }}
+          >
+            Overall the sectors that extend farther outward and/or have larger
+            color bands reveal which direction and wind speed occur most
+            frequently.
+          </Typography>
         </Box>
       </Box>
       <Popper

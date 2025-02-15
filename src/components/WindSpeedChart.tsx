@@ -27,6 +27,7 @@ function LegendItem({ color, label, dashArray }: LegendItemProps) {
           sx={{
             width: 10,
             height: 10,
+            borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -65,6 +66,13 @@ function LegendItem({ color, label, dashArray }: LegendItemProps) {
 
 export function WindSpeedChart({ data }: WindSpeedChartProps) {
   const [visibleRange, setVisibleRange] = React.useState<number[]>([0, 100])
+
+  // Memoize the tick interval calculation
+  const getTickInterval = React.useCallback(
+    (dataLength: number) => (_: unknown, index: number) =>
+      index % Math.max(1, Math.floor(dataLength / 31)) === 0,
+    []
+  )
 
   // Format date for tooltip with bounds checking
   const getDateLabel = React.useCallback(
@@ -171,6 +179,7 @@ export function WindSpeedChart({ data }: WindSpeedChartProps) {
                     new Date(d.date).toLocaleDateString()
                   ),
                   scaleType: 'band',
+                  tickInterval: getTickInterval(visibleData.length),
                 },
               ]}
               yAxis={[

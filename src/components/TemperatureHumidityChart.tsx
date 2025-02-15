@@ -26,6 +26,7 @@ function LegendItem({ color, label, dashArray }: LegendItemProps) {
           sx={{
             width: 10,
             height: 10,
+            borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -65,8 +66,23 @@ function LegendItem({ color, label, dashArray }: LegendItemProps) {
 export function TemperatureHumidityChart({
   data,
 }: TemperatureHumidityChartProps) {
-  // Add state for controlling visible range
   const [visibleRange, setVisibleRange] = React.useState<number[]>([0, 100])
+
+  // Memoize the tick interval calculation
+  const getTickInterval = React.useCallback(
+    (dataLength: number) => (_: unknown, index: number) =>
+      index % Math.max(1, Math.floor(dataLength / 31)) === 0,
+    []
+  )
+
+  const visibleData = React.useMemo(() => {
+    const start = Math.floor((data.length * visibleRange[0]) / 100)
+    const end = Math.min(
+      Math.ceil((data.length * visibleRange[1]) / 100),
+      data.length
+    )
+    return data.slice(start, end)
+  }, [data, visibleRange])
 
   // Format date for tooltip with better bounds checking
   const getDateLabel = React.useCallback(
@@ -83,16 +99,6 @@ export function TemperatureHumidityChart({
     },
     [data]
   )
-
-  // Calculate visible data with sampling for x-axis labels
-  const visibleData = React.useMemo(() => {
-    const start = Math.floor((data.length * visibleRange[0]) / 100)
-    const end = Math.min(
-      Math.ceil((data.length * visibleRange[1]) / 100),
-      data.length
-    )
-    return data.slice(start, end)
-  }, [data, visibleRange])
 
   return (
     <Paper elevation={3} sx={{ pt: 3, pb: 0, px: 3, height: '100%' }}>
@@ -166,6 +172,7 @@ export function TemperatureHumidityChart({
                     new Date(d.date).toLocaleDateString()
                   ),
                   scaleType: 'band',
+                  tickInterval: getTickInterval(visibleData.length),
                 },
               ]}
               yAxis={[
