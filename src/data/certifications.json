@@ -1,19 +1,14 @@
 {
-    "certifications": [
-        {
-            "title": "GCP Associate Cloud Engineer",
-            "issuer": "Google",
-            "year": 2025
-        },
-        {
-            "title": "Google Data Analytics Professional Certificate",
-            "issuer": "Google",
-            "year": 2025
-        },
-        {
-            "title": "GitHub Foundations Certification",
-            "issuer": "GitHub",
-            "year": 2025
-        }
-    ]
-} 
+  "certifications": [
+    {
+      "title": "Google Data Analytics Professional Certificate",
+      "issuer": "Google",
+      "year": 2025
+    },
+    {
+      "title": "GitHub Foundations Certification",
+      "issuer": "GitHub",
+      "year": 2025
+    }
+  ]
+}

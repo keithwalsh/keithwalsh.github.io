@@ -110,11 +110,11 @@ export function TemperatureHumidityChart({
   return (
     <Paper elevation={3} sx={{ pt: 3, pb: 0, px: 3, height: '100%' }}>
       <Typography variant="h6" gutterBottom>
-        <Typography variant="h6">Temperature and Humidity</Typography>
+        Temperature and Humidity
       </Typography>
       {data.length > 0 && (
         <Box sx={{ width: '100%' }}>
-          <Box sx={{ height: 300 }}>
+          <Box sx={{ height: '100%' }}>
             <LineChart
               sx={{
                 '& .MuiAreaElement-series-max': {

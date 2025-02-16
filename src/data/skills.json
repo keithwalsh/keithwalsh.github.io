@@ -1,46 +1,67 @@
 {
-    "skills": [
-        {
-            "name": "Python",
-            "level": 90,
-            "category": "Data Analytics",
-            "iconKey": "python",
-            "color": "#3776AB"
-        },
-        {
-            "name": "SQL",
-            "level": 90,
-            "category": "Database",
-            "iconKey": "database",
-            "color": "#336791"
-        },
-        {
-            "name": "Tableau",
-            "level": 85,
-            "category": "Visualization",
-            "iconKey": "chartBar",
-            "color": "#E97627"
-        },
-        {
-            "name": "Power BI",
-            "level": 85,
-            "category": "Visualization",
-            "iconKey": "powerbi",
-            "color": "#F2C811"
-        },
-        {
-            "name": "Snowflake",
-            "level": 80,
-            "category": "Data Warehouse",
-            "iconKey": "snowflake",
-            "color": "#29B5E8"
-        },
-        {
-            "name": "BigQuery",
-            "level": 80,
-            "category": "Data Warehouse",
-            "iconKey": "bigquery",
-            "color": "#4285F4"
-        }
-    ]
-} 
+  "skills": [
+    {
+      "name": "SQL",
+      "level": 95,
+      "category": "Database",
+      "iconKey": "database",
+      "color": "#00758F"
+    },
+    {
+      "name": "Python",
+      "level": 90,
+      "category": "Backend Development",
+      "iconKey": "python",
+      "color": "#3776AB"
+    },
+    {
+      "name": "PHP",
+      "level": 80,
+      "category": "Backend Development",
+      "iconKey": "php",
+      "color": "#777BB4"
+    },
+    {
+      "name": "JavaScript",
+      "level": 90,
+      "category": "Frontend Development",
+      "iconKey": "javascript",
+      "color": "#F7DF1E"
+    },
+    {
+      "name": "TypeScript",
+      "level": 90,
+      "category": "Frontend Development",
+      "iconKey": "typescript",
+      "color": "#3178C6"
+    },
+    {
+      "name": "HTML",
+      "level": 100,
+      "category": "Frontend Development",
+      "iconKey": "html",
+      "color": "#E34F26"
+    },
+    {
+      "name": "CSS",
+      "level": 100,
+      "category": "Frontend Development",
+      "iconKey": "css",
+      "color": "#1572B6"
+    },
+    {
+      "name": "React",
+      "level": 90,
+      "category": "Frontend Development",
+      "iconKey": "react",
+      "color": "#61DAFB"
+    },
+    {
+      "name": "Node.js",
+      "level": 90,
+      "category": "Backend Development",
+      "iconKey": "node",
+      "color": "#339933"
+    }
+  ]
+}

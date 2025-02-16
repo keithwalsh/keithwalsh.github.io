@@ -151,10 +151,28 @@ export const Weather: React.FC = () => {
         <Box
           sx={{
             position: 'fixed',
-            top: 240,
-            left: 290,
+            top: {
+              xs: 370,
+              sm: 160,
+              md: 255,
+              lg: 238,
+              xl: 240,
+            },
+            left: {
+              xs: 37,
+              sm: 100,
+              md: 285,
+              lg: 285,
+              xl: 290,
+            },
             transform: isScrolled
-              ? 'translate(calc(100vw - 460px), calc(100vh - 315px))'
+              ? {
+                  xs: 'translate(calc(100vw - 160px), calc(100vh - 420px))',
+                  sm: 'translate(calc(100vw - 200px), calc(100vh - 200px))',
+                  md: 'translate(calc(100vw - 430px), calc(100vh - 300px))',
+                  lg: 'translate(calc(100vw - 430px), calc(100vh - 300px))',
+                  xl: 'translate(calc(100vw - 460px), calc(100vh - 315px))',
+                }
               : 'none',
             zIndex: 1200,
             transition: 'all 0.3s ease',
