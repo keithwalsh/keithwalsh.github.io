@@ -1,5 +1,4 @@
 import Papa from 'papaparse'
-import * as d3 from 'd3'
 
 export interface TemperatureData {
   date: string
@@ -41,9 +40,14 @@ export interface WindRoseData {
   frequency: number
 }
 
+const getDataPath = (filename: string) => {
+  // In production, files in public folder are served from root
+  return `/data/${filename}`
+}
+
 export async function loadTemperatureData(): Promise<TemperatureData[]> {
   try {
-    const response = await fetch('/src/data/temperature.csv')
+    const response = await fetch(getDataPath('temperature.csv'))
     const csvText = await response.text()
 
     const { data } = Papa.parse<TemperatureData>(csvText, {
@@ -68,7 +72,7 @@ export async function loadTemperatureData(): Promise<TemperatureData[]> {
 
 export async function loadWindData(): Promise<WindData[]> {
   try {
-    const response = await fetch('/src/data/wind.csv')
+    const response = await fetch(getDataPath('wind.csv'))
     const csvText = await response.text()
 
     const { data } = Papa.parse<WindData>(csvText, {
@@ -94,7 +98,7 @@ export async function loadWindData(): Promise<WindData[]> {
 
 export async function loadRainData(): Promise<RainData[]> {
   try {
-    const response = await fetch('/src/data/rain.csv')
+    const response = await fetch(getDataPath('rain.csv'))
     const csvText = await response.text()
 
     const { data } = Papa.parse<RainData>(csvText, {
@@ -134,13 +138,21 @@ export async function loadRainData(): Promise<RainData[]> {
 
 export async function loadWindRoseData(): Promise<WindRoseData[]> {
   try {
-    const data = await d3.csv('/src/data/wind_rose.csv')
+    const response = await fetch(getDataPath('wind_rose.csv'))
+    const csvText = await response.text()
+
+    // Parse CSV with Papa Parse to ensure consistent handling
+    const { data } = Papa.parse(csvText, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+    })
 
     // Create a map to store direction and speed bin combinations
     const windRoseMap = new Map<string, Map<string, number>>()
 
     // Count raw occurrences for each direction and speed bin
-    data.forEach(row => {
+    data.forEach((row: any) => {
       const direction = row.direction_bin
       const speedBin = row.speed_bin
 
@@ -174,7 +186,7 @@ export async function loadWindRoseData(): Promise<WindRoseData[]> {
         windRoseData.push({
           direction,
           speed: parseFloat(speedBin.split('-')[0]), // Use lower bound of range
-          frequency: count, // Store raw count instead of percentage
+          frequency: count,
         })
       })
     })
