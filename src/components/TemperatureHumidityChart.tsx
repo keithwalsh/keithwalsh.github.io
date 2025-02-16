@@ -3,10 +3,18 @@
  * using MUI X-Charts LineChart with dual axes.
  */
 
-import { Box, Typography, Paper, Stack, Slider } from '@mui/material'
+import * as React from 'react'
+import { Box, Typography, Stack, Slider, Paper } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { LineChart } from '@mui/x-charts'
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+  accordionSummaryClasses,
+} from '@mui/material/AccordionSummary'
+import MuiAccordionDetails from '@mui/material/AccordionDetails'
 import { TemperatureData } from '../utils/csvLoader'
-import React from 'react'
 
 interface TemperatureHumidityChartProps {
   data: TemperatureData[]
@@ -63,10 +71,48 @@ function LegendItem({ color, label, dashArray }: LegendItemProps) {
   )
 }
 
+const Accordion = styled((props: AccordionProps) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0,
+  },
+  '&::before': {
+    display: 'none',
+  },
+}))
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
+    {
+      transform: 'rotate(90deg)',
+    },
+  [`& .${accordionSummaryClasses.content}`]: {
+    marginLeft: theme.spacing(1),
+  },
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'rgba(255, 255, 255, .05)',
+  }),
+}))
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: '1px solid rgba(0, 0, 0, .125)',
+}))
+
 export function TemperatureHumidityChart({
   data,
 }: TemperatureHumidityChartProps) {
   const [visibleRange, setVisibleRange] = React.useState<number[]>([0, 100])
+  const [expanded, setExpanded] = React.useState<string | false>('panel1')
 
   // Memoize the tick interval calculation
   const getTickInterval = React.useCallback(
@@ -99,6 +145,11 @@ export function TemperatureHumidityChart({
     },
     [data]
   )
+
+  const handleChange =
+    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false)
+    }
 
   return (
     <Paper elevation={3} sx={{ pt: 3, pb: 0, px: 3, height: '100%' }}>
@@ -255,6 +306,56 @@ export function TemperatureHumidityChart({
                 }}
               />
             </Box>
+          </Box>
+
+          <Box sx={{ mb: 2 }}>
+            <Accordion
+              expanded={expanded === 'panel1'}
+              onChange={handleChange('panel1')}
+            >
+              <AccordionSummary
+                aria-controls="climate-content"
+                id="climate-header"
+              >
+                <Typography component="span" variant="body2">
+                  Learn More
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography paragraph variant="body2">
+                  Ireland's distinctive maritime climate is characterized by its
+                  location, being completely surrounded by ocean. This creates a
+                  persistent pattern of mild temperatures and frequent rainfall,
+                  resulting in consistently high humidity levels throughout the
+                  year.
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Understanding Relative Humidity
+                </Typography>
+                <Typography paragraph variant="body2">
+                  Relative humidity measures the amount of water vapor present
+                  in the air compared to the maximum amount it could hold at a
+                  specific temperature. During summer months, when temperatures
+                  rise, the air's capacity to hold moisture increases (a
+                  phenomenon explained by the Clausius-Clapeyron relationship).
+                  This leads to slight decreases in relative humidity, even
+                  though the actual amount of moisture in the air might remain
+                  similar.
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Impact on Daily Life
+                </Typography>
+                <Typography variant="body2">
+                  While high humidity combined with high temperatures can impair
+                  the body's cooling mechanism by reducing sweat evaporation,
+                  Ireland's moderate climate generally prevents the
+                  uncomfortable conditions often experienced in warmer regions.
+                  Instead, the main effects of Ireland's high humidity are more
+                  commonly felt indoors, where it can create a damp environment
+                  conducive to mold and mildew growth.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Box>
         </Box>
       )}

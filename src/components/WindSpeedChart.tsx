@@ -8,6 +8,14 @@ import { LineChart } from '@mui/x-charts'
 import { WindData } from '../utils/csvLoader'
 import React from 'react'
 import { Slider } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+  accordionSummaryClasses,
+} from '@mui/material/AccordionSummary'
+import MuiAccordionDetails from '@mui/material/AccordionDetails'
 
 interface WindSpeedChartProps {
   data: WindData[]
@@ -64,8 +72,46 @@ function LegendItem({ color, label, dashArray }: LegendItemProps) {
   )
 }
 
+const Accordion = styled((props: AccordionProps) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0,
+  },
+  '&::before': {
+    display: 'none',
+  },
+}))
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
+    {
+      transform: 'rotate(90deg)',
+    },
+  [`& .${accordionSummaryClasses.content}`]: {
+    marginLeft: theme.spacing(1),
+  },
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'rgba(255, 255, 255, .05)',
+  }),
+}))
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: '1px solid rgba(0, 0, 0, .125)',
+}))
+
 export function WindSpeedChart({ data }: WindSpeedChartProps) {
   const [visibleRange, setVisibleRange] = React.useState<number[]>([0, 100])
+  const [expanded, setExpanded] = React.useState<string | false>('panel1')
 
   // Memoize the tick interval calculation
   const getTickInterval = React.useCallback(
@@ -99,6 +145,11 @@ export function WindSpeedChart({ data }: WindSpeedChartProps) {
     )
     return data.slice(start, end)
   }, [data, visibleRange])
+
+  const handleChange =
+    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false)
+    }
 
   return (
     <Paper elevation={3} sx={{ pt: 3, pb: 0, px: 3, height: '100%' }}>
@@ -255,6 +306,55 @@ export function WindSpeedChart({ data }: WindSpeedChartProps) {
                 }}
               />
             </Box>
+          </Box>
+
+          <Box sx={{ mb: 2 }}>
+            <Accordion
+              expanded={expanded === 'panel1'}
+              onChange={handleChange('panel1')}
+            >
+              <AccordionSummary aria-controls="wind-content" id="wind-header">
+                <Typography component="span" variant="body2">
+                  Learn More
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography paragraph variant="body2">
+                  Wind speed measurements in Ireland are collected using various
+                  time-averaged methods to capture different aspects of wind
+                  behavior. These measurements help in understanding both
+                  sustained winds and brief intense gusts that can affect
+                  infrastructure and daily activities.
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Understanding Wind Measurements
+                </Typography>
+                <Typography paragraph variant="body2">
+                  Mean Wind Speed represents the average wind conditions over
+                  time. The Maximum Gust captures brief peaks in wind speed,
+                  typically lasting 3-5 seconds. The 10-minute Mean provides a
+                  more stable measure of sustained winds, while Hourly Means
+                  show longer-term patterns, with maximum and minimum values
+                  indicating the range of wind conditions throughout each hour.
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom>
+                  Impact on Daily Life
+                </Typography>
+                <Typography variant="body2">
+                  Wind patterns significantly influence Ireland's weather
+                  systems and daily activities. This is dramatically
+                  demonstrated in the chart above by the large spike on January
+                  24th, 2025, when Storm Éowyn brought record-breaking wind
+                  gusts and caused widespread destruction across the country.
+                  This devastating storm left 768,000 homes without power and
+                  caused an estimated €200 million in damage. Understanding
+                  these measurements helps in planning outdoor activities,
+                  assessing weather-related risks, and preparing for severe
+                  weather events, which Met Éireann warns are likely to become
+                  more frequent in the years ahead.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Box>
         </Box>
       )}

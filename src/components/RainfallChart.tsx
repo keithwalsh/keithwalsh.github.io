@@ -6,6 +6,15 @@
 import { BarChart } from '@mui/x-charts'
 import { Paper, Stack, Typography, Box } from '@mui/material'
 import { RainData } from '../utils/csvLoader'
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+  accordionSummaryClasses,
+} from '@mui/material/AccordionSummary'
+import MuiAccordionDetails from '@mui/material/AccordionDetails'
+import { styled } from '@mui/material/styles'
+import React from 'react'
 
 interface Props {
   data: RainData[]
@@ -13,12 +22,12 @@ interface Props {
 
 interface MonthlyData {
   month: string
-  Dry: number
-  '<2mm': number
-  '2-5mm': number
-  '5-10mm': number
-  '10-20mm': number
-  '>20mm': number
+  'Dry (<0.2mm)': number
+  '0.2mm-1mm': number
+  '1-5mm': number
+  '5-15mm': number
+  '15-25mm': number
+  '>25mm': number
 }
 
 // Add LegendItem component
@@ -45,7 +54,51 @@ function LegendItem({ color, label }: LegendItemProps) {
   )
 }
 
+const Accordion = styled((props: AccordionProps) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0,
+  },
+  '&::before': {
+    display: 'none',
+  },
+}))
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
+    {
+      transform: 'rotate(90deg)',
+    },
+  [`& .${accordionSummaryClasses.content}`]: {
+    marginLeft: theme.spacing(1),
+  },
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'rgba(255, 255, 255, .05)',
+  }),
+}))
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: '1px solid rgba(0, 0, 0, .125)',
+}))
+
 export function RainfallChart({ data }: Props) {
+  const [expanded, setExpanded] = React.useState<string | false>('panel1')
+
+  const handleChange =
+    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false)
+    }
+
   if (!data || data.length === 0) {
     return (
       <Paper elevation={3} sx={{ p: 3, height: 500 }}>
@@ -55,12 +108,12 @@ export function RainfallChart({ data }: Props) {
   }
 
   const RAIN_TYPES = [
-    'Dry',
-    '<2mm',
-    '2-5mm',
-    '5-10mm',
-    '10-20mm',
-    '>20mm',
+    'Dry (<0.2mm)',
+    '0.2mm-1mm',
+    '1-5mm',
+    '5-15mm',
+    '15-25mm',
+    '>25mm',
   ] as const
 
   type RainType = (typeof RAIN_TYPES)[number]
@@ -73,12 +126,12 @@ export function RainfallChart({ data }: Props) {
     })
     initialMonthlyData[i] = {
       month: monthName,
-      Dry: 0,
-      '<2mm': 0,
-      '2-5mm': 0,
-      '5-10mm': 0,
-      '10-20mm': 0,
-      '>20mm': 0,
+      'Dry (<0.2mm)': 0,
+      '0.2mm-1mm': 0,
+      '1-5mm': 0,
+      '5-15mm': 0,
+      '15-25mm': 0,
+      '>25mm': 0,
     }
   }
 
@@ -86,8 +139,6 @@ export function RainfallChart({ data }: Props) {
   const monthlyData = data.reduce((acc, entry) => {
     const date = new Date(entry.date)
     const month = date.getMonth()
-
-    // Clean the type string by removing carriage returns and whitespace
     const cleanType = entry.rainfall_bucket.trim()
 
     if (RAIN_TYPES.includes(cleanType as RainType)) {
@@ -102,20 +153,29 @@ export function RainfallChart({ data }: Props) {
   }, initialMonthlyData)
 
   const chartData = Object.values(monthlyData)
-
   const months = chartData.map(item => item.month)
 
   const COLORS = {
-    Dry: '#a5d6a7',
-    '<2mm': '#bbdefb',
-    '2-5mm': '#64b5f6',
-    '5-10mm': '#2196f3',
-    '10-20mm': '#1976d2',
-    '>20mm': '#0d47a1',
+    'Dry (<0.2mm)': '#a5d6a7',
+    '0.2mm-1mm': '#bbdefb',
+    '1-5mm': '#64b5f6',
+    '5-15mm': '#2196f3',
+    '15-25mm': '#1976d2',
+    '>25mm': '#0d47a1',
   }
 
   return (
-    <Paper elevation={3} sx={{ p: 3, height: 500 }}>
+    <Paper
+      elevation={3}
+      sx={{
+        pt: 3,
+        pb: 0,
+        px: 3,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <Typography variant="h6" gutterBottom>
         Monthly Rainfall Distribution
       </Typography>
@@ -176,6 +236,67 @@ export function RainfallChart({ data }: Props) {
           />
         ))}
       </Stack>
+
+      <Box sx={{ mt: 'auto', mb: 0, mx: -3 }}>
+        <Accordion
+          expanded={expanded === 'panel1'}
+          onChange={handleChange('panel1')}
+        >
+          <AccordionSummary
+            aria-controls="rainfall-content"
+            id="rainfall-header"
+          >
+            <Typography component="span" variant="body2">
+              Learn More
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography paragraph variant="body2">
+              Ireland's rainfall patterns are characterized by their frequency
+              rather than intensity. The country experiences rain on many days
+              throughout the year, but the amount of rainfall per day is
+              typically moderate to light.
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom>
+              Understanding Rainfall Categories
+            </Typography>
+            <Typography paragraph variant="body2">
+              The rainfall categories shown in this chart help understand the
+              distribution of daily rainfall amounts:
+            </Typography>
+            <Box component="ul" sx={{ mt: 1, mb: 2 }}>
+              <Typography component="li" variant="body2">
+                Dry days ({'<'}0.2mm): Days with negligible rainfall
+              </Typography>
+              <Typography component="li" variant="body2">
+                Very light (0.2-1mm): Drizzle or misty conditions
+              </Typography>
+              <Typography component="li" variant="body2">
+                Light rain (1-5mm): Common occurrence
+              </Typography>
+              <Typography component="li" variant="body2">
+                Moderate rain (5-15mm): Regular rainfall events
+              </Typography>
+              <Typography component="li" variant="body2">
+                Heavy rain (15-25mm): Significant rainfall events
+              </Typography>
+              <Typography component="li" variant="body2">
+                Very heavy rain ({'>'}25mm): Extreme rainfall events
+              </Typography>
+            </Box>
+            <Typography variant="subtitle2" gutterBottom>
+              Impact on Environment
+            </Typography>
+            <Typography variant="body2">
+              This rainfall pattern is crucial for Ireland's ecosystem,
+              supporting the country's famous green landscape and agricultural
+              activities. The consistent distribution of rainfall throughout the
+              year, rather than concentrated wet seasons, helps maintain stable
+              soil moisture levels and supports sustainable farming practices.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
     </Paper>
   )
 }

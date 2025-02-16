@@ -3,6 +3,14 @@ import { Box, Paper, Typography, Popper } from '@mui/material'
 import * as d3 from 'd3'
 import { WindRoseData } from '../utils/csvLoader'
 import { useTheme } from '@mui/material/styles'
+import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
+import MuiAccordionSummary, {
+  AccordionSummaryProps,
+  accordionSummaryClasses,
+} from '@mui/material/AccordionSummary'
+import MuiAccordionDetails from '@mui/material/AccordionDetails'
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
+import { styled } from '@mui/material/styles'
 
 interface WindRoseChartProps {
   data: WindRoseData[]
@@ -15,6 +23,43 @@ interface TooltipState {
   content: Array<{ text: string; color?: string }>
 }
 
+const Accordion = styled((props: AccordionProps) => (
+  <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+  border: `1px solid ${theme.palette.divider}`,
+  '&:not(:last-child)': {
+    borderBottom: 0,
+  },
+  '&::before': {
+    display: 'none',
+  },
+}))
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+  <MuiAccordionSummary
+    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .03)',
+  flexDirection: 'row-reverse',
+  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
+    {
+      transform: 'rotate(90deg)',
+    },
+  [`& .${accordionSummaryClasses.content}`]: {
+    marginLeft: theme.spacing(1),
+  },
+  ...theme.applyStyles('dark', {
+    backgroundColor: 'rgba(255, 255, 255, .05)',
+  }),
+}))
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+  padding: theme.spacing(2),
+  borderTop: '1px solid rgba(0, 0, 0, .125)',
+}))
+
 export function WindRoseChart({ data }: WindRoseChartProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [tooltip, setTooltip] = useState<TooltipState>({
@@ -24,6 +69,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     content: [],
   })
   const theme = useTheme()
+  const [expanded, setExpanded] = useState<string | false>('panel1')
 
   const speedRanges = [
     { range: '0-5', label: '0-5 km/h' },
@@ -396,6 +442,11 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     }),
   }
 
+  const handleChange =
+    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
+      setExpanded(newExpanded ? panel : false)
+    }
+
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
@@ -404,7 +455,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
+          flexDirection: { xs: 'column', xl: 'row' },
           alignItems: { xs: 'center', lg: 'flex-start' },
           gap: 2,
           height: '100%',
@@ -424,12 +475,13 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'row', lg: 'column' },
+            flexDirection: { xs: 'row', xl: 'column' },
             gap: 0.5,
             flexWrap: 'wrap',
             justifyContent: 'center',
             alignSelf: 'center',
-            mt: { xs: 2, lg: 0 },
+            pr: { xs: 0, xl: 2 },
+            mt: { xs: 2, xl: 0 },
           }}
         >
           {speedRanges.map(item => (
@@ -453,41 +505,63 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
                   ),
                 }}
               />
-              <Typography variant="caption" sx={{ fontSize: '0.7rem' }}>
+              <Typography variant="caption" sx={{ fontSize: '0.69rem' }}>
                 {item.label}
               </Typography>
             </Box>
           ))}
-          <Typography
-            variant="body2"
-            sx={{
-              mt: 2,
-              fontSize: '0.75rem',
-              maxWidth: { xs: '100%', lg: '200px' },
-              textAlign: 'left',
-              color: 'text.secondary',
-            }}
-          >
-            The directional sector lengths indicate the frequency of wind from
-            each direction (shown as a percentage). The colour bands within each
-            sector represent the wind speed ranges.
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              mt: 1,
-              fontSize: '0.75rem',
-              maxWidth: { xs: '100%', lg: '200px' },
-              textAlign: 'left',
-              color: 'text.secondary',
-            }}
-          >
-            Overall the sectors that extend farther outward and/or have larger
-            color bands reveal which direction and wind speed occur most
-            frequently.
-          </Typography>
         </Box>
       </Box>
+
+      <Box sx={{ mt: 2 }}>
+        <Accordion
+          expanded={expanded === 'panel1'}
+          onChange={handleChange('panel1')}
+        >
+          <AccordionSummary
+            aria-controls="windrose-content"
+            id="windrose-header"
+          >
+            <Typography component="span" variant="body2">
+              Learn More
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography paragraph variant="body2">
+              A wind rose is a specialized chart that visualizes wind patterns
+              by showing both direction and speed frequencies. The chart is
+              divided into 16 directional sectors (N, NNE, NE, etc.), with the
+              length of each sector indicating how often wind blows from that
+              direction.
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom>
+              Understanding the Visualization
+            </Typography>
+            <Typography paragraph variant="body2">
+              Each directional sector contains colored bands representing
+              different wind speed ranges. The length of these bands shows the
+              frequency of winds at those speeds from that direction. The
+              concentric circles marked with percentages help quantify these
+              frequencies, with longer sectors indicating more prevalent wind
+              directions.
+            </Typography>
+            <Typography variant="subtitle2" gutterBottom>
+              Local Wind Patterns
+            </Typography>
+            <Typography variant="body2">
+              Ireland's wind patterns are heavily influenced by its position in
+              the North Atlantic, with prevailing winds typically coming from
+              the southwest. These winds, shaped by the Atlantic Ocean, play a
+              crucial role in Ireland's weather systems and have significant
+              implications for various sectors, from aviation and agriculture to
+              wind energy production. During Storm Éowyn in January 2025, these
+              prevailing patterns were dramatically disrupted, with exceptional
+              wind speeds recorded from multiple directions.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
+
       <Popper
         open={tooltip.open}
         anchorEl={virtualElement}

@@ -1,48 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box, Select, MenuItem, FormControl, InputLabel, Grid, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import {
+  Container,
+  Typography,
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Grid,
+} from '@mui/material'
 import { TemperatureHumidityChart } from '../TemperatureHumidityChart'
 import { WindSpeedChart } from '../WindSpeedChart'
-import { TemperatureData, loadTemperatureData } from '../../utils/csvLoader';
-import { WindData, loadWindData } from '../../utils/csvLoader';
+import { TemperatureData, loadTemperatureData } from '../../utils/csvLoader'
+import { WindData, loadWindData } from '../../utils/csvLoader'
 import { RainfallChart } from '../RainfallChart'
 import { RainData, loadRainData } from '../../utils/csvLoader'
 import { WindRoseData, loadWindRoseData } from '../../utils/csvLoader'
-import { WindRoseChart } from '../WindRoseChart';
+import { WindRoseChart } from '../WindRoseChart'
 
 export const Visualizations: React.FC = () => {
-  const [tempData, setTempData] = useState<TemperatureData[]>([]);
-  const [windData, setWindData] = useState<WindData[]>([]);
+  const [tempData, setTempData] = useState<TemperatureData[]>([])
+  const [windData, setWindData] = useState<WindData[]>([])
   const [rainData, setRainData] = useState<RainData[]>([])
   const [windRoseData, setWindRoseData] = useState<WindRoseData[]>([])
-  const [error, setError] = useState<string>('');
-  const [selectedYear, setSelectedYear] = useState<string>('');
-  const [availableYears, setAvailableYears] = useState<string[]>([]);
+  const [error, setError] = useState<string>('')
+  const [selectedYear, setSelectedYear] = useState<string>('')
+  const [availableYears, setAvailableYears] = useState<string[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [tempDataResult, windDataResult, rainDataResult, windRoseResult] = await Promise.all([
-          loadTemperatureData(),
-          loadWindData(),
-          loadRainData(),
-          loadWindRoseData()
-        ]);
-        
-        setTempData(tempDataResult || []);
-        setWindData(windDataResult || []);
-        setRainData(rainDataResult || []);
-        
+        const [tempDataResult, windDataResult, rainDataResult, windRoseResult] =
+          await Promise.all([
+            loadTemperatureData(),
+            loadWindData(),
+            loadRainData(),
+            loadWindRoseData(),
+          ])
+
+        setTempData(tempDataResult || [])
+        setWindData(windDataResult || [])
+        setRainData(rainDataResult || [])
+
         // Ensure wind rose data is properly formatted
         const formattedWindRoseData = windRoseResult
-          .filter(d => d && d.direction && !isNaN(d.speed) && !isNaN(d.frequency))
+          .filter(
+            d => d && d.direction && !isNaN(d.speed) && !isNaN(d.frequency)
+          )
           .map(d => ({
             direction: d.direction,
             speed: Number(d.speed),
-            frequency: Number(d.frequency)
-          }));
+            frequency: Number(d.frequency),
+          }))
 
-        setWindRoseData(formattedWindRoseData);
-        
+        setWindRoseData(formattedWindRoseData)
+
         if (tempDataResult && tempDataResult.length > 0) {
           // Extract year from date string if year property doesn't exist
           const years = Array.from(
@@ -50,52 +62,54 @@ export const Visualizations: React.FC = () => {
               tempDataResult
                 .filter(d => d?.date) // Filter items with date
                 .map(d => {
-                  const date = new Date(d.date);
-                  return date.getFullYear().toString();
+                  const date = new Date(d.date)
+                  return date.getFullYear().toString()
                 })
             )
-          );
-          
+          )
+
           if (years.length > 0) {
-            const sortedYears = years.sort((a, b) => b.localeCompare(a));
-            setSelectedYear(sortedYears[0]);
-            setAvailableYears(sortedYears);
+            const sortedYears = years.sort((a, b) => b.localeCompare(a))
+            setSelectedYear(sortedYears[0])
+            setAvailableYears(sortedYears)
           } else {
-            setError('No valid years found in the data');
+            setError('No valid years found in the data')
           }
         } else {
-          setError('No temperature data available');
+          setError('No temperature data available')
         }
       } catch (err) {
-        setError(`Error loading data: ${err instanceof Error ? err.message : String(err)}`);
-        console.error('Data loading error:', err);
+        setError(
+          `Error loading data: ${err instanceof Error ? err.message : String(err)}`
+        )
+        console.error('Data loading error:', err)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   // Filter data for selected year
   const yearTempData = tempData
     .filter(d => {
-      const dataYear = new Date(d.date).getFullYear().toString();
-      return dataYear === selectedYear;
+      const dataYear = new Date(d.date).getFullYear().toString()
+      return dataYear === selectedYear
     })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
   const yearWindData = windData
     .filter(d => {
-      const dataYear = new Date(d.date).getFullYear().toString();
-      return dataYear === selectedYear;
+      const dataYear = new Date(d.date).getFullYear().toString()
+      return dataYear === selectedYear
     })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
   const yearRainData = rainData
     .filter(d => {
-      const dataYear = new Date(d.date).getFullYear().toString();
-      return dataYear === selectedYear;
+      const dataYear = new Date(d.date).getFullYear().toString()
+      return dataYear === selectedYear
     })
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
   return (
     <Container maxWidth="xl">
@@ -111,10 +125,10 @@ export const Visualizations: React.FC = () => {
             id="year-select"
             value={selectedYear}
             label="Year"
-            onChange={(e) => setSelectedYear(e.target.value)}
+            onChange={e => setSelectedYear(e.target.value)}
             sx={{ minWidth: 120 }}
           >
-            {availableYears.map((year) => (
+            {availableYears.map(year => (
               <MenuItem key={year} value={year}>
                 {year}
               </MenuItem>
@@ -132,15 +146,6 @@ export const Visualizations: React.FC = () => {
           <Grid item xs={12} md={6}>
             <TemperatureHumidityChart data={yearTempData} />
           </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={3} sx={{ p: 3, minHeight: 385 }}>
-              <Typography variant="h6">
-                Temperature 2
-              </Typography>
-            </Paper>
-          </Grid>
-
           <Grid item xs={12} md={6}>
             <WindSpeedChart data={yearWindData} />
           </Grid>
@@ -149,14 +154,6 @@ export const Visualizations: React.FC = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <RainfallChart data={yearRainData} />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Paper elevation={3} sx={{ p: 3, minHeight: 500 }}>
-              <Typography variant="h6">
-                Bottom Right Container
-              </Typography>
-            </Paper>
           </Grid>
         </Grid>
       </Box>

@@ -23,8 +23,17 @@ export interface WindData {
 export interface RainData {
   date: string
   rain_amount_mm: number
-  rainfall_bucket: string
+  rainfall_bucket: RainfallBucket
 }
+
+// Define valid rainfall bucket values as a type
+export type RainfallBucket =
+  | 'Dry (<0.2mm)'
+  | '0.2mm-1mm'
+  | '1-5mm'
+  | '5-15mm'
+  | '15-25mm'
+  | '>25mm'
 
 export interface WindRoseData {
   direction: string
@@ -94,9 +103,29 @@ export async function loadRainData(): Promise<RainData[]> {
       skipEmptyLines: true,
     })
 
-    return data.filter(
-      row => row.date && !isNaN(row.rain_amount_mm) && row.rainfall_bucket
-    )
+    // Validate that each row has the correct rainfall bucket value
+    const validBuckets: RainfallBucket[] = [
+      'Dry (<0.2mm)',
+      '0.2mm-1mm',
+      '1-5mm',
+      '5-15mm',
+      '15-25mm',
+      '>25mm',
+    ]
+
+    return data.filter(row => {
+      if (!row.date || !row.rainfall_bucket || isNaN(row.rain_amount_mm)) {
+        return false
+      }
+
+      // Check if the rainfall bucket is valid
+      if (!validBuckets.includes(row.rainfall_bucket as RainfallBucket)) {
+        console.warn(`Invalid rainfall bucket value: ${row.rainfall_bucket}`)
+        return false
+      }
+
+      return true
+    })
   } catch (error) {
     console.error('Error loading rain data:', error)
     throw error
