@@ -7,7 +7,6 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Grid,
 } from '@mui/material'
 import { TemperatureHumidityChart } from '../TemperatureHumidityChart'
 import { WindSpeedChart } from '../WindSpeedChart'
@@ -17,8 +16,9 @@ import { RainfallChart } from '../RainfallChart'
 import { RainData, loadRainData } from '../../utils/csvLoader'
 import { WindRoseData, loadWindRoseData } from '../../utils/csvLoader'
 import { WindRoseChart } from '../WindRoseChart'
+import { Masonry } from '@mui/lab'
 
-export const Visualizations: React.FC = () => {
+export const Weather: React.FC = () => {
   const [tempData, setTempData] = useState<TemperatureData[]>([])
   const [windData, setWindData] = useState<WindData[]>([])
   const [rainData, setRainData] = useState<RainData[]>([])
@@ -115,7 +115,15 @@ export const Visualizations: React.FC = () => {
     <Container maxWidth="xl">
       <Box sx={{ py: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Temperature and Humidity Visualizations
+          Weather Visualizations
+        </Typography>
+
+        <Typography variant="body1" sx={{ mb: 4 }}>
+          The below data was recorded from the Claremorris Met Éireann
+          meteorological station, situated about 2 Km south of the centre of the
+          town (my home town), in county Mayo, Ireland. The weather data is
+          updated monthly and provided by Met Éireann under the Creative Commons
+          Attribution 4.0 International License.
         </Typography>
 
         <FormControl sx={{ mb: 4, minWidth: 120 }}>
@@ -142,20 +150,35 @@ export const Visualizations: React.FC = () => {
           </Typography>
         )}
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
+        <Masonry columns={{ xs: 1, sm: 2 }} spacing={3} sx={{ mt: 3 }}>
+          <Box>
             <TemperatureHumidityChart data={yearTempData} />
-          </Grid>
-          <Grid item xs={12} md={6}>
+          </Box>
+          <Box>
             <WindSpeedChart data={yearWindData} />
-          </Grid>
-          <Grid item xs={12} md={6}>
+          </Box>
+          <Box>
             <WindRoseChart data={windRoseData} />
-          </Grid>
-          <Grid item xs={12} md={6}>
+          </Box>
+          <Box>
             <RainfallChart data={yearRainData} />
-          </Grid>
-        </Grid>
+          </Box>
+        </Masonry>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mt: 4, textAlign: 'center' }}
+        >
+          Weather data provided by Met Éireann under the&nbsp;
+          <a
+            href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Creative Commons Attribution 4.0 International License
+          </a>
+        </Typography>
       </Box>
     </Container>
   )

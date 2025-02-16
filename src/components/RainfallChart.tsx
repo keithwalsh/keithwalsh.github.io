@@ -92,7 +92,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 export function RainfallChart({ data }: Props) {
-  const [expanded, setExpanded] = React.useState<string | false>('panel1')
+  const [expanded, setExpanded] = React.useState<string | false>(false)
 
   const handleChange =
     (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {

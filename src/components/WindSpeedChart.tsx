@@ -111,7 +111,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export function WindSpeedChart({ data }: WindSpeedChartProps) {
   const [visibleRange, setVisibleRange] = React.useState<number[]>([0, 100])
-  const [expanded, setExpanded] = React.useState<string | false>('panel1')
+  const [expanded, setExpanded] = React.useState<string | false>(false)
 
   // Memoize the tick interval calculation
   const getTickInterval = React.useCallback(

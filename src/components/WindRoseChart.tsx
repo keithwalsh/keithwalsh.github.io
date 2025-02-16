@@ -69,7 +69,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
     content: [],
   })
   const theme = useTheme()
-  const [expanded, setExpanded] = useState<string | false>('panel1')
+  const [expanded, setExpanded] = useState<string | false>('false')
 
   const speedRanges = [
     { range: '0-5', label: '0-5 km/h' },
