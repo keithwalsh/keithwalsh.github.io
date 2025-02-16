@@ -255,8 +255,8 @@ export function WindSpeedChart({ data }: WindSpeedChartProps) {
             justifyContent="center"
             flexWrap="wrap"
             sx={{
-              mt: 1,
-              mb: 1,
+              mt: { xs: -0.3, md: -0.3, lg: -0.3, xl: -0.3 },
+              mb: { xs: 0, xl: 1 },
               '& > *': {
                 flex: {
                   xs: '0 0 calc(50% - 16px)', // e.g. 2x2 on small screens
@@ -276,6 +276,7 @@ export function WindSpeedChart({ data }: WindSpeedChartProps) {
             <LegendItem color="#00acc1" label="Mean Wind Speed" />
             <LegendItem color="area" label="Max/Min Hourly Mean" />
           </Stack>
+          {/* Date Range Zoom with Label */}
           <Box sx={{ px: 2, pb: 1, mt: 2 }}>
             <Typography
               variant="caption"

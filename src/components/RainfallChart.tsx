@@ -45,6 +45,9 @@ function LegendItem({ color, label }: LegendItemProps) {
           height: 10,
           bgcolor: color,
           borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       />
       <Typography variant="caption" sx={{ fontSize: '0.7rem' }}>
@@ -172,8 +175,6 @@ export function RainfallChart({ data }: Props) {
         pb: 0,
         px: 3,
         height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
       }}
     >
       <Typography variant="h6" gutterBottom>
@@ -201,8 +202,8 @@ export function RainfallChart({ data }: Props) {
             scaleType: 'linear',
           },
         ]}
-        height={350}
-        margin={{ top: 20, bottom: 50, left: 40, right: 10 }}
+        height={310}
+        margin={{ left: 50, right: 30, top: 30, bottom: 50 }}
         slotProps={{
           legend: {
             hidden: true,
@@ -217,11 +218,12 @@ export function RainfallChart({ data }: Props) {
         justifyContent="center"
         flexWrap="wrap"
         sx={{
-          mt: 2,
+          mt: { xs: 2, md: 2, lg: 2, xl: 2 },
+          mb: { xs: 6.75, xl: 6.75 },
           '& > *': {
             flex: {
-              xs: '0 0 calc(33% - 16px)',
-              sm: '0 0 auto',
+              xs: '0 0 calc(50% - 16px)', // e.g. 2x2 on small screens
+              sm: '0 0 auto', // e.g. 1x4 on larger screens
             },
             textAlign: 'left',
             mb: { xs: 1, sm: 0 },
@@ -237,7 +239,7 @@ export function RainfallChart({ data }: Props) {
         ))}
       </Stack>
 
-      <Box sx={{ mt: 'auto', mb: 0, mx: -3 }}>
+      <Box sx={{ mt: 'auto', mb: 2 }}>
         <Accordion
           expanded={expanded === 'panel1'}
           onChange={handleChange('panel1')}

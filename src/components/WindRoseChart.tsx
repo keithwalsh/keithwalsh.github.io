@@ -14,6 +14,12 @@ import { styled } from '@mui/material/styles'
 
 interface WindRoseChartProps {
   data: WindRoseData[]
+  size?: {
+    xs: number
+    md: number
+    lg: number
+    xl: number
+  }
 }
 
 interface TooltipState {
@@ -60,7 +66,10 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: '1px solid rgba(0, 0, 0, .125)',
 }))
 
-export function WindRoseChart({ data }: WindRoseChartProps) {
+export function WindRoseChart({
+  data,
+  size = { xs: 340, md: 324, lg: 340, xl: 375 },
+}: WindRoseChartProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const [tooltip, setTooltip] = useState<TooltipState>({
     open: false,
@@ -126,18 +135,18 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
   useEffect(() => {
     if (!data || data.length === 0) return
 
-    // Debug log
-    console.log('Rendering with data:', data)
+    // Use the appropriate size based on current breakpoint
+    const chartSize = size.xs
+
+    // Increase margin to accommodate labels
+    const margin = Math.round(chartSize * 0.1) // Increased from 0.052
+    const width = chartSize
+    const height = chartSize
+    const radius = Math.min(width, height) / 2 - margin
+    const centerRadius = Math.round(chartSize * 0.026)
 
     // Clear previous chart
     d3.select(svgRef.current).selectAll('*').remove()
-
-    // Adjust dimensions
-    const width = 385
-    const height = 385
-    const margin = 20
-    const radius = Math.min(width, height) / 2 - margin
-    const centerRadius = 10 // Radius for the white circle at center
 
     // Calculate total frequency for each direction to normalize
     const directionTotals = new Map<string, number>()
@@ -162,20 +171,8 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       4,
       Math.max(3, Math.ceil(roundedMaxPercentage / 2))
     ) // Force 3 or 4 circles
-    const percentagePerCircle =
-      Math.ceil(roundedMaxPercentage / numberOfCircles / 2) * 2 // Ensure even numbers
-    const maxScaleValue = maxTotalFrequency // Use actual maximum frequency
 
-    // Debug log
-    console.log('Scaling values:', {
-      maxPercentage,
-      roundedMaxPercentage,
-      numberOfCircles,
-      percentagePerCircle,
-      maxScaleValue,
-      maxTotalFrequency,
-      totalHours,
-    })
+    const maxScaleValue = maxTotalFrequency // Use actual maximum frequency
 
     const svg = d3
       .select(svgRef.current)
@@ -287,7 +284,7 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
       // Add hover effects to the direction group
       directionGroup
         .on('mouseover', event => {
-          // Show outline
+          event.stopPropagation() // Prevent event bubbling
           svg.select(`.direction-outline-${direction}`).style('opacity', 1)
 
           const tooltipContent = getTooltipContent(direction, speedBins)
@@ -299,24 +296,29 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
           })
         })
         .on('mousemove', event => {
+          event.stopPropagation() // Prevent event bubbling
           setTooltip(prev => ({
             ...prev,
             x: event.clientX,
             y: event.clientY,
           }))
         })
-        .on('mouseout', () => {
-          // Hide outline
+        .on('mouseout', event => {
+          event.stopPropagation() // Prevent event bubbling
           svg.select(`.direction-outline-${direction}`).style('opacity', 0)
-
-          setTooltip(prev => ({ ...prev, open: false }))
+          setTooltip({
+            open: false,
+            x: 0,
+            y: 0,
+            content: [],
+          })
         })
     })
 
     // Direction labels
     directions.forEach(direction => {
       const angle = angleScale(getDirectionDegrees(direction))
-      const labelRadius = radius + 15
+      const labelRadius = radius + 25 // Increased from 15
       const x = labelRadius * Math.sin(angle)
       const y = -labelRadius * Math.cos(angle)
 
@@ -404,7 +406,30 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
         .style('opacity', 0)
         .style('pointer-events', 'none')
     })
-  }, [data, theme.palette.mode])
+
+    // Add mouse event handlers at the SVG level
+    const svgElement = d3.select(svgRef.current).on('mouseleave', () => {
+      setTooltip({
+        open: false,
+        x: 0,
+        y: 0,
+        content: [],
+      })
+    })
+
+    // Add cleanup function
+    return () => {
+      svgElement.on('mouseleave', null)
+      // Remove all event listeners when component unmounts
+      directionGroups.forEach((_, direction) => {
+        svg
+          .select(`.direction-group-${direction}`)
+          .on('mouseover', null)
+          .on('mousemove', null)
+          .on('mouseout', null)
+      })
+    }
+  }, [data, theme.palette.mode, size])
 
   function getDirectionDegrees(direction: string): number {
     const directionMap: { [key: string]: number } = {
@@ -457,19 +482,35 @@ export function WindRoseChart({ data }: WindRoseChartProps) {
           display: 'flex',
           flexDirection: { xs: 'column', xl: 'row' },
           alignItems: { xs: 'center', lg: 'flex-start' },
+          justifyContent: 'center',
           gap: 2,
           height: '100%',
         }}
       >
-        <svg
-          ref={svgRef}
-          style={{
-            display: 'block',
-            margin: '0 auto',
-            maxWidth: '100%',
-            height: 'auto',
+        <Box
+          sx={{
+            width: {
+              xs: size.xs,
+              md: size.md,
+              lg: size.lg,
+              xl: size.xl,
+            },
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-        />
+        >
+          <svg
+            ref={svgRef}
+            style={{
+              display: 'block',
+              margin: '0 auto',
+              maxWidth: '100%',
+              height: 'auto',
+              width: '100%',
+            }}
+          />
+        </Box>
 
         {/* Legend */}
         <Box

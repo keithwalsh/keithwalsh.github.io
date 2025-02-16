@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Container,
-  Typography,
-  Box,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-} from '@mui/material'
+import { Container, Typography, Box, Fab, Menu, MenuItem } from '@mui/material'
 import { TemperatureHumidityChart } from '../TemperatureHumidityChart'
 import { WindSpeedChart } from '../WindSpeedChart'
 import { TemperatureData, loadTemperatureData } from '../../utils/csvLoader'
@@ -17,6 +9,7 @@ import { RainData, loadRainData } from '../../utils/csvLoader'
 import { WindRoseData, loadWindRoseData } from '../../utils/csvLoader'
 import { WindRoseChart } from '../WindRoseChart'
 import { Masonry } from '@mui/lab'
+import FilterAltIcon from '@mui/icons-material/FilterAlt'
 
 export const Weather: React.FC = () => {
   const [tempData, setTempData] = useState<TemperatureData[]>([])
@@ -26,6 +19,8 @@ export const Weather: React.FC = () => {
   const [error, setError] = useState<string>('')
   const [selectedYear, setSelectedYear] = useState<string>('')
   const [availableYears, setAvailableYears] = useState<string[]>([])
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,6 +84,21 @@ export const Weather: React.FC = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    const mainElement = document.querySelector('main')
+    if (!mainElement) return
+
+    const handleScroll = () => {
+      const scrollPosition = mainElement.scrollTop
+      setIsScrolled(scrollPosition > 20)
+    }
+
+    mainElement.addEventListener('scroll', handleScroll)
+    handleScroll() // Initial check
+
+    return () => mainElement.removeEventListener('scroll', handleScroll)
+  }, [])
+
   // Filter data for selected year
   const yearTempData = tempData
     .filter(d => {
@@ -111,38 +121,84 @@ export const Weather: React.FC = () => {
     })
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleYearSelect = (year: string) => {
+    setSelectedYear(year)
+    handleClose()
+  }
+
   return (
     <Container maxWidth="xl">
-      <Box sx={{ py: 4 }}>
+      <Box sx={{ py: 4, minHeight: '200vh' }}>
         <Typography variant="h4" component="h1" gutterBottom>
           Weather Visualizations
         </Typography>
 
-        <Typography variant="body1" sx={{ mb: 4 }}>
+        <Typography variant="body1" sx={{ mb: 8, maxWidth: '800px' }}>
           The below data was recorded from the Claremorris Met Éireann
           meteorological station, situated about 2 Km south of the centre of the
           town (my home town), in county Mayo, Ireland. The weather data is
-          updated monthly and provided by Met Éireann under the Creative Commons
-          Attribution 4.0 International License.
+          updated monthly.
         </Typography>
 
-        <FormControl sx={{ mb: 4, minWidth: 120 }}>
-          <InputLabel id="year-select-label">Year</InputLabel>
-          <Select
-            labelId="year-select-label"
-            id="year-select"
-            value={selectedYear}
-            label="Year"
-            onChange={e => setSelectedYear(e.target.value)}
-            sx={{ minWidth: 120 }}
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 240,
+            left: 290,
+            transform: isScrolled
+              ? 'translate(calc(100vw - 460px), calc(100vh - 315px))'
+              : 'none',
+            zIndex: 1200,
+            transition: 'all 0.3s ease',
+          }}
+        >
+          <Fab
+            color="primary"
+            aria-label="change year"
+            onClick={handleClick}
+            variant="extended"
+            size="small"
+          >
+            <FilterAltIcon fontSize="small" sx={{ mr: 0.5 }} />
+            <Box component="span" sx={{ fontSize: '12px', fontWeight: 500 }}>
+              Year:{' '}
+              <Box component="span" sx={{ fontSize: '12px', fontWeight: 300 }}>
+                {selectedYear}
+              </Box>
+            </Box>
+          </Fab>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
           >
             {availableYears.map(year => (
-              <MenuItem key={year} value={year}>
+              <MenuItem
+                key={year}
+                onClick={() => handleYearSelect(year)}
+                selected={year === selectedYear}
+              >
                 {year}
               </MenuItem>
             ))}
-          </Select>
-        </FormControl>
+          </Menu>
+        </Box>
 
         {error && (
           <Typography color="error" sx={{ mt: 2 }}>
