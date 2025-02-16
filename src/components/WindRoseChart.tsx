@@ -3,14 +3,12 @@ import { Box, Paper, Typography, Popper } from '@mui/material'
 import * as d3 from 'd3'
 import { WindRoseData } from '../utils/csvLoader'
 import { useTheme } from '@mui/material/styles'
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-  accordionSummaryClasses,
-} from '@mui/material/AccordionSummary'
-import MuiAccordionDetails from '@mui/material/AccordionDetails'
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
-import { styled } from '@mui/material/styles'
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from './StyledComponents'
+import { useAccordionChange } from '../hooks/useAccordionChange'
 
 interface WindRoseChartProps {
   data: WindRoseData[]
@@ -29,43 +27,6 @@ interface TooltipState {
   content: Array<{ text: string; color?: string }>
 }
 
-const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  '&:not(:last-child)': {
-    borderBottom: 0,
-  },
-  '&::before': {
-    display: 'none',
-  },
-}))
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor: 'rgba(0, 0, 0, .03)',
-  flexDirection: 'row-reverse',
-  [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
-    {
-      transform: 'rotate(90deg)',
-    },
-  [`& .${accordionSummaryClasses.content}`]: {
-    marginLeft: theme.spacing(1),
-  },
-  ...theme.applyStyles('dark', {
-    backgroundColor: 'rgba(255, 255, 255, .05)',
-  }),
-}))
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: '1px solid rgba(0, 0, 0, .125)',
-}))
-
 export function WindRoseChart({
   data,
   size = { xs: 340, md: 324, lg: 340, xl: 375 },
@@ -78,7 +39,7 @@ export function WindRoseChart({
     content: [],
   })
   const theme = useTheme()
-  const [expanded, setExpanded] = useState<string | false>('false')
+  const { expanded, handleChange } = useAccordionChange()
 
   const speedRanges = [
     { range: '0-5', label: '0-5 km/h' },
@@ -466,11 +427,6 @@ export function WindRoseChart({
       toJSON: () => '',
     }),
   }
-
-  const handleChange =
-    (panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false)
-    }
 
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
