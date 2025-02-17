@@ -1,7 +1,5 @@
 # Personal Website
 
-[![Code Climate](https://codeclimate.com/github/keithwalsh/keithwalsh.github.io/badges/gpa.svg)](https://codeclimate.com/github/keithwalsh/keithwalsh.github.io)
-
 ## Tech Stack
 
 - **React** - Frontend Framework
@@ -15,7 +13,6 @@
 - ♿ Accessibility menu with font sizing and contrast options
 - 📱 Responsive layout with collapsible navigation
 - 🎨 Custom themed Material UI components
-
 
 ## Project Structure
 

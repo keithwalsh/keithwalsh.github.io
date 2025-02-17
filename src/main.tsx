@@ -3,7 +3,7 @@
  * MUI theming and a responsive navigation layout with persistent drawer.
  */
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   ThemeProvider,
@@ -14,7 +14,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
-import { Routes, Route, HashRouter } from 'react-router-dom'
+import { Routes, Route, HashRouter, useLocation } from 'react-router-dom'
 import {
   AboutPage,
   ContactPage,
@@ -40,8 +40,11 @@ import {
   AccessibilityNew as AccessibilityNewIcon,
 } from '@mui/icons-material'
 import emailjs from '@emailjs/browser'
+import { initGA, logPageView } from './utils/analytics'
 
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
+
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
 
 export function App() {
   const [open, setOpen] = useState(() => window.innerWidth >= 600)
@@ -63,6 +66,18 @@ export function App() {
   )
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'))
+
+  const location = useLocation()
+
+  useEffect(() => {
+    if (GA_MEASUREMENT_ID) {
+      initGA(GA_MEASUREMENT_ID)
+    }
+  }, [])
+
+  useEffect(() => {
+    logPageView(location.pathname)
+  }, [location])
 
   const handleDrawerToggle = () => {
     setOpen(prevOpen => !prevOpen)
