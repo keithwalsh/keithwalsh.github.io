@@ -44,8 +44,6 @@ import { initGA, logPageView } from './utils/analytics'
 
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID
-
 export function App() {
   const [open, setOpen] = useState(() => window.innerWidth >= 600)
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -70,9 +68,7 @@ export function App() {
   const location = useLocation()
 
   useEffect(() => {
-    if (GA_MEASUREMENT_ID) {
-      initGA(GA_MEASUREMENT_ID)
-    }
+    initGA()
   }, [])
 
   useEffect(() => {
