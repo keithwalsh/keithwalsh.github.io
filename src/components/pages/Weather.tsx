@@ -20,7 +20,7 @@ export const Weather: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<string>('')
   const [availableYears, setAvailableYears] = useState<string[]>([])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [isScrolled, setIsScrolled] = useState(false)
+  //const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,21 +84,6 @@ export const Weather: React.FC = () => {
     fetchData()
   }, [])
 
-  useEffect(() => {
-    const mainElement = document.querySelector('main')
-    if (!mainElement) return
-
-    const handleScroll = () => {
-      const scrollPosition = mainElement.scrollTop
-      setIsScrolled(scrollPosition > 20)
-    }
-
-    mainElement.addEventListener('scroll', handleScroll)
-    handleScroll() // Initial check
-
-    return () => mainElement.removeEventListener('scroll', handleScroll)
-  }, [])
-
   // Filter data for selected year
   const yearTempData = tempData
     .filter(d => {
@@ -148,75 +133,51 @@ export const Weather: React.FC = () => {
           updated monthly.
         </Typography>
 
-        <Box
+        <Fab
+          color="primary"
+          aria-label="change year"
+          onClick={handleClick}
+          variant="extended"
+          size="small"
           sx={{
             position: 'fixed',
-            top: {
-              xs: 370,
-              sm: 160,
-              md: 255,
-              lg: 238,
-              xl: 240,
-            },
-            left: {
-              xs: 37,
-              sm: 100,
-              md: 285,
-              lg: 285,
-              xl: 290,
-            },
-            transform: isScrolled
-              ? {
-                  xs: 'translate(calc(100vw - 160px), calc(100vh - 420px))',
-                  sm: 'translate(calc(100vw - 200px), calc(100vh - 200px))',
-                  md: 'translate(calc(100vw - 430px), calc(100vh - 300px))',
-                  lg: 'translate(calc(100vw - 430px), calc(100vh - 300px))',
-                  xl: 'translate(calc(100vw - 460px), calc(100vh - 315px))',
-                }
-              : 'none',
-            zIndex: 1200,
-            transition: 'all 0.3s ease',
+            bottom: 16,
+            right: 16,
+            zIndex: theme => theme.zIndex.speedDial,
           }}
         >
-          <Fab
-            color="primary"
-            aria-label="change year"
-            onClick={handleClick}
-            variant="extended"
-            size="small"
-          >
-            <FilterAltIcon fontSize="small" sx={{ mr: 0.5 }} />
-            <Box component="span" sx={{ fontSize: '12px', fontWeight: 500 }}>
-              Year:{' '}
-              <Box component="span" sx={{ fontSize: '12px', fontWeight: 300 }}>
-                {selectedYear}
-              </Box>
+          <FilterAltIcon fontSize="small" sx={{ mr: 0.5 }} />
+          <Box component="span" sx={{ fontSize: '12px', fontWeight: 500 }}>
+            Year:{' '}
+            <Box component="span" sx={{ fontSize: '12px', fontWeight: 300 }}>
+              {selectedYear}
             </Box>
-          </Fab>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-          >
-            {availableYears.map(year => (
-              <MenuItem
-                key={year}
-                onClick={() => handleYearSelect(year)}
-                selected={year === selectedYear}
-              >
-                {year}
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
+          </Box>
+        </Fab>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+        >
+          {availableYears.map(year => (
+            <MenuItem
+              key={year}
+              onClick={() => handleYearSelect(year)}
+              selected={year === selectedYear}
+            >
+              {year}
+            </MenuItem>
+          ))}
+        </Menu>
 
         {error && (
           <Typography color="error" sx={{ mt: 2 }}>
