@@ -1,75 +1,87 @@
-import React from 'react'
-import {
-  RocketLaunch,
-  Home,
-  ContactMail,
-  Work,
-  Coffee,
-  BarChart,
-  WbSunny,
-} from '@mui/icons-material'
-/* Temporarily disabled until implementation is complete
-import { Build, DataObject } from "@mui/icons-material"
-import { IoLogoMarkdown } from "react-icons/io5"
-*/
+/**
+ * @fileoverview Navigation configuration and types for sidebar and header menus, using MUI and react-icons for icons. Centralizes route paths and navigation structure.
+ */
 
-export interface NavigationSubItem {
-  path: string
-  label: string
-  icon: React.ReactElement
+import { ReactNode } from 'react'
+import HomeIcon from '@mui/icons-material/Home'
+import ContactMailIcon from '@mui/icons-material/ContactMail'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import WbSunnyIcon from '@mui/icons-material/WbSunny'
+import BuildIcon from '@mui/icons-material/Build'
+import DataObjectIcon from '@mui/icons-material/DataObject'
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
+import WorkIcon from '@mui/icons-material/Work'
+import CoffeeIcon from '@mui/icons-material/Coffee'
+import { IoLogoMarkdown } from 'react-icons/io5'
+
+export enum ROUTES {
+  ABOUT = '/',
+  CONTACT = '/contact',
+  VIS = '/visualizations',
+  WEATHER = '/visualizations/weather',
+  TOOLS = '/tools',
+  JSON_EXPLORER = '/tools/json-explorer',
+  MD_TABLE = '/tools/markdown-table',
+  PROJECTS = '/projects',
+  PRO_PROJECTS = '/projects/professional',
+  PERS_PROJECTS = '/projects/personal',
 }
 
-export interface NavigationItem {
-  path: string
+export interface NavigationSubItem {
+  path: ROUTES
   label: string
-  icon: React.ReactElement
+  icon: ReactNode
+}
+
+export interface NavigationItem extends NavigationSubItem {
   showDividerBelow?: boolean
   subItems?: NavigationSubItem[]
 }
 
-export const NAVIGATION_ITEMS: NavigationItem[] = [
-  { path: '/', label: 'About', icon: <Home /> },
+export const NAVIGATION_ITEMS = [
+  { path: ROUTES.ABOUT, label: 'About', icon: <HomeIcon /> },
   {
-    path: '/contact',
+    path: ROUTES.CONTACT,
     label: 'Contact',
-    icon: <ContactMail />,
+    icon: <ContactMailIcon />,
     showDividerBelow: true,
   },
   {
-    path: '/visualizations',
+    path: ROUTES.VIS,
     label: 'Visualizations',
-    icon: <BarChart />,
+    icon: <BarChartIcon />,
     subItems: [
-      { path: '/visualizations/weather', label: 'Weather', icon: <WbSunny /> },
+      { path: ROUTES.WEATHER, label: 'Weather', icon: <WbSunnyIcon /> },
     ],
   },
-  /* Temporarily disabled until implementation is complete
-    { 
-        path: "/tools", 
-        label: "Tools", 
-        icon: <Build />,
-        subItems: [
-            { path: "/tools/json-explorer", label: "JSON Explorer", icon: <DataObject /> },
-            { 
-                path: "/tools/markdown-table", 
-                label: "Markdown Table", 
-                icon: <IoLogoMarkdown style={{ 
-                    fontSize: "1.25rem",
-                    position: "relative",
-                    left: "2px",
-                    top: "-1px",
-                }} />
-            }
-        ]
-    },
-    */
   {
-    path: '/projects',
-    label: 'Projects',
-    icon: <RocketLaunch />,
+    path: ROUTES.TOOLS,
+    label: 'Tools',
+    icon: <BuildIcon />,
     subItems: [
-      { path: '/projects/professional', label: 'Professional', icon: <Work /> },
-      { path: '/projects/personal', label: 'Personal', icon: <Coffee /> },
+      {
+        path: ROUTES.JSON_EXPLORER,
+        label: 'JSON Explorer',
+        icon: <DataObjectIcon />,
+      },
+      {
+        path: ROUTES.MD_TABLE,
+        label: 'Markdown Table',
+        icon: <IoLogoMarkdown style={{ fontSize: '1.25rem' }} />,
+      },
     ],
   },
-]
+  {
+    path: ROUTES.PROJECTS,
+    label: 'Projects',
+    icon: <RocketLaunchIcon />,
+    subItems: [
+      {
+        path: ROUTES.PRO_PROJECTS,
+        label: 'Professional',
+        icon: <WorkIcon />,
+      },
+      { path: ROUTES.PERS_PROJECTS, label: 'Personal', icon: <CoffeeIcon /> },
+    ],
+  },
+] as const satisfies ReadonlyArray<NavigationItem>
