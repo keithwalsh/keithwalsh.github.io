@@ -209,9 +209,9 @@ export function MarkdownTablePage() {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Box>
-        <Box>
+    <Container maxWidth="lg" sx={{ p: 0, m: 0 }}>
+      <Box sx={{ p: 0, m: 0 }}>
+        <Box sx={{ p: 0, m: 0 }}>
           <Spreadsheet
             toolbarOrientation="horizontal"
             initialRows={4}

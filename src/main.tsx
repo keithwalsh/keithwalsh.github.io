@@ -167,6 +167,10 @@ export function App() {
                 path="/tools/markdown-table"
                 element={<ToolsPage type="markdown-table" />}
               />
+              <Route
+                path="/tools/code-annotator"
+                element={<ToolsPage type="code-annotator" />}
+              />
             </Routes>
           </Main>
         </Box>

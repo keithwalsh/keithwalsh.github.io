@@ -13,6 +13,7 @@ import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import WorkIcon from '@mui/icons-material/Work'
 import CoffeeIcon from '@mui/icons-material/Coffee'
 import { IoLogoMarkdown } from 'react-icons/io5'
+import CodeIcon from '@mui/icons-material/Code'
 
 export enum ROUTES {
   ABOUT = '/',
@@ -22,6 +23,7 @@ export enum ROUTES {
   TOOLS = '/tools',
   JSON_EXPLORER = '/tools/json-explorer',
   MD_TABLE = '/tools/markdown-table',
+  CODE_ANNOTATOR = '/tools/code-annotator',
   PROJECTS = '/projects',
   PRO_PROJECTS = '/projects/professional',
   PERS_PROJECTS = '/projects/personal',
@@ -68,6 +70,11 @@ export const NAVIGATION_ITEMS = [
         path: ROUTES.MD_TABLE,
         label: 'Markdown Table',
         icon: <IoLogoMarkdown style={{ fontSize: '1.25rem' }} />,
+      },
+      {
+        path: ROUTES.CODE_ANNOTATOR,
+        label: 'Code Annotator',
+        icon: <CodeIcon />,
       },
     ],
   },
