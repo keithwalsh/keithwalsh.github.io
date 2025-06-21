@@ -171,6 +171,10 @@ export function App() {
                 path="/tools/code-annotator"
                 element={<ToolsPage type="code-annotator" />}
               />
+              <Route
+                path="/tools/cron-expressions"
+                element={<ToolsPage type="cron-expressions" />}
+              />
             </Routes>
           </Main>
         </Box>

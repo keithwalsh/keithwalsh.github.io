@@ -14,6 +14,7 @@ import WorkIcon from '@mui/icons-material/Work'
 import CoffeeIcon from '@mui/icons-material/Coffee'
 import { IoLogoMarkdown } from 'react-icons/io5'
 import CodeIcon from '@mui/icons-material/Code'
+import ScheduleIcon from '@mui/icons-material/Schedule'
 
 export enum ROUTES {
   ABOUT = '/',
@@ -24,6 +25,7 @@ export enum ROUTES {
   JSON_EXPLORER = '/tools/json-explorer',
   MD_TABLE = '/tools/markdown-table',
   CODE_ANNOTATOR = '/tools/code-annotator',
+  CRON_EXPRESSIONS = '/tools/cron-expressions',
   PROJECTS = '/projects',
   PRO_PROJECTS = '/projects/professional',
   PERS_PROJECTS = '/projects/personal',
@@ -75,6 +77,11 @@ export const NAVIGATION_ITEMS = [
         path: ROUTES.CODE_ANNOTATOR,
         label: 'Code Annotator',
         icon: <CodeIcon />,
+      },
+      {
+        path: ROUTES.CRON_EXPRESSIONS,
+        label: 'Cron Expressions',
+        icon: <ScheduleIcon />,
       },
     ],
   },

@@ -6,9 +6,14 @@
 import { Box, Container, Typography } from '@mui/material'
 import { MarkdownTablePage } from './MarkdownTable'
 import { CodeAnnotatorPage } from './CodeAnnotatorPage'
+import { CronExpressions } from './index'
 
 interface ToolsPageProps {
-  type?: 'json-explorer' | 'markdown-table' | 'code-annotator'
+  type?:
+    | 'json-explorer'
+    | 'markdown-table'
+    | 'code-annotator'
+    | 'cron-expressions'
 }
 
 export function ToolsPage({ type }: ToolsPageProps) {
@@ -20,6 +25,8 @@ export function ToolsPage({ type }: ToolsPageProps) {
         return 'Markdown Table Generator'
       case 'code-annotator':
         return 'Code Annotator'
+      case 'cron-expressions':
+        return 'Cron Expressions'
       default:
         return 'Tools'
     }
@@ -43,6 +50,7 @@ export function ToolsPage({ type }: ToolsPageProps) {
         </Typography>
         {type === 'markdown-table' && <MarkdownTablePage />}
         {type === 'code-annotator' && <CodeAnnotatorPage />}
+        {type === 'cron-expressions' && <CronExpressions />}
       </Box>
     </Container>
   )

@@ -44,7 +44,7 @@ echo "Hello [+World+]";
     <Container maxWidth="lg">
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 4 }}>
-        <Typography variant="h5" component="h1" gutterBottom>
+        <Typography variant="h6" component="h1" gutterBottom>
           Code Annotator
         </Typography>
         <TextField
