@@ -15,19 +15,47 @@ interface CommonExpressionsProps {
 }
 
 const CommonExpressions: React.FC<CommonExpressionsProps> = ({
-  onExpressionSelect
+  onExpressionSelect,
 }) => {
   const [selectedCard, setSelectedCard] = React.useState<number | null>(null)
 
   const commonExpressions: CommonCronExpression[] = [
     { name: 'Every minute', cron: '* * * * *', desc: 'Runs every minute' },
-    { name: 'Every hour', cron: '0 * * * *', desc: 'Runs at the start of every hour' },
-    { name: 'Daily at midnight', cron: '0 0 * * *', desc: 'Runs every day at 12:00 AM' },
-    { name: 'Daily at 9 AM', cron: '0 9 * * *', desc: 'Runs every day at 9:00 AM' },
-    { name: 'Weekly (Sunday)', cron: '0 0 * * 0', desc: 'Runs every Sunday at midnight' },
-    { name: 'Monthly (1st)', cron: '0 0 1 * *', desc: 'Runs on the 1st of every month' },
-    { name: 'Yearly (Jan 1st)', cron: '0 0 1 1 *', desc: 'Runs every year on January 1st' },
-    { name: 'Weekdays at 9 AM', cron: '0 9 * * 1-5', desc: 'Runs Monday to Friday at 9:00 AM' }
+    {
+      name: 'Every hour',
+      cron: '0 * * * *',
+      desc: 'Runs at the start of every hour',
+    },
+    {
+      name: 'Daily at midnight',
+      cron: '0 0 * * *',
+      desc: 'Runs every day at 12:00 AM',
+    },
+    {
+      name: 'Daily at 9 AM',
+      cron: '0 9 * * *',
+      desc: 'Runs every day at 9:00 AM',
+    },
+    {
+      name: 'Weekly (Sunday)',
+      cron: '0 0 * * 0',
+      desc: 'Runs every Sunday at midnight',
+    },
+    {
+      name: 'Monthly (1st)',
+      cron: '0 0 1 * *',
+      desc: 'Runs on the 1st of every month',
+    },
+    {
+      name: 'Yearly (Jan 1st)',
+      cron: '0 0 1 1 *',
+      desc: 'Runs every year on January 1st',
+    },
+    {
+      name: 'Weekdays at 9 AM',
+      cron: '0 9 * * 1-5',
+      desc: 'Runs Monday to Friday at 9:00 AM',
+    },
   ]
 
   const handleCardClick = (index: number, expression: string) => {
@@ -40,7 +68,7 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
       <Typography variant="h6" gutterBottom>
         Common Cron Expressions
       </Typography>
-      
+
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {commonExpressions.map((expr, index) => (
           <Card key={index} variant="outlined">
@@ -49,7 +77,7 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
               data-active={selectedCard === index ? '' : undefined}
               sx={{
                 height: '100%',
-                minWidth: 280,
+                minWidth: 260,
                 '&[data-active]': {
                   backgroundColor: 'action.selected',
                   '&:hover': {
@@ -62,8 +90,8 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
                 <Typography variant="subtitle1" gutterBottom>
                   {expr.name}
                 </Typography>
-                <Chip 
-                  label={expr.cron} 
+                <Chip
+                  label={expr.cron}
                   sx={{ fontFamily: 'monospace', mb: 1 }}
                 />
                 <Typography variant="body2" color="textSecondary">
@@ -78,4 +106,4 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
   )
 }
 
-export default CommonExpressions 
+export default CommonExpressions
