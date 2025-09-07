@@ -9,7 +9,6 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
-  Typography,
 } from '@mui/material'
 import { useState } from 'react'
 import { CodeHighlighter } from 'code-annotator'
@@ -44,9 +43,6 @@ echo "Hello [+World+]";
     <Container maxWidth="lg">
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 4 }}>
-        <Typography variant="h6" component="h1" gutterBottom>
-          Code Annotator
-        </Typography>
         <TextField
           label="Code Input"
           value={code}

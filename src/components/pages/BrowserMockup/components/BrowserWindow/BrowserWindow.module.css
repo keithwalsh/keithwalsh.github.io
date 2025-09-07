@@ -1,0 +1,116 @@
+.browserWindow {
+  border: 3px solid var(--browser-border-color, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 1rem auto;
+  width: 100%;
+  overflow: hidden;
+  transition: max-width 0.3s ease, border-color 0.3s ease;
+}
+
+.browserWindowHeader {
+  align-items: center;
+  background: var(--header-bg-color, #f0f0f0);
+  display: flex;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.buttons {
+  white-space: nowrap;
+}
+
+.dot {
+  margin-right: 6px;
+  margin-top: 4px;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.browserWindowAddressBar {
+  flex: 1 0;
+  margin: 0 1rem 0 0.5rem;
+  border-radius: 12.5px;
+  background-color: var(--address-bar-bg-color, #fff);
+  color: var(--address-bar-text-color, #333);
+  padding: 5px 15px;
+  font: 400 13px Arial, sans-serif;
+  user-select: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: text;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.browserWindowMenuIcon {
+  margin-left: auto;
+}
+
+.bar {
+  width: 17px;
+  height: 3px;
+  background-color: var(--bar-color, #aaa);
+  margin: 3px 0;
+  display: block;
+  transition: background-color 0.3s ease;
+}
+
+.browserWindowBody {
+  background-color: var(--body-bg-color, #fff);
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.browserImage {
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
+  display: block;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.urlInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  font: 400 13px Arial, sans-serif;
+  background: transparent;
+  color: var(--input-text-color, #333);
+  transition: color 0.3s ease;
+}
+
+.resizeControls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: var(--resize-controls-bg-color, #f8f8f8);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.resizeControls label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 14px;
+  color: var(--resize-controls-text-color, #444);
+  width: 100%;
+  max-width: 600px;
+  transition: color 0.3s ease;
+}
+
+.resizeSlider {
+  width: 100%;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+/* CSS custom properties are now managed by the theme system in styles/theme.ts */ 

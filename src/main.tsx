@@ -175,6 +175,10 @@ export function App() {
                 path="/tools/cron-expressions"
                 element={<ToolsPage type="cron-expressions" />}
               />
+              <Route
+                path="/tools/browser-mockup"
+                element={<ToolsPage type="browser-mockup" />}
+              />
             </Routes>
           </Main>
         </Box>

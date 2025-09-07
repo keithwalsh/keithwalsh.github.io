@@ -12,10 +12,12 @@ logs/
 test/
 */stories/
 *.py
-.env
-.versionrc
-CV.md
-colors.md
+.*
+*.md
+!.gitignore
+!.prettierrc
+!.github
+!README.md
 
 # IDE and Editor
 .vscode/*

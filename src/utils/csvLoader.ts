@@ -40,14 +40,76 @@ export interface WindRoseData {
   frequency: number
 }
 
-const getDataPath = (filename: string) => {
-  // In production, files in public folder are served from root
-  return `/data/${filename}`
+interface CacheConfig {
+  useCacheBusting: boolean
+  cacheMaxAge?: number // Cache duration in minutes
+  forceRefresh?: boolean
 }
 
-export async function loadTemperatureData(): Promise<TemperatureData[]> {
+const defaultCacheConfig: CacheConfig = {
+  useCacheBusting: true,
+  cacheMaxAge: 60, // 1 hour
+  forceRefresh: false,
+}
+
+const getDataPath = (
+  filename: string,
+  config: CacheConfig = defaultCacheConfig
+) => {
+  const basePath = `/data/${filename}`
+
+  if (!config.useCacheBusting && !config.forceRefresh) {
+    return basePath
+  }
+
+  const params = new URLSearchParams()
+
+  if (config.forceRefresh) {
+    // Force refresh with current timestamp
+    params.append('t', Date.now().toString())
+  } else if (config.useCacheBusting && config.cacheMaxAge) {
+    // Cache busting based on time intervals
+    const cacheInterval = config.cacheMaxAge * 60 * 1000 // Convert to milliseconds
+    const cacheKey = Math.floor(Date.now() / cacheInterval)
+    params.append('v', cacheKey.toString())
+  }
+
+  return params.toString() ? `${basePath}?${params.toString()}` : basePath
+}
+
+const createFetchOptions = (
+  config: CacheConfig = defaultCacheConfig
+): RequestInit => {
+  const options: RequestInit = {}
+
+  if (config.forceRefresh) {
+    options.cache = 'no-cache'
+    options.headers = {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      Pragma: 'no-cache',
+      Expires: '0',
+    }
+  } else if (config.useCacheBusting) {
+    options.cache = 'default'
+  }
+
+  return options
+}
+
+export async function loadTemperatureData(
+  config?: CacheConfig
+): Promise<TemperatureData[]> {
   try {
-    const response = await fetch(getDataPath('temperature.csv'))
+    const finalConfig = { ...defaultCacheConfig, ...config }
+    const response = await fetch(
+      getDataPath('temperature.csv', finalConfig),
+      createFetchOptions(finalConfig)
+    )
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
     const csvText = await response.text()
 
     const { data } = Papa.parse<TemperatureData>(csvText, {
@@ -70,9 +132,18 @@ export async function loadTemperatureData(): Promise<TemperatureData[]> {
   }
 }
 
-export async function loadWindData(): Promise<WindData[]> {
+export async function loadWindData(config?: CacheConfig): Promise<WindData[]> {
   try {
-    const response = await fetch(getDataPath('wind.csv'))
+    const finalConfig = { ...defaultCacheConfig, ...config }
+    const response = await fetch(
+      getDataPath('wind.csv', finalConfig),
+      createFetchOptions(finalConfig)
+    )
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
     const csvText = await response.text()
 
     const { data } = Papa.parse<WindData>(csvText, {
@@ -96,9 +167,18 @@ export async function loadWindData(): Promise<WindData[]> {
   }
 }
 
-export async function loadRainData(): Promise<RainData[]> {
+export async function loadRainData(config?: CacheConfig): Promise<RainData[]> {
   try {
-    const response = await fetch(getDataPath('rain.csv'))
+    const finalConfig = { ...defaultCacheConfig, ...config }
+    const response = await fetch(
+      getDataPath('rain.csv', finalConfig),
+      createFetchOptions(finalConfig)
+    )
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
     const csvText = await response.text()
 
     const { data } = Papa.parse<RainData>(csvText, {
@@ -136,9 +216,20 @@ export async function loadRainData(): Promise<RainData[]> {
   }
 }
 
-export async function loadWindRoseData(): Promise<WindRoseData[]> {
+export async function loadWindRoseData(
+  config?: CacheConfig
+): Promise<WindRoseData[]> {
   try {
-    const response = await fetch(getDataPath('wind_rose.csv'))
+    const finalConfig = { ...defaultCacheConfig, ...config }
+    const response = await fetch(
+      getDataPath('wind_rose.csv', finalConfig),
+      createFetchOptions(finalConfig)
+    )
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
     const csvText = await response.text()
 
     // Parse CSV with Papa Parse to ensure consistent handling
@@ -196,4 +287,26 @@ export async function loadWindRoseData(): Promise<WindRoseData[]> {
     console.error('Error loading wind rose data:', error)
     return []
   }
+}
+
+// Utility function to refresh all data with force refresh
+export async function refreshAllData(): Promise<{
+  temperature: TemperatureData[]
+  wind: WindData[]
+  rain: RainData[]
+  windRose: WindRoseData[]
+}> {
+  const forceRefreshConfig: CacheConfig = {
+    useCacheBusting: true,
+    forceRefresh: true,
+  }
+
+  const [temperature, wind, rain, windRose] = await Promise.all([
+    loadTemperatureData(forceRefreshConfig),
+    loadWindData(forceRefreshConfig),
+    loadRainData(forceRefreshConfig),
+    loadWindRoseData(forceRefreshConfig),
+  ])
+
+  return { temperature, wind, rain, windRose }
 }

@@ -7,6 +7,7 @@ import { Box, Container, Typography } from '@mui/material'
 import { MarkdownTablePage } from './MarkdownTable'
 import { CodeAnnotatorPage } from './CodeAnnotatorPage'
 import { CronExpressions } from './index'
+import BrowserMockup from './BrowserMockup/BrowserMockup'
 
 interface ToolsPageProps {
   type?:
@@ -14,6 +15,7 @@ interface ToolsPageProps {
     | 'markdown-table'
     | 'code-annotator'
     | 'cron-expressions'
+    | 'browser-mockup'
 }
 
 export function ToolsPage({ type }: ToolsPageProps) {
@@ -27,6 +29,8 @@ export function ToolsPage({ type }: ToolsPageProps) {
         return 'Code Annotator'
       case 'cron-expressions':
         return 'Cron Expressions'
+      case 'browser-mockup':
+        return 'Browser Window Mockup'
       default:
         return 'Tools'
     }
@@ -41,16 +45,10 @@ export function ToolsPage({ type }: ToolsPageProps) {
         <Typography variant="h4" gutterBottom>
           {getTitle()}
         </Typography>
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          {type === 'json-explorer' && 'Explore JSON data in a tree view.'}
-          {type === 'markdown-table' &&
-            'Convert tabular data into markdown tables.'}
-          {!type && 'This is the Tools page. Learn more about our app here.'}
-          {type === 'code-annotator' && 'Annotate code with comments.'}
-        </Typography>
         {type === 'markdown-table' && <MarkdownTablePage />}
         {type === 'code-annotator' && <CodeAnnotatorPage />}
         {type === 'cron-expressions' && <CronExpressions />}
+        {type === 'browser-mockup' && <BrowserMockup />}
       </Box>
     </Container>
   )
