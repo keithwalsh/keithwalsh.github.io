@@ -8,7 +8,7 @@ import { ChangeEvent } from 'react'
 import { isImageFile } from '../../utils'
 import InstructionsCard from './InstructionsCard'
 import DropZone from './DropZone'
-import { Inline } from '../Global'
+import { Inline } from '../../../../../components/shared-components'
 
 /**
  * Props for the FileUploader component.

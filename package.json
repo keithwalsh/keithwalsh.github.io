@@ -26,6 +26,7 @@
         "@emailjs/browser": "^4.4.1",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
+        "@microlink/react-json-view": "^1.27.0",
         "@mui/icons-material": "^6.1.6",
         "@mui/lab": "^6.0.0-beta.15",
         "@mui/material": "^6.1.6",

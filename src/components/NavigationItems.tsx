@@ -66,14 +66,9 @@ export const NAVIGATION_ITEMS = [
     icon: <BuildIcon />,
     subItems: [
       {
-        path: ROUTES.JSON_EXPLORER,
-        label: 'JSON Explorer',
-        icon: <DataObjectIcon />,
-      },
-      {
-        path: ROUTES.MD_TABLE,
-        label: 'Markdown Table',
-        icon: <IoLogoMarkdown style={{ fontSize: '1.25rem' }} />,
+        path: ROUTES.BROWSER_MOCKUP,
+        label: 'Browser Mockup',
+        icon: <WebIcon />,
       },
       {
         path: ROUTES.CODE_ANNOTATOR,
@@ -86,9 +81,14 @@ export const NAVIGATION_ITEMS = [
         icon: <ScheduleIcon />,
       },
       {
-        path: ROUTES.BROWSER_MOCKUP,
-        label: 'Browser Mockup',
-        icon: <WebIcon />,
+        path: ROUTES.JSON_EXPLORER,
+        label: 'JSON Explorer',
+        icon: <DataObjectIcon />,
+      },
+      {
+        path: ROUTES.MD_TABLE,
+        label: 'Markdown Table',
+        icon: <IoLogoMarkdown style={{ fontSize: '1.25rem' }} />,
       },
     ],
   },

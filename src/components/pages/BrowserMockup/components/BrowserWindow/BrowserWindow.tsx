@@ -9,11 +9,9 @@ import {
   Slider,
   Paper,
   Button,
-  useTheme as useMuiTheme,
+  useTheme,
 } from '@mui/material'
 import { Download } from '@mui/icons-material'
-import styles from './BrowserWindow.module.css'
-import { useTheme } from '../../theme/useTheme'
 import { useEditableState, useSliderState } from '../../hooks'
 
 /**
@@ -56,8 +54,8 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
     },
     ref
   ) => {
-    const { mode } = useTheme()
-    const muiTheme = useMuiTheme()
+    const theme = useTheme()
+    const isDark = theme.palette.mode === 'dark'
     const browserWindowRef = useRef<HTMLDivElement>(null)
 
     // Expose the browser window element through ref
@@ -115,7 +113,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
               width: { xs: 450, sm: 320, md: 550, lg: 680, xl: 740 },
               '& .MuiSlider-thumb': {
                 '&:focus-visible': {
-                  boxShadow: `0 0 0 3px ${muiTheme.palette.primary.main}40`,
+                  boxShadow: `0 0 0 3px ${theme.palette.primary.main}40`,
                 },
               },
             }}
@@ -155,14 +153,14 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
 
         <Paper
           ref={browserWindowRef}
-          elevation={mode === 'dark' ? 3 : 1}
+          elevation={isDark ? 3 : 1}
           sx={{
             width: `${width}px !important`,
             margin: '1rem auto !important',
             overflow: 'hidden !important',
             borderRadius: '1 !important',
             transition: 'all 0.3s ease !important',
-            border: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} !important`,
+            border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} !important`,
           }}
         >
           <Box
@@ -174,17 +172,50 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
               alignItems: 'center !important',
               padding: '0.25rem 1rem !important',
               backgroundColor:
-                mode === 'dark'
+                isDark
                   ? 'rgba(255,255,255,0.05) !important'
                   : 'rgba(0,0,0,0.05) !important',
-              borderBottom: `1px solid ${mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} !important`,
+              borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} !important`,
             }}
           >
-            <div className={styles.buttons}>
-              <span className={styles.dot} style={{ background: '#f25f58' }} />
-              <span className={styles.dot} style={{ background: '#fbbe3c' }} />
-              <span className={styles.dot} style={{ background: '#58cb42' }} />
-            </div>
+            <Box sx={{ whiteSpace: 'nowrap' }}>
+              <Box 
+                component="span" 
+                sx={{ 
+                  marginRight: '6px',
+                  marginTop: '4px',
+                  height: '12px',
+                  width: '12px',
+                  borderRadius: '50%',
+                  display: 'inline-block',
+                  background: '#f25f58'
+                }} 
+              />
+              <Box 
+                component="span" 
+                sx={{ 
+                  marginRight: '6px',
+                  marginTop: '4px',
+                  height: '12px',
+                  width: '12px',
+                  borderRadius: '50%',
+                  display: 'inline-block',
+                  background: '#fbbe3c'
+                }} 
+              />
+              <Box 
+                component="span" 
+                sx={{ 
+                  marginRight: '6px',
+                  marginTop: '4px',
+                  height: '12px',
+                  width: '12px',
+                  borderRadius: '50%',
+                  display: 'inline-block',
+                  background: '#58cb42'
+                }} 
+              />
+            </Box>
 
             <Box
               component="div"
@@ -204,11 +235,11 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                 margin: '0 1rem 0 0.5rem !important',
                 borderRadius: '12.5px !important',
                 backgroundColor:
-                  mode === 'dark'
+                  isDark
                     ? 'rgba(0,0,0,0.3) !important'
                     : 'rgba(255,255,255,0.8) !important',
                 color:
-                  mode === 'dark'
+                  isDark
                     ? 'rgba(255,255,255,0.8) !important'
                     : 'rgba(0,0,0,0.8) !important',
                 padding: '5px 15px !important',
@@ -220,12 +251,12 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                 cursor: 'text !important',
                 transition: 'all 0.3s ease !important',
                 '&:focus-visible': {
-                  outline: `2px solid ${muiTheme.palette.primary.main} !important`,
+                  outline: `2px solid ${theme.palette.primary.main} !important`,
                   outlineOffset: '2px !important',
                 },
                 '&:hover': {
                   backgroundColor:
-                    mode === 'dark'
+                    isDark
                       ? 'rgba(0,0,0,0.4) !important'
                       : 'rgba(255,255,255,0.9) !important',
                 },
@@ -248,7 +279,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                     fontFamily: 'Arial, sans-serif !important',
                     background: 'transparent !important',
                     color:
-                      mode === 'dark'
+                      isDark
                         ? 'rgba(255,255,255,0.9) !important'
                         : 'rgba(0,0,0,0.9) !important',
                   }}
@@ -299,12 +330,12 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                   padding: '4px !important',
                   borderRadius: '4px !important',
                   '&:focus-visible': {
-                    outline: `2px solid ${muiTheme.palette.primary.main} !important`,
+                    outline: `2px solid ${theme.palette.primary.main} !important`,
                     outlineOffset: '2px !important',
                   },
                   '&:hover': {
                     backgroundColor:
-                      mode === 'dark'
+                      isDark
                         ? 'rgba(255,255,255,0.1) !important'
                         : 'rgba(0,0,0,0.1) !important',
                   },
@@ -322,7 +353,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                     width: '17px !important',
                     height: '3px !important',
                     backgroundColor:
-                      mode === 'dark'
+                      isDark
                         ? 'rgba(255,255,255,0.6) !important'
                         : 'rgba(0,0,0,0.6) !important',
                     margin: '3px 0 !important',
@@ -336,7 +367,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                     width: '17px !important',
                     height: '3px !important',
                     backgroundColor:
-                      mode === 'dark'
+                      isDark
                         ? 'rgba(255,255,255,0.6) !important'
                         : 'rgba(0,0,0,0.6) !important',
                     margin: '3px 0 !important',
@@ -350,7 +381,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                     width: '17px !important',
                     height: '3px !important',
                     backgroundColor:
-                      mode === 'dark'
+                      isDark
                         ? 'rgba(255,255,255,0.6) !important'
                         : 'rgba(0,0,0,0.6) !important',
                     margin: '3px 0 !important',
@@ -374,8 +405,15 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
             <img
               src={imageUrl}
               alt="User-uploaded content displayed in browser window mockup"
-              className={styles.browserImage}
               loading="lazy"
+              style={{
+                width: '100%',
+                maxHeight: '500px',
+                objectFit: 'contain',
+                display: 'block',
+                borderBottomLeftRadius: '8px',
+                borderBottomRightRadius: '8px',
+              }}
             />
           </Box>
         </Paper>

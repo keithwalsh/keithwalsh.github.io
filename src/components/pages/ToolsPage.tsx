@@ -8,6 +8,7 @@ import { MarkdownTablePage } from './MarkdownTable'
 import { CodeAnnotatorPage } from './CodeAnnotatorPage'
 import { CronExpressions } from './index'
 import BrowserMockup from './BrowserMockup/BrowserMockup'
+import JsonExplorer from './JsonExplorer/JsonExplorer'
 
 interface ToolsPageProps {
   type?:
@@ -45,6 +46,7 @@ export function ToolsPage({ type }: ToolsPageProps) {
         <Typography variant="h4" gutterBottom>
           {getTitle()}
         </Typography>
+        {type === 'json-explorer' && <JsonExplorer />}
         {type === 'markdown-table' && <MarkdownTablePage />}
         {type === 'code-annotator' && <CodeAnnotatorPage />}
         {type === 'cron-expressions' && <CronExpressions />}
