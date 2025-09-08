@@ -1,5 +1,6 @@
 import { Component } from "react";
 import ReactJson from "@microlink/react-json-view";
+import { Box, Typography } from "@mui/material";
 
 interface JsonFormatterProps {
     label?: string;
@@ -28,11 +29,37 @@ class JsonFormatter extends Component<JsonFormatterProps> {
         };
 
         return (
-            <div className={className}>
-                <label htmlFor="textarea" className="block font-roboto text-xs text-textColor font-normal tracking-wider uppercase mb-1">
+            <Box className={className}>
+                <Typography
+                    component="label"
+                    htmlFor="textarea"
+                    sx={{
+                        display: "block",
+                        fontFamily: "Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji",
+                        fontSize: "12px",
+                        color: "#415758",
+                        fontWeight: "normal",
+                        letterSpacing: "0.05em",
+                        textTransform: "uppercase",
+                        marginBottom: "4px",
+                    }}
+                >
                     {label}
-                </label>
-                <div className="p-5 relative overflow-y-auto overflow-x-auto min-w-[18rem] h-[35.45rem] rounded-4px bg-[#2b3440] text-[#d7dde4] border border-borderColor">
+                </Typography>
+                <Box
+                    sx={{
+                        padding: "20px",
+                        position: "relative",
+                        overflowY: "auto",
+                        overflowX: "auto",
+                        minWidth: "18rem",
+                        height: "35.45rem",
+                        borderRadius: "4px",
+                        backgroundColor: "#2b3440",
+                        color: "#d7dde4",
+                        border: "1px solid #D8E3E4",
+                    }}
+                >
                     <ReactJson
                         src={safeParseJson(data)}
                         name={false}
@@ -68,8 +95,8 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                             base0F: "#FF5370",
                         }}
                     />
-                </div>
-            </div>
+                </Box>
+            </Box>
         );
     }
 }

@@ -4,14 +4,24 @@
  */
 
 import { Card, CardContent, Typography, useTheme } from '@mui/material'
+import { ReactNode } from 'react'
+
+interface InstructionsCardProps {
+  /** The heading text for the instructions */
+  heading: string
+  /** The body content - can be a string, JSX, or ReactNode */
+  body: ReactNode
+  /** Optional custom heading ID for accessibility */
+  headingId?: string
+}
 
 /**
- * A card component that displays instructional guidance for the browser window
- * mockup functionality with themed styling.
+ * A reusable card component that displays instructional guidance with themed styling.
  *
+ * @param props - The component props
  * @returns The InstructionsCard component
  */
-function InstructionsCard() {
+function InstructionsCard({ heading, body, headingId = 'instructions-heading' }: InstructionsCardProps) {
   const theme = useTheme()
   const isDark = theme.palette.mode === 'dark'
 
@@ -19,7 +29,7 @@ function InstructionsCard() {
     <Card
       component="section"
       role="region"
-      aria-labelledby="instructions-heading"
+      aria-labelledby={headingId}
       sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -33,7 +43,7 @@ function InstructionsCard() {
     >
       <CardContent sx={{ width: '100%' }}>
         <Typography
-          id="instructions-heading"
+          id={headingId}
           variant="h6"
           component="h2"
           sx={{
@@ -43,7 +53,7 @@ function InstructionsCard() {
             color: 'text.primary',
           }}
         >
-          How to Use
+          {heading}
         </Typography>
         <Typography
           variant="body2"
@@ -61,13 +71,7 @@ function InstructionsCard() {
             },
           }}
         >
-          <ol>
-            <li>Drag and drop or click to select an image</li>
-            <li>Image appears in browser mockup after upload</li>
-            <li>Adjust the browser window width using the slider</li>
-            <li>Click on the URL bar to edit the displayed address</li>
-            <li>Click "Download" to save the mockup</li>
-          </ol>
+          {body}
         </Typography>
       </CardContent>
     </Card>

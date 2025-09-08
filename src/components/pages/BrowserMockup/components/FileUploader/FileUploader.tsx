@@ -60,7 +60,18 @@ function FileUploader({
   return (
     <Box sx={{ display: 'flex', gap: 3, alignItems: 'left' }}>
       <Inline showDivider={false}>
-        <InstructionsCard />
+        <InstructionsCard 
+          heading="How to Use"
+          body={
+            <ol>
+              <li>Drag and drop or click to select an image</li>
+              <li>Image appears in browser mockup after upload</li>
+              <li>Adjust the browser window width using the slider</li>
+              <li>Click on the URL bar to edit the displayed address</li>
+              <li>Click "Download" to save the mockup</li>
+            </ol>
+          }
+        />
         <DropZone
           accept={accept}
           onFileChange={handleFileChange}
