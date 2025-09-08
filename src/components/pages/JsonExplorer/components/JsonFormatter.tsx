@@ -1,10 +1,8 @@
 import { Component } from "react";
 import ReactJson from "@microlink/react-json-view";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface JsonFormatterProps {
-    label?: string;
-    className?: string;
     data?: string | null;
     displayDataTypes?: boolean | false;
     displayObjectSize?: boolean | false;
@@ -14,7 +12,7 @@ interface JsonFormatterProps {
 
 class JsonFormatter extends Component<JsonFormatterProps> {
     render() {
-        const { label, className, data, displayDataTypes, displayObjectSize, collapsed, collapseStringsAfterLength } = this.props;
+        const { data, displayDataTypes, displayObjectSize, collapsed, collapseStringsAfterLength } = this.props;
 
         // Function to safely parse JSON and handle exceptions
         const safeParseJson = (jsonString?: string | null) => {
@@ -29,32 +27,16 @@ class JsonFormatter extends Component<JsonFormatterProps> {
         };
 
         return (
-            <Box className={className}>
-                <Typography
-                    component="label"
-                    htmlFor="textarea"
-                    sx={{
-                        display: "block",
-                        fontFamily: "Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji",
-                        fontSize: "12px",
-                        color: "#415758",
-                        fontWeight: "normal",
-                        letterSpacing: "0.05em",
-                        textTransform: "uppercase",
-                        marginBottom: "4px",
-                    }}
-                >
-                    {label}
-                </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', height: "100%" }}>
                 <Box
                     sx={{
-                        padding: "20px",
-                        position: "relative",
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: "100%",
                         overflowY: "auto",
                         overflowX: "auto",
                         minWidth: "18rem",
-                        height: "35.45rem",
-                        borderRadius: "4px",
+                        borderRadius: 1,
                         backgroundColor: "#2b3440",
                         color: "#d7dde4",
                         border: "1px solid #D8E3E4",
@@ -64,6 +46,8 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                         src={safeParseJson(data)}
                         name={false}
                         style={{
+                            padding: 10,
+                            height: "100%",
                             backgroundColor: "none",
                             fontSize: "12px",
                             fontFamily: "SFMono-Regular, Menlo, Consolas, Monaco, Liberation Mono, Courier New, monospace",

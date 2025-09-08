@@ -2,7 +2,21 @@ import React, { useState } from "react";
 import { VscJson, VscClearAll, VscChromeRestore } from "react-icons/vsc";
 import { JsonFormatter } from "./components";
 import { useToggle, fetchJsonData, performJsonQuery } from "./utils";
-import { Switch, Select, FormControlLabel, MenuItem, InputLabel, FormControl, TextField, Button, Box, Container, Divider } from "@mui/material";
+import {
+    Switch,
+    Select,
+    FormControlLabel,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    TextField,
+    Button,
+    Box,
+    Container,
+    Divider,
+    Typography,
+    IconButton
+} from "@mui/material";
 import { InstructionsCard } from "../BrowserMockup/components/FileUploader";
 import { Inline } from "../../shared-components";
 
@@ -23,8 +37,6 @@ const JsonExplorer = () => {
     return (
         <Container>
             <Box>
-                <Box>
-                    <Box>
                         <Button
                             variant="outlined"
                             startIcon={<VscJson />}
@@ -39,11 +51,9 @@ const JsonExplorer = () => {
                         >
                             Clear
                         </Button>
-                    </Box>
-                </Box>
             </Box>
             <Inline showDivider={false}>
-                <InstructionsCard 
+                <InstructionsCard
                     heading="How to Use"
                     body={
                         <ol>
@@ -141,9 +151,28 @@ const JsonExplorer = () => {
             </Inline>
             <Divider sx={{ my: 4 }} />
             <Inline showDivider={false}>
-                <Box sx={{ flex: 1 }}>
-                    <TextField      
-                        label="Input"
+                <Box sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: "50%"
+                }}>
+                    <Typography
+                        component="label"
+                        htmlFor="textarea"
+                        sx={{
+                            display: "block",
+                            fontFamily: "Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji",
+                            fontWeight: "400",
+                            fontSize: "1rem",
+                            lineHeight: "1.4375em",
+                            letterSpacing: "0.00938em",
+                            color: "rgba(0, 0, 0, 0.6);",
+                            marginBottom: "4px",
+                        }}
+                    >
+                        Input
+                    </Typography>
+                    <TextField
                         multiline
                         minRows={10}
                         value={jsonData}
@@ -152,27 +181,41 @@ const JsonExplorer = () => {
                         fullWidth
                     />
                 </Box>
-                <Box sx={{ flex: 1 }}>
-                    <fieldset style={{ position: 'relative', border: 'none', padding: 0, margin: 0 }}>
-                        <JsonFormatter
-                            label="Output"
-                            data={jsonData}
-                            className="pb-[26px]"
-                            displayDataTypes={isActiveDisplayDataTypes}
-                            displayObjectSize={isActiveDisplayObjectSize}
-                            collapseStringsAfterLength={selectedLength}
-                            collapsed={selectedDepth}
-                        />
-                        <Box sx={{ position: 'absolute', bottom: 0, right: 0 }}>
-                            <Button
-                                variant="outlined"
-                                startIcon={<VscChromeRestore />}
-                                onClick={() => navigator.clipboard.writeText(jsonData)}
-                            >
-                                Copy
-                            </Button>
-                        </Box>
-                    </fieldset>
+                <Box sx={{ 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: "50%"
+                }}>
+
+                    <Inline showDivider={false}>
+                        <Typography
+                            component="label"
+                            htmlFor="textarea"
+                            sx={{
+                                display: "block",
+                                fontFamily: "Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji",
+                                fontWeight: "400",
+                                width: "100%",
+                                fontSize: "1rem",
+                                lineHeight: "1.4375em",
+                                letterSpacing: "0.00938em",
+                                color: "rgba(0, 0, 0, 0.6);",
+                                marginBottom: "4px",
+                            }}
+                        >
+                            Output
+                        </Typography>
+                        <IconButton aria-label="copy" size="small" onClick={() => navigator.clipboard.writeText(jsonData)}>
+                            <VscChromeRestore fontSize="inherit" />
+                        </IconButton>
+                    </Inline>
+                    <JsonFormatter
+                        data={jsonData}
+                        displayDataTypes={isActiveDisplayDataTypes}
+                        displayObjectSize={isActiveDisplayObjectSize}
+                        collapseStringsAfterLength={selectedLength}
+                        collapsed={selectedDepth}
+                    />
                 </Box>
             </Inline>
         </Container>
