@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { VscJson, VscClearAll, VscChromeRestore } from 'react-icons/vsc';
 import { JsonFormatter } from './components';
 import { useToggle, fetchJsonData, performJsonQuery } from './utils';
-import { Switch, Select, FormControlLabel, MenuItem, InputLabel, FormControl, TextField, Button, Box, Container, Divider, Typography, IconButton, Tooltip, Stack } from '@mui/material';
+import { Switch, Select, FormControlLabel, MenuItem, InputLabel, FormControl, TextField, Button, Box, Container, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
 import { Inline, InstructionsCard } from '../../shared-components';
 
 const JsonExplorer = () => {
@@ -60,7 +60,7 @@ const JsonExplorer = () => {
           >
             Execute Query
           </Button>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormControlLabel
                 control={
@@ -153,6 +153,16 @@ const JsonExplorer = () => {
             onChange={handleChange}
             placeholder="Paste JSON here"
             fullWidth
+            sx={{
+               '& .MuiInputBase-root': {
+                py: 1,
+               },
+               '& .MuiInputBase-input': {
+                color: theme => alpha(theme.palette.text.primary, 0.9),
+                fontSize: "12px",
+                fontFamily: "SFMono-Regular, Menlo, Consolas, Monaco, Liberation Mono, Courier New, monospace",
+               }
+            }}
           />
         </Box>
         <Box

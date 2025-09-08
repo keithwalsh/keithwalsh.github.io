@@ -46,7 +46,10 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                         src={safeParseJson(data)}
                         name={false}
                         style={{
-                            padding: 10,
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            paddingLeft: 5,
+                            paddingRight: 10,
                             height: "100%",
                             backgroundColor: "none",
                             fontSize: "12px",
@@ -61,22 +64,23 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                         collapseStringsAfterLength={collapseStringsAfterLength}
                         quotesOnKeys={false}
                         theme={{
-                            base00: "#FFFFFF", // very dark gray
-                            base01: "#FFFFFF", // dark gray
-                            base02: "#353535", // charcoal gray
-                            base03: "#4A4A4A", // medium gray
-                            base04: "#B2CCD6", // pale blue
-                            base05: "#EEFFFF", // very light blue
-                            base06: "#EEFFFF", // very light blue
-                            base07: "#F0F6FC", // white
-                            base08: "#F07178", // light red
-                            base09: "#7ee787", // Text
-                            base0A: "#FFCB6B", // yellow
-                            base0B: "#C3E88D", // light green
-                            base0C: "#89DDFF", // sky blue
-                            base0D: "#82AAFF", // light blue
-                            base0E: "#C792EA", // lavender
-                            base0F: "#79c0ff", // Number
+                            base00: "#FFFFFF", // 
+                            base01: "#FFFFFF", // 
+                            base02: "#353535", // Lines
+                            base03: "#FFFFFF", // 
+                            base04: "#FFFFFF", // 
+                            base05: "#FFFFFF", // 
+                            base06: "#FFFFFF", // 
+                            base07: "#F0F6FC", // Main Text
+                            base08: "#FFFFFF", // 
+                            base09: "#7ee787", // String
+                            base0A: "#FFCB6B", // NULL
+                            base0B: "#FFFFFF", // 
+                            base0C: "#FFFFFF", // 
+                            base0D: "#9198a1", // 
+                            base0E: "#79c0ff", // Binary
+                            base0F: "#ff7b72", // Number
+
                         }}
                     />
                 </Box>
