@@ -3,7 +3,7 @@
  * for using the browser window mockup functionality.
  */
 
-import { Card, CardContent, Typography, useTheme } from '@mui/material'
+import { Card, CardContent, Typography } from '@mui/material'
 import { ReactNode } from 'react'
 
 interface InstructionsCardProps {
@@ -22,8 +22,6 @@ interface InstructionsCardProps {
  * @returns The InstructionsCard component
  */
 function InstructionsCard({ heading, body, headingId = 'instructions-heading' }: InstructionsCardProps) {
-  const theme = useTheme()
-  const isDark = theme.palette.mode === 'dark'
 
   return (
     <Card
@@ -37,8 +35,6 @@ function InstructionsCard({ heading, body, headingId = 'instructions-heading' }:
         minHeight: 210,
         minWidth: { xs: 280, sm: 280, md: 290, lg: 370, xl: 370 },
         mb: 3,
-        backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : undefined,
-        transition: 'all 0.3s ease',
       }}
     >
       <CardContent sx={{ width: '100%' }}>
@@ -78,4 +74,4 @@ function InstructionsCard({ heading, body, headingId = 'instructions-heading' }:
   )
 }
 
-export default InstructionsCard
+export { InstructionsCard }

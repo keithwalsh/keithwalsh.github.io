@@ -3,7 +3,7 @@
  * feedback and keyboard accessibility.
  */
 
-import { Box, Typography, useTheme } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { CloudUpload } from '@mui/icons-material'
 import { ChangeEvent, DragEvent, useState } from 'react'
 
@@ -34,8 +34,6 @@ function DropZone({
   onFileDrop,
   validateFile,
 }: DropZoneProps) {
-  const theme = useTheme()
-  const isDark = theme.palette.mode === 'dark'
   const [isDragOver, setIsDragOver] = useState(false)
 
   // Handle file processing for both drop and file input
@@ -135,35 +133,23 @@ function DropZone({
         width: '100%',
         minWidth: { xs: 280, sm: 280, md: 290, lg: 340, xl: 370 },
         minHeight: 210,
-        border: `2px dashed ${
-          isDragOver
-            ? theme.palette.primary.main
-            : isDark
-              ? 'rgba(255,255,255,0.3)'
-              : 'rgba(0,0,0,0.3)'
-        }`,
+        borderColor: 'action.disabled',
+        borderWidth: '2px',
+        borderStyle: 'dashed',
         borderRadius: 1.5,
-        backgroundColor: isDragOver
-          ? isDark
-            ? 'rgba(144, 202, 249, 0.08)'
-            : 'rgba(25, 118, 210, 0.08)'
-          : isDark
-            ? 'rgba(255,255,255,0.02)'
-            : 'rgba(0,0,0,0.02)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         cursor: 'pointer',
         mb: 2,
+        backgroundColor: 'action.hover',
         '&:hover': {
-          backgroundColor: isDark
-            ? 'rgba(255,255,255,0.05)'
-            : 'rgba(0,0,0,0.05)',
-          borderColor: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+          backgroundColor: 'action.selected',
+          borderColor: 'text.secondary',
         },
         '&:focus-visible': {
-          outline: `3px solid ${theme.palette.primary.main}`,
+          outline: '3px solid primary.main',
           outlineOffset: '2px',
         },
       }}
@@ -171,18 +157,16 @@ function DropZone({
       <CloudUpload
         sx={{
           fontSize: 48,
-          color: isDragOver ? theme.palette.primary.main : 'text.secondary',
+          color: isDragOver ? 'primary.main' : 'text.secondary',
           mb: 1,
-          transition: 'color 0.3s ease',
         }}
       />
       <Typography
         variant="h6"
         sx={{
-          color: isDragOver ? theme.palette.primary.main : 'text.primary',
+          color: isDragOver ? 'primary.main' : 'text.primary',
           fontWeight: 500,
           textAlign: 'center',
-          transition: 'color 0.3s ease',
         }}
       >
         {isDragOver ? 'Drop your image here' : 'Drag & Drop or Click to Browse'}

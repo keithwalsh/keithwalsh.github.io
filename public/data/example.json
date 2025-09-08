@@ -26,5 +26,7 @@
             "quote": "Go on, go on, go on, go on, go on, go on, go on, go on, go on!"
         }
     ],
-    "description": "The show revolves around three dysfunctional Irish priests and their housekeeper, who live on Craggy Island."
+    "description": "The show revolves around three dysfunctional Irish priests and their housekeeper, who live on Craggy Island.",
+    "is_comedy": true,
+    "award_won": null
 }

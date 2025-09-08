@@ -37,9 +37,9 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                         overflowX: "auto",
                         minWidth: "18rem",
                         borderRadius: 1,
-                        backgroundColor: "#2b3440",
+                        backgroundColor: "#0d1117",
                         color: "#d7dde4",
-                        border: "1px solid #D8E3E4",
+                        border: "1px solid rgba(61, 68, 77, 1)",
                     }}
                 >
                     <ReactJson
@@ -61,22 +61,22 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                         collapseStringsAfterLength={collapseStringsAfterLength}
                         quotesOnKeys={false}
                         theme={{
-                            base00: "#212121",
-                            base01: "#303030",
-                            base02: "#353535",
-                            base03: "#4A4A4A",
-                            base04: "#B2CCD6",
-                            base05: "#EEFFFF",
-                            base06: "#EEFFFF",
-                            base07: "#FFFFFF",
-                            base08: "#F07178",
-                            base09: "#F78C6C",
-                            base0A: "#FFCB6B",
-                            base0B: "#C3E88D",
-                            base0C: "#89DDFF",
-                            base0D: "#82AAFF",
-                            base0E: "#C792EA",
-                            base0F: "#FF5370",
+                            base00: "#FFFFFF", // very dark gray
+                            base01: "#FFFFFF", // dark gray
+                            base02: "#353535", // charcoal gray
+                            base03: "#4A4A4A", // medium gray
+                            base04: "#B2CCD6", // pale blue
+                            base05: "#EEFFFF", // very light blue
+                            base06: "#EEFFFF", // very light blue
+                            base07: "#F0F6FC", // white
+                            base08: "#F07178", // light red
+                            base09: "#7ee787", // Text
+                            base0A: "#FFCB6B", // yellow
+                            base0B: "#C3E88D", // light green
+                            base0C: "#89DDFF", // sky blue
+                            base0D: "#82AAFF", // light blue
+                            base0E: "#C792EA", // lavender
+                            base0F: "#79c0ff", // Number
                         }}
                     />
                 </Box>

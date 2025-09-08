@@ -112,8 +112,8 @@ function BrowserMockup() {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {error && (
           <Alert severity="error" sx={{ mb: 2, maxWidth: 600 }}>
             {error}

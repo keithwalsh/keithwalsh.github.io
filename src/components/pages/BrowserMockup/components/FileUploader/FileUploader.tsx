@@ -6,9 +6,8 @@
 import { Box } from '@mui/material'
 import { ChangeEvent } from 'react'
 import { isImageFile } from '../../utils'
-import InstructionsCard from './InstructionsCard'
 import DropZone from './DropZone'
-import { Inline } from '../../../../../components/shared-components'
+import { Inline, InstructionsCard } from '../../../../../components/shared-components'
 
 /**
  * Props for the FileUploader component.

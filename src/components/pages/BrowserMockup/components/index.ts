@@ -4,5 +4,5 @@
  */
 
 export { default as BrowserWindow } from './BrowserWindow'
-export { default as FileUploader, InstructionsCard } from './FileUploader'
+export { default as FileUploader } from './FileUploader'
 export { ErrorBoundary, SectionErrorBoundary } from './ErrorBoundary'

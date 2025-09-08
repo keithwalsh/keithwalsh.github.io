@@ -3,3 +3,4 @@
  */
 
 export { Inline } from './Inline';
+export { InstructionsCard } from './InstructionsCard';
