@@ -6,7 +6,6 @@ import {
   Fab,
   Menu,
   MenuItem,
-  IconButton,
   Tooltip,
 } from '@mui/material'
 import { TemperatureHumidityChart } from '../TemperatureHumidityChart'
@@ -18,7 +17,6 @@ import { RainData, loadRainData } from '../../utils/csvLoader'
 import {
   WindRoseData,
   loadWindRoseData,
-  refreshAllData,
 } from '../../utils/csvLoader'
 import { WindRoseChart } from '../WindRoseChart'
 import { Masonry } from '@mui/lab'
