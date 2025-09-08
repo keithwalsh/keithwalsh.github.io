@@ -2,11 +2,12 @@
  * @fileoverview About page component containing professional timeline and information.
  */
 
-import { Box, Container, Typography } from "@mui/material"
-import { AboutPhotoSection } from "../AboutPhotoSection"
-import { ProfessionalJourney } from "../ProfessionalJourney"
-import { SkillList } from "../SkillList"
-import { EducationCerts } from "../EducationCerts"
+import { Container } from "@mui/material"
+// import { Box, Typography } from "@mui/material"
+// import { AboutPhotoSection } from "../AboutPhotoSection"
+// import { ProfessionalJourney } from "../ProfessionalJourney"
+// import { SkillList } from "../SkillList"
+// import { EducationCerts } from "../EducationCerts"
 
 export function AboutPage() {
     return (
