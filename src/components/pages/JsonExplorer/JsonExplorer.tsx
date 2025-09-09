@@ -59,6 +59,7 @@ const JsonExplorer = () => {
               value={query}
               onChange={handleQueryChange}
               onClick={handlePerformQuery}
+              width="200px"
             />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>

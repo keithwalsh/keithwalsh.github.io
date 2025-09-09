@@ -12,6 +12,7 @@ type Props = {
     placeholder?: string;
     onClick?: () => void;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    width?: string;
 };
 
 function LinSearch({
@@ -20,6 +21,7 @@ function LinSearch({
     placeholder,
     onClick,
     onChange,
+    width = '100%',
 }: Props) {
     return (
         <Box sx={{ 
@@ -29,8 +31,8 @@ function LinSearch({
             marginBottom: 1,
             whiteSpace: 'nowrap'
         }}>
-            <Box sx={{ display: 'inline-block' }}>
-                <Box component="form" noValidate autoComplete="off">
+            <Box sx={{ display: 'inline-block', width: '100%' }}>
+                <Box component="form" noValidate autoComplete="off" sx={{ width: '100%' }}>
                     <TextField
                         id="outlined-textarea"
                         label={label}
@@ -40,10 +42,11 @@ function LinSearch({
                         onChange={onChange}
                         spellCheck={false}
                         sx={{
+                            width: width,
                             '& .MuiInputBase-root': {
                                 borderTopRightRadius: 0,
                                 borderBottomRightRadius: 0,
-                            }
+                            },
                         }}
                     />
                 </Box>
@@ -63,6 +66,7 @@ function LinSearch({
                         },
                         borderTopLeftRadius: 0,
                         borderBottomLeftRadius: 0,
+                        marginLeft: '-1px',
                     }}
                     onClick={onClick}
                     variant="contained"

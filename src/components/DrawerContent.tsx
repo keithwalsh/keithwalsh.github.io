@@ -63,12 +63,6 @@ export function DrawerContent({ isDesktop, setOpen }: DrawerContentProps) {
     }
   }
 
-  const handleMobileClose = () => {
-    if (!isDesktop) {
-      setOpen(false)
-    }
-  }
-
   return (
     <Box sx={{ p: 2 }}>
       <List sx={{ padding: 0 }}>
