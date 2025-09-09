@@ -79,6 +79,10 @@ export function App() {
     setOpen(prevOpen => !prevOpen)
   }
 
+  const handleDrawerClose = () => {
+    setOpen(false)
+  }
+
   const toggleDarkMode = () => {
     setIsDarkMode((prevMode: boolean) => {
       const newMode = !prevMode
@@ -141,46 +145,54 @@ export function App() {
           </Toolbar>
         </StyledAppBar>
 
-        <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            flex: 1, 
+            overflow: 'hidden',
+            '--drawer-width': isDesktop && !open ? '0px' : '240px'
+          }}
+        >
           <StyledDrawer
             variant={isDesktop ? 'persistent' : 'temporary'}
             open={open}
-            onClose={handleDrawerToggle}
+            onClose={isDesktop ? handleDrawerToggle : handleDrawerClose}
             ModalProps={{ keepMounted: true }}
             isDesktop={isDesktop}
           >
             <DrawerContent isDesktop={isDesktop} setOpen={setOpen} />
           </StyledDrawer>
-
-          <Main>
-            <Routes>
-              <Route path="/" element={<AboutPage />} />
-              <Route path="/projects/personal" element={<PersonalProjects />} />
-              <Route path="/projects/professional" element={<WorkProjects />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/visualizations/weather" element={<Weather />} />
-              <Route
-                path="/tools/json-explorer"
-                element={<ToolsPage type="json-explorer" />}
-              />
-              <Route
-                path="/tools/markdown-table"
-                element={<ToolsPage type="markdown-table" />}
-              />
-              <Route
-                path="/tools/code-annotator"
-                element={<ToolsPage type="code-annotator" />}
-              />
-              <Route
-                path="/tools/cron-expressions"
-                element={<ToolsPage type="cron-expressions" />}
-              />
-              <Route
-                path="/tools/browser-mockup"
-                element={<ToolsPage type="browser-mockup" />}
-              />
-            </Routes>
-          </Main>
+          <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+            <Main>
+              <Routes>
+                <Route path="/" element={<AboutPage />} />
+                <Route path="/projects/personal" element={<PersonalProjects />} />
+                <Route path="/projects/professional" element={<WorkProjects />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/visualizations/weather" element={<Weather />} />
+                <Route
+                  path="/tools/json-explorer"
+                  element={<ToolsPage type="json-explorer" />}
+                />
+                <Route
+                  path="/tools/markdown-table"
+                  element={<ToolsPage type="markdown-table" />}
+                />
+                <Route
+                  path="/tools/code-annotator"
+                  element={<ToolsPage type="code-annotator" />}
+                />
+                <Route
+                  path="/tools/cron-expressions"
+                  element={<ToolsPage type="cron-expressions" />}
+                />
+                <Route
+                  path="/tools/browser-mockup"
+                  element={<ToolsPage type="browser-mockup" />}
+                />
+              </Routes>
+            </Main>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>

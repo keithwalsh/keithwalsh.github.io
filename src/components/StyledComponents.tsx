@@ -63,6 +63,14 @@ export const StyledDrawer = styled(Drawer, {
 })<{ isDesktop: boolean }>(({ theme, isDesktop }) => ({
   width: DRAWER_WIDTH,
   flexShrink: 0,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  '&:not(.MuiDrawer-modal)': {
+    // Only apply width changes to non-modal (persistent/permanent) drawers
+    width: 'var(--drawer-width, 240px)',
+  },
   '& .MuiDrawer-paper': {
     width: DRAWER_WIDTH,
     boxSizing: 'border-box',

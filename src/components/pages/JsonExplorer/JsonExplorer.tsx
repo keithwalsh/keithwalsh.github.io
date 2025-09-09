@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { VscJson, VscClearAll, VscChromeRestore } from 'react-icons/vsc';
 import { JsonFormatter } from './components';
 import { useToggle, fetchJsonData, performJsonQuery } from './utils';
-import { TextField, Button, Box, Container, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
+import { TextField, Button, Box, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
 import { Inline, InstructionsCard, LinSelect, LinSwitch } from '../../shared-components';
 
 const JsonExplorer = () => {
@@ -22,7 +22,12 @@ const JsonExplorer = () => {
   const handlePerformQuery = () => performJsonQuery(jsonData, query, setJsonData);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Box sx={{ 
+      flex: 1,
+      padding: 3,
+      transition: 'all 0.5s ease-in-out',
+      mt: 4
+  }}>
       <Inline showDivider={false}>
         <InstructionsCard
           heading="How to Use"
@@ -81,7 +86,7 @@ const JsonExplorer = () => {
               />
             </Stack>
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <Stack direction="row" spacing={3}>
+              <Stack direction="row" spacing= {{ xs: 1, sm: 2, md: 3}}>
                 <LinSelect
                   label="Collapse"
                   values={[
@@ -220,8 +225,8 @@ const JsonExplorer = () => {
           />
         </Box>
       </Inline>
-    </Container>
-  );
+    </Box>
+  );  
 };
 
 export default JsonExplorer;
