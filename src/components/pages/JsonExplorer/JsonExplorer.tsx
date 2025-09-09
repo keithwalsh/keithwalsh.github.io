@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { VscJson, VscClearAll, VscChromeRestore } from 'react-icons/vsc';
 import { JsonFormatter } from './components';
 import { useToggle, fetchJsonData, performJsonQuery } from './utils';
-import { TextField, Button, Box, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
-import { Inline, InstructionsCard, LinSelect, LinSwitch } from '../../shared-components';
+import { TextField, Box, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
+import { Inline, InstructionsCard, LinSearch, LinSelect, LinSwitch } from '../../shared-components';
 
 const JsonExplorer = () => {
   const [jsonData, setJsonData] = useState('');
@@ -52,21 +52,15 @@ const JsonExplorer = () => {
             gap: 2,
           }}
         >
-          <TextField
-            label="JSON Path Input"
-            placeholder="Enter JSON dot notation e.g. user.name"
-            value={query}
-            onChange={handleQueryChange}
-            fullWidth
-          />
-          <Button
-            variant="contained"
-            size="small"
-            onClick={handlePerformQuery}
-            disabled={!query.trim() || !jsonData.trim()}
-          >
-            Execute Query
-          </Button>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <LinSearch
+              label="JSON Path Input"
+              placeholder="Enter JSON dot notation e.g. user.name"
+              value={query}
+              onChange={handleQueryChange}
+              onClick={handlePerformQuery}
+            />
+          </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
             <Stack direction="row" spacing={5}>
               <LinSwitch
