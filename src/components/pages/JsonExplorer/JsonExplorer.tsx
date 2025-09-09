@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { VscJson, VscClearAll, VscChromeRestore } from 'react-icons/vsc';
 import { JsonFormatter } from './components';
 import { useToggle, fetchJsonData, performJsonQuery } from './utils';
-import { Switch, Select, FormControlLabel, MenuItem, InputLabel, FormControl, TextField, Button, Box, Container, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
-import { Inline, InstructionsCard } from '../../shared-components';
+import { TextField, Button, Box, Container, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
+import { Inline, InstructionsCard, LinSelect, LinSwitch } from '../../shared-components';
 
 const JsonExplorer = () => {
   const [jsonData, setJsonData] = useState('');
@@ -63,99 +63,72 @@ const JsonExplorer = () => {
             Execute Query
           </Button>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <FormControlLabel
-                sx={{
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: '0.9em',
-                  },
-                }}
-                control={
-                  <Switch
-                    checked={isActiveDisplayArrayKey}
-                    onChange={handleToggleDisplayArrayKey}
-                  />
-                }
+            <Stack direction="row" spacing={5}>
+              <LinSwitch
                 label="Array Keys"
+                checked={isActiveDisplayArrayKey}
+                onChange={handleToggleDisplayArrayKey}
               />
-              <FormControlLabel
-                sx={{
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: '0.9em',
-                  },
-                }}
-                control={
-                  <Switch
-                    checked={isActiveDisplayDataTypes}
-                    onChange={handleToggleDisplayDataTypes}
-                  />
-                }
+              <LinSwitch
                 label="Data Types"
+                checked={isActiveDisplayDataTypes}
+                onChange={handleToggleDisplayDataTypes}
               />
-              <FormControlLabel
-                sx={{
-                  '& .MuiFormControlLabel-label': {
-                    fontSize: '0.9em',
-                  },
-                }}
-                control={
-                  <Switch
-                    checked={isActiveDisplayObjectSize}
-                    onChange={handleToggleDisplayObjectSize}
-                  />
-                }
+              <LinSwitch
                 label="Object Size"
+                checked={isActiveDisplayObjectSize}
+                onChange={handleToggleDisplayObjectSize}
               />
-            </Box>
+            </Stack>
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <FormControl size="small" sx={{ minWidth: 120 }}>
-                <InputLabel id="collapse-label">Collapse</InputLabel>
-                <Select
-                  size="small"
-                  labelId="collapse-label"
+              <Stack direction="row" spacing={3}>
+                <LinSelect
                   label="Collapse"
-                  value={selectedDepth === true ? 'true' : (selectedDepth === false ? '' : selectedDepth)}
-                  onChange={event => {
-                    const value = event.target.value;
+                  values={[
+                    { value: '', label: 'Expand All' },
+                    { value: 'collapse-all', label: 'Collapse All' },
+                    { value: 1, label: 'Depth 1' },
+                    { value: 2, label: 'Depth 2' },
+                    { value: 3, label: 'Depth 3' }
+                  ]}
+                  selectedValue={selectedDepth === true ? 'collapse-all' : (selectedDepth === false ? '' : selectedDepth)}
+                  onChange={(value) => {
                     if (value === 'collapse-all') {
                       setSelectedDepth(true);
                     } else {
                       setSelectedDepth(Number(value) || false);
                     }
                   }}
-                >
-                  <MenuItem value={''}>Expand All</MenuItem>
-                  <MenuItem value="collapse-all">Collapse All</MenuItem>
-                  <MenuItem value={1}>Depth 1</MenuItem>
-                  <MenuItem value={2}>Depth 2</MenuItem>
-                  <MenuItem value={3}>Depth 3</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl size="small" sx={{ minWidth: 140 }}>
-                <InputLabel id="string-limit-label">String Limit</InputLabel>
-                <Select
-                  size="small"
-                  labelId="string-limit-label"
+                />
+                <LinSelect
                   label="String Limit"
-                  value={selectedLength === false ? '' : selectedLength}
-                  onChange={event => setSelectedLength(Number(event.target.value) || false)}
-                >
-                  <MenuItem value={''}>No Limit</MenuItem>
-                  <MenuItem value={20}>Length 20</MenuItem>
-                  <MenuItem value={40}>Length 40</MenuItem>
-                  <MenuItem value={50}>Length 50</MenuItem>
-                  <MenuItem value={100}>Length 100</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl size="small" sx={{ minWidth: 140 }}>
-                <InputLabel id="indent-width-label">Indent Width</InputLabel>
-                <Select
-                  size="small"
-                  labelId="indent-width-label"
+                  values={[
+                    { value: '', label: 'No Limit' },
+                    { value: 20, label: 'Length 20' },
+                    { value: 40, label: 'Length 40' },
+                    { value: 50, label: 'Length 50' },
+                    { value: 100, label: 'Length 100' }
+                  ]}
+                  selectedValue={selectedLength === false ? '' : selectedLength}
+                  onChange={(value) => setSelectedLength(Number(value) || false)}
+                />
+                <LinSelect
                   label="Indent Width"
-                  value={selectedIndentWidth === 4 ? '' : selectedIndentWidth}
-                  onChange={event => {
-                    const value = event.target.value;
+                  values={[
+                    { value: '', label: 'Default (4)' },
+                    { value: 1, label: 'Width 1' },
+                    { value: 2, label: 'Width 2' },
+                    { value: 3, label: 'Width 3' },
+                    { value: 4, label: 'Width 4' },
+                    { value: 5, label: 'Width 5' },
+                    { value: 6, label: 'Width 6' },
+                    { value: 7, label: 'Width 7' },
+                    { value: 8, label: 'Width 8' },
+                    { value: 9, label: 'Width 9' },
+                    { value: 10, label: 'Width 10' }
+                  ]}
+                  selectedValue={selectedIndentWidth === 4 ? '' : selectedIndentWidth}
+                  onChange={(value) => {
                     if (value === '') {
                       setSelectedIndentWidth(4);
                     } else {
@@ -163,20 +136,8 @@ const JsonExplorer = () => {
                       setSelectedIndentWidth(isNaN(num) ? 4 : num);
                     }
                   }}
-                >
-                  <MenuItem value={''}>Default (4)</MenuItem>
-                  <MenuItem value={1}>Width 1</MenuItem>
-                  <MenuItem value={2}>Width 2</MenuItem>
-                  <MenuItem value={3}>Width 3</MenuItem>
-                  <MenuItem value={4}>Width 4</MenuItem>
-                  <MenuItem value={5}>Width 5</MenuItem>
-                  <MenuItem value={6}>Width 6</MenuItem>
-                  <MenuItem value={7}>Width 7</MenuItem>
-                  <MenuItem value={8}>Width 8</MenuItem>
-                  <MenuItem value={9}>Width 9</MenuItem>
-                  <MenuItem value={10}>Width 10</MenuItem>
-                </Select>
-              </FormControl>
+                />
+              </Stack>
             </Box>
           </Box>
         </Box>
