@@ -36,7 +36,7 @@ echo "Hello [-Room-]";
 // Add
 echo "Hello [+World+]";
 ?>`)
-  const [language, setLanguage] = useState('javascript')
+  const [language, setLanguage] = useState('php')
   const [showLineNumbers, setShowLineNumbers] = useState(true)
 
   return (

@@ -17,6 +17,7 @@ declare module '@microlink/react-json-view' {
     enableClipboard?: boolean;
     displayObjectSize?: boolean;
     displayDataTypes?: boolean;
+    displayArrayKey?: boolean;
     onEdit?: (edit: any) => void;
     onAdd?: (add: any) => void;
     onDelete?: (del: any) => void;

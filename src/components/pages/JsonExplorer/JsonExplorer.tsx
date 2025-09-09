@@ -9,7 +9,9 @@ const JsonExplorer = () => {
   const [jsonData, setJsonData] = useState('');
   const [query, setQuery] = useState('');
   const [selectedLength, setSelectedLength] = useState<number | false>(false);
-  const [selectedDepth, setSelectedDepth] = useState<number | false>(false);
+  const [selectedDepth, setSelectedDepth] = useState<number | boolean>(false);
+  const [selectedIndentWidth, setSelectedIndentWidth] = useState<number>(4);
+  const [isActiveDisplayArrayKey, handleToggleDisplayArrayKey] = useToggle();
   const [isActiveDisplayDataTypes, handleToggleDisplayDataTypes] = useToggle();
   const [isActiveDisplayObjectSize, handleToggleDisplayObjectSize] = useToggle();
 
@@ -63,6 +65,25 @@ const JsonExplorer = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
             <Box sx={{ display: 'flex', gap: 2 }}>
               <FormControlLabel
+                sx={{
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: '0.9em',
+                  },
+                }}
+                control={
+                  <Switch
+                    checked={isActiveDisplayArrayKey}
+                    onChange={handleToggleDisplayArrayKey}
+                  />
+                }
+                label="Array Keys"
+              />
+              <FormControlLabel
+                sx={{
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: '0.9em',
+                  },
+                }}
                 control={
                   <Switch
                     checked={isActiveDisplayDataTypes}
@@ -72,6 +93,11 @@ const JsonExplorer = () => {
                 label="Data Types"
               />
               <FormControlLabel
+                sx={{
+                  '& .MuiFormControlLabel-label': {
+                    fontSize: '0.9em',
+                  },
+                }}
                 control={
                   <Switch
                     checked={isActiveDisplayObjectSize}
@@ -88,10 +114,18 @@ const JsonExplorer = () => {
                   size="small"
                   labelId="collapse-label"
                   label="Collapse"
-                  value={selectedDepth === false ? '' : selectedDepth}
-                  onChange={event => setSelectedDepth(Number(event.target.value) || false)}
+                  value={selectedDepth === true ? 'true' : (selectedDepth === false ? '' : selectedDepth)}
+                  onChange={event => {
+                    const value = event.target.value;
+                    if (value === 'collapse-all') {
+                      setSelectedDepth(true);
+                    } else {
+                      setSelectedDepth(Number(value) || false);
+                    }
+                  }}
                 >
-                  <MenuItem value={0}>Collapse All</MenuItem>
+                  <MenuItem value={''}>Expand All</MenuItem>
+                  <MenuItem value="collapse-all">Collapse All</MenuItem>
                   <MenuItem value={1}>Depth 1</MenuItem>
                   <MenuItem value={2}>Depth 2</MenuItem>
                   <MenuItem value={3}>Depth 3</MenuItem>
@@ -106,10 +140,41 @@ const JsonExplorer = () => {
                   value={selectedLength === false ? '' : selectedLength}
                   onChange={event => setSelectedLength(Number(event.target.value) || false)}
                 >
+                  <MenuItem value={''}>No Limit</MenuItem>
                   <MenuItem value={20}>Length 20</MenuItem>
                   <MenuItem value={40}>Length 40</MenuItem>
                   <MenuItem value={50}>Length 50</MenuItem>
                   <MenuItem value={100}>Length 100</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl size="small" sx={{ minWidth: 140 }}>
+                <InputLabel id="indent-width-label">Indent Width</InputLabel>
+                <Select
+                  size="small"
+                  labelId="indent-width-label"
+                  label="Indent Width"
+                  value={selectedIndentWidth === 4 ? '' : selectedIndentWidth}
+                  onChange={event => {
+                    const value = event.target.value;
+                    if (value === '') {
+                      setSelectedIndentWidth(4);
+                    } else {
+                      const num = Number(value);
+                      setSelectedIndentWidth(isNaN(num) ? 4 : num);
+                    }
+                  }}
+                >
+                  <MenuItem value={''}>Default (4)</MenuItem>
+                  <MenuItem value={1}>Width 1</MenuItem>
+                  <MenuItem value={2}>Width 2</MenuItem>
+                  <MenuItem value={3}>Width 3</MenuItem>
+                  <MenuItem value={4}>Width 4</MenuItem>
+                  <MenuItem value={5}>Width 5</MenuItem>
+                  <MenuItem value={6}>Width 6</MenuItem>
+                  <MenuItem value={7}>Width 7</MenuItem>
+                  <MenuItem value={8}>Width 8</MenuItem>
+                  <MenuItem value={9}>Width 9</MenuItem>
+                  <MenuItem value={10}>Width 10</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -122,10 +187,10 @@ const JsonExplorer = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: '50%',
+            width: { sm: '100%', md: '50%' }
           }}
         >
-            <Inline showDivider={false}>
+            <Stack direction="row">
                 <Typography variant="subtitle1" sx={{ width: '100%' }}>Input</Typography>
                     <Stack direction="row" spacing={1}>
                         <Tooltip title="Load Example JSON" placement="top" arrow>
@@ -145,7 +210,7 @@ const JsonExplorer = () => {
                             </IconButton>
                         </Tooltip>
                     </Stack>
-            </Inline>
+            </Stack>
           <TextField
             multiline
             minRows={10}
@@ -159,7 +224,7 @@ const JsonExplorer = () => {
                },
                '& .MuiInputBase-input': {
                 color: theme => alpha(theme.palette.text.primary, 0.9),
-                fontSize: "12px",
+                fontSize: '0.75em',
                 fontFamily: "SFMono-Regular, Menlo, Consolas, Monaco, Liberation Mono, Courier New, monospace",
                }
             }}
@@ -169,26 +234,28 @@ const JsonExplorer = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            width: '50%',
+            width: { sm: '100%', md: '50%' }
           }}
         >
-          <Inline showDivider={false}>
+          <Stack direction="row">
             <Typography variant="subtitle1" sx={{ width: '100%' }}>Output</Typography>
-                <Tooltip title="Copy to Clipboard" placement="top" arrow>
-                    <IconButton
-                    size="small"
-                    onClick={() => navigator.clipboard.writeText(jsonData)}
-                    >
-                        <VscChromeRestore/>
-                    </IconButton>
-                </Tooltip>
-          </Inline>
+            <Tooltip title="Copy to Clipboard" placement="top" arrow>
+                <IconButton
+                size="small"
+                onClick={() => navigator.clipboard.writeText(jsonData)}
+                >
+                    <VscChromeRestore/>
+                </IconButton>
+            </Tooltip>
+          </Stack>
           <JsonFormatter
             data={jsonData}
+            displayArrayKey={isActiveDisplayArrayKey}
             displayDataTypes={isActiveDisplayDataTypes}
             displayObjectSize={isActiveDisplayObjectSize}
             collapseStringsAfterLength={selectedLength}
             collapsed={selectedDepth}
+            indentWidth={selectedIndentWidth}
           />
         </Box>
       </Inline>

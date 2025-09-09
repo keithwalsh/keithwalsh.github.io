@@ -1,32 +1,20 @@
 {
-    "show_name": "Father Ted",
-    "genre": "Sitcom",
-    "created_by": ["Graham Linehan", "Arthur Mathews"],
-    "number_of_seasons": 3,
-    "original_run": "1995-1998",
-    "main_characters": [
-        {
-            "name": "Father Ted Crilly",
-            "actor": "Dermot Morgan",
-            "quote": "That would be an ecumenical matter!"
-        },
-        {
-            "name": "Father Dougal McGuire",
-            "actor": "Ardal O'Hanlon",
-            "quote": "Sorry, Ted. I was concentrating too hard on looking holy."
-        },
-        {
-            "name": "Father Jack Hackett",
-            "actor": "Frank Kelly",
-            "quote": "Drink! Feck! Arse! Girls!"
-        },
-        {
-            "name": "Mrs. Doyle",
-            "actor": "Pauline McLynn",
-            "quote": "Go on, go on, go on, go on, go on, go on, go on, go on, go on!"
-        }
+    "string": "this is a test string",
+    "integer": 42,
+    "array": [
+      1,
+      2,
+      3,
+      "test",
+      null
     ],
-    "description": "The show revolves around three dysfunctional Irish priests and their housekeeper, who live on Craggy Island.",
-    "is_comedy": true,
-    "award_won": null
-}
+    "float": 3.14159,
+    "undefined": null,
+    "object": {
+      "first-child": true,
+      "second-child": false,
+      "last-child": null
+    },
+    "string_number": "1234"
+  }
+  

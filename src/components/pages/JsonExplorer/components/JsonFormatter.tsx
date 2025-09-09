@@ -4,15 +4,17 @@ import { Box } from "@mui/material";
 
 interface JsonFormatterProps {
     data?: string | null;
-    displayDataTypes?: boolean | false;
-    displayObjectSize?: boolean | false;
-    collapsed?: number | false | undefined;
+    displayArrayKey?: boolean;
+    displayDataTypes?: boolean;
+    displayObjectSize?: boolean;
+    collapsed?: number | boolean | undefined;
     collapseStringsAfterLength?: number | false | undefined;
+    indentWidth?: number;
 }
 
 class JsonFormatter extends Component<JsonFormatterProps> {
     render() {
-        const { data, displayDataTypes, displayObjectSize, collapsed, collapseStringsAfterLength } = this.props;
+        const { data, displayArrayKey, displayDataTypes, displayObjectSize, collapsed, collapseStringsAfterLength, indentWidth } = this.props;
 
         // Function to safely parse JSON and handle exceptions
         const safeParseJson = (jsonString?: string | null) => {
@@ -52,17 +54,18 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                             paddingRight: 10,
                             height: "100%",
                             backgroundColor: "none",
-                            fontSize: "12px",
+                            fontSize: "0.75em",
                             fontFamily: "SFMono-Regular, Menlo, Consolas, Monaco, Liberation Mono, Courier New, monospace",
                         }}
-                        indentWidth={4}
+                        indentWidth={indentWidth || 4}
                         enableClipboard={false}
+                        displayArrayKey={displayArrayKey}
                         displayDataTypes={displayDataTypes}
                         displayObjectSize={displayObjectSize}
-                        sortKeys={true}
+                        sortKeys={false}
                         collapsed={collapsed}
                         collapseStringsAfterLength={collapseStringsAfterLength}
-                        quotesOnKeys={false}
+                        quotesOnKeys={true}
                         theme={{
                             base00: "#FFFFFF", // 
                             base01: "#FFFFFF", // 
