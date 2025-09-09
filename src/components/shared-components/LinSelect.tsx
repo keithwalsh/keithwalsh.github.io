@@ -31,7 +31,7 @@ function LinSelect({
                 id="demo-select-small-label"
                 sx={{
                     fontSize: ".749875rem",
-                    marginTop: "-9.75px",
+                    marginTop: "-9.25px",
                     "&.MuiInputLabel-shrink": {
                         transform: "translate(15px, 2px) scale(0.875)",
                         letterSpacing: "0.05em",

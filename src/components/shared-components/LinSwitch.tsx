@@ -18,6 +18,7 @@ function LinSwitch(props: Props) {
                         onChange={props.onChange}
                         sx={{
                             padding: 1,
+                            marginLeft: { xs:-0.5, sm: 0 },
                             '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
                                 backgroundColor: 'success.light',
                                 opacity: 1,
@@ -63,9 +64,9 @@ function LinSwitch(props: Props) {
                 sx={{
                     marginLeft: 0,
                     '& .MuiFormControlLabel-label': {
-                        fontSize: '12px',
+                        fontSize: '0.75em',
+                        whiteSpace: 'nowrap',
                         fontWeight: '400',
-                        letterSpacing: '0.025em',
                         color: props.checked ? 'text.primary' : 'text.secondary',
                     },
                 }}

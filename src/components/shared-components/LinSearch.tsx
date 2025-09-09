@@ -12,7 +12,6 @@ type Props = {
     placeholder?: string;
     onClick?: () => void;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    width?: string;
 };
 
 function LinSearch({
@@ -21,7 +20,6 @@ function LinSearch({
     placeholder,
     onClick,
     onChange,
-    width = '100%',
 }: Props) {
     return (
         <Box sx={{ 
@@ -42,10 +40,13 @@ function LinSearch({
                         onChange={onChange}
                         spellCheck={false}
                         sx={{
-                            width: width,
+                            width: { xs: "280px", sm: "365px", md: "330px", lg: "365px"},
                             '& .MuiInputBase-root': {
                                 borderTopRightRadius: 0,
                                 borderBottomRightRadius: 0,
+                            },
+                            '& .MuiInputBase-input::placeholder': {
+                                fontSize: { xs: '0.85em', sm: '1em'},
                             },
                         }}
                     />

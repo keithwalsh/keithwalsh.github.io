@@ -59,11 +59,10 @@ const JsonExplorer = () => {
               value={query}
               onChange={handleQueryChange}
               onClick={handlePerformQuery}
-              width="200px"
             />
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-            <Stack direction="row" spacing={5}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
+            <Stack direction="row" spacing={{ xs: 2.5, sm: 5 }}>
               <LinSwitch
                 label="Array Keys"
                 checked={isActiveDisplayArrayKey}
@@ -80,69 +79,67 @@ const JsonExplorer = () => {
                 onChange={handleToggleDisplayObjectSize}
               />
             </Stack>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Stack direction="row" spacing= {{ xs: 1, sm: 2, md: 3}}>
-                <LinSelect
-                  label="Collapse"
-                  values={[
-                    { value: '', label: 'Expand All' },
-                    { value: 'collapse-all', label: 'Collapse All' },
-                    { value: 1, label: 'Depth 1' },
-                    { value: 2, label: 'Depth 2' },
-                    { value: 3, label: 'Depth 3' }
-                  ]}
-                  selectedValue={selectedDepth === true ? 'collapse-all' : (selectedDepth === false ? '' : selectedDepth)}
-                  onChange={(value) => {
-                    if (value === 'collapse-all') {
-                      setSelectedDepth(true);
-                    } else {
-                      setSelectedDepth(Number(value) || false);
-                    }
-                  }}
-                />
-                <LinSelect
-                  label="String Limit"
-                  values={[
-                    { value: '', label: 'No Limit' },
-                    { value: 20, label: 'Length 20' },
-                    { value: 40, label: 'Length 40' },
-                    { value: 50, label: 'Length 50' },
-                    { value: 100, label: 'Length 100' }
-                  ]}
-                  selectedValue={selectedLength === false ? '' : selectedLength}
-                  onChange={(value) => setSelectedLength(Number(value) || false)}
-                />
-                <LinSelect
-                  label="Indent Width"
-                  values={[
-                    { value: '', label: 'Default (4)' },
-                    { value: 1, label: 'Width 1' },
-                    { value: 2, label: 'Width 2' },
-                    { value: 3, label: 'Width 3' },
-                    { value: 4, label: 'Width 4' },
-                    { value: 5, label: 'Width 5' },
-                    { value: 6, label: 'Width 6' },
-                    { value: 7, label: 'Width 7' },
-                    { value: 8, label: 'Width 8' },
-                    { value: 9, label: 'Width 9' },
-                    { value: 10, label: 'Width 10' }
-                  ]}
-                  selectedValue={selectedIndentWidth === 4 ? '' : selectedIndentWidth}
-                  onChange={(value) => {
-                    if (value === '') {
-                      setSelectedIndentWidth(4);
-                    } else {
-                      const num = Number(value);
-                      setSelectedIndentWidth(isNaN(num) ? 4 : num);
-                    }
-                  }}
-                />
-              </Stack>
-            </Box>
+            <Stack direction="row" spacing= {{ xs: 1, sm: 2, md: 3}}>
+              <LinSelect
+                label="Collapse"
+                values={[
+                  { value: '', label: 'Expand All' },
+                  { value: 'collapse-all', label: 'Collapse All' },
+                  { value: 1, label: 'Depth 1' },
+                  { value: 2, label: 'Depth 2' },
+                  { value: 3, label: 'Depth 3' }
+                ]}
+                selectedValue={selectedDepth === true ? 'collapse-all' : (selectedDepth === false ? '' : selectedDepth)}
+                onChange={(value) => {
+                  if (value === 'collapse-all') {
+                    setSelectedDepth(true);
+                  } else {
+                    setSelectedDepth(Number(value) || false);
+                  }
+                }}
+              />
+              <LinSelect
+                label="String Limit"
+                values={[
+                  { value: '', label: 'No Limit' },
+                  { value: 20, label: 'Length 20' },
+                  { value: 40, label: 'Length 40' },
+                  { value: 50, label: 'Length 50' },
+                  { value: 100, label: 'Length 100' }
+                ]}
+                selectedValue={selectedLength === false ? '' : selectedLength}
+                onChange={(value) => setSelectedLength(Number(value) || false)}
+              />
+              <LinSelect
+                label="Indent Width"
+                values={[
+                  { value: '', label: 'Default (4)' },
+                  { value: 1, label: 'Width 1' },
+                  { value: 2, label: 'Width 2' },
+                  { value: 3, label: 'Width 3' },
+                  { value: 4, label: 'Width 4' },
+                  { value: 5, label: 'Width 5' },
+                  { value: 6, label: 'Width 6' },
+                  { value: 7, label: 'Width 7' },
+                  { value: 8, label: 'Width 8' },
+                  { value: 9, label: 'Width 9' },
+                  { value: 10, label: 'Width 10' }
+                ]}
+                selectedValue={selectedIndentWidth === 4 ? '' : selectedIndentWidth}
+                onChange={(value) => {
+                  if (value === '') {
+                    setSelectedIndentWidth(4);
+                  } else {
+                    const num = Number(value);
+                    setSelectedIndentWidth(isNaN(num) ? 4 : num);
+                  }
+                }}
+              />
+            </Stack>
           </Box>
         </Box>
       </Inline>
-      <Divider sx={{ my: 4 }} />
+      <Divider sx={{ my: { xs: 2, sm: 3 } }} />
       <Inline showDivider={false}>
         <Box
           sx={{

@@ -71,18 +71,18 @@ class JsonFormatter extends Component<JsonFormatterProps> {
                             base01: "#FFFFFF", // 
                             base02: "#353535", // Lines
                             base03: "#FFFFFF", // 
-                            base04: "#FFFFFF", // 
+                            base04: "#fc929e", // Object Size
                             base05: "#FFFFFF", // 
                             base06: "#FFFFFF", // 
                             base07: "#F0F6FC", // Main Text
                             base08: "#FFFFFF", // 
                             base09: "#7ee787", // String
                             base0A: "#FFCB6B", // NULL
-                            base0B: "#FFFFFF", // 
+                            base0B: "#b78eff", // Float
                             base0C: "#FFFFFF", // 
-                            base0D: "#9198a1", // 
-                            base0E: "#79c0ff", // Binary
-                            base0F: "#ff7b72", // Number
+                            base0D: "#9198a1", // Arrow
+                            base0E: "#79c0ff", // Boolean
+                            base0F: "#ff7b72", // Integer
 
                         }}
                     />
