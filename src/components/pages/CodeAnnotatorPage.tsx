@@ -3,16 +3,14 @@ import {
   CssBaseline,
   Box,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Switch,
-  FormControlLabel,
+  Stack,
 } from '@mui/material'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { CodeHighlighter } from 'code-annotator'
 import 'code-annotator/styles'
+import { LinSwitch } from '../shared-components/LinSwitch'
+import { LinSelect } from '../shared-components/LinSelect'
+import { Inline } from '../shared-components'
 
 // Common languages for code highlighting
 const LANGUAGE_OPTIONS = [
@@ -38,58 +36,92 @@ echo "Hello [+World+]";
 ?>`)
   const [language, setLanguage] = useState('php')
   const [showLineNumbers, setShowLineNumbers] = useState(true)
+  
+  const box1Ref = useRef<HTMLDivElement>(null)
+  const box2Ref = useRef<HTMLDivElement>(null)
+  
+  useEffect(() => {
+    const syncHeights = () => {
+      if (box1Ref.current && box2Ref.current) {
+        const box2Height = box2Ref.current.offsetHeight
+        box1Ref.current.style.minHeight = `${box2Height}px`
+      }
+    }
+    
+    // Sync heights initially and on window resize
+    syncHeights()
+    window.addEventListener('resize', syncHeights)
+    
+    // Use ResizeObserver for more accurate tracking if available
+    if (window.ResizeObserver && box2Ref.current) {
+      const resizeObserver = new ResizeObserver(syncHeights)
+      resizeObserver.observe(box2Ref.current)
+      
+      return () => {
+        window.removeEventListener('resize', syncHeights)
+        resizeObserver.disconnect()
+      }
+    }
+    
+    return () => window.removeEventListener('resize', syncHeights)
+  }, [language, showLineNumbers]) // Re-sync when content might change
 
   return (
-    <Container maxWidth="lg">
+    <Container>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mt: 4 }}>
-        <TextField
-          label="Code Input"
-          value={code}
-          onChange={e => setCode(e.target.value)}
-          multiline
-          minRows={6}
-          maxRows={20}
-          fullWidth
-          variant="outlined"
-        />
-        <Box sx={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-          <FormControl sx={{ minWidth: 180 }} size="small">
-            <InputLabel id="language-select-label">Language</InputLabel>
-            <Select
-              labelId="language-select-label"
-              value={language}
-              label="Language"
-              onChange={e => setLanguage(e.target.value)}
-            >
-              {LANGUAGE_OPTIONS.map(opt => (
-                <MenuItem key={opt.value} value={opt.value}>
-                  {opt.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={showLineNumbers}
-                onChange={e => setShowLineNumbers(e.target.checked)}
-                color="primary"
-                inputProps={{ 'aria-label': 'Show line numbers' }}
-              />
-            }
-            label="Show line numbers"
-          />
-        </Box>
-        <Box sx={{ mt: 2 }}>
-          <CodeHighlighter
-            code={code}
-            language={language}
-            showLineNumbers={showLineNumbers}
-            title="Code Output"
-          />
-        </Box>
-      </Box>
+      <Inline showDivider={false}>
+        <Stack sx={{ width: { sm: '100%', md: '50%' } }}>
+          <Box 
+            id="box-1"
+            ref={box1Ref}
+          >
+          </Box>
+          <Box>
+            <TextField
+              label="Code Input"
+              value={code}
+              onChange={e => setCode(e.target.value)}
+              multiline
+              minRows={6}
+              maxRows={20}
+              fullWidth
+              variant="outlined"
+            />
+          </Box>
+        </Stack>
+        <Stack sx={{ width: { sm: '100%', md: '50%' } }}>
+          <Box 
+            id="box-2"
+            ref={box2Ref}
+          >
+            <Stack direction="row" spacing={2}>
+              <Box>
+                <LinSelect
+                  label="Language"
+                  values={LANGUAGE_OPTIONS}
+                  selectedValue={language}
+                  onChange={value => setLanguage(value as string)}
+                />
+              </Box>
+              <Box>
+                <LinSwitch
+                  label="Show line numbers"
+                  checked={showLineNumbers}
+                  onChange={e => setShowLineNumbers(e.target.checked)}
+                />
+              </Box>
+            </Stack>
+          </Box>
+          <Box>
+            <CodeHighlighter
+              code={code}
+              language={language}
+              showLineNumbers={showLineNumbers}
+              title="Code Output"
+            />
+          </Box>
+        </Stack>
+      </Inline>
     </Container>
   )
 }

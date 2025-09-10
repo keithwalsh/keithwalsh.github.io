@@ -50,7 +50,7 @@ function LinSelect({
                     "& .MuiSelect-select": {
                         padding: "0px",
                         textIndent: "15px",
-                        lineHeight: "30px",
+                        lineHeight: "32px",
                         height: "30px",
                         minWidth: { xs: "80px", sm: "90px", md: "90px", lg: "90px", xl: "90px" },
                         fontSize: ".749875rem",
