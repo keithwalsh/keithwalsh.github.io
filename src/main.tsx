@@ -99,69 +99,79 @@ export function App() {
     setAnchorEl(null)
   }
 
+  const hideToolbar = new URLSearchParams(location.search).has('notoolbar')
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        <StyledAppBar position="relative" elevation={0}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ ml: 2, mr: 2 }}
-            >
-              {open ? <MenuOpenIcon /> : <MenuIcon />}
-            </IconButton>
-            <StyledTitle variant="h6" noWrap component="div">
-              Keith Walsh
-            </StyledTitle>
-            <AccessibilityIconButton
-              color="inherit"
-              onClick={handleAccessibilityClick}
-              aria-controls={
-                isAccessibilityMenuOpen ? 'accessibility-menu' : undefined
-              }
-              aria-haspopup="true"
-              aria-expanded={isAccessibilityMenuOpen ? 'true' : undefined}
-            >
-              <AccessibilityNewIcon />
-            </AccessibilityIconButton>
-            <AccessibilityMenu
-              anchorEl={anchorEl}
-              open={isAccessibilityMenuOpen}
-              onClose={handleAccessibilityClose}
-            />
-            <IconButton
-              color="inherit"
-              onClick={toggleDarkMode}
-              sx={{
-                color: theme.palette.mode === 'dark' ? '#90caf9' : 'inherit',
-              }}
-            >
-              {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
-            </IconButton>
-          </Toolbar>
-        </StyledAppBar>
+        {!hideToolbar && (
+          <StyledAppBar position="relative" elevation={0}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{ ml: 2, mr: 2 }}
+              >
+                {open ? <MenuOpenIcon /> : <MenuIcon />}
+              </IconButton>
+              <StyledTitle variant="h6" noWrap component="div">
+                Keith Walsh
+              </StyledTitle>
+              <AccessibilityIconButton
+                color="inherit"
+                onClick={handleAccessibilityClick}
+                aria-controls={
+                  isAccessibilityMenuOpen ? 'accessibility-menu' : undefined
+                }
+                aria-haspopup="true"
+                aria-expanded={isAccessibilityMenuOpen ? 'true' : undefined}
+              >
+                <AccessibilityNewIcon />
+              </AccessibilityIconButton>
+              <AccessibilityMenu
+                anchorEl={anchorEl}
+                open={isAccessibilityMenuOpen}
+                onClose={handleAccessibilityClose}
+              />
+              <IconButton
+                color="inherit"
+                onClick={toggleDarkMode}
+                sx={{
+                  color: theme.palette.mode === 'dark' ? '#90caf9' : 'inherit',
+                }}
+              >
+                {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Toolbar>
+          </StyledAppBar>
+        )}
 
         <Box 
           sx={{ 
             display: 'flex', 
             flex: 1, 
             overflow: 'hidden',
-            '--drawer-width': isDesktop && !open ? '0px' : '240px'
+            '--drawer-width': hideToolbar
+              ? '0px'
+              : isDesktop && !open
+              ? '0px'
+              : '240px'
           }}
         >
-          <StyledDrawer
-            variant={isDesktop ? 'persistent' : 'temporary'}
-            open={open}
-            onClose={isDesktop ? handleDrawerToggle : handleDrawerClose}
-            ModalProps={{ keepMounted: true }}
-            isDesktop={isDesktop}
-          >
-            <DrawerContent isDesktop={isDesktop} setOpen={setOpen} />
-          </StyledDrawer>
+          {!hideToolbar && (
+            <StyledDrawer
+              variant={isDesktop ? 'persistent' : 'temporary'}
+              open={open}
+              onClose={isDesktop ? handleDrawerToggle : handleDrawerClose}
+              ModalProps={{ keepMounted: true }}
+              isDesktop={isDesktop}
+            >
+              <DrawerContent isDesktop={isDesktop} setOpen={setOpen} />
+            </StyledDrawer>
+          )}
           <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
             <Main>
               <Routes>
