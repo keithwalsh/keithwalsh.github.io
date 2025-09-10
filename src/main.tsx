@@ -24,10 +24,8 @@ import {
   Weather,
 } from './components/pages'
 import {
-  StyledAppBar,
   StyledTitle,
   AccessibilityIconButton,
-  StyledDrawer,
   Main,
 } from './components/StyledComponents'
 import { DrawerContent } from './components/DrawerContent'
@@ -41,6 +39,7 @@ import {
 } from '@mui/icons-material'
 import emailjs from '@emailjs/browser'
 import { initGA, logPageView } from './utils/analytics'
+import { LinAppBar, LinDrawer } from './components/shared-components'
 
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
@@ -106,7 +105,7 @@ export function App() {
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         {!hideToolbar && (
-          <StyledAppBar position="relative" elevation={0}>
+          <LinAppBar position="relative" elevation={0}>
             <Toolbar>
               <IconButton
                 color="inherit"
@@ -146,7 +145,7 @@ export function App() {
                 {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
               </IconButton>
             </Toolbar>
-          </StyledAppBar>
+          </LinAppBar>
         )}
 
         <Box 
@@ -162,7 +161,7 @@ export function App() {
           }}
         >
           {!hideToolbar && (
-            <StyledDrawer
+            <LinDrawer
               variant={isDesktop ? 'persistent' : 'temporary'}
               open={open}
               onClose={isDesktop ? handleDrawerToggle : handleDrawerClose}
@@ -170,10 +169,10 @@ export function App() {
               isDesktop={isDesktop}
             >
               <DrawerContent isDesktop={isDesktop} setOpen={setOpen} />
-            </StyledDrawer>
+            </LinDrawer>
           )}
-          <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-            <Main>
+          <Main>
+            <Box sx={{ display: 'flex', flex: 1, paddingTop: '57px', overflow: 'hidden' }}>
               <Routes>
                 <Route path="/" element={<AboutPage />} />
                 <Route path="/projects/personal" element={<PersonalProjects />} />
@@ -201,8 +200,8 @@ export function App() {
                   element={<ToolsPage type="browser-mockup" />}
                 />
               </Routes>
-            </Main>
-          </Box>
+            </Box>
+          </Main>
         </Box>
       </Box>
     </ThemeProvider>
