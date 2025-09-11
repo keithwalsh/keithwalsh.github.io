@@ -62,7 +62,7 @@ const JsonExplorer = () => {
             />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
-            <Stack direction="row" spacing={{ xs: 2.5, sm: 5 }}>
+            <Stack direction="row" spacing={{ xs: 2.5, sm: 3, md: 2, lg: 5}}>
               <LinSwitch
                 label="Array Keys"
                 checked={isActiveDisplayArrayKey}
@@ -79,7 +79,7 @@ const JsonExplorer = () => {
                 onChange={handleToggleDisplayObjectSize}
               />
             </Stack>
-            <Stack direction="row" spacing= {{ xs: 1, sm: 2, md: 3}}>
+            <Stack direction="row" spacing= {{ xs: 1, sm: 2, md: 1, lg: 3}}>
               <LinSelect
                 label="Collapse"
                 values={[

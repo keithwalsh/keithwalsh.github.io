@@ -171,8 +171,8 @@ export function App() {
               <DrawerContent isDesktop={isDesktop} setOpen={setOpen} />
             </LinDrawer>
           )}
-          <Main>
-            <Box sx={{ display: 'flex', flex: 1, paddingTop: '57px', overflow: 'hidden' }}>
+          <Main sx={{ px: { xs: '12px', sm: '0px', md: '0px', lg: '16px' } }}>
+            <Box sx={{ display: 'flex', flex: 1, paddingTop: '57px', overflow: 'hidden', '& .MuiContainer-root': { px: { sm: '24px', md: '8px', lg: '16px', xl: '24px' }  }}}>
               <Routes>
                 <Route path="/" element={<AboutPage />} />
                 <Route path="/projects/personal" element={<PersonalProjects />} />

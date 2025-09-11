@@ -34,7 +34,6 @@ function InstructionsCard({ heading, body, headingId = 'instructions-heading' }:
         width: '100%',
         minHeight: 210,
         minWidth: { xs: 280, sm: 280, md: 290, lg: 370, xl: 370 },
-        mb: 3,
       }}
     >
       <CardContent sx={{ width: '100%' }}>

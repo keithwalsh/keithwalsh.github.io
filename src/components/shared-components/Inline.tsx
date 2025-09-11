@@ -3,13 +3,11 @@ import { Stack, Divider, useMediaQuery, useTheme } from '@mui/material'
 
 interface InlineProps {
   children?: React.ReactNode
-  sx?: object
   showDivider?: boolean
 }
 
 export const Inline: React.FC<InlineProps> = ({
   children,
-  sx = {},
   showDivider = true,
 }) => {
   const theme = useTheme()
@@ -24,10 +22,7 @@ export const Inline: React.FC<InlineProps> = ({
           <Divider orientation={isMdUp ? 'vertical' : 'horizontal'} flexItem />
         ) : undefined
       }
-      sx={{
-        px: 0,
-        ...sx,
-      }}
+      sx={{ py: { sm: 0, md: 1 }}}
     >
       {children}
     </Stack>

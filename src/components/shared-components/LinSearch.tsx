@@ -40,13 +40,13 @@ function LinSearch({
                         onChange={onChange}
                         spellCheck={false}
                         sx={{
-                            width: { xs: "280px", sm: "365px", md: "330px", lg: "365px"},
+                            width: { xs: "280px", sm: "280px", md: "280px", lg: "365px"},
                             '& .MuiInputBase-root': {
                                 borderTopRightRadius: 0,
                                 borderBottomRightRadius: 0,
                             },
                             '& .MuiInputBase-input::placeholder': {
-                                fontSize: { xs: '0.85em', sm: '1em'},
+                                fontSize: { xs: '0.85em', sm: '0.85em', md: '0.85em', lg: '1em'},
                             },
                         }}
                     />

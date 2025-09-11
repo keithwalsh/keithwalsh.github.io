@@ -4,6 +4,8 @@ import {
   Box,
   TextField,
   Stack,
+  alpha,
+  Typography,
 } from '@mui/material'
 import { useState, useRef, useEffect } from 'react'
 import { CodeHighlighter } from 'code-annotator'
@@ -74,11 +76,14 @@ echo "Hello [+World+]";
           <Box 
             id="box-1"
             ref={box1Ref}
+            sx={{
+              mb: 1.5
+            }}
           >
           </Box>
           <Box>
+            <Typography variant="subtitle1" sx={{ width: '100%' }}>Input</Typography>
             <TextField
-              label="Code Input"
               value={code}
               onChange={e => setCode(e.target.value)}
               multiline
@@ -86,6 +91,16 @@ echo "Hello [+World+]";
               maxRows={20}
               fullWidth
               variant="outlined"
+              sx={{
+                '& .MuiInputBase-root': {
+                 py: 1,
+                },
+                '& .MuiInputBase-input': {
+                 color: theme => alpha(theme.palette.text.primary, 0.9),
+                 fontSize: '0.75em',
+                 fontFamily: "SFMono-Regular, Menlo, Consolas, Monaco, Liberation Mono, Courier New, monospace",
+                }
+             }}
             />
           </Box>
         </Stack>
@@ -93,6 +108,9 @@ echo "Hello [+World+]";
           <Box 
             id="box-2"
             ref={box2Ref}
+            sx={{
+              mb: 1.5
+            }}
           >
             <Stack direction="row" spacing={2}>
               <Box>
