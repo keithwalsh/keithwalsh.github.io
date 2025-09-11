@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormGroup, FormControlLabel, Switch } from '@mui/material';
+import { alpha, FormGroup, FormControlLabel, Switch } from '@mui/material';
 
 interface Props {
     label: string;
@@ -19,9 +19,25 @@ function LinSwitch(props: Props) {
                         sx={{
                             padding: 1,
                             marginLeft: { xs:-0.5, sm: 0 },
+                            '& .MuiButtonBase-root.Mui-checked': {
+                                '&:hover': {
+                                    backgroundColor: theme => alpha(theme.palette.success.light, 0.04),
+                                }
+                             },
+                            '& .MuiButtonBase-root': {
+                                '&:hover': {
+                                    backgroundColor: theme => alpha(theme.palette.action.disabledBackground, 0.04),
+                                }
+                             },
                             '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
                                 backgroundColor: 'success.light',
                                 opacity: 1,
+                            },
+                            '& .MuiButtonBase-root.MuiSwitch-switchBase.Mui-checked': {
+                                color: 'success.light',
+                                '&:hover': {
+                                    color: 'success.light',
+                                }
                             },
                             '& .MuiSwitch-track': {
                                 borderRadius: 22 / 2,
