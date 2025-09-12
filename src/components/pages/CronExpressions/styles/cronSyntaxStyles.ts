@@ -41,9 +41,9 @@ export const getBadgeStyles = (
   isActive: boolean, 
   theme: Theme
 ): SxProps<Theme> => ({
-  width: 50,
-  height: 50,
-  borderRadius: 3,
+  width: { xs: 30, sm: 30, md: 40, lg: 40, xl: 40 },
+  height: { xs: 30, sm: 30, md: 40, lg: 40, xl: 40 },
+  borderRadius: { xs: 2, sm: 2, md: 3, lg: 3, xl: 3 },
   bgcolor: isActive ? theme.palette.secondary.main : theme.palette.primary.main,
   color: theme.palette.common.white,
   display: "flex",

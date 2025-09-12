@@ -166,7 +166,12 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
                   }}
                 >
                   <Badge isActive={activeField === field}>
-                    <EmergencyIcon fontSize="medium" aria-hidden="true" />
+                    <EmergencyIcon 
+                      sx={{ 
+                        fontSize: { xs: '1rem', sm: '1rem', md: '1.25rem', lg: '1.25rem', xl: '1.25rem' } 
+                      }} 
+                      aria-hidden="true" 
+                    />
                   </Badge>
                 </motion.div>
                 <Typography
