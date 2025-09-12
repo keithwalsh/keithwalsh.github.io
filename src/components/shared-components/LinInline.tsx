@@ -1,12 +1,12 @@
 import React from 'react'
 import { Stack, Divider, useMediaQuery, useTheme } from '@mui/material'
 
-interface InlineProps {
+interface LinInlineProps {
   children?: React.ReactNode
   showDivider?: boolean
 }
 
-export const Inline: React.FC<InlineProps> = ({
+export const LinInline: React.FC<LinInlineProps> = ({
   children,
   showDivider = true,
 }) => {
@@ -29,4 +29,4 @@ export const Inline: React.FC<InlineProps> = ({
   )
 }
 
-export default Inline
+export default LinInline

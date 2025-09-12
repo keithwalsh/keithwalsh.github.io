@@ -3,7 +3,7 @@ import { VscJson, VscClearAll, VscChromeRestore } from 'react-icons/vsc';
 import { JsonFormatter } from './components';
 import { useToggle, fetchJsonData, performJsonQuery } from './utils';
 import { TextField, Box, Divider, Typography, IconButton, Tooltip, Stack, alpha } from '@mui/material';
-import { Inline, InstructionsCard, LinSearch, LinSelect, LinSwitch } from '../../shared-components';
+import { LinInline, LinInstructionsCard, LinSearch, LinSelect, LinSwitch } from '../../shared-components';
 
 const JsonExplorer = () => {
   const [jsonData, setJsonData] = useState('');
@@ -28,8 +28,8 @@ const JsonExplorer = () => {
       transition: 'all 0.5s ease-in-out',
       mt: 4
   }}>
-      <Inline showDivider={false}>
-        <InstructionsCard
+      <LinInline showDivider={false}>
+        <LinInstructionsCard
           heading="How to Use"
           body={
             <ol>
@@ -138,9 +138,9 @@ const JsonExplorer = () => {
             </Stack>
           </Box>
         </Box>
-      </Inline>
+      </LinInline>
       <Divider sx={{ my: { xs: 2, sm: 3 } }} />
-      <Inline showDivider={false}>
+      <LinInline showDivider={false}>
         <Box
           sx={{
             display: 'flex',
@@ -216,7 +216,7 @@ const JsonExplorer = () => {
             indentWidth={selectedIndentWidth}
           />
         </Box>
-      </Inline>
+      </LinInline>
     </Box>
   );  
 };

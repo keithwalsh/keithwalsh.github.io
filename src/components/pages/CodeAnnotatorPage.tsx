@@ -12,7 +12,7 @@ import { CodeHighlighter } from 'code-annotator'
 import 'code-annotator/styles'
 import { LinSwitch } from '../shared-components/LinSwitch'
 import { LinSelect } from '../shared-components/LinSelect'
-import { Inline } from '../shared-components'
+import { LinInline } from '../shared-components'
 
 // Common languages for code highlighting
 const LANGUAGE_OPTIONS = [
@@ -71,7 +71,7 @@ echo "Hello [+World+]";
   return (
     <Container>
       <CssBaseline />
-      <Inline showDivider={false}>
+      <LinInline showDivider={false}>
         <Stack sx={{ width: { sm: '100%', md: '50%' } }}>
           <Box 
             id="box-1"
@@ -139,7 +139,7 @@ echo "Hello [+World+]";
             />
           </Box>
         </Stack>
-      </Inline>
+      </LinInline>
     </Container>
   )
 }

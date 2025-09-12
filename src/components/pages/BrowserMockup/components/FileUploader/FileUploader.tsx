@@ -7,7 +7,7 @@ import { Box } from '@mui/material'
 import { ChangeEvent } from 'react'
 import { isImageFile } from '../../utils'
 import DropZone from './DropZone'
-import { Inline, InstructionsCard } from '../../../../../components/shared-components'
+import { LinInline, LinInstructionsCard } from '../../../../../components/shared-components'
 
 /**
  * Props for the FileUploader component.
@@ -58,8 +58,8 @@ function FileUploader({
 
   return (
     <Box sx={{ display: 'flex', gap: 3, alignItems: 'left' }}>
-      <Inline showDivider={false}>
-        <InstructionsCard 
+      <LinInline showDivider={false}>
+        <LinInstructionsCard 
           heading="How to Use"
           body={
             <ol>
@@ -77,7 +77,7 @@ function FileUploader({
           onFileDrop={onFileDrop}
           validateFile={dropZoneValidateFile}
         />
-      </Inline>
+      </LinInline>
       {/* Hidden file input */}
       <input
         id="file-input"

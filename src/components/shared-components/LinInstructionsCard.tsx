@@ -6,7 +6,7 @@
 import { Card, CardContent, Typography } from '@mui/material'
 import { ReactNode } from 'react'
 
-interface InstructionsCardProps {
+interface LinInstructionsCardProps {
   /** The heading text for the instructions */
   heading: string
   /** The body content - can be a string, JSX, or ReactNode */
@@ -19,9 +19,9 @@ interface InstructionsCardProps {
  * A reusable card component that displays instructional guidance with themed styling.
  *
  * @param props - The component props
- * @returns The InstructionsCard component
+ * @returns The LinInstructionsCard component
  */
-function InstructionsCard({ heading, body, headingId = 'instructions-heading' }: InstructionsCardProps) {
+function LinInstructionsCard({ heading, body, headingId = 'instructions-heading' }: LinInstructionsCardProps) {
 
   return (
     <Card
@@ -73,4 +73,4 @@ function InstructionsCard({ heading, body, headingId = 'instructions-heading' }:
   )
 }
 
-export { InstructionsCard }
+export { LinInstructionsCard }
