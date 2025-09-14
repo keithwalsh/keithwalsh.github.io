@@ -1,14 +1,7 @@
 import React from 'react'
-import {
-  Paper,
-  Typography,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  CardActionArea,
-} from '@mui/material'
+import { Box, Card, CardActionArea, CardContent, Chip, Paper, Typography } from '@mui/material'
 import type { CommonCronExpression } from '../types/cron'
+import { LinSubHeader } from '../../../shared-components'
 
 interface CommonExpressionsProps {
   onExpressionSelect: (expression: string) => void
@@ -64,20 +57,33 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
   }
 
   return (
-    <Paper sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
-        Common Cron Expressions
-      </Typography>
+    <Paper
+      elevation={0}
+      sx={{ 
+        px: 0, 
+        maxWidth: { xs: '480px', sm: '480px', md: '1000px', lg: '1000px', xl: '1000px' },
+      }}
+      >
+      <LinSubHeader title="Common Cron Expressions" />
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: 2,
+          mx: { xs: 'auto', sm: 'auto', md: 3, lg: 3, xl: 3 },
+          alignItems: { xs: 'center', sm: 'center', md: 'left', lg: 'left', xl: 'left' },
+          justifyContent: { xs: 'center', sm: 'center', md: 'left', lg: 'left', xl: 'left' },
+        }}
+        >
         {commonExpressions.map((expr, index) => (
-          <Card key={index} variant="outlined">
+          <Card key={index}>
             <CardActionArea
               onClick={() => handleCardClick(index, expr.cron)}
               data-active={selectedCard === index ? '' : undefined}
               sx={{
                 height: '100%',
-                minWidth: 260,
+                minWidth: { xs: 165, sm: 260, md: 260, lg: 260, xl: 260 },
                 '&[data-active]': {
                   backgroundColor: 'action.selected',
                   '&:hover': {
@@ -94,9 +100,11 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
                   label={expr.cron}
                   sx={{ fontFamily: 'monospace', mb: 1 }}
                 />
-                <Typography variant="body2" color="textSecondary">
-                  {expr.desc}
-                </Typography>
+                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                  <Typography variant="body2" color="textSecondary">
+                    {expr.desc}
+                  </Typography>
+                </Box>
               </CardContent>
             </CardActionArea>
           </Card>

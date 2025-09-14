@@ -1,40 +1,11 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  useTheme,
-  Card,
-  CardContent,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Chip,
-} from '@mui/material'
+import { Box, Card, CardContent, Chip, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from '@mui/material'
 import EmergencyIcon from '@mui/icons-material/Emergency'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useMemo, useCallback, memo } from 'react'
-
-// Local imports
-import type {
-  FieldData,
-  CronVisualExplanationProps,
-  InfoPanelProps,
-  BadgeProps,
-  SpecialCharactersTableProps,
-} from '../types/cronSyntaxTypes'
-import {
-  validateFieldData,
-  validateSpecialCharactersData,
-  parseExample,
-} from '../utils/cronSyntaxHelpers'
+import type { BadgeProps, CronVisualExplanationProps, FieldData, InfoPanelProps, SpecialCharactersTableProps } from '../types/cronSyntaxTypes'
+import { parseExample, validateFieldData, validateSpecialCharactersData } from '../utils/cronSyntaxHelpers'
 import {
   getMainContainerStyles,
-  getContainerStyles,
-  getRailStyles,
   getBadgeStyles,
   getCardStyles,
   getCodeBlockStyles,
@@ -42,7 +13,6 @@ import {
   getHiddenStyles,
   getResponsiveContainerStyles,
   getSymbolCellStyles,
-  getFieldContainerStyles,
   getFieldRangeStyles,
   getInfoDescriptionStyles,
   getExampleItemStyles,
@@ -52,11 +22,7 @@ import {
   getTableExampleChipStyles,
   getTableExampleDescStyles,
 } from '../styles'
-import {
-  defaultFields,
-  defaultSpecialCharacters,
-  ANIMATION_CONFIG,
-} from '../constants/cronSyntaxConstants'
+import { ANIMATION_CONFIG, defaultFields, defaultSpecialCharacters } from '../constants/cronSyntaxConstants'
 
 /**
  * <CronVisualExplanation fields={customFields} />
@@ -69,7 +35,6 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
   onFieldChange,
   className,
 }: CronVisualExplanationProps) {
-  const theme = useTheme()
   const [activeField, setActiveField] = useState<FieldData | null>(null)
 
   // Validate input data
@@ -95,12 +60,9 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
   )
 
   // Style functions (memoized only for theme-dependent styles)
-  const railStyles = useMemo(() => getRailStyles(theme), [theme])
-  const containerStyles = getContainerStyles()
   const mainContainerStyles = getMainContainerStyles()
   const hiddenStyles = getHiddenStyles()
   const responsiveContainerStyles = getResponsiveContainerStyles()
-  const fieldContainerStyles = getFieldContainerStyles()
   const fieldRangeStyles = getFieldRangeStyles()
 
   return (
@@ -129,21 +91,40 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
           </Typography>
 
           {/* Rail behind the stars */}
-          <Box sx={railStyles} aria-hidden="true" />
+          <Box 
+            sx={{
+              position: 'absolute',
+              top: { xs: "15px", sm: "15px", md: "20px", lg: "20px", xl: "20px" },
+              right: { xs: "15px", sm: "25px", md: "25px", lg: "25px", xl: "25px" },
+              left: { xs: "15px", sm: "15px", md: "20px", lg: "20px", xl: "20px" },
+              borderTop: (theme) => `2px dashed ${theme.palette.grey[400]}`,
+              zIndex: 0,
+            }} 
+            aria-hidden="true" 
+          />
 
           {/* Star badges */}
           <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="flex-start"
-            sx={containerStyles}
+            sx={{
+              width: "100%", 
+              px: 0,
+              position: "relative",
+              zIndex: 1
+            }}
             role="tablist"
             aria-label="Cron expression fields"
           >
             {validatedFields.map((field, idx) => (
               <Box
                 key={idx}
-                sx={fieldContainerStyles}
+                sx={{
+                  display: "flex", 
+                  flexDirection: "column", 
+                  alignItems: "center",
+                }}
                 role="tab"
                 tabIndex={0}
                 aria-selected={activeField === field}
@@ -168,8 +149,9 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
                   <Badge isActive={activeField === field}>
                     <EmergencyIcon 
                       sx={{ 
-                        fontSize: { xs: '1rem', sm: '1rem', md: '1.25rem', lg: '1.25rem', xl: '1.25rem' } 
-                      }} 
+                        fontSize: { xs: '1rem', sm: '1rem', md: '1.25rem', lg: '1.25rem', xl: '1.25rem' },
+                        color: "primary.contrastText"
+                      }}
                       aria-hidden="true" 
                     />
                   </Badge>
@@ -181,7 +163,12 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
                   sx={getFieldLabelStyles(activeField === field)}
                   aria-label={`${field.short} field, range ${field.range}. ${field.desc}`}
                 >
-                  {field.short}
+                  <Box component="span" sx={{ display: { xs: 'block', sm: 'none' } }}>
+                    {field.abbreviation}
+                  </Box>
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    {field.short}
+                  </Box>
                   <Box component="span" sx={fieldRangeStyles}>
                     {field.range}
                   </Box>

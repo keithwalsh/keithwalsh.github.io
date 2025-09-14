@@ -1,6 +1,7 @@
 // Type definitions for CronSyntaxBar component
 
 export interface FieldData {
+    abbreviation: string;
     short: string;
     range: string;
     desc: string;

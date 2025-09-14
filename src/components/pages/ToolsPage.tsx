@@ -43,7 +43,12 @@ export function ToolsPage({ type }: ToolsPageProps) {
       sx={{ p: 0, m: 0, '& .MuiContainer-root': { p: 0 } }}
     >
       <Box sx={{ mt: { xs: 0, sm: 2, md: 2, lg: 2 } , '& .MuiBox-root': { p: 0 } }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{
+            pl: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+          }}>
           {getTitle()}
         </Typography>
         {type === 'json-explorer' && <JsonExplorer />}

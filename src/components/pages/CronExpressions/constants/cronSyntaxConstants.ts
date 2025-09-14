@@ -7,6 +7,7 @@ import type { FieldData, SpecialCharacterData } from '../types/cronSyntaxTypes';
  */
 export const defaultFields: FieldData[] = [
   { 
+    abbreviation: "Min.",
     short: "Minute", 
     range: "(0‑59)", 
     desc: "Minute segment",
@@ -20,6 +21,7 @@ export const defaultFields: FieldData[] = [
     ]
   },
   { 
+    abbreviation: "Hr.",
     short: "Hour", 
     range: "(0‑23)", 
     desc: "Hour of day",
@@ -33,6 +35,7 @@ export const defaultFields: FieldData[] = [
     ]
   },
   { 
+    abbreviation: "DOM",
     short: "Day of Month", 
     range: "(1‑31)", 
     desc: "Calendar day",
@@ -46,6 +49,7 @@ export const defaultFields: FieldData[] = [
     ]
   },
   { 
+    abbreviation: "Month",
     short: "Month", 
     range: "(1‑12)", 
     desc: "January = 1",
@@ -59,6 +63,7 @@ export const defaultFields: FieldData[] = [
     ]
   },
   { 
+    abbreviation: "DOW",
     short: "Day of Week", 
     range: "(0‑6)", 
     desc: "0 = Sunday",

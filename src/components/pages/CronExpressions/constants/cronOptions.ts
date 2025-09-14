@@ -1,7 +1,7 @@
 import type { CronOption } from '../types/cron'
 
 export const MONTH_OPTIONS: CronOption[] = [
-  { value: '*', label: 'Any' },
+  { value: '*', label: 'All' },
   { value: '1', label: 'January' },
   { value: '2', label: 'February' },
   { value: '3', label: 'March' },
@@ -17,7 +17,7 @@ export const MONTH_OPTIONS: CronOption[] = [
 ]
 
 export const DAY_OF_WEEK_OPTIONS: CronOption[] = [
-  { value: '*', label: 'Any' },
+  { value: '*', label: 'All' },
   { value: '0', label: 'Sunday' },
   { value: '1', label: 'Monday' },
   { value: '2', label: 'Tuesday' },
@@ -28,7 +28,7 @@ export const DAY_OF_WEEK_OPTIONS: CronOption[] = [
 ]
 
 export const generateTimeOptions = (start: number, end: number, prefix: string = ''): CronOption[] => {
-  const options: CronOption[] = [{ value: '*', label: 'Any' }]
+  const options: CronOption[] = [{ value: '*', label: 'All' }]
   for (let i = start; i <= end; i++) {
     options.push({ value: i.toString(), label: `${prefix}${i}` })
   }

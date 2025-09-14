@@ -13,21 +13,11 @@ export const getMainContainerStyles = (): SxProps<Theme> => ({
 });
 
 /**
- * Container styles for the badge area
- */
-export const getContainerStyles = (): SxProps<Theme> => ({
-  width: "100%", 
-  px: { xs: "4%", sm: "6%", md: "8%" },
-  position: "relative",
-  zIndex: 1
-});
-
-/**
  * Rail styles that connects the badges
  */
 export const getRailStyles = (theme: Theme): SxProps<Theme> => ({
   position: "absolute",
-  top: 25,
+  top: "25%",
   left: "calc(8% + 25px)",
   right: "calc(8% + 25px)",
   borderTop: `2px dashed ${theme.palette.grey[400]}`,
@@ -191,14 +181,7 @@ export const getResponsiveContainerStyles = (): SxProps<Theme> => ({
   mx: "auto" 
 });
 
-/**
- * Field container styles (for flex layout of individual field items)
- */
-export const getFieldContainerStyles = (): SxProps<Theme> => ({
-  display: "flex", 
-  flexDirection: "column", 
-  alignItems: "center"
-});
+
 
 /**
  * Field range text styles (small text under field labels)

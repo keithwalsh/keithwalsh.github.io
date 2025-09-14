@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Paper, Stack, Snackbar, Alert } from '@mui/material'
-import { CronSyntaxBar } from './components'
-import {
-  CronExpressionResult,
-  CronBuilder,
-  CommonExpressions,
-} from './components'
+import { Box, Container, Paper, Stack, Snackbar, Alert, Divider } from '@mui/material'
+import { BuildCronExpression, CommonExpressions, CronExpressionResult, CronSyntaxBar } from './components'
 import { generateDescription } from './utils/cronHelpers'
 import type { CronField } from './types/cron'
 
@@ -85,27 +80,49 @@ const CronExpressions: React.FC = () => {
     setCopyError('')
   }
 
+  const generateRandomCronExpression = () => {
+    // Generate random values for each field
+    const randomMinute = Math.random() < 0.3 ? '*' : Math.floor(Math.random() * 60).toString()
+    const randomHour = Math.random() < 0.3 ? '*' : Math.floor(Math.random() * 24).toString()
+    const randomDayOfMonth = Math.random() < 0.3 ? '*' : (Math.floor(Math.random() * 31) + 1).toString()
+    const randomMonth = Math.random() < 0.3 ? '*' : (Math.floor(Math.random() * 12) + 1).toString()
+    const randomDayOfWeek = Math.random() < 0.3 ? '*' : Math.floor(Math.random() * 7).toString()
+
+    setCronFields({
+      minutes: randomMinute,
+      hours: randomHour,
+      dayOfMonth: randomDayOfMonth,
+      month: randomMonth,
+      dayOfWeek: randomDayOfWeek,
+    })
+  }
+
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Stack spacing={3}>
-        {/* Builder Interface */}
-        <CronBuilder
-          cronFields={cronFields}
-          onFieldChange={handleFieldChange}
-        />
 
         {/* Cron Expression Result */}
         <CronExpressionResult
           cronExpression={cronExpression}
           description={description}
           onCopy={copyToClipboard}
+          generateRandomCronExpression={generateRandomCronExpression}
         />
+
+        {/* Builder Interface */}
+        <BuildCronExpression
+          cronFields={cronFields}
+          onFieldChange={handleFieldChange}
+        />
+
+        <Box></Box>
+        <Divider />
 
         {/* Common Expressions */}
         <CommonExpressions onExpressionSelect={loadCommonExpression} />
 
         {/* Cron Syntax Reference */}
-        <Paper sx={{ p: 3 }}>
+        <Paper sx={{ px: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 } }} elevation={0}>
           <CronSyntaxBar />
         </Paper>
       </Stack>

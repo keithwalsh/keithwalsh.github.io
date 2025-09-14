@@ -1,6 +1,5 @@
 export {
   getMainContainerStyles,
-  getContainerStyles,
   getRailStyles,
   getBadgeStyles,
   getCardStyles,
@@ -12,7 +11,6 @@ export {
   getSymbolCellStyles,
   getTableCodeStyles,
   getResponsiveContainerStyles,
-  getFieldContainerStyles,
   getFieldRangeStyles,
   getInfoDescriptionStyles,
   getExampleItemStyles,
