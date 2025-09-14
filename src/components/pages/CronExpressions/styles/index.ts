@@ -14,9 +14,7 @@ export {
   getFieldRangeStyles,
   getInfoDescriptionStyles,
   getExampleItemStyles,
-  getDefaultInfoTextStyles,
   getSpecialCharactersTitleStyles,
   getTableRowStyles,
   getTableExampleChipStyles,
-  getTableExampleDescStyles,
 } from './cronSyntaxStyles'

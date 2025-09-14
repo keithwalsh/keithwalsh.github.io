@@ -67,7 +67,7 @@ export const getCodeBlockStyles = (theme: Theme): SxProps<Theme> => ({
   px: 1.5,
   py: 0.5,
   borderRadius: 1,
-  fontSize: '0.9rem',
+  fontSize: '0.75rem',
   fontWeight: 600,
   minWidth: 80,
   textAlign: 'center'
@@ -209,12 +209,6 @@ export const getExampleItemStyles = (): SxProps<Theme> => ({
   gap: 2
 });
 
-/**
- * Default info panel text styles
- */
-export const getDefaultInfoTextStyles = (): SxProps<Theme> => ({
-  lineHeight: 1.6
-});
 
 /**
  * Special characters section title styles
@@ -243,10 +237,3 @@ export const getTableExampleChipStyles = (): SxProps<Theme> => ({
   mb: 0.5,
   fontSize: '0.8rem'
 });
-
-/**
- * Table example description styles
- */
-export const getTableExampleDescStyles = (): SxProps<Theme> => ({
-  fontSize: '0.8rem'
-}); 

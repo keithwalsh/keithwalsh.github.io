@@ -61,7 +61,7 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
       elevation={0}
       sx={{ 
         px: 0, 
-        maxWidth: { xs: '480px', sm: '480px', md: '1000px', lg: '1000px', xl: '1000px' },
+        maxWidth: '1000px'
       }}
       >
       <LinSubHeader title="Common Cron Expressions" />
@@ -71,9 +71,9 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
           display: 'flex',
           flexWrap: 'wrap',
           gap: 2,
-          mx: { xs: 'auto', sm: 'auto', md: 3, lg: 3, xl: 3 },
-          alignItems: { xs: 'center', sm: 'center', md: 'left', lg: 'left', xl: 'left' },
-          justifyContent: { xs: 'center', sm: 'center', md: 'left', lg: 'left', xl: 'left' },
+          mx: { xs: 'auto', sm: 3, md: 3, lg: 3, xl: 3 },
+          alignItems: { xs: 'center', sm: 'left', md: 'left', lg: 'left', xl: 'left' },
+          justifyContent: { xs: 'center', sm: 'left', md: 'left', lg: 'left', xl: 'left' },
         }}
         >
         {commonExpressions.map((expr, index) => (
@@ -83,7 +83,7 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
               data-active={selectedCard === index ? '' : undefined}
               sx={{
                 height: '100%',
-                minWidth: { xs: 165, sm: 260, md: 260, lg: 260, xl: 260 },
+                minWidth: { xs: 165, sm: 230, md: 230, lg: 230, xl: 230 },
                 '&[data-active]': {
                   backgroundColor: 'action.selected',
                   '&:hover': {
@@ -93,7 +93,7 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
               }}
             >
               <CardContent sx={{ height: '100%' }}>
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="subtitle1" gutterBottom sx={{ fontSize: '0.9rem' }}>
                   {expr.name}
                 </Typography>
                 <Chip
@@ -101,7 +101,7 @@ const CommonExpressions: React.FC<CommonExpressionsProps> = ({
                   sx={{ fontFamily: 'monospace', mb: 1 }}
                 />
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant="body2" color="textSecondary" sx={{ fontSize: '0.8rem' }}>
                     {expr.desc}
                   </Typography>
                 </Box>

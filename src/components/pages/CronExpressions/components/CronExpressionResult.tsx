@@ -14,6 +14,8 @@ interface CronExpressionResultProps {
   description: string;
   onCopy: () => void;
   generateRandomCronExpression: () => void;
+  onExpressionChange?: (expression: string) => void;
+  isValid?: boolean;
 }
 
 const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
@@ -21,6 +23,8 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
   description,
   onCopy,
   generateRandomCronExpression,
+  onExpressionChange,
+  isValid = true,
 }) => {
   const [isRolling, setIsRolling] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
@@ -39,6 +43,13 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
     onCopy();
     // Reset animation after it completes
     setTimeout(() => setIsCopying(false), 500);
+  };
+
+  const handleExpressionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newExpression = event.target.value;
+    if (onExpressionChange) {
+      onExpressionChange(newExpression);
+    }
   };
 
   return (
@@ -154,6 +165,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
                 fullWidth
                 value={cronExpression}
                 variant="outlined"
+                onChange={handleExpressionChange}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 slotProps={{
@@ -201,7 +213,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           </Box>
         </Stack>
         <Alert
-          severity="info"
+          severity={isValid ? 'info' : 'error'}
           sx={{
             mt: 2,
             mx: 1,
@@ -210,7 +222,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
             },
           }}>
           <Typography variant="body2">
-            <strong>Description:</strong> {description}
+            <strong>{isValid ? 'Description:' : 'Error:'}</strong> {description}
           </Typography>
         </Alert>
       </Paper>

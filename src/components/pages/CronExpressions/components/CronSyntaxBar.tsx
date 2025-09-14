@@ -16,13 +16,12 @@ import {
   getFieldRangeStyles,
   getInfoDescriptionStyles,
   getExampleItemStyles,
-  getDefaultInfoTextStyles,
   getSpecialCharactersTitleStyles,
   getTableRowStyles,
   getTableExampleChipStyles,
-  getTableExampleDescStyles,
 } from '../styles'
 import { ANIMATION_CONFIG, defaultFields, defaultSpecialCharacters } from '../constants/cronSyntaxConstants'
+import { LinSubHeader } from '../../../shared-components/LinSubHeader'
 
 /**
  * <CronVisualExplanation fields={customFields} />
@@ -68,9 +67,7 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
   return (
     <Box>
       {/* Title */}
-      <Typography variant="h6" gutterBottom id="cron-syntax-title">
-        Cron Expression Syntax
-      </Typography>
+      <LinSubHeader title="Cron Expression Syntax" />
       <Stack
         spacing={4}
         alignItems="center"
@@ -95,9 +92,10 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
             sx={{
               position: 'absolute',
               top: { xs: "15px", sm: "15px", md: "20px", lg: "20px", xl: "20px" },
-              right: { xs: "15px", sm: "25px", md: "25px", lg: "25px", xl: "25px" },
-              left: { xs: "15px", sm: "15px", md: "20px", lg: "20px", xl: "20px" },
+              ml: "10%",
+              mr: "10%",
               borderTop: (theme) => `2px dashed ${theme.palette.grey[400]}`,
+              width: "80%",
               zIndex: 0,
             }} 
             aria-hidden="true" 
@@ -124,6 +122,7 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
                   display: "flex", 
                   flexDirection: "column", 
                   alignItems: "center",
+                  width: "200px"
                 }}
                 role="tab"
                 tabIndex={0}
@@ -210,11 +209,14 @@ const InfoPanel = memo(({ activeField }: InfoPanelProps) => {
   const codeBlockStyles = useMemo(() => getCodeBlockStyles(theme), [theme])
   const infoDescriptionStyles = getInfoDescriptionStyles()
   const exampleItemStyles = getExampleItemStyles()
-  const defaultInfoTextStyles = getDefaultInfoTextStyles()
 
   return (
     <Card sx={cardStyles}>
-      <CardContent sx={{ p: 4 }}>
+      <CardContent
+        sx={{ 
+          p: { xs: 2, sm: 2, md: 4, lg: 4, xl: 4 },
+        }}
+      >
         <AnimatePresence mode="wait">
           {activeField ? (
             <motion.div
@@ -229,19 +231,18 @@ const InfoPanel = memo(({ activeField }: InfoPanelProps) => {
               style={{ willChange: 'opacity, transform' }}
             >
               <Typography
-                variant="h5"
-                fontWeight={700}
+                variant="h6"
                 gutterBottom
                 color="primary"
               >
                 {activeField.short} {activeField.range}
               </Typography>
 
-              <Typography variant="body1" paragraph sx={infoDescriptionStyles}>
+              <Typography variant="body2" paragraph sx={infoDescriptionStyles}>
                 {activeField.detailedDesc}
               </Typography>
 
-              <Typography variant="h6" fontWeight={600} gutterBottom>
+              <Typography variant="subtitle2" fontWeight={600} gutterBottom>
                 Examples:
               </Typography>
 
@@ -264,7 +265,13 @@ const InfoPanel = memo(({ activeField }: InfoPanelProps) => {
                         <Typography component="code" sx={codeBlockStyles}>
                           {code}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{
+                            fontSize: '0.8rem',
+                          }}
+                        >
                           {description}
                         </Typography>
                       </Box>
@@ -285,13 +292,15 @@ const InfoPanel = memo(({ activeField }: InfoPanelProps) => {
               }}
               style={{ willChange: 'opacity' }}
             >
-              <Typography variant="h5" fontWeight={700} gutterBottom>
-                Click on any field above to see detailed information
+              <Typography variant="h6" fontWeight={700} gutterBottom>
+                Click a field above to view its details
               </Typography>
               <Typography
-                variant="body1"
+                variant="body2"
                 color="text.secondary"
-                sx={defaultInfoTextStyles}
+                sx={{
+                  lineHeight: 1.6
+                }}
               >
                 Each field in a cron expression controls when your scheduled
                 task runs. The five fields represent minute, hour, day of month,
@@ -340,7 +349,6 @@ const SpecialCharactersTable = memo(
     const tableRowStyles = useMemo(() => getTableRowStyles(theme), [theme])
     const specialCharactersTitleStyles = getSpecialCharactersTitleStyles()
     const tableExampleChipStyles = getTableExampleChipStyles()
-    const tableExampleDescStyles = getTableExampleDescStyles()
 
     return (
       <Box>
@@ -364,8 +372,21 @@ const SpecialCharactersTable = memo(
                     <Chip label={char.symbol} sx={symbolCellStyles} />
                   </TableCell>
                   <TableCell>
-                    <Typography fontWeight={600}>{char.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        fontSize: '0.8rem',
+                      }}
+                    >
+                      {char.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        fontSize: '0.8rem',
+                      }}
+                    >
                       {char.description}
                     </Typography>
                   </TableCell>
@@ -380,7 +401,9 @@ const SpecialCharactersTable = memo(
                           <Typography
                             variant="body2"
                             color="text.secondary"
-                            sx={tableExampleDescStyles}
+                            sx={{
+                              fontSize: '0.65rem',
+                            }}
                           >
                             {example.meaning}
                           </Typography>

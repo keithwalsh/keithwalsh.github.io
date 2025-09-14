@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Container, Paper, Stack, Snackbar, Alert, Divider } from '@mui/material'
 import { BuildCronExpression, CommonExpressions, CronExpressionResult, CronSyntaxBar } from './components'
-import { generateDescription } from './utils/cronHelpers'
+import { generateDescription, validateCronExpression, parseCronExpression } from './utils/cronHelpers'
 import type { CronField } from './types/cron'
 
 const CronExpressions: React.FC = () => {
@@ -17,6 +17,7 @@ const CronExpressions: React.FC = () => {
   const [description, setDescription] = useState<string>('')
   const [copySuccess, setCopySuccess] = useState<boolean>(false)
   const [copyError, setCopyError] = useState<string>('')
+  const [isExpressionValid, setIsExpressionValid] = useState<boolean>(true)
 
   // Update cron expression when fields change
   useEffect(() => {
@@ -97,6 +98,23 @@ const CronExpressions: React.FC = () => {
     })
   }
 
+  const handleExpressionChange = (expression: string) => {
+    setCronExpression(expression)
+    
+    // Validate and parse the expression
+    if (validateCronExpression(expression)) {
+      const parsedFields = parseCronExpression(expression)
+      if (parsedFields) {
+        setCronFields(parsedFields)
+        setDescription(generateDescription(parsedFields))
+        setIsExpressionValid(true)
+      }
+    } else {
+      setIsExpressionValid(false)
+      setDescription('Invalid cron expression format')
+    }
+  }
+
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Stack spacing={3}>
@@ -107,6 +125,8 @@ const CronExpressions: React.FC = () => {
           description={description}
           onCopy={copyToClipboard}
           generateRandomCronExpression={generateRandomCronExpression}
+          onExpressionChange={handleExpressionChange}
+          isValid={isExpressionValid}
         />
 
         {/* Builder Interface */}
@@ -120,6 +140,9 @@ const CronExpressions: React.FC = () => {
 
         {/* Common Expressions */}
         <CommonExpressions onExpressionSelect={loadCommonExpression} />
+
+        <Box></Box>
+        <Divider />
 
         {/* Cron Syntax Reference */}
         <Paper sx={{ px: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 } }} elevation={0}>
