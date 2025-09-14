@@ -57,6 +57,15 @@ interface FormFieldProps {
 }
 
 function FormField({ id, label, multiline = false, rows, formik }: FormFieldProps) {
+    const getAutoCompleteValue = (fieldId: keyof FormValues) => {
+        switch (fieldId) {
+            case 'name': return 'name'
+            case 'email': return 'email'
+            case 'message': return 'off'
+            default: return 'off'
+        }
+    }
+
     return (
         <TextField
             fullWidth
@@ -70,6 +79,14 @@ function FormField({ id, label, multiline = false, rows, formik }: FormFieldProp
             helperText={formik.touched[id] && (formik.errors[id] as string)}
             multiline={multiline}
             rows={rows}
+            slotProps={{
+                input: {
+                    autoComplete: getAutoCompleteValue(id),
+                    autoCorrect: multiline ? 'on' : 'off',
+                    autoCapitalize: id === 'name' ? 'words' : 'off',
+                    spellCheck: multiline,
+                },
+            }}
             sx={{ mb: 2 }}
         />
     )

@@ -39,6 +39,13 @@ function LinSearch({
                         value={value}
                         onChange={onChange}
                         spellCheck={false}
+                        slotProps={{
+                            input: {
+                                autoComplete: 'off',
+                                autoCorrect: 'off',
+                                autoCapitalize: 'off',
+                            },
+                        }}
                         sx={{
                             width: { xs: "280px", sm: "280px", md: "280px", lg: "365px"},
                             '& .MuiInputBase-root': {

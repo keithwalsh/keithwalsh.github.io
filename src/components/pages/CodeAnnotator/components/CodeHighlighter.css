@@ -1,0 +1,250 @@
+pre {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  overflow: hidden !important;
+  white-space: pre-wrap !important;
+}
+
+.line-number-gutter {
+  display: inline-block;
+  padding: 0 1rem;
+  min-width: 3rem;
+  text-align: right;
+  user-select: none;
+  color: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  margin-right: -1rem;
+}
+
+.line-content {
+  flex: 1;
+  position: relative;
+  padding-left: 36px;
+}
+
+.code-line {
+  display: flex;
+  align-items: stretch;
+  min-height: 1.5em;
+}
+
+.theme-code-block-highlighted-line {
+  background-color: rgba(255, 255, 0, 0.1);
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  border-left: 3px solid rgba(255, 193, 7, 0.6);
+}
+
+.code-block-error-line .line-content .code-block-not-error-line{
+    flex: 1;
+    position: relative;
+    padding-left: 32px;
+  }
+  
+
+.code-block-error-line {
+    background-color: #ffebe9;
+    display: block;
+    position: relative;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+
+.code-block-error-line::before {
+  content: "−";
+  padding-left: 5px;
+  position: absolute;
+  left: 3px;
+  top: 0;
+  color: rgb(255, 0, 0);
+  border-left: 30px solid rgba(255, 0, 0, 0.5);
+  margin-left: -14px;
+  font-weight: bold !important;
+}
+
+.code-block-not-error-line {
+  background-color: #dafbe1;
+  display: block;
+  position: relative;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+.code-block-not-error-line::before {
+  content: "+";
+  padding-left: 5px;
+  position: absolute;
+  left: 3px;
+  top: 0;
+  color: rgb(0, 160, 0);
+  border-left: 30px solid rgba(0, 160, 0, 0.5);
+  margin-left: -14px;
+  font-weight: bold !important;
+}
+
+.codeBlockTitle {
+  border-bottom: 1px solid #dadde1;
+  font-size: 95%;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  font-family: system-ui !important;
+  letter-spacing: 0px !important;
+}
+
+.codeBlockContainer {
+  color: #393A34;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid #e1e4e8;
+}
+
+.codeBlockContainer pre {
+  margin: 0;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.word-delete {
+  color: #1f2328;
+  background-color: #ffcecb;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.word-add {
+  color: #1f2328;
+  background-color: #aceebb;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+/* Override Prism default white text-shadow which looks odd, especially in dark mode */
+code[class*="language-"],
+pre[class*="language-"] {
+  text-shadow: none !important;
+}
+
+/* Dark theme overrides for Prism syntax highlighting */
+.prism-dark-theme .token.comment,
+.prism-dark-theme .token.prolog,
+.prism-dark-theme .token.doctype,
+.prism-dark-theme .token.cdata {
+  color: #6a9955 !important; /* Green for comments */
+}
+
+.prism-dark-theme .token.punctuation {
+  color: #d4d4d4 !important; /* Light gray for punctuation */
+}
+
+.prism-dark-theme .token.property,
+.prism-dark-theme .token.tag,
+.prism-dark-theme .token.boolean,
+.prism-dark-theme .token.number,
+.prism-dark-theme .token.constant,
+.prism-dark-theme .token.symbol,
+.prism-dark-theme .token.deleted {
+  color: #b5cea8 !important; /* Light green for numbers/constants */
+}
+
+.prism-dark-theme .token.selector,
+.prism-dark-theme .token.attr-name,
+.prism-dark-theme .token.string,
+.prism-dark-theme .token.char,
+.prism-dark-theme .token.builtin,
+.prism-dark-theme .token.inserted {
+  color: #ce9178 !important; /* Orange for strings */
+}
+
+.prism-dark-theme .token.operator,
+.prism-dark-theme .token.entity,
+.prism-dark-theme .token.url,
+.prism-dark-theme .language-css .token.string,
+.prism-dark-theme .style .token.string {
+  color: #d4d4d4 !important; /* Light gray for operators */
+}
+
+.prism-dark-theme .token.atrule,
+.prism-dark-theme .token.attr-value,
+.prism-dark-theme .token.keyword {
+  color: #569cd6 !important; /* Blue for keywords */
+}
+
+.prism-dark-theme .token.function,
+.prism-dark-theme .token.class-name {
+  color: #dcdcaa !important; /* Yellow for functions */
+}
+
+.prism-dark-theme .token.regex,
+.prism-dark-theme .token.important,
+.prism-dark-theme .token.variable {
+  color: #d16969 !important; /* Red for regex/variables */
+}
+
+.prism-dark-theme .token.important,
+.prism-dark-theme .token.bold {
+  font-weight: bold !important;
+}
+
+.prism-dark-theme .token.italic {
+  font-style: italic !important;
+}
+
+.prism-dark-theme .token.entity {
+  cursor: help !important;
+}
+
+.prism-dark-theme .line-number-gutter {
+  color: rgba(145, 152, 161, 1) !important;
+  border-right: 1px solid rgba(145, 152, 161, 0.3) !important;
+} 
+
+.prism-dark-theme pre {
+  background-color: rgba(13, 17, 23, 1) !important; 
+}
+
+.prism-dark-theme .word-add {
+  color: rgba(240, 246, 252, 1) !important;
+  background-color: rgba(46, 160, 67, 0.4) !important;
+}
+
+.prism-dark-theme .word-delete {
+  color: rgba(240, 246, 252, 1) !important;
+  background-color: rgba(248, 81, 73, 0.4) !important;
+}
+
+.prism-dark-theme .code-block-error-line::before {
+  border-left: 30px solid rgba(248, 81, 73, 0.75) !important;
+  color: rgba(248, 81, 73, 0.75) !important;
+}
+
+.prism-dark-theme .code-block-not-error-line::before {
+  border-left: 30px solid rgba(46, 160, 67, 0.75) !important;
+  color: rgba(46, 160, 67, 0.75) !important;
+}
+
+.prism-dark-theme .code-block-error-line {
+  background-color: rgba(248, 81, 73, 0.1) !important; 
+}
+
+.prism-dark-theme .code-block-not-error-line {
+  background-color: rgba(46, 160, 67, 0.15) !important; 
+}
+
+.prism-dark-theme.codeBlockContainer,
+.prism-dark-theme .codeBlockContainer {
+  border: 1px solid rgba(61, 68, 77, 1) !important;
+}
+
+.prism-dark-theme .codeBlockTitle {
+  background-color: rgba(21, 27, 35, 1) !important;
+  border-bottom: 1px solid rgba(61, 68, 77, 1) !important;
+}

@@ -1,18 +1,9 @@
-import {
-  Container,
-  CssBaseline,
-  Box,
-  TextField,
-  Stack,
-  alpha,
-  Typography,
-} from '@mui/material'
+import { alpha, Box, Container, CssBaseline, Stack, TextField, Typography } from '@mui/material'
 import { useState, useRef, useEffect } from 'react'
-import { CodeHighlighter } from 'code-annotator'
-import 'code-annotator/styles'
-import { LinSwitch } from '../shared-components/LinSwitch'
-import { LinSelect } from '../shared-components/LinSelect'
-import { LinInline } from '../shared-components'
+import { CodeHighlighter } from './components'
+import { LinSwitch } from '../../shared-components/LinSwitch'
+import { LinSelect } from '../../shared-components/LinSelect'
+import { LinInline } from '../../shared-components'
 
 // Common languages for code highlighting
 const LANGUAGE_OPTIONS = [
@@ -29,7 +20,7 @@ const LANGUAGE_OPTIONS = [
   { value: 'json', label: 'JSON' },
 ]
 
-export function CodeAnnotatorPage() {
+export function CodeAnnotator() {
   const [code, setCode] = useState(`<?php
 // Remove
 echo "Hello [-Room-]";
@@ -69,10 +60,23 @@ echo "Hello [+World+]";
   }, [language, showLineNumbers]) // Re-sync when content might change
 
   return (
-    <Container>
+    <Container
+      sx={{
+        ml:{ xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+      }}
+    >
+      <Box
+        sx={{
+          mr:{ xs: 0, sm: 6, md: 6, lg: 6, xl: 3 },
+        }}
+      >
       <CssBaseline />
       <LinInline showDivider={false}>
-        <Stack sx={{ width: { sm: '100%', md: '50%' } }}>
+        <Stack
+          sx={{
+            width: { sm: '100%', md: '50%' },
+          }}
+        >
           <Box 
             id="box-1"
             ref={box1Ref}
@@ -91,6 +95,14 @@ echo "Hello [+World+]";
               maxRows={20}
               fullWidth
               variant="outlined"
+              slotProps={{
+                input: {
+                  autoComplete: 'off',
+                  autoCorrect: 'off',
+                  autoCapitalize: 'off',
+                  spellCheck: false,
+                },
+              }}
               sx={{
                 '& .MuiInputBase-root': {
                  py: 1,
@@ -98,6 +110,7 @@ echo "Hello [+World+]";
                 '& .MuiInputBase-input': {
                  color: theme => alpha(theme.palette.text.primary, 0.9),
                  fontSize: '0.75em',
+                 lineHeight: '1.5',
                  fontFamily: "SFMono-Regular, Menlo, Consolas, Monaco, Liberation Mono, Courier New, monospace",
                 }
              }}
@@ -131,15 +144,16 @@ echo "Hello [+World+]";
             </Stack>
           </Box>
           <Box>
+          <Typography variant="subtitle1" sx={{ width: '100%' }}>Output</Typography>
             <CodeHighlighter
               code={code}
               language={language}
               showLineNumbers={showLineNumbers}
-              title="Code Output"
             />
           </Box>
-        </Stack>
-      </LinInline>
+          </Stack>
+        </LinInline>
+      </Box>
     </Container>
   )
 }

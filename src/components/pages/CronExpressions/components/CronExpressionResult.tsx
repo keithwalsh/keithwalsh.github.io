@@ -72,6 +72,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           direction="column"
           sx={{
             pl: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+            mx: 1
           }}
         >
           <Stack direction="row">
@@ -155,6 +156,14 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
                 variant="outlined"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                slotProps={{
+                  input: {
+                    autoComplete: 'off',
+                    autoCorrect: 'off',
+                    autoCapitalize: 'off',
+                    spellCheck: false,
+                  },
+                }}
                 sx={{
                   fontFamily: 'monospace',
                   width: '100%',
@@ -195,8 +204,9 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           severity="info"
           sx={{
             mt: 2,
+            mx: 1,
             '&.MuiAlert-root': {
-              ml: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+              ml: { xs: 1, sm: 3, md: 4, lg: 4, xl: 4 },
             },
           }}>
           <Typography variant="body2">

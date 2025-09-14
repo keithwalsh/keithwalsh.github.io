@@ -176,6 +176,14 @@ const JsonExplorer = () => {
             onChange={handleChange}
             placeholder="Paste JSON here"
             fullWidth
+            slotProps={{
+              input: {
+                autoComplete: 'off',
+                autoCorrect: 'off',
+                autoCapitalize: 'off',
+                spellCheck: false,
+              },
+            }}
             sx={{
                '& .MuiInputBase-root': {
                 py: 1,

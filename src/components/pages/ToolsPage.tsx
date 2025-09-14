@@ -5,7 +5,7 @@
 
 import { Box, Container, Typography } from '@mui/material'
 import { MarkdownTablePage } from './MarkdownTable'
-import { CodeAnnotatorPage } from './CodeAnnotatorPage'
+import { CodeAnnotator } from './CodeAnnotator/CodeAnnotator'
 import { CronExpressions } from './index'
 import BrowserMockup from './BrowserMockup/BrowserMockup'
 import JsonExplorer from './JsonExplorer/JsonExplorer'
@@ -47,13 +47,13 @@ export function ToolsPage({ type }: ToolsPageProps) {
           variant="h4"
           gutterBottom
           sx={{
-            pl: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+            pl: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
           }}>
           {getTitle()}
         </Typography>
         {type === 'json-explorer' && <JsonExplorer />}
         {type === 'markdown-table' && <MarkdownTablePage />}
-        {type === 'code-annotator' && <CodeAnnotatorPage />}
+        {type === 'code-annotator' && <CodeAnnotator />}
         {type === 'cron-expressions' && <CronExpressions />}
         {type === 'browser-mockup' && <BrowserMockup />}
       </Box>
