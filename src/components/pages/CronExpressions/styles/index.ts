@@ -2,7 +2,6 @@ export {
   getMainContainerStyles,
   getRailStyles,
   getBadgeStyles,
-  getCardStyles,
   getCodeBlockStyles,
   getFieldLabelStyles,
   getHiddenStyles,

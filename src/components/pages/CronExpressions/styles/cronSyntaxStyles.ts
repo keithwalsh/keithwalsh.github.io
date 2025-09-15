@@ -48,17 +48,6 @@ export const getBadgeStyles = (
 });
 
 /**
- * Info panel card styles
- */
-export const getCardStyles = (theme: Theme): SxProps<Theme> => ({
-  width: "100%", 
-  maxWidth: 800, 
-  minHeight: 200,
-  mx: "auto",
-  backgroundColor: theme.palette.action.hover,
-});
-
-/**
  * Code block styles for examples
  */
 export const getCodeBlockStyles = (theme: Theme): SxProps<Theme> => ({

@@ -82,7 +82,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
         <Stack
           direction="column"
           sx={{
-            pl: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+            pl: { xs: 0, sm: 2, md: 3, lg: 3, xl: 3 },
             mx: 1
           }}
         >

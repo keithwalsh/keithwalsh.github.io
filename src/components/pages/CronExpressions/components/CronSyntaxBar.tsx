@@ -7,7 +7,6 @@ import { parseExample, validateFieldData, validateSpecialCharactersData } from '
 import {
   getMainContainerStyles,
   getBadgeStyles,
-  getCardStyles,
   getCodeBlockStyles,
   getFieldLabelStyles,
   getHiddenStyles,
@@ -205,13 +204,19 @@ export default CronVisualExplanation
 const InfoPanel = memo(({ activeField }: InfoPanelProps) => {
   const theme = useTheme()
 
-  const cardStyles = useMemo(() => getCardStyles(theme), [theme])
   const codeBlockStyles = useMemo(() => getCodeBlockStyles(theme), [theme])
   const infoDescriptionStyles = getInfoDescriptionStyles()
   const exampleItemStyles = getExampleItemStyles()
 
   return (
-    <Card sx={cardStyles}>
+    <Card
+      sx={{
+        width: "100%", 
+        maxWidth: 800, 
+        minHeight: 200,
+        mx: "auto",
+      }}
+    >
       <CardContent
         sx={{ 
           p: { xs: 2, sm: 2, md: 4, lg: 4, xl: 4 },
