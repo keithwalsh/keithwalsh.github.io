@@ -32,12 +32,21 @@ echo "Hello [+World+]";
   
   const box1Ref = useRef<HTMLDivElement>(null)
   const box2Ref = useRef<HTMLDivElement>(null)
+  const box3Ref = useRef<HTMLDivElement>(null)
+  const box4Ref = useRef<HTMLDivElement>(null)
   
   useEffect(() => {
     const syncHeights = () => {
+      // Sync box-1 with box-2 height
       if (box1Ref.current && box2Ref.current) {
         const box2Height = box2Ref.current.offsetHeight
         box1Ref.current.style.minHeight = `${box2Height}px`
+      }
+      
+      // Sync box-4 with box-3 height
+      if (box3Ref.current && box4Ref.current) {
+        const box3Height = box3Ref.current.offsetHeight
+        box4Ref.current.style.minHeight = `${box3Height}px`
       }
     }
     
@@ -46,9 +55,12 @@ echo "Hello [+World+]";
     window.addEventListener('resize', syncHeights)
     
     // Use ResizeObserver for more accurate tracking if available
-    if (window.ResizeObserver && box2Ref.current) {
+    if (window.ResizeObserver) {
       const resizeObserver = new ResizeObserver(syncHeights)
-      resizeObserver.observe(box2Ref.current)
+      
+      // Observe both box-2 and box-3 for changes
+      if (box2Ref.current) resizeObserver.observe(box2Ref.current)
+      if (box3Ref.current) resizeObserver.observe(box3Ref.current)
       
       return () => {
         window.removeEventListener('resize', syncHeights)
@@ -62,12 +74,12 @@ echo "Hello [+World+]";
   return (
     <Container
       sx={{
-        ml:{ xs: 0, sm: 3, md: 3, lg: 3, xl: 3 },
+        ml:{ xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
       }}
     >
       <Box
         sx={{
-          mr:{ xs: 0, sm: 6, md: 6, lg: 6, xl: 3 },
+          mr:{ xs: 2, sm: 6, md: 6, lg: 6, xl: 3 },
         }}
       >
       <CssBaseline />
@@ -81,11 +93,15 @@ echo "Hello [+World+]";
             id="box-1"
             ref={box1Ref}
             sx={{
-              mb: 1.5
+              mb: 1.5,
+              display: { xs: 'none', sm: 'none', md: 'block', lg: 'block', xl: 'block' }
             }}
           >
           </Box>
-          <Box>
+          <Box 
+            id="box-3"
+            ref={box3Ref}
+          >
             <Typography variant="subtitle1" sx={{ width: '100%' }}>Input</Typography>
             <TextField
               value={code}
@@ -122,7 +138,8 @@ echo "Hello [+World+]";
             id="box-2"
             ref={box2Ref}
             sx={{
-              mb: 1.5
+              mb: 1.5,
+              mt: { xs: 3, sm: 3, md: 0, lg: 0, xl: 0 },
             }}
           >
             <Stack direction="row" spacing={2}>
@@ -143,8 +160,15 @@ echo "Hello [+World+]";
               </Box>
             </Stack>
           </Box>
-          <Box>
-          <Typography variant="subtitle1" sx={{ width: '100%' }}>Output</Typography>
+          <Box 
+            id="box-4"
+            ref={box4Ref}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <Typography variant="subtitle1" sx={{ width: '100%' }}>Output</Typography>
             <CodeHighlighter
               code={code}
               language={language}

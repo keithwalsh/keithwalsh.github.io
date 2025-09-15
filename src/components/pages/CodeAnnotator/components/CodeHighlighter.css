@@ -98,7 +98,7 @@ pre {
 
 .codeBlockContainer {
   color: #393A34;
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;

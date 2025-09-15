@@ -208,7 +208,7 @@ const CodeHighlighter: React.FC<CodeHighlighterProps> = ({
         padding: '1rem',
         borderRadius: '4px',
       }}>
-        {highlightedLines.map((highlightedLine, i) => {
+        {highlightedLines.map((highlightedLine: string, i: number) => {
           // Build className for line
           let lineClass = 'code-line';
           
