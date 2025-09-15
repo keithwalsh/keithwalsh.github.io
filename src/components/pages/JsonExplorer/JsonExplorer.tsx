@@ -7,6 +7,7 @@ import { LinInline, LinInstructionsCard, LinSearch, LinSelect, LinSwitch } from 
 
 const JsonExplorer = () => {
   const [jsonData, setJsonData] = useState('');
+  const [queryResults, setQueryResults] = useState('');
   const [query, setQuery] = useState('');
   const [selectedLength, setSelectedLength] = useState<number | false>(false);
   const [selectedDepth, setSelectedDepth] = useState<number | boolean>(false);
@@ -15,11 +16,17 @@ const JsonExplorer = () => {
   const [isActiveDisplayDataTypes, handleToggleDisplayDataTypes] = useToggle();
   const [isActiveDisplayObjectSize, handleToggleDisplayObjectSize] = useToggle();
 
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => setJsonData(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setJsonData(event.target.value);
+    setQueryResults(''); // Clear query results when input changes
+  };
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value);
-  const clearAllText = () => setJsonData('');
+  const clearAllText = () => {
+    setJsonData('');
+    setQueryResults(''); // Clear query results when clearing input
+  };
 
-  const handlePerformQuery = () => performJsonQuery(jsonData, query, setJsonData);
+  const handlePerformQuery = () => performJsonQuery(jsonData, query, setQueryResults);
 
   return (
     <Box sx={{ 
@@ -208,14 +215,14 @@ const JsonExplorer = () => {
             <Tooltip title="Copy to Clipboard" placement="top" arrow>
                 <IconButton
                 size="small"
-                onClick={() => navigator.clipboard.writeText(jsonData)}
+                onClick={() => navigator.clipboard.writeText(queryResults || jsonData)}
                 >
                     <VscChromeRestore/>
                 </IconButton>
             </Tooltip>
           </Stack>
           <JsonFormatter
-            data={jsonData}
+            data={queryResults || jsonData}
             displayArrayKey={isActiveDisplayArrayKey}
             displayDataTypes={isActiveDisplayDataTypes}
             displayObjectSize={isActiveDisplayObjectSize}
