@@ -74,12 +74,12 @@ echo "Hello [+World+]";
   return (
     <Container
       sx={{
-        ml:{ xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
+        ml:{ xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
       }}
     >
       <Box
         sx={{
-          mr:{ xs: 2, sm: 6, md: 6, lg: 6, xl: 3 },
+          mr:{ xs: 4, sm: 6, md: 6, lg: 6, xl: 3 },
         }}
       >
       <CssBaseline />

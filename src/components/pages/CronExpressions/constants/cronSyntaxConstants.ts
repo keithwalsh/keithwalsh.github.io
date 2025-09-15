@@ -16,8 +16,8 @@ export const defaultFields: FieldData[] = [
       "0 - Run at the top of the hour (minute 0)",
       "15 - Run at 15 minutes past the hour", 
       "*/5 - Run every 5 minutes",
-      "0,15,30,45 - Run at 0, 15, 30, and 45 minutes past the hour",
-      "10-20 - Run every minute from 10 to 20 minutes past the hour"
+      "0,20,40 - Run at 0, 20, 40 mins. past the hour",
+      "10-20 - Run at minutes 10 through 20"
     ]
   },
   { 
@@ -44,8 +44,8 @@ export const defaultFields: FieldData[] = [
       "1 - Run on the 1st day of each month",
       "15 - Run on the 15th day of each month",
       "*/7 - Run every 7 days",
-      "1,15 - Run on the 1st and 15th of each month",
-      "1-7 - Run on the first 7 days of each month"
+      "1,15 - Run on the 1st & 15th each month",
+      "1-7 - Run on days 1 to 7 each month"
     ]
   },
   { 
@@ -57,7 +57,7 @@ export const defaultFields: FieldData[] = [
     examples: [
       "1 - Run only in January",
       "6 - Run only in June", 
-      "*/3 - Run every 3 months (Jan, Apr, Jul, Oct)",
+      "*/3 - Run every 3 months",
       "1,7 - Run in January and July",
       "3-5 - Run in March, April, and May"
     ]
@@ -71,9 +71,9 @@ export const defaultFields: FieldData[] = [
     examples: [
       "0 - Run on Sundays",
       "1 - Run on Mondays",
-      "1-5 - Run Monday through Friday (weekdays)",
-      "0,6 - Run on weekends (Saturday and Sunday)",
-      "*/2 - Run every other day starting Sunday"
+      "1-5 - Run Monday to Friday",
+      "0,6 - Run on weekends (Sat. & Sun.)",
+      "*/2 - Run every other day"
     ]
   },
 ];

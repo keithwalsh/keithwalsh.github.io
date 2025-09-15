@@ -47,7 +47,7 @@ export function ToolsPage({ type }: ToolsPageProps) {
           variant="h4"
           gutterBottom
           sx={{
-            pl: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
+            pl: { xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
           }}>
           {getTitle()}
         </Typography>

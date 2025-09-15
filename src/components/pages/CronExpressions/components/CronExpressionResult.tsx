@@ -83,7 +83,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           direction="column"
           sx={{
             pl: { xs: 0, sm: 2, md: 3, lg: 3, xl: 3 },
-            mx: 1
+            mx: 2
           }}
         >
           <Stack direction="row">
@@ -216,9 +216,8 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           severity={isValid ? 'info' : 'error'}
           sx={{
             mt: 2,
-            mx: 1,
             '&.MuiAlert-root': {
-              ml: { xs: 1, sm: 3, md: 4, lg: 4, xl: 4 },
+              mx: { xs: 2, sm: 3, md: 4, lg: 4, xl: 4 },
             },
           }}>
           <Typography variant="body2">

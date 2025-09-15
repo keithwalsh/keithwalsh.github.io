@@ -45,17 +45,8 @@ function BrowserMockup() {
             const elementRect = element.getBoundingClientRect()
             const currentScrollY = window.scrollY
 
-            // Calculate a much more dramatic scroll - position browser window near top of viewport
             const targetScrollY = currentScrollY + elementRect.top - 5 // Scroll down much more
 
-            console.log('Enhanced scroll:', {
-              currentScrollY,
-              elementTop: elementRect.top,
-              targetScrollY,
-              scrollDistance: targetScrollY - currentScrollY,
-            })
-
-            // Always scroll down significantly to showcase the browser window
             window.scrollTo({
               top: Math.max(0, targetScrollY),
               behavior: 'smooth',
@@ -64,7 +55,6 @@ function BrowserMockup() {
         }
       }
 
-      // Delay the scroll to create a more dramatic reveal effect
       setTimeout(() => performSmoothScroll(), 200)
     }
   }, [imageUrl, hasImageBeenLoaded])
@@ -112,16 +102,29 @@ function BrowserMockup() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4 }}>
+    <Container maxWidth="lg" sx={{ mt: 2 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {error && (
-          <Alert severity="error" sx={{ mb: 2, maxWidth: 600 }}>
+          <Alert
+            severity="error"
+            sx={{
+              mb: 0,
+              maxWidth: 600,
+              mx: { xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
+            }}>
             {error}
           </Alert>
         )}
 
         {file && (
-          <Alert severity="success" sx={{ mb: 2, maxWidth: 600 }}>
+          <Alert
+            severity="success"
+            sx={{
+              mb: 0,
+              maxWidth: 600,
+              mx: { xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
+            }}
+          >
             Selected: {file.name} ({formatFileSize(file.size)})
           </Alert>
         )}

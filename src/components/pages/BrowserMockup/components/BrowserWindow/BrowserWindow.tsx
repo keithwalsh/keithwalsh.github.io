@@ -93,7 +93,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
         aria-label="Browser window mockup"
         sx={{ width: 'fit-content', minWidth: 0 }}
       >
-        <Box sx={{ ml: 3, mr: 0, mb: 1, mt: 0 }}>
+        <Box sx={{ ml: 3, mr: 3, mb: 1, mt: 0 }}>
           <Slider
             value={width}
             onChange={handleResize}
@@ -110,7 +110,7 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
             min={400}
             max={1000}
             sx={{
-              width: { xs: 450, sm: 320, md: 550, lg: 680, xl: 740 },
+              width: { xs: 300, sm: 320, md: 550, lg: 680, xl: 740 },
               '& .MuiSlider-thumb': {
                 '&:focus-visible': {
                   boxShadow: `0 0 0 3px ${theme.palette.primary.main}40`,

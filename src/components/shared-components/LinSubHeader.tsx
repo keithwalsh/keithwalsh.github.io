@@ -9,7 +9,7 @@ export const LinSubHeader: React.FC<Props> = ({ title }) => {
         <Typography
             variant="h6"
             sx={{
-                px: { xs: 1, sm: 2, md: 3, lg: 3, xl: 3 },
+                px: { xs: 2, sm: 2, md: 3, lg: 3, xl: 3 },
                 mb: 2
             }}>
             {title}

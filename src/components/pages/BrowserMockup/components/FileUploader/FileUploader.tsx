@@ -57,7 +57,14 @@ function FileUploader({
   }
 
   return (
-    <Box sx={{ display: 'flex', gap: 3, alignItems: 'left' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 3,
+        alignItems: 'left',
+        mx: { xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
+      }}
+    >
       <LinInline showDivider={false}>
         <LinInstructionsCard 
           heading="How to Use"
