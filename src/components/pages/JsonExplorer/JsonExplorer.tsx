@@ -33,7 +33,8 @@ const JsonExplorer = () => {
       flex: 1,
       padding: 3,
       transition: 'all 0.5s ease-in-out',
-      mt: 4
+      mt: 4,
+      mx: { xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
   }}>
       <LinInline showDivider={false}>
         <LinInstructionsCard
