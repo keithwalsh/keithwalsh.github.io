@@ -82,8 +82,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
         <Stack
           direction="column"
           sx={{
-            pl: { xs: 0, sm: 2, md: 3, lg: 3, xl: 3 },
-            mx: 2
+            mx: { xs: 2, sm: 3, md: 4, lg: 4, xl: 4 },
           }}
         >
           <Stack direction="row">
@@ -162,7 +161,6 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
               }}
             >
               <TextField
-                fullWidth
                 value={cronExpression}
                 variant="outlined"
                 onChange={handleExpressionChange}
