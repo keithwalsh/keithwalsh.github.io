@@ -1,4 +1,5 @@
 export interface CronField {
+  seconds?: string
   minutes: string
   hours: string
   dayOfMonth: string

@@ -219,7 +219,7 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
             },
           }}>
           <Typography variant="body2">
-            <strong>{isValid ? 'Description:' : 'Error:'}</strong> {description}
+            <strong>{isValid ? '' : 'Error:'}</strong> {description}
           </Typography>
         </Alert>
       </Paper>
