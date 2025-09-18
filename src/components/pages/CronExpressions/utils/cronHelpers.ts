@@ -99,6 +99,9 @@ export const generateDescription = (fields: CronField): string => {
       .replace(/(Every minute, )(every hour, )/g, '$1')
       .replace(/(Every minute, )(every day, )/g, '$1')
       .replace(/(Every minute)(, )(every day)/g, '$1')
+      .replace(/(past the hour, )(every hour)/g, '$2')
+      .replace(/(:00)( A| P)(M)/g, '$2$3')
+      .replace(/(minutes)(, every hour, every day)/g, '$1')
   } catch (error) {
     console.error('Error generating cron description:', error)
     return 'Invalid cron expression'
