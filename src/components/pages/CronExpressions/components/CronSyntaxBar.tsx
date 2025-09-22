@@ -76,7 +76,7 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
           sx={{
             position: "relative", 
             width: "100%", 
-            maxWidth: { xs: '100%', sm: 800, md: 1000 }, 
+            maxWidth: { xs: '100%', sm: 800, md: 800, lg: 800, xl: 800 }, 
             mx: "auto" 
           }}
           role="region"
