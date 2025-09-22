@@ -9,7 +9,6 @@ export {
   getTableStyles,
   getSymbolCellStyles,
   getTableCodeStyles,
-  getResponsiveContainerStyles,
   getFieldRangeStyles,
   getInfoDescriptionStyles,
   getExampleItemStyles,

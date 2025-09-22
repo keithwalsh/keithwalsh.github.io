@@ -160,17 +160,6 @@ export const getTableCodeStyles = (theme: Theme): SxProps<Theme> => ({
   })
 });
 
-/**
- * Responsive container styles for different sections
- */
-export const getResponsiveContainerStyles = (): SxProps<Theme> => ({
-  position: "relative", 
-  width: "100%", 
-  maxWidth: { xs: '100%', sm: 800, md: 1000 }, 
-  mx: "auto" 
-});
-
-
 
 /**
  * Field range text styles (small text under field labels)

@@ -123,7 +123,8 @@ export const defaultSpecialCharacters: SpecialCharacterData[] = [
     name: "Ignore",
     description: "Used when day-of-month or day-of-week should be ignored.",
     examples: [
-      { value: "0 0 15 * ?", meaning: "Run on 15th of every month" }
+      { value: "0 0 15 * ?", meaning: "Run on 15th of every month" },
+      { value: "0 0 ? * 1", meaning: "Run every Monday at midnight" }
     ]
   }
 ];

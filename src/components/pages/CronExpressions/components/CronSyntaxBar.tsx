@@ -10,7 +10,6 @@ import {
   getCodeBlockStyles,
   getFieldLabelStyles,
   getHiddenStyles,
-  getResponsiveContainerStyles,
   getSymbolCellStyles,
   getFieldRangeStyles,
   getInfoDescriptionStyles,
@@ -60,7 +59,6 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
   // Style functions (memoized only for theme-dependent styles)
   const mainContainerStyles = getMainContainerStyles()
   const hiddenStyles = getHiddenStyles()
-  const responsiveContainerStyles = getResponsiveContainerStyles()
   const fieldRangeStyles = getFieldRangeStyles()
 
   return (
@@ -69,13 +67,18 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
       <LinSubHeader title="Cron Expression Syntax" />
       <Stack
         spacing={4}
-        alignItems="center"
+        alignItems="left"
         sx={mainContainerStyles}
         className={className}
       >
         {/* Container for badges and rail */}
         <Box
-          sx={responsiveContainerStyles}
+          sx={{
+            position: "relative", 
+            width: "100%", 
+            maxWidth: { xs: '100%', sm: 800, md: 1000 }, 
+            mx: "auto" 
+          }}
           role="region"
           aria-labelledby="cron-syntax-title"
           aria-describedby="cron-field-instructions"
@@ -186,6 +189,9 @@ const CronVisualExplanation = memo(function CronVisualExplanation({
               ? `field-${activeField.short.toLowerCase().replace(/\s+/g, '-')}`
               : undefined
           }
+          sx={{
+            alignItems: "left",
+          }}
         >
           <InfoPanel activeField={activeField} />
         </Box>
@@ -214,7 +220,8 @@ const InfoPanel = memo(({ activeField }: InfoPanelProps) => {
         width: "100%", 
         maxWidth: 800, 
         minHeight: 200,
-        mx: "auto",
+        mx: 0,
+        mb: 3
       }}
     >
       <CardContent
@@ -356,7 +363,11 @@ const SpecialCharactersTable = memo(
     const tableExampleChipStyles = getTableExampleChipStyles()
 
     return (
-      <Box>
+      <Box
+        sx={{
+          maxWidth: "800px",
+        }}
+      >
         <Typography variant="h6" sx={specialCharactersTitleStyles}>
           Special Characters
         </Typography>
