@@ -4,10 +4,9 @@
  */
 
 import React, { useState } from 'react';
-import { useTheme, Paper, Typography, Box, TextField, Alert, IconButton, Tooltip, Stack } from '@mui/material';
+import { Paper, Typography, Box, TextField, Alert, IconButton, Tooltip, Stack } from '@mui/material';
 import { ContentCopy } from '@mui/icons-material';
 import { GiPerspectiveDiceSixFacesRandom } from 'react-icons/gi';
-import { motion } from 'framer-motion';
 
 interface CronExpressionResultProps {
   cronExpression: string;
@@ -28,8 +27,6 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
 }) => {
   const [isRolling, setIsRolling] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const theme = useTheme();
 
   const handleDiceClick = () => {
     setIsRolling(true);
@@ -76,13 +73,14 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
         elevation={0}
         sx={{
           px: 0,
-          maxWidth: '480px',
+          maxWidth: '680px',
         }}
       >
         <Stack
           direction="column"
           sx={{
-            mx: { xs: 2, sm: 3, md: 4, lg: 4, xl: 4 },
+            ml: { xs: 2, sm: 3, md: 4, lg: 4, xl: 4 },
+            mr: { xs: 2, sm: 3, md: 0, lg: 0, xl: 0 },
           }}
         >
           <Stack direction="row">
@@ -123,49 +121,10 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
             </Stack>
           </Stack>
           <Box>
-            <motion.div
-              animate={
-                isFocused
-                  ? {
-                      boxShadow: [
-                        `0 0 0 0px ${theme.palette.primary.main}40`,
-                        `0 0 0 1px ${theme.palette.primary.main}40`,
-                        `0 0 0 2px ${theme.palette.primary.main}40`,
-                        `0 0 1px 3px ${theme.palette.primary.main}40`,
-                        `0 0 2px 4px ${theme.palette.primary.main}40`,
-                        `0 0 3px 5px ${theme.palette.primary.main}40`,
-                        `0 0 4px 6px ${theme.palette.primary.main}40`,
-                        `0 0 3px 5px ${theme.palette.primary.main}40`,
-                        `0 0 2px 4px ${theme.palette.primary.main}40`,
-                        `0 0 1px 3px ${theme.palette.primary.main}40`,
-                        `0 0 0 2px ${theme.palette.primary.main}40`,
-                        `0 0 0 0px ${theme.palette.primary.main}40`,
-                      ],
-                    }
-                  : {
-                      boxShadow: `0 0 0 0px ${theme.palette.primary.main}00`,
-                    }
-              }
-              transition={{
-                duration: isFocused ? 2 : 0.3,
-                repeat: isFocused ? Infinity : 0,
-                ease: [0.37, 0, 0.63, 1], // Smoother breathing curve
-                times: isFocused
-                  ? [0, 0.1, 0.2, 0.35, 0.5, 0.6, 0.65, 0.7, 0.8, 0.9, 0.95, 1]
-                  : undefined,
-              }}
-              style={{
-                borderRadius: '4px',
-                display: 'block',
-                width: '100%',
-              }}
-            >
               <TextField
                 value={cronExpression}
                 variant="outlined"
                 onChange={handleExpressionChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
                 slotProps={{
                   input: {
                     autoComplete: 'off',
@@ -185,10 +144,10 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
                       xs: '1.5em',
                       sm: '1.5em',
                       md: '1.5em',
-                      lg: '1.5em',
-                      xl: '1.5em',
+                      lg: '2em',
+                      xl: '2em',
                     },
-                    p: 1,
+                    p: 1.5,
                   },
                   '& .MuiOutlinedInput-root': {
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -203,11 +162,11 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
                   '& .MuiOutlinedInput-root.Mui-focused': {
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: 'primary.main',
+                      boxShadow: (theme) => `0 0 5px 5px ${theme.palette.primary.main}25`
                     },
                   },
                 }}
               />
-            </motion.div>
           </Box>
         </Stack>
         <Alert
@@ -215,7 +174,9 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           sx={{
             mt: 2,
             '&.MuiAlert-root': {
-              mx: { xs: 2, sm: 3, md: 4, lg: 4, xl: 4 },
+              ml: { xs: 2, sm: 3, md: 4, lg: 4, xl: 4 },
+              mr: { xs: 2, sm: 3, md: 0, lg: 0, xl: 0 },
+              mb: 3,
             },
           }}>
           <Typography variant="body2">

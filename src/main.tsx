@@ -12,6 +12,7 @@ import {
   IconButton,
   Toolbar,
   useMediaQuery,
+  Fab,
 } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 import { Routes, Route, HashRouter, useLocation } from 'react-router-dom'
@@ -40,6 +41,7 @@ import {
 import emailjs from '@emailjs/browser'
 import { initGA, logPageView } from './utils/analytics'
 import { LinAppBar, LinDrawer } from './components/shared-components'
+import { getAppConfig } from './config/appConfig'
 
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
@@ -99,12 +101,14 @@ export function App() {
   }
 
   const hideToolbar = new URLSearchParams(location.search).has('notoolbar')
+  const config = getAppConfig()
+  const shouldShowAppBar = config.showAppBar && !hideToolbar
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-        {!hideToolbar && (
+        {shouldShowAppBar && (
           <LinAppBar position="relative" elevation={0}>
             <Toolbar>
               <IconButton
@@ -153,14 +157,14 @@ export function App() {
             display: 'flex', 
             flex: 1, 
             overflow: 'hidden',
-            '--drawer-width': hideToolbar
+            '--drawer-width': !config.showDrawer
               ? '0px'
               : isDesktop && !open
               ? '0px'
               : '240px'
           }}
         >
-          {!hideToolbar && (
+          {config.showDrawer && (
             <LinDrawer
               variant={isDesktop ? 'persistent' : 'temporary'}
               open={open}
@@ -172,7 +176,34 @@ export function App() {
             </LinDrawer>
           )}
           <Main sx={{ px: { xs: '0px', sm: '0px', md: '0px', lg: '16px' } }}>
-            <Box sx={{ display: 'flex', flex: 1, paddingTop: '57px', overflow: 'hidden', '& .MuiContainer-root': { px: { sm: '24px', md: '8px', lg: '16px', xl: '24px' }  }}}>
+            {/* Floating menu button when app bar is hidden */}
+            {!shouldShowAppBar && config.showDrawer && (
+              <Fab
+                size="small"
+                color="primary"
+                aria-label="open drawer"
+                onClick={handleDrawerToggle}
+                sx={{
+                  position: 'fixed',
+                  top: 16,
+                  left: 16,
+                  zIndex: theme.zIndex.drawer + 1,
+                  width: 32,
+                  height: 32,
+                  minHeight: 32,
+                  opacity: 0.5,
+                }}
+              >
+                {open ? <MenuOpenIcon sx={{ fontSize: 16 }} /> : <MenuIcon sx={{ fontSize: 16 }} />}
+              </Fab>
+            )}
+            <Box sx={{ 
+              display: 'flex', 
+              flex: 1, 
+              paddingTop: shouldShowAppBar ? '57px' : '0px', 
+              overflow: 'hidden', 
+              '& .MuiContainer-root': { px: { sm: '24px', md: '8px', lg: '16px', xl: '24px' } }
+            }}>
               <Routes>
                 <Route path="/" element={<AboutPage />} />
                 <Route path="/projects/personal" element={<PersonalProjects />} />

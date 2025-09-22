@@ -148,8 +148,13 @@ const CronExpressions: React.FC = () => {
         {/* Common Expressions */}
         <CommonExpressions onExpressionSelect={loadCommonExpression} />
 
-        <Box></Box>
-        <Divider />
+        <Divider
+          sx={{
+            '&.MuiDivider-root': {
+              mt: 6, mb: 1
+            },
+          }}
+        />
 
         {/* Cron Syntax Reference */}
         <Paper sx={{ px: { xs: 0, sm: 3, md: 3, lg: 3, xl: 3 } }} elevation={0}>
