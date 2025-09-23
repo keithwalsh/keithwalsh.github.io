@@ -244,16 +244,6 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
                 whiteSpace: 'nowrap !important',
                 cursor: 'text !important',
                 transition: 'all 0.3s ease !important',
-                '&:focus-visible': {
-                  outline: `2px solid ${theme.palette.primary.main} !important`,
-                  outlineOffset: '2px !important',
-                },
-                '&:hover': {
-                  backgroundColor:
-                    isDark
-                      ? 'rgba(0,0,0,0.4) !important'
-                      : 'rgba(255,255,255,0.9) !important',
-                },
               }}
             >
               {isEditingUrl ? (
