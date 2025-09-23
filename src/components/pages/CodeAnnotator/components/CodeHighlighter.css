@@ -21,7 +21,7 @@ pre {
 .line-content {
   flex: 1;
   position: relative;
-  padding-left: 36px;
+  padding-left: 30px;
 }
 
 .code-line {
@@ -103,14 +103,16 @@ pre {
   flex-direction: column;
   overflow: hidden;
   border-radius: 4px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border: 1px solid #e1e4e8;
 }
 
 .codeBlockContainer pre {
   margin: 0;
-  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.5;
+  font-family: SFMono-Regular, Menlo, Consolas, Monaco, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.75em;
+  line-height: 1.75;
 }
 
 .word-delete {
