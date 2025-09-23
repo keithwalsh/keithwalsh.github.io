@@ -149,6 +149,7 @@ function BrowserMockup() {
                 transition:
                   'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
                 mt: 4, // Add even more top margin for dramatic scroll effect
+                mx: 2,
                 width: '100%',
               }}
             >

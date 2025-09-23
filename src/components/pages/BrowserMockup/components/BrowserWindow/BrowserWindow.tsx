@@ -82,12 +82,6 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
       }
     )
 
-    // Handle menu click for browser controls
-    const handleMenuClick = () => {
-      // Menu functionality can be implemented here
-      console.log('Menu clicked')
-    }
-
     return (
       <Box
         aria-label="Browser window mockup"
@@ -318,33 +312,12 @@ const BrowserWindow = forwardRef<BrowserWindowRef, BrowserWindowProps>(
 
             <Box sx={{ marginLeft: 'auto', position: 'relative !important' }}>
               <Box
-                component="button"
-                role="button"
-                aria-label="Browser menu"
-                tabIndex={0}
-                onClick={handleMenuClick}
                 sx={{
                   background: 'transparent !important',
                   border: 'none !important',
                   cursor: 'pointer !important',
                   padding: '4px !important',
                   borderRadius: '4px !important',
-                  '&:focus-visible': {
-                    outline: `2px solid ${theme.palette.primary.main} !important`,
-                    outlineOffset: '2px !important',
-                  },
-                  '&:hover': {
-                    backgroundColor:
-                      isDark
-                        ? 'rgba(255,255,255,0.1) !important'
-                        : 'rgba(0,0,0,0.1) !important',
-                  },
-                }}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    handleMenuClick()
-                  }
                 }}
               >
                 <Box
