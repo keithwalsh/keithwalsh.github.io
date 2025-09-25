@@ -103,8 +103,6 @@ pre {
   flex-direction: column;
   overflow: hidden;
   border-radius: 4px;
-  padding-top: 8px;
-  padding-bottom: 8px;
   border: 1px solid #e1e4e8;
 }
 
@@ -113,6 +111,8 @@ pre {
   font-family: SFMono-Regular, Menlo, Consolas, Monaco, 'Liberation Mono', 'Courier New', monospace;
   font-size: 0.75em;
   line-height: 1.75;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
 
 .word-delete {
