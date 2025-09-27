@@ -9,6 +9,7 @@ import { CodeAnnotator } from './CodeAnnotator/CodeAnnotator'
 import { CronExpressions } from './index'
 import BrowserMockup from './BrowserMockup/BrowserMockup'
 import JsonExplorer from './JsonExplorer/JsonExplorer'
+import { TextToAscii } from './TextToAscii'
 
 interface ToolsPageProps {
   type?:
@@ -17,6 +18,7 @@ interface ToolsPageProps {
     | 'code-annotator'
     | 'cron-expressions'
     | 'browser-mockup'
+    | 'text-to-ascii'
 }
 
 export function ToolsPage({ type }: ToolsPageProps) {
@@ -32,6 +34,8 @@ export function ToolsPage({ type }: ToolsPageProps) {
         return 'Cron Expressions'
       case 'browser-mockup':
         return 'Browser Window Mockup'
+      case 'text-to-ascii':
+        return 'Text to ASCII Art'
       default:
         return 'Tools'
     }
@@ -56,6 +60,7 @@ export function ToolsPage({ type }: ToolsPageProps) {
         {type === 'code-annotator' && <CodeAnnotator />}
         {type === 'cron-expressions' && <CronExpressions />}
         {type === 'browser-mockup' && <BrowserMockup />}
+        {type === 'text-to-ascii' && <TextToAscii />}
       </Box>
     </Container>
   )

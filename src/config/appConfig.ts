@@ -18,7 +18,7 @@ export interface AppConfig {
  */
 export const appConfig: AppConfig = {
   // Set to false to hide the app bar completely
-  showAppBar: false,
+  showAppBar: true,
   
   // Set to false to hide the drawer/sidebar
   showDrawer: true,

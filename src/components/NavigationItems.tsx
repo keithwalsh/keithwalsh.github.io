@@ -16,6 +16,7 @@ import { IoLogoMarkdown } from 'react-icons/io5'
 import CodeIcon from '@mui/icons-material/Code'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 import WebIcon from '@mui/icons-material/Web'
+import { BiFontFamily } from "react-icons/bi";
 
 export enum ROUTES {
   ABOUT = '/',
@@ -28,6 +29,7 @@ export enum ROUTES {
   CODE_ANNOTATOR = '/tools/code-annotator',
   CRON_EXPRESSIONS = '/tools/cron-expressions',
   BROWSER_MOCKUP = '/tools/browser-mockup',
+  TEXT_TO_ASCII = '/tools/text-to-ascii',
   PROJECTS = '/projects',
   PRO_PROJECTS = '/projects/professional',
   PERS_PROJECTS = '/projects/personal',
@@ -89,6 +91,11 @@ export const NAVIGATION_ITEMS = [
         path: ROUTES.MD_TABLE,
         label: 'Markdown Table',
         icon: <IoLogoMarkdown style={{ fontSize: '1.25rem' }} />,
+      },
+      {
+        path: ROUTES.TEXT_TO_ASCII,
+        label: 'Text to ASCII',
+        icon: <BiFontFamily style={{ fontSize: '1.25rem' }} />,
       },
     ],
   },

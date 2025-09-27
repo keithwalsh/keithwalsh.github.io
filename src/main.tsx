@@ -230,6 +230,10 @@ export function App() {
                   path="/tools/browser-mockup"
                   element={<ToolsPage type="browser-mockup" />}
                 />
+                <Route
+                  path="/tools/text-to-ascii"
+                  element={<ToolsPage type="text-to-ascii" />}
+                />
               </Routes>
             </Box>
           </Main>
