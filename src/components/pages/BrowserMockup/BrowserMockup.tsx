@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Box, Container, useTheme, Alert } from '@mui/material'
+import { Box, Container, useTheme, Alert, Fade, Slide } from '@mui/material'
 import { BrowserWindow, FileUploader, SectionErrorBoundary } from './components'
 import { useFileReader, useDownloadImage } from './hooks'
 import { isImageFile, formatFileSize } from './utils/fileHelpers'
@@ -139,29 +139,32 @@ function BrowserMockup() {
 
         {imageUrl && typeof imageUrl === 'string' && (
           <SectionErrorBoundary sectionName="Browser Window Preview">
-            <Box
-              ref={browserSectionRef}
-              sx={{
-                opacity: hasImageBeenLoaded ? 1 : 0,
-                transform: hasImageBeenLoaded
-                  ? 'translateY(0)'
-                  : 'translateY(40px)',
-                transition:
-                  'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-                mt: 4, // Add even more top margin for dramatic scroll effect
-                mx: 2,
-                width: '100%',
-              }}
-            >
-              <BrowserWindow
-                ref={browserWindowRef}
-                imageUrl={imageUrl}
-                url={initialUrl}
-                initialWidth={700}
-                onDownload={handleDownload}
-                isDownloading={isDownloading}
-              />
-            </Box>
+            <Fade in={hasImageBeenLoaded} timeout={800}>
+              <Slide
+                direction="up"
+                in={hasImageBeenLoaded}
+                timeout={{ enter: 800, exit: 600 }}
+                easing={{ enter: 'cubic-bezier(0.4, 0, 0.2, 1)', exit: 'cubic-bezier(0.4, 0, 0.6, 1)' }}
+              >
+                <Box
+                  ref={browserSectionRef}
+                  sx={{
+                    mt: 4, // Add even more top margin for dramatic scroll effect
+                    mx: 2,
+                    width: '100%',
+                  }}
+                >
+                  <BrowserWindow
+                    ref={browserWindowRef}
+                    imageUrl={imageUrl}
+                    url={initialUrl}
+                    initialWidth={700}
+                    onDownload={handleDownload}
+                    isDownloading={isDownloading}
+                  />
+                </Box>
+              </Slide>
+            </Fade>
           </SectionErrorBoundary>
         )}
       </Box>

@@ -191,9 +191,8 @@ export function TextToAscii({}: TextToAsciiProps) {
                   onChange={(value) => setVerticalLayout(value as string)}
                 />
               </Stack>
-              <Stack direction="row" spacing={2}>
+              <Stack direction="row" spacing={2} alignItems="center">
                 <LinIncrementControl
-                  label="Width (characters)"
                   value={width}
                   onChange={setWidth}
                   min={40}
@@ -201,13 +200,13 @@ export function TextToAscii({}: TextToAsciiProps) {
                   step={1}
                   disabled={isLoading || !inputText.trim()}
                 />
-                 <LinSwitch
-                   label="Whitespace Break"
-                   checked={whitespaceBreak}
-                   onChange={(e) => setWhitespaceBreak(e.target.checked)}
-                 />
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  Break lines at whitespace to fit within the specified width
+                <LinSwitch
+                  label="Whitespace Break"
+                  checked={whitespaceBreak}
+                  onChange={(e) => setWhitespaceBreak(e.target.checked)}
+                />
+                <Typography variant="body2" color="text.secondary">
+                  Break lines at whitespace to fit width
                 </Typography>
               </Stack>
           </Stack>

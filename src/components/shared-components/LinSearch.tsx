@@ -6,21 +6,21 @@ import * as React from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { FaSearch } from "react-icons/fa";
 
-type Props = {
-    label?: string;
-    value?: string;
-    placeholder?: string;
-    onClick?: () => void;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+type LinSearchProps = {
+  label?: string;
+  value?: string;
+  placeholder?: string;
+  onClick?: () => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-function LinSearch({
-    label,
-    value,
-    placeholder,
-    onClick,
-    onChange,
-}: Props) {
+export function LinSearch({
+  label,
+  value,
+  placeholder,
+  onClick,
+  onChange,
+}: LinSearchProps) {
     return (
         <Box sx={{ 
             position: 'relative',
@@ -85,5 +85,3 @@ function LinSearch({
         </Box>
     );
 };
-
-export { LinSearch };
