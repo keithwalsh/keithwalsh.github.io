@@ -3,7 +3,7 @@
  * styling and value constraints for numeric inputs with sliding number animation.
  */
 
-import { Box, Button, ButtonGroup, FormControlLabel, FormGroup, Typography, alpha } from '@mui/material';
+import { Box, Button, ButtonGroup, Typography, alpha } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { useEffect, useRef } from 'react';
 
@@ -25,8 +25,6 @@ export function LinIncrementControl({
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
   disabled = false,
-  className,
-  label,
 }: LinIncrementControlProps) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -74,10 +72,6 @@ export function LinIncrementControl({
   }, [value, currentValueIndex, itemHeight]);
 
   return (
-    <FormGroup className={className}>
-      <FormControlLabel
-        control={
-          
           <ButtonGroup
             variant="outlined"
             sx={{
@@ -172,21 +166,5 @@ export function LinIncrementControl({
             />
 
           </ButtonGroup>
-
-        }
-        label={label}
-        labelPlacement="start"
-        sx={{
-          marginLeft: 0,
-          '& .MuiFormControlLabel-label': {
-            fontSize: '0.75em',
-            whiteSpace: 'nowrap',
-            fontWeight: '400',
-            color: 'text.primary',
-            marginRight: 1
-          },
-        }}
-      />
-    </FormGroup>
   );
 }
