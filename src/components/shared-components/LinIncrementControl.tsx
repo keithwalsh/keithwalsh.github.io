@@ -3,7 +3,7 @@
  * styling and value constraints for numeric inputs with sliding number animation.
  */
 
-import { Box, IconButton, alpha } from '@mui/material';
+import { Box, Button, ButtonGroup, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { useEffect, useRef } from 'react';
 
@@ -26,8 +26,6 @@ export function LinIncrementControl({
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
   disabled = false,
-  width = '160px',
-  sx = {},
 }: LinIncrementControlProps) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +49,7 @@ export function LinIncrementControl({
   // Height of each number item
   const itemHeight = 30;
 
-  // Generate all numbers from min to max (like the HTML example)
+  // Generate all numbers from min to max
   const generateAllNumbers = () => {
     const numbers = [];
     for (let i = min; i <= max; i += step) {
@@ -63,102 +61,94 @@ export function LinIncrementControl({
   const allNumbers = generateAllNumbers();
   const currentValueIndex = allNumbers.findIndex(num => num === value);
 
-  // Update animation when value changes (exactly like the JavaScript example)
   useEffect(() => {
     if (listRef.current && currentValueIndex >= 0) {
       const list = listRef.current;
       const marginTop = -currentValueIndex * itemHeight;
       
-      // Apply the animation exactly like the JavaScript example
       list.style.marginTop = `${marginTop}px`;
       list.style.transition = 'margin-top 300ms ease-in-out';
       
-      console.log('Animation Applied:', {
-        value,
-        currentValueIndex,
-        marginTop: `${marginTop}px`
-      });
     }
   }, [value, currentValueIndex, itemHeight]);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: '30px',
-        backgroundColor: (theme) => alpha(theme.palette.primary.light, 0.03),
-        borderRadius: '8px',
-        borderColor: (theme) => alpha(theme.palette.primary.main, 0.5),
-        borderWidth: '1px',
-        borderStyle: 'solid',
-        padding: '8px 12px',
-        minWidth: width,
-        gap: '12px',
-        transition: 'background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
-        position: 'relative',
-        '&:hover': {
-            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.06),
-            borderColor: 'primary.main'
-        },
-        ...sx,
-      }}
-    >
-      <IconButton
+    <ButtonGroup variant="outlined">
+        
+      <Button
+        variant="outlined"
+        startIcon={<Remove />}
         onClick={handleDecrement}
         disabled={isDecrementDisabled}
         sx={{
-            padding: '4px',
+          minWidth: 0,
+          px: 1,
+          borderRight: 'none',
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+          '& .MuiButton-startIcon': {
+            mx: 0,
+          }
+        }}
+      />
+
+      <Button
+        sx={{
+          borderLeft: 'none',
+          borderRight: 'none',
         }}
       >
-        <Remove fontSize="small" />
-      </IconButton>
-      
-      {/* Exactly like the HTML example structure */}
-      <div style={{
-        position: 'absolute',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '60px',
-        height: `${itemHeight}px`,
-        overflow: 'hidden',
-        textAlign: 'center'
-      }}>
-        <div 
-          ref={listRef}
-          style={{
-            width: '100%'
+        <Box
+          sx={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            height: `${itemHeight}px`,
+            overflow: 'hidden',
+            textAlign: 'center',
           }}
         >
-          {allNumbers.map((num) => (
-            <div
-              key={num}
-              style={{
-                display: 'block',
-                width: '100%',
-                height: `${itemHeight}px`,
-                color: 'rgb(25, 118, 210)',
-                fontSize: '1rem',
-                lineHeight: `${itemHeight}px`,
-                fontFamily: 'monospace'
-              }}
-            >
-              {num}
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <IconButton
+          <Box 
+            ref={listRef}
+            sx={{
+              width: '100%',
+            }}
+          >
+            {allNumbers.map((num) => (
+              <Typography
+                variant="button"
+                key={num}
+                sx={{
+                  display: 'block',
+                  color: 'primary.main',
+                  fontSize: '1rem',
+                  lineHeight: `${itemHeight}px`,
+                }}
+              >
+                {num}
+              </Typography>
+            ))}
+          </Box>
+        </Box>
+      </Button>
+
+      <Button
+        variant="outlined"
+        endIcon={<Add />}
         onClick={handleIncrement}
         disabled={isIncrementDisabled}
         sx={{
-          padding: '4px',
+          minWidth: 0,
+          px: 1,
+          borderLeft: 'none',
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+          '& .MuiButton-endIcon': {
+            mx: 0,
+          }
         }}
-      >
-        <Add fontSize="small" />
-      </IconButton>
-    </Box>
+      />
+
+    </ButtonGroup>
   );
 }
