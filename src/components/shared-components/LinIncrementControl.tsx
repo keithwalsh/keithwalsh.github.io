@@ -107,6 +107,8 @@ export function LinIncrementControl({
                 <Button
                     disabled
                     sx={{
+                    marginLeft: '0.01px !important',
+                    marginRight: '1px !important',
                     borderLeft: 'none !important',
                     borderRight: 'none !important',
                     backgroundColor: 'none !important',
