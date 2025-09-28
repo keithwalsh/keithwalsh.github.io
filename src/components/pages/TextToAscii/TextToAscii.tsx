@@ -192,8 +192,8 @@ export function TextToAscii({}: TextToAsciiProps) {
                 />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <Typography gutterBottom>Width: {width} characters</Typography>
                 <LinIncrementControl
+                  label="Width (characters)"
                   value={width}
                   onChange={setWidth}
                   min={40}

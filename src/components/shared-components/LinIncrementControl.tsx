@@ -3,7 +3,7 @@
  * styling and value constraints for numeric inputs with sliding number animation.
  */
 
-import { Box, Button, ButtonGroup, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, FormControlLabel, FormGroup, Typography, alpha } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 import { useEffect, useRef } from 'react';
 
@@ -14,9 +14,8 @@ interface LinIncrementControlProps {
   max?: number;
   step?: number;
   disabled?: boolean;
+  className?: string;
   label?: string;
-  width?: string | number;
-  sx?: object;
 }
 
 export function LinIncrementControl({
@@ -26,6 +25,8 @@ export function LinIncrementControl({
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
   disabled = false,
+  className,
+  label,
 }: LinIncrementControlProps) {
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -73,82 +74,115 @@ export function LinIncrementControl({
   }, [value, currentValueIndex, itemHeight]);
 
   return (
-    <ButtonGroup variant="outlined">
-        
-      <Button
-        variant="outlined"
-        startIcon={<Remove />}
-        onClick={handleDecrement}
-        disabled={isDecrementDisabled}
-        sx={{
-          minWidth: 0,
-          px: 1,
-          borderRight: 'none',
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0,
-          '& .MuiButton-startIcon': {
-            mx: 0,
-          }
-        }}
-      />
-
-      <Button
-        sx={{
-          borderLeft: 'none',
-          borderRight: 'none',
-        }}
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            height: `${itemHeight}px`,
-            overflow: 'hidden',
-            textAlign: 'center',
-          }}
-        >
-          <Box 
-            ref={listRef}
-            sx={{
-              width: '100%',
-            }}
-          >
-            {allNumbers.map((num) => (
-              <Typography
-                variant="button"
-                key={num}
+    <FormGroup className={className}>
+            <FormControlLabel
+                control={
+                <ButtonGroup
+                variant="outlined"
                 sx={{
-                  display: 'block',
-                  color: 'primary.main',
-                  fontSize: '1rem',
-                  lineHeight: `${itemHeight}px`,
+                    height: `${itemHeight}px`,
                 }}
-              >
-                {num}
-              </Typography>
-            ))}
-          </Box>
-        </Box>
-      </Button>
+                >
 
-      <Button
-        variant="outlined"
-        endIcon={<Add />}
-        onClick={handleIncrement}
-        disabled={isIncrementDisabled}
-        sx={{
-          minWidth: 0,
-          px: 1,
-          borderLeft: 'none',
-          borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
-          '& .MuiButton-endIcon': {
-            mx: 0,
-          }
-        }}
-      />
+                <Button
+                    variant="outlined"
+                    startIcon={<Remove />}
+                    onClick={handleDecrement}
+                    disabled={isDecrementDisabled}
+                    sx={{
+                    px: 1,
+                    borderRight: 'none !important',
+                    borderTopRightRadius: 0,
+                    borderBottomRightRadius: 0,
+                    borderColor: (theme) =>
+                        isDecrementDisabled
+                        ? `${alpha(theme.palette.primary.main, 0.5)} !important`
+                        : undefined,
+                    '& .MuiButton-startIcon': {
+                        mx: 0,
+                    }
+                    }}
+                />
 
-    </ButtonGroup>
+                <Button
+                    disabled
+                    sx={{
+                    borderLeft: 'none !important',
+                    borderRight: 'none !important',
+                    backgroundColor: 'none !important',
+                    borderColor: theme => `${alpha(theme.palette.primary.main, 0.5)} !important`,
+                    }}
+                >
+                    <Box
+                    sx={{
+                        position: 'absolute',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        height: `${itemHeight}px`,
+                        overflow: 'hidden',
+                        textAlign: 'center',
+                    }}
+                    >
+                    <Box 
+                        ref={listRef}
+                        sx={{
+                        width: '100%',
+                        }}
+                    >
+                        {allNumbers.map((num) => (
+                        <Typography
+                            variant="button"
+                            key={num}
+                            sx={{
+                            display: 'block',
+                            color: 'primary.main',
+                            fontSize: '1rem',
+                            lineHeight: `${itemHeight}px`,
+                            }}
+                        >
+                            {num}
+                        </Typography>
+                        ))}
+                    </Box>
+                    </Box>
+                </Button>
+
+                <Button
+                    variant="outlined"
+                    endIcon={<Add />}
+                    onClick={handleIncrement}
+                    disabled={isIncrementDisabled}
+                    sx={{
+                    minWidth: 0,
+                    px: 1,
+                    borderLeft: 'none !important',
+                    borderTopLeftRadius: 0,
+                    borderBottomLeftRadius: 0,
+                    borderColor: (theme) =>
+                        isIncrementDisabled
+                        ? `${alpha(theme.palette.primary.main, 0.5)} !important`
+                        : undefined,
+                    '& .MuiButton-endIcon': {
+                        mx: 0,
+                    }
+                    }}
+                />
+
+                </ButtonGroup>
+               }
+               label={label}
+               labelPlacement="start"
+               sx={{
+                   marginLeft: 0,
+                   '& .MuiFormControlLabel-label': {
+                       fontSize: '0.75em',
+                       whiteSpace: 'nowrap',
+                       fontWeight: '400',
+                       color: 'text.primary',
+                       marginRight: 1
+                   },
+               }}
+           />
+       </FormGroup>
   );
 }
