@@ -4,9 +4,13 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
-import { Box, Card, CardContent, TextField, Typography, Select, MenuItem, FormControl, InputLabel, Button, Paper, Alert, Chip, Stack, IconButton, Tooltip } from '@mui/material';
+import { Box, TextField, Typography, Button, Paper, Alert, Stack, IconButton, Tooltip, Container } from '@mui/material';
 import { ContentCopy, Download, Refresh } from '@mui/icons-material';
 import figlet from 'figlet';
+import { LinIncrementControl } from '../../shared-components/LinIncrementControl';
+import { LinInstructionsCard } from '../../shared-components/LinInstructionsCard';
+import { LinSelect } from '../../shared-components/LinSelect';
+import { LinSwitch } from '../../shared-components/LinSwitch';
 
 interface TextToAsciiProps {}
 
@@ -23,16 +27,6 @@ const POPULAR_FONTS = [
   'Speed',
 ];
 
-const SAMPLE_TEXTS = [
-  'HELLO',
-  'ASCII ART',
-  'WELCOME',
-  'CODE',
-  'FIGLET',
-  'TEXT',
-];
-
-
 export function TextToAscii({}: TextToAsciiProps) {
   const [inputText, setInputText] = useState('HELLO WORLD');
   const [selectedFont, setSelectedFont] = useState('Standard');
@@ -40,6 +34,12 @@ export function TextToAscii({}: TextToAsciiProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copySuccess, setCopySuccess] = useState(false);
+  
+  // Figlet configuration options
+  const [horizontalLayout, setHorizontalLayout] = useState('default');
+  const [verticalLayout, setVerticalLayout] = useState('default');
+  const [width, setWidth] = useState(80);
+  const [whitespaceBreak, setWhitespaceBreak] = useState(true);
 
   const generateAscii = useCallback(async () => {
     if (!inputText.trim()) {
@@ -56,10 +56,10 @@ export function TextToAscii({}: TextToAsciiProps) {
           inputText,
           {
             font: selectedFont as any,
-            horizontalLayout: 'default',
-            verticalLayout: 'default',
-            width: 80,
-            whitespaceBreak: true,
+            horizontalLayout: horizontalLayout as any,
+            verticalLayout: verticalLayout as any,
+            width: width,
+            whitespaceBreak: whitespaceBreak,
           },
           (err, data) => {
             if (err) {
@@ -80,7 +80,7 @@ export function TextToAscii({}: TextToAsciiProps) {
     } finally {
       setIsLoading(false);
     }
-  }, [inputText, selectedFont]);
+  }, [inputText, selectedFont, horizontalLayout, verticalLayout, width, whitespaceBreak]);
 
   // Preload figlet fonts
   useEffect(() => {
@@ -123,40 +123,12 @@ export function TextToAscii({}: TextToAsciiProps) {
     URL.revokeObjectURL(url);
   };
 
-  const handleSampleTextClick = (sampleText: string) => {
-    setInputText(sampleText);
-  };
-
   return (
-    <Box sx={{ p: { xs: 2, sm: 3 }, maxWidth: 1200, mx: 'auto' }}>
-      <Card elevation={3}>
-        <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
-          <Typography variant="h5" gutterBottom sx={{ mb: 3 }}>
-            Text to ASCII Art Converter
-          </Typography>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
             Convert your text into ASCII art using various fonts. Perfect for creating banners, headers, or decorative text.
           </Typography>
-
-          {/* Sample Text Chips */}
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Quick samples:
-            </Typography>
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {SAMPLE_TEXTS.map((sample) => (
-                <Chip
-                  key={sample}
-                  label={sample}
-                  variant="outlined"
-                  size="small"
-                  onClick={() => handleSampleTextClick(sample)}
-                  sx={{ cursor: 'pointer' }}
-                />
-              ))}
-            </Stack>
-          </Box>
 
           {/* Input Controls */}
           <Stack spacing={3} sx={{ mb: 3 }}>
@@ -171,31 +143,73 @@ export function TextToAscii({}: TextToAsciiProps) {
               maxRows={3}
             />
 
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-              <FormControl sx={{ minWidth: 200 }}>
-                <InputLabel>Font Style</InputLabel>
-                <Select
-                  value={selectedFont}
+              <Stack direction="row" spacing={2}>
+                <LinSelect
                   label="Font Style"
-                  onChange={(e) => setSelectedFont(e.target.value)}
-                >
-                  {POPULAR_FONTS.map((font) => (
-                    <MenuItem key={font} value={font}>
-                      {font}
-                    </MenuItem>
+                  values={POPULAR_FONTS.map((font) => (
+                      { value: font, label: font }
                   ))}
-                </Select>
-              </FormControl>
+                  selectedValue={selectedFont}
+                    onChange={(value) => setSelectedFont(value as string)}
+                  />
+                <Button
+                  variant="outlined"
+                  size="small"
+                  startIcon={<Refresh />}
+                  onClick={generateAscii}
+                  disabled={isLoading || !inputText.trim()}
+                  sx={{ width: '100%' }}
+                >
+                  Regenerate
+                </Button>
+              </Stack>
 
-              <Button
-                variant="outlined"
-                startIcon={<Refresh />}
-                onClick={generateAscii}
-                disabled={isLoading || !inputText.trim()}
-              >
-                Regenerate
-              </Button>
-            </Box>
+              <Stack direction="row" spacing={2}>
+                <LinSelect
+                  label="Horizontal Layout"
+                  values={[
+                    { value: 'default', label: 'Default' },
+                    { value: 'full', label: 'Full' },
+                    { value: 'fitted', label: 'Fitted' },
+                    { value: 'controlled smushing', label: 'Controlled Smushing' },
+                    { value: 'universal smushing', label: 'Universal Smushing' }
+                  ]}
+                  selectedValue={horizontalLayout}
+                  onChange={(value) => setHorizontalLayout(value as string)}
+                />
+
+                <LinSelect
+                  label="Vertical Layout"
+                  values={[
+                    { value: 'default', label: 'Default' },
+                    { value: 'full', label: 'Full' },
+                    { value: 'fitted', label: 'Fitted' },
+                    { value: 'controlled smushing', label: 'Controlled Smushing' },
+                    { value: 'universal smushing', label: 'Universal Smushing' }
+                  ]}
+                  selectedValue={verticalLayout}
+                  onChange={(value) => setVerticalLayout(value as string)}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <Typography gutterBottom>Width: {width} characters</Typography>
+                <LinIncrementControl
+                  value={width}
+                  onChange={setWidth}
+                  min={40}
+                  max={200}
+                  step={1}
+                  disabled={isLoading || !inputText.trim()}
+                />
+                 <LinSwitch
+                   label="Whitespace Break"
+                   checked={whitespaceBreak}
+                   onChange={(e) => setWhitespaceBreak(e.target.checked)}
+                 />
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  Break lines at whitespace to fit within the specified width
+                </Typography>
+              </Stack>
           </Stack>
 
           {/* Error Display */}
@@ -211,8 +225,7 @@ export function TextToAscii({}: TextToAsciiProps) {
             sx={{ 
               position: 'relative',
               minHeight: 200,
-              backgroundColor: '#f5f5f5',
-              border: '2px dashed #ddd',
+              border: '2px dashed divider',
             }}
           >
             {/* Action Buttons */}
@@ -224,7 +237,6 @@ export function TextToAscii({}: TextToAsciiProps) {
                       size="small"
                       onClick={handleCopyToClipboard}
                       color={copySuccess ? 'success' : 'default'}
-                      sx={{ backgroundColor: 'rgba(255,255,255,0.8)' }}
                     >
                       <ContentCopy fontSize="small" />
                     </IconButton>
@@ -233,7 +245,6 @@ export function TextToAscii({}: TextToAsciiProps) {
                     <IconButton
                       size="small"
                       onClick={handleDownload}
-                      sx={{ backgroundColor: 'rgba(255,255,255,0.8)' }}
                     >
                       <Download fontSize="small" />
                     </IconButton>
@@ -258,8 +269,8 @@ export function TextToAscii({}: TextToAsciiProps) {
                     whiteSpace: 'pre-wrap',
                     wordBreak: 'break-all',
                     overflow: 'auto',
-                    margin: 0,
-                    color: '#333',
+                    margin: 1,
+                    color: 'text.primary',
                   }}
                 >
                   {asciiOutput}
@@ -276,18 +287,21 @@ export function TextToAscii({}: TextToAsciiProps) {
 
           {/* Instructions */}
           <Box sx={{ mt: 3, p: 2, backgroundColor: '#f8f9fa', borderRadius: 1 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              Tips:
-            </Typography>
-            <Typography variant="body2" color="text.secondary" component="div">
-              • Try different fonts to find the perfect style for your text
-              • Shorter text works best for complex fonts
-              • Use the copy button to easily share your ASCII art
-              • Download as a text file to save your creations
-            </Typography>
+            <LinInstructionsCard
+              heading="Tips"
+              body={
+                <ol>
+                  <li>Try different fonts to find the perfect style for your text</li>
+                  <li>Shorter text works best for complex fonts</li>
+                  <li>Use Advanced Settings to control layout and formatting</li>
+                  <li>Adjust width for better text wrapping and appearance</li>
+                  <li>Try different horizontal/vertical layouts for unique effects</li>
+                  <li>Use the copy button to easily share your ASCII art</li>
+                  <li>Download as a text file to save your creations</li>
+                </ol>
+              }
+            />
           </Box>
-        </CardContent>
-      </Card>
-    </Box>
+    </Container>
   );
 }

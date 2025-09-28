@@ -3,6 +3,7 @@
  */
 
 export { LinInline } from './LinInline';
+export { LinIncrementControl } from './LinIncrementControl';
 export { LinInstructionsCard } from './LinInstructionsCard';
 export { LinSelect } from './LinSelect';
 export { LinSwitch } from './LinSwitch';
