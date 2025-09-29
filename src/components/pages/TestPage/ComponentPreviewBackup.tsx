@@ -4,7 +4,10 @@
  */
 
 import { useState } from 'react';
-import { alpha, Autocomplete, Box, Button, Collapse, TextField, Typography } from '@mui/material';
+import { alpha, Autocomplete, Box, Button, Collapse, IconButton, TextField, Typography } from '@mui/material';
+import { CenterFocusWeak, ContentCopy, MoreVert, Refresh } from '@mui/icons-material';
+import { SiStackblitz } from "react-icons/si";
+import { AiOutlineCodeSandbox } from "react-icons/ai";
 import { CodeHighlighter } from '../CodeAnnotator/components';
 
 
@@ -98,22 +101,15 @@ export const ComponentPreview = () => {
 
       {/* Demo Container */}
       <Box sx={{ 
+        border: '1px solid', 
+        borderColor: 'divider', 
         borderRadius: 3,
-        mb: 3
+        mb: 3,
+        overflow: 'hidden'
       }}>
         {/* Demo Area */}
         <Box sx={{ 
-          p: 3,
-          borderTopLeftRadius: 8,
-          borderBottomLeftRadius: 0,
-          borderTopRightRadius: 8,
-          borderBottomRightRadius: 0,
-          borderStyle: 'solid',
-          borderTopWidth: '1px',
-          borderRightWidth: '1px',
-          borderBottomWidth: '0px',
-          borderLeftWidth: '1px',
-          borderColor: 'divider', 
+          p: 3, 
           display: 'flex', 
           justifyContent: 'center',
           bgcolor: 'background.paper'
@@ -133,24 +129,16 @@ export const ComponentPreview = () => {
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'flex-end', 
-          alignItems: 'right',
-          p: 0,
-          m: 0
+          alignItems: 'center',
+          px: 1,
+          py: 0.25,
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          backgroundColor: theme => alpha(theme.palette.action.disabledBackground, 0.01)
         }}>
-            <Box
-              sx={{
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 8,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-                borderStyle: 'solid',
-                borderTopWidth: '0px',
-                borderRightWidth: '0px',
-                borderBottomWidth: '1px',
-                borderLeftWidth: '1px',
-                borderColor: 'divider', 
-                flexGrow: 1
-            }}></Box>
+
+          {/* Action Buttons */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Button
               variant="text"
               onClick={() => setCodeExpanded(!codeExpanded)}
@@ -162,10 +150,7 @@ export const ComponentPreview = () => {
                 minWidth: '64px',
                 lineHeight: 1.25,
                 height: '26px',
-                borderTopLeftRadius: 8,
-                borderBottomLeftRadius: 0,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 8,
+                borderRadius: 3,
                 borderColor: theme => alpha(theme.palette.primary.light, 0.3),
                 borderStyle: 'solid',
                 borderWidth: '1px',
@@ -179,6 +164,123 @@ export const ComponentPreview = () => {
             >
               {codeExpanded ? 'Collapse code' : 'Expand code'}
             </Button>
+            
+            <IconButton 
+              tabIndex={-1}
+              title="Edit in StackBlitz"
+              sx={{
+                color: 'text.primary',
+                transition: '100ms ease-in',
+                borderRadius: 3,
+                '&:hover': {
+                  backgroundColor: theme => alpha(theme.palette.action.hover, 0.07)
+                }
+              }}
+            >
+              <SiStackblitz
+                style={{
+                  fontSize: '1rem'
+                }}
+              />
+            </IconButton>
+            
+            <IconButton  
+              tabIndex={-1}
+              title="Edit in CodeSandbox"
+              sx={{
+                color: 'text.primary',
+                transition: '100ms ease-in',
+                borderRadius: 3,
+                '&:hover': {
+                  backgroundColor: theme => alpha(theme.palette.action.hover, 0.07)
+                }
+              }}
+            >
+              <AiOutlineCodeSandbox
+                style={{
+                  fontSize: '1.1rem'
+                }}
+              />
+            </IconButton>
+            
+            <IconButton 
+              tabIndex={-1}
+              title="Copy the source"
+              sx={{
+                color: 'text.primary',
+                transition: '100ms ease-in',
+                borderRadius: 3,
+                '&:hover': {
+                  backgroundColor: theme => alpha(theme.palette.action.hover, 0.07)
+                }
+              }}
+            >
+              <ContentCopy
+                sx={{
+                  fontSize: '0.9rem',
+                  transform: 'scaleY(-1)'
+                }}
+              />
+            </IconButton>
+            
+            <IconButton 
+              tabIndex={-1}
+              title="Reset focus to test keyboard navigation"
+              sx={{
+                color: 'text.primary',
+                transition: '100ms ease-in',
+                borderRadius: 3,
+                '&:hover': {
+                  backgroundColor: theme => alpha(theme.palette.action.hover, 0.07)
+                }
+              }}
+            >
+              <CenterFocusWeak
+                sx={{
+                  fontSize: '1rem'
+                }}
+              />
+            </IconButton>
+            
+            <IconButton 
+              tabIndex={-1}
+              title="Reset demo"
+              onClick={() => setSelectedMovie(null)}
+              sx={{
+                color: 'text.primary',
+                transition: '100ms ease-in',
+                borderRadius: 3,
+                '&:hover': {
+                  backgroundColor: theme => alpha(theme.palette.action.hover, 0.07)
+                }
+              }}
+            >
+              <Refresh
+                sx={{
+                  fontSize: '1rem'
+                }}
+              />
+            </IconButton>
+            
+            <IconButton  
+              tabIndex={-1}
+              title="See more"
+              sx={{
+                color: 'text.primary',
+                transition: '100ms ease-in',
+                borderRadius: 3,
+                '&:hover': {
+                  backgroundColor: theme => alpha(theme.palette.action.hover, 0.07)
+                }
+              }}
+            >
+              <MoreVert
+                sx={{
+                  fontSize: '1rem'
+                }}
+              />
+            </IconButton>
+          </Box>
         </Box>
 
         {/* Expandable Code Section */}
