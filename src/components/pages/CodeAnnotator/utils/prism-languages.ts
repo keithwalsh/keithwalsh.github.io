@@ -10,6 +10,8 @@ import 'prismjs/components/prism-markup-templating';
 import 'prismjs/components/prism-php';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
@@ -22,7 +24,7 @@ import 'prismjs/themes/prism.css';
 // Ensure all languages are properly loaded
 const ensureLanguagesLoaded = () => {
   const supportedLanguages = [
-    'markup', 'php', 'javascript', 'typescript', 
+    'markup', 'php', 'javascript', 'typescript', 'jsx', 'tsx', 
     'css', 'bash', 'json', 'markdown', 'sql'
   ];
   

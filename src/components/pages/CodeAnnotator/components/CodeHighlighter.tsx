@@ -9,6 +9,7 @@ export interface CodeHighlighterProps {
   showLineNumbers?: boolean;
   title?: string;
   style?: React.CSSProperties;
+  disableBorders?: boolean;
 }
 
 const CodeHighlighter: React.FC<CodeHighlighterProps> = ({ 
@@ -16,7 +17,8 @@ const CodeHighlighter: React.FC<CodeHighlighterProps> = ({
   language,
   showLineNumbers = false,
   title,
-  style
+  style,
+  disableBorders = false
 }) => {
   const muiTheme = useTheme();
   const backgroundColor = muiTheme.palette.mode === 'dark' ? '#1e1e1e' : '#f6f8fa';
@@ -192,7 +194,7 @@ const CodeHighlighter: React.FC<CodeHighlighterProps> = ({
   const highlightedLines = highlightedCode.split('\n');
 
   return (
-    <div className={`codeBlockContainer ${muiTheme.palette.mode === 'dark' ? 'prism-dark-theme' : ''}`} style={{ ...style, background: backgroundColor, color: textColor }}>
+    <div className={`codeBlockContainer ${disableBorders ? 'no-border' : ''} ${muiTheme.palette.mode === 'dark' ? 'prism-dark-theme' : ''}`} style={{ ...style, background: backgroundColor, color: textColor }}>
       {title && (
         <div className="codeBlockTitle" style={{ background: backgroundColor }}>
           {title}
@@ -206,7 +208,7 @@ const CodeHighlighter: React.FC<CodeHighlighterProps> = ({
         background: backgroundColor,
         color: textColor,
         padding: '1rem',
-        borderRadius: '4px',
+        borderRadius: disableBorders ? 0 : '4px',
       }}>
         {highlightedLines.map((highlightedLine: string, i: number) => {
           // Build className for line

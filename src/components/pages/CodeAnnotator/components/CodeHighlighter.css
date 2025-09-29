@@ -7,6 +7,18 @@ pre {
   white-space: pre-wrap !important;
 }
 
+/* Remove default Prism background on operators/entities */
+.token.operator,
+.token.entity {
+  background: transparent !important;
+}
+
+/* Dark theme: ensure no background as well */
+.prism-dark-theme .token.operator,
+.prism-dark-theme .token.entity {
+  background: transparent !important;
+}
+
 .line-number-gutter {
   display: inline-block;
   padding: 0 1rem;
@@ -104,6 +116,12 @@ pre {
   overflow: hidden;
   border-radius: 4px;
   border: 1px solid #e1e4e8;
+}
+
+/* Disable borders when requested */
+.codeBlockContainer.no-border {
+  border: none !important;
+  border-radius: 0 !important;
 }
 
 .codeBlockContainer pre {
@@ -244,6 +262,12 @@ pre[class*="language-"] {
 .prism-dark-theme.codeBlockContainer,
 .prism-dark-theme .codeBlockContainer {
   border: 1px solid rgba(61, 68, 77, 1) !important;
+}
+
+.prism-dark-theme.codeBlockContainer.no-border,
+.prism-dark-theme .codeBlockContainer.no-border {
+  border: none !important;
+  border-radius: 0 !important;
 }
 
 .prism-dark-theme .codeBlockTitle {

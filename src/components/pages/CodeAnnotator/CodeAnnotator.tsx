@@ -1,6 +1,6 @@
 import { alpha, Box, Container, CssBaseline, Stack, TextField, Typography } from '@mui/material'
 import { useState, useRef, useEffect } from 'react'
-import { CodeHighlighter } from './components'
+import CodeHighlighter from './components/CodeHighlighter'
 import { LinSwitch } from '../../shared-components/LinSwitch'
 import { LinSelect } from '../../shared-components/LinSelect'
 import { LinInline } from '../../shared-components'
@@ -20,7 +20,7 @@ const LANGUAGE_OPTIONS = [
   { value: 'json', label: 'JSON' },
 ]
 
-export function CodeAnnotator() {
+export function CodeAnnotator({ disableBorders = false }: { disableBorders?: boolean }) {
   const [code, setCode] = useState(`<?php
 // Remove
 echo "Hello [-Room-]";
@@ -173,6 +173,7 @@ echo "Hello [+World+]";
               code={code}
               language={language}
               showLineNumbers={showLineNumbers}
+              disableBorders={disableBorders}
             />
           </Box>
           </Stack>

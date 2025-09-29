@@ -8,6 +8,7 @@ import { alpha, Autocomplete, Box, Button, Collapse, IconButton, TextField, Typo
 import { CenterFocusWeak, ContentCopy, MoreVert, Refresh } from '@mui/icons-material';
 import { SiStackblitz } from "react-icons/si";
 import { AiOutlineCodeSandbox } from "react-icons/ai";
+import { CodeHighlighter } from '../CodeAnnotator/components';
 
 
 // Define the movie option type
@@ -284,31 +285,14 @@ export const ComponentPreview = () => {
 
         {/* Expandable Code Section */}
         <Collapse in={codeExpanded}>
-          <Box sx={{ 
-            position: 'relative',
-            bgcolor: '#1e1e1e',
-            color: '#d4d4d4'
-          }}>
-            {/* Copy Button */}
-            <Box sx={{ 
-              position: 'absolute',
-              top: 16,
-              right: 16,
-              zIndex: 1
-            }}>
-            </Box>
-
-            {/* Code Content */}
-            <Box sx={{ 
-              p: 3,
-              fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
-              fontSize: '14px',
-              lineHeight: 1.5,
-              overflow: 'auto'
-            }}>
-              <Box component="pre" sx={{ margin: 0, whiteSpace: 'pre-wrap' }}>
-                {comboCodeTsx}
-              </Box>
+          <Box sx={{ position: 'relative' }}>
+            <Box sx={{ p: 0 }}>
+              <CodeHighlighter
+                code={comboCodeTsx}
+                language="tsx"
+                showLineNumbers
+                disableBorders
+              />
             </Box>
           </Box>
         </Collapse>
