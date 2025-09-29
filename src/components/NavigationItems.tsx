@@ -7,15 +7,11 @@ import { ReactNode } from 'react'
 //import ContactMailIcon from '@mui/icons-material/ContactMail'
 //import BarChartIcon from '@mui/icons-material/BarChart'
 //import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import BuildIcon from '@mui/icons-material/Build'
-import DataObjectIcon from '@mui/icons-material/DataObject'
 // import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 //import WorkIcon from '@mui/icons-material/Work'
 //import CoffeeIcon from '@mui/icons-material/Coffee'
 import { IoLogoMarkdown } from 'react-icons/io5'
-import CodeIcon from '@mui/icons-material/Code'
-import ScheduleIcon from '@mui/icons-material/Schedule'
-import WebIcon from '@mui/icons-material/Web'
+import { Architecture, Code, Build, DataObject, Schedule, Web } from '@mui/icons-material'
 import { BiFontFamily } from "react-icons/bi";
 
 export enum ROUTES {
@@ -33,6 +29,7 @@ export enum ROUTES {
   PROJECTS = '/projects',
   PRO_PROJECTS = '/projects/professional',
   PERS_PROJECTS = '/projects/personal',
+  TEST_PAGE = '/test-page',
 }
 
 export interface NavigationSubItem {
@@ -65,27 +62,27 @@ export const NAVIGATION_ITEMS = [
   {
     path: ROUTES.TOOLS,
     label: 'Tools',
-    icon: <BuildIcon />,
+    icon: <Build />,
     subItems: [
       {
         path: ROUTES.BROWSER_MOCKUP,
         label: 'Browser Mockup',
-        icon: <WebIcon />,
+        icon: <Web />,
       },
       {
         path: ROUTES.CODE_ANNOTATOR,
         label: 'Code Annotator',
-        icon: <CodeIcon />,
+        icon: <Code />,
       },
       {
         path: ROUTES.CRON_EXPRESSIONS,
         label: 'Cron Expressions',
-        icon: <ScheduleIcon />,
+        icon: <Schedule />,
       },
       {
         path: ROUTES.JSON_EXPLORER,
         label: 'JSON Explorer',
-        icon: <DataObjectIcon />,
+        icon: <DataObject />,
       },
       {
         path: ROUTES.MD_TABLE,
@@ -96,6 +93,11 @@ export const NAVIGATION_ITEMS = [
         path: ROUTES.TEXT_TO_ASCII,
         label: 'Text to ASCII',
         icon: <BiFontFamily style={{ fontSize: '1.25rem' }} />,
+      },
+      {
+        path: ROUTES.TEST_PAGE,
+        label: 'Test Page',
+        icon: <Architecture />,
       },
     ],
   },

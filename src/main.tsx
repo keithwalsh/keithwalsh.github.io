@@ -23,6 +23,7 @@ import {
   PersonalProjects,
   WorkProjects,
   Weather,
+  TestPage,
 } from './components/pages'
 import {
   StyledTitle,
@@ -233,6 +234,10 @@ export function App() {
                 <Route
                   path="/tools/text-to-ascii"
                   element={<ToolsPage type="text-to-ascii" />}
+                />
+                <Route
+                  path="/test-page"
+                  element={<TestPage />}
                 />
               </Routes>
             </Box>

@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useMemo, useRef } from 'react';
-import { alpha, Box, Button, ButtonGroup, Typography } from '@mui/material';
+import { alpha, Box, Button, ButtonGroup, Stack, Typography } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
 
 interface LinIncrementControlProps {
@@ -14,6 +14,7 @@ interface LinIncrementControlProps {
   max?: number;
   step?: number;
   disabled?: boolean;
+  label?: string;
 }
 
 export function LinIncrementControl({
@@ -23,6 +24,7 @@ export function LinIncrementControl({
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
   disabled = false,
+  label,
 }: LinIncrementControlProps) {
   const scrollListRef = useRef<HTMLDivElement>(null);
   const handleDecrement = () => value - step >= min && onChange(value - step);
@@ -45,6 +47,8 @@ export function LinIncrementControl({
   }, [value, currentValueIndex, itemHeight]);
 
   return (
+    <Stack direction="row" spacing={2} alignItems="center">
+        <Typography variant="body2" color="text.secondary">{label}</Typography>
     <ButtonGroup variant="outlined" sx={{ height: `${itemHeight}px` }}>
     <Button
       variant="outlined"
@@ -119,5 +123,6 @@ export function LinIncrementControl({
       }}
     />
     </ButtonGroup>
+    </Stack>
   );
 }

@@ -193,6 +193,7 @@ export function TextToAscii({}: TextToAsciiProps) {
               </Stack>
               <Stack direction="row" spacing={2} alignItems="center">
                 <LinIncrementControl
+                  label="Width"
                   value={width}
                   onChange={setWidth}
                   min={40}
