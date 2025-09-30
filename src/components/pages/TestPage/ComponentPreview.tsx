@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { alpha, Autocomplete, Box, Button, Collapse, Container, Paper, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { alpha, Autocomplete, Box, Button, Collapse, Container, Grid, Input, Paper, Slider, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { CodeHighlighter } from '../CodeAnnotator/components';
 import { LinSelect } from '../../shared-components';
 
@@ -192,15 +192,49 @@ export const ComponentPreview = () => {
           />
         );
       case 'number':
+        const handleSliderChange = (_: Event, newValue: number | number[]) => {
+          handlePropChange(prop.name, newValue as number);
+        };
+
+        const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+          handlePropChange(prop.name, event.target.value === '' ? 0 : Number(event.target.value));
+        };
+
+        const handleBlur = () => {
+          if (prop.currentValue < 0) {
+            handlePropChange(prop.name, 0);
+          } else if (prop.currentValue > 100) {
+            handlePropChange(prop.name, 100);
+          }
+        };
+
         return (
-          <TextField
-            type="number"
-            value={prop.currentValue}
-            onChange={(e) => handlePropChange(prop.name, Number(e.target.value))}
-            size="small"
-            sx={{ width: 100 }}
-            variant="outlined"
-          />
+          <Box sx={{ width: 250 }}>
+            <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+              <Grid xs>
+                <Slider
+                  value={typeof prop.currentValue === 'number' ? prop.currentValue : 0}
+                  onChange={handleSliderChange}
+                  aria-labelledby="input-slider"
+                />
+              </Grid>
+              <Grid xs="auto">
+                <Input
+                  value={prop.currentValue}
+                  size="small"
+                  onChange={handleInputChange}
+                  onBlur={handleBlur}
+                  inputProps={{
+                    step: 10,
+                    min: 0,
+                    max: 100,
+                    type: 'number',
+                    'aria-labelledby': 'input-slider',
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Box>
         );
       case 'text':
         return (
