@@ -6,6 +6,7 @@ interface Props {
     values: { value: string | number | boolean; label: string }[];
     selectedValue: string | number | boolean;
     onChange: (value: string | number | boolean) => void;
+    width?: string | number;
 }
 
 function LinSelect({
@@ -13,6 +14,7 @@ function LinSelect({
     values,
     selectedValue,
     onChange,
+    width,
 }: Props) {
     const handleChange = (
         event: SelectChangeEvent<string>
@@ -26,7 +28,7 @@ function LinSelect({
     };
 
     return (
-        <FormControl fullWidth>
+        <FormControl sx={{ width: width || '100%' }}>
             <InputLabel 
                 id="demo-select-small-label"
                 sx={{
