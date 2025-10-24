@@ -18,12 +18,11 @@ const sampleTableData: string[][] = [
 const codeExample = `import { MarkdownTable } from 'react-markdown-table-ts';
 
 const data: string[][] = [
-  ['Name', 'Age', 'City', 'Occupation'],
-  ['Alice Johnson', '28', 'New York', 'Software Engineer'],
-  ['Bob Smith', '34', 'San Francisco', 'Product Manager'],
-  ['Carol Williams', '25', 'Seattle', 'UX Designer'],
-  ['David Brown', '42', 'Austin', 'Data Scientist'],
-  ['Eve Davis', '31', 'Boston', 'Marketing Director'],
+  ['Package ID', 'Weight (kg)', 'Status', 'Destination'],
+  ['PKG-2024-001', '12.50', 'In Transit', 'Dublin, IE'],
+  ['PKG-2024-002', '3.75', 'Delivered', 'New York, US'],
+  ['PKG-2024-003', '8.20', 'Processing', 'Frankfurt, DE'],
+  ['PKG-2024-004', '5.60', 'In Transit', 'London, GB']
 ];
 
 export default function TableExample() {
@@ -51,49 +50,48 @@ const propDefinitions: PropDefinition[] = [
     description: "One of 'left', 'center', 'right', or 'none'. Defaults to 'none'.",
     type: 'readonly Alignment[]',
     defaultValue: '[]',
-    defaultLabel: '[]',
     controlType: 'object'
   },
   {
     name: 'isCompact',
     description: 'Disables column width alignment.',
     type: 'boolean',
-    defaultValue: false,
+    defaultValue: 'false',
     controlType: 'boolean'
   },
   {
     name: 'hasPadding',
     description: 'Adds a space before and after cell content.',
     type: 'boolean',
-    defaultValue: true,
+    defaultValue: 'true',
     controlType: 'boolean'
   },
   {
     name: 'hasTabs',
     description: 'Adds a tab character after each | and before the content.',
     type: 'boolean',
-    defaultValue: false,
+    defaultValue: 'false',
     controlType: 'boolean'
   },
   {
     name: 'hasHeader',
     description: 'Indicates whether the first row of `data` is a header.',
     type: 'boolean',
-    defaultValue: true,
+    defaultValue: 'true',
     controlType: 'boolean'
   },
   {
     name: 'convertLineBreaks',
     description: 'Replace newlines with <br> tags in table cells.',
     type: 'boolean',
-    defaultValue: false,
+    defaultValue: 'false',
     controlType: 'boolean'
   },
   {
     name: 'topPadding',
     description: 'Sets the <pre> element\'s top padding.',
     type: 'number',
-    defaultValue: 16,
+    defaultValue: '16',
     controlType: 'number'
   },
   {
@@ -129,7 +127,7 @@ const propDefinitions: PropDefinition[] = [
     name: 'showLineNumbers',
     description: 'Show or hide line numbers in the code block.',
     type: 'boolean',
-    defaultValue: true,
+    defaultValue: 'true',
     controlType: 'boolean'
   },
   {
@@ -152,7 +150,7 @@ export const AutocompleteStory = () => {
     return (
       <MarkdownTable
         inputData={tableData}
-        columnAlignments={props.columnAlignments}
+        columnAlignments={['left', 'right', 'center', 'none']}
         isCompact={props.isCompact}
         hasPadding={props.hasPadding}
         hasTabs={props.hasTabs}

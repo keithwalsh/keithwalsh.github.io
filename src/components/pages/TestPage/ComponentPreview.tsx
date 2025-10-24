@@ -4,9 +4,9 @@
  */
 
 import { useState } from 'react';
-import { alpha, Box, Button, Collapse, Container, Grid, Input, Paper, Slider, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { alpha, Box, Button, Collapse, Container, Grid, Input, Paper, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { CodeHighlighter } from '../CodeAnnotator/components';
-import { LinSelect } from '../../shared-components';
+import { LinSelect, LinSwitch2 } from '../../shared-components';
 
 // Prop table types
 type PropControlType = 'boolean' | 'number' | 'string' | 'select' | 'text' | 'callback' | 'object';
@@ -15,8 +15,7 @@ export interface PropDefinition {
   name: string;
   description: string;
   type: string;
-  defaultValue: string | number | boolean;
-  defaultLabel?: string;
+  defaultValue: string;
   controlType: PropControlType;
   options?: string[];
   min?: number;
@@ -67,10 +66,11 @@ export const ComponentPreview = ({
     switch (prop.controlType) {
       case 'boolean':
         return (
-          <Switch
+          <LinSwitch2
+            labelStart="True"
+            labelEnd="False"
             checked={currentValue ?? false}
             onChange={(e) => handlePropChange(prop.name, e.target.checked)}
-            size="small"
           />
         );
       case 'number':
@@ -340,9 +340,6 @@ export const ComponentPreview = ({
             </TableHead>
             <TableBody>
               {propDefinitions.map((prop) => {
-                const currentValue = componentProps[prop.name];
-                const displayValue = currentValue !== undefined ? String(currentValue) : (prop.defaultLabel ?? String(prop.defaultValue));
-                
                 return (
                   <TableRow 
                     key={prop.name}
@@ -419,7 +416,7 @@ export const ComponentPreview = ({
                           borderColor: theme => alpha(theme.palette.text.primary, 0.1),
                           display: 'inline-block'
                         }}>
-                        {displayValue}
+                        {prop.defaultValue}
                       </Typography>
                     </TableCell>
                     <TableCell>

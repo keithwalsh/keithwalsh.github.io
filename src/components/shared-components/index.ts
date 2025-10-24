@@ -12,3 +12,4 @@ export { LinAppBar } from './LinAppBar';
 export { LinDrawer } from './LinDrawer';
 export { LinSubHeader } from './LinSubHeader';
 export { LinTreeView } from './LinTreeView';
+export { LinSwitch2 } from './LinSwitch2';
