@@ -1,64 +1,38 @@
 /**
- * @fileoverview Example story demonstrating the Autocomplete component using
+ * @fileoverview Example story demonstrating the MarkdownTable component using
  * the ComponentPreview system.
  */
 
-import { useState } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import { MarkdownTable } from 'react-markdown-table-ts';
 import { ComponentPreview, PropDefinition } from './ComponentPreview';
 
-// Define the movie option type
-interface MovieOption {
-  label: string;
-  year: number;
-}
-
-// Top 100 films as per IMDB
-const top100Films: MovieOption[] = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-  { label: 'The Lord of the Rings: The Return of the King', year: 2003 },
-  { label: 'The Good, the Bad and the Ugly', year: 1966 },
-  { label: 'Fight Club', year: 1999 },
-  { label: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-  { label: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-  { label: 'Forrest Gump', year: 1994 },
-  { label: 'Inception', year: 2010 },
-  { label: 'The Lord of the Rings: The Two Towers', year: 2002 },
-  { label: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { label: 'Goodfellas', year: 1990 },
-  { label: 'The Matrix', year: 1999 },
-  { label: 'Seven Samurai', year: 1954 },
-  { label: 'Star Wars: Episode IV - A New Hope', year: 1977 },
-  { label: 'City of God', year: 2002 },
-  { label: 'Se7en', year: 1995 },
-  { label: 'The Silence of the Lambs', year: 1991 },
-  { label: "It's a Wonderful Life", year: 1946 },
-  { label: 'Life Is Beautiful', year: 1997 },
-  { label: 'The Usual Suspects', year: 1995 },
-  { label: 'Léon: The Professional', year: 1994 },
-  { label: 'Spirited Away', year: 2001 },
-  { label: 'Saving Private Ryan', year: 1998 },
-  { label: 'Once Upon a Time in the West', year: 1968 },
+// Sample data for the markdown table
+const sampleTableData: string[][] = [
+  ['Package ID', 'Weight (kg)', 'Status', 'Destination'],
+  ['PKG-2024-001', '12.50', 'In Transit', 'Dublin, IE'],
+  ['PKG-2024-002', '3.75', 'Delivered', 'New York, US'],
+  ['PKG-2024-003', '8.20', 'Processing', 'Frankfurt, DE'],
+  ['PKG-2024-004', '5.60', 'In Transit', 'London, GB']
 ];
 
-const codeExample = `import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import top100Films from './top100Films';
+const codeExample = `import { MarkdownTable } from 'react-markdown-table-ts';
 
-export default function ComboBox() {
+const data: string[][] = [
+  ['Name', 'Age', 'City', 'Occupation'],
+  ['Alice Johnson', '28', 'New York', 'Software Engineer'],
+  ['Bob Smith', '34', 'San Francisco', 'Product Manager'],
+  ['Carol Williams', '25', 'Seattle', 'UX Designer'],
+  ['David Brown', '42', 'Austin', 'Data Scientist'],
+  ['Eve Davis', '31', 'Boston', 'Marketing Director'],
+];
+
+export default function TableExample() {
   return (
-    <Autocomplete
-      disablePortal
-      options={top100Films}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Movie" />}
+    <MarkdownTable
+      inputData={data}
+      columnAlignments={['left', 'center', 'center', 'left']}
+      theme="light"
+      showLineNumbers={true}
     />
   );
 }`;
@@ -67,28 +41,29 @@ export default function ComboBox() {
 const propDefinitions: PropDefinition[] = [
   {
     name: 'inputData',
-    description: 'The outer array represents rows. The inner array represent cells within each row.',
+    description: 'Outer arrays are rows; inner arrays are cells.',
     type: 'string[][] | null',
     defaultValue: 'null',
     controlType: 'object'
   },
   {
     name: 'columnAlignments',
-    description: "Acceptable values are 'left', 'center', 'right', or 'none'. Defaults to 'none' when unspecified.",
+    description: "One of 'left', 'center', 'right', or 'none'. Defaults to 'none'.",
     type: 'readonly Alignment[]',
     defaultValue: '[]',
+    defaultLabel: '[]',
     controlType: 'object'
   },
   {
     name: 'isCompact',
-    description: 'Disables column width alignment to provide a more compact markdown table string.',
+    description: 'Disables column width alignment.',
     type: 'boolean',
     defaultValue: false,
     controlType: 'boolean'
   },
   {
     name: 'hasPadding',
-    description: 'One space added before and after the content in each cell.',
+    description: 'Adds a space before and after cell content.',
     type: 'boolean',
     defaultValue: true,
     controlType: 'boolean'
@@ -116,17 +91,18 @@ const propDefinitions: PropDefinition[] = [
   },
   {
     name: 'topPadding',
-    description: 'Controls the padding-top (in pixels) of the <pre> element display.',
+    description: 'Sets the <pre> element\'s top padding.',
     type: 'number',
     defaultValue: 16,
     controlType: 'number'
   },
   {
     name: 'theme',
-    description: 'Controls the colour scheme of the <pre> element display.',
+    description: 'Controls the display colour scheme.',
     type: "'light' | 'dark'",
     defaultValue: 'light',
-    controlType: 'select'
+    controlType: 'select',
+    options: ['light', 'dark']
   },
   {
     name: 'className',
@@ -166,46 +142,50 @@ const propDefinitions: PropDefinition[] = [
 ];
 
 export const AutocompleteStory = () => {
-  const [selectedMovie, setSelectedMovie] = useState<MovieOption | null>(null);
-
   // Render function for the component
-  const renderAutocomplete = (props: Record<string, any>) => {
+  const renderMarkdownTable = (props: Record<string, any>) => {
+    // Use sample data if inputData is not provided, null, or empty
+    const tableData = props.inputData && props.inputData.length > 0 
+      ? props.inputData 
+      : sampleTableData;
+    
     return (
-      <Autocomplete
-        disablePortal
-        options={top100Films}
-        sx={{ width: props.width || 300 }}
-        value={selectedMovie}
-        onChange={(_, newValue) => setSelectedMovie(newValue)}
-        disabled={props.disabled}
-        loading={props.loading}
-        size={props.size}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Movie"
-            variant={props.variant}
-            placeholder={props.placeholder}
-          />
-        )}
+      <MarkdownTable
+        inputData={tableData}
+        columnAlignments={props.columnAlignments}
+        isCompact={props.isCompact}
+        hasPadding={props.hasPadding}
+        hasTabs={props.hasTabs}
+        hasHeader={props.hasHeader}
+        convertLineBreaks={props.convertLineBreaks}
+        topPadding={props.topPadding}
+        theme={props.theme}
+        className={props.className}
+        preStyle={props.preStyle}
+        minWidth={props.minWidth}
+        showLineNumbers={props.showLineNumbers}
+        onGenerate={props.onGenerate}
       />
     );
   };
 
   return (
     <ComponentPreview
-      title="Combo box"
-      description="The value must be chosen from a predefined set of allowed values."
+      title="Markdown Table"
+      description="A React component that converts structured data into Markdown table syntax and displays it within a <pre> tag."
       codeExample={codeExample}
       propDefinitions={propDefinitions}
-      renderComponent={renderAutocomplete}
+      renderComponent={renderMarkdownTable}
       initialProps={{
-        disabled: false,
-        loading: false,
-        size: 'medium',
-        variant: 'outlined',
-        width: 300,
-        placeholder: 'Search movies...'
+        columnAlignments: [],
+        isCompact: false,
+        hasPadding: true,
+        hasTabs: false,
+        hasHeader: true,
+        convertLineBreaks: false,
+        topPadding: 16,
+        theme: 'light',
+        showLineNumbers: true
       }}
     />
   );

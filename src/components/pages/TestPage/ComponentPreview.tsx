@@ -16,6 +16,7 @@ export interface PropDefinition {
   description: string;
   type: string;
   defaultValue: string | number | boolean;
+  defaultLabel?: string;
   controlType: PropControlType;
   options?: string[];
   min?: number;
@@ -74,8 +75,8 @@ export const ComponentPreview = ({
         );
       case 'number':
         const min = prop.min ?? 0;
-        const max = prop.max ?? 500;
-        const step = prop.step ?? 10;
+        const max = prop.max ?? 800;
+        const step = prop.step ?? 1;
         
         const handleSliderChange = (_: Event, newValue: number | number[]) => {
           handlePropChange(prop.name, newValue as number);
@@ -94,10 +95,11 @@ export const ComponentPreview = ({
         };
 
         return (
-          <Box sx={{ width: 250 }}>
+          <Box sx={{ width: 120 }}>
             <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-              <Grid xs>
+              <Grid size="grow">
                 <Slider
+                  size="small"
                   value={typeof currentValue === 'number' ? currentValue : min}
                   onChange={handleSliderChange}
                   aria-labelledby="input-slider"
@@ -106,7 +108,7 @@ export const ComponentPreview = ({
                   step={step}
                 />
               </Grid>
-              <Grid xs="auto">
+              <Grid>
                 <Input
                   value={currentValue}
                   size="small"
@@ -119,6 +121,12 @@ export const ComponentPreview = ({
                     type: 'number',
                     'aria-labelledby': 'input-slider',
                   }}
+                  sx={{
+                    width: 40,
+                    '& .MuiInputBase-input': {
+                      fontSize: '0.875rem'
+                    }
+                  }}
                 />
               </Grid>
             </Grid>
@@ -130,7 +138,7 @@ export const ComponentPreview = ({
             value={currentValue ?? ''}
             onChange={(e) => handlePropChange(prop.name, e.target.value)}
             size="small"
-            sx={{ width: 200 }}
+            sx={{width: 200 }}
             variant="outlined"
           />
         );
@@ -313,7 +321,7 @@ export const ComponentPreview = ({
               minWidth: 650
             }
           }}>
-          <Table size="small">
+          <Table size="small" sx={{ tableLayout: 'fixed' }}>
             <TableHead
               sx={{ 
                 fontWeight: 600,
@@ -324,16 +332,16 @@ export const ComponentPreview = ({
             >
               <TableRow>
                 <TableCell sx={{ width: '15%' }}>Name</TableCell>
-                <TableCell sx={{ width: '40%' }}>Description</TableCell>
+                <TableCell sx={{ width: '30%' }}>Description</TableCell>
                 <TableCell sx={{ width: '15%' }}>Type</TableCell>
-                <TableCell sx={{ width: '15%' }}>Default</TableCell>
-                <TableCell sx={{ width: '15%' }}>Control</TableCell>
+                <TableCell sx={{ width: '20%' }}>Default</TableCell>
+                <TableCell sx={{ width: '20%' }}>Control</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {propDefinitions.map((prop) => {
                 const currentValue = componentProps[prop.name];
-                const displayValue = currentValue !== undefined ? String(currentValue) : String(prop.defaultValue);
+                const displayValue = currentValue !== undefined ? String(currentValue) : (prop.defaultLabel ?? String(prop.defaultValue));
                 
                 return (
                   <TableRow 
