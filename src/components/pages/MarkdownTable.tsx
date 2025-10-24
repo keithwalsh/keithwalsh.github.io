@@ -531,7 +531,6 @@ export function MarkdownTablePage() {
                     onGenerate={setCurrentMarkdown}
                     preStyle={{
                       borderRadius: '8px',
-                      overflow: 'hidden',
                     }}
                   />
                 </Box>

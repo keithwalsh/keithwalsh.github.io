@@ -3,11 +3,7 @@ import { Box, Paper, Typography, Popper } from '@mui/material'
 import * as d3 from 'd3'
 import { WindRoseData } from '../utils/csvLoader'
 import { useTheme } from '@mui/material/styles'
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from './StyledComponents'
+import { Accordion, AccordionSummary, AccordionDetails } from './StyledComponents'
 import { useAccordionChange } from '../hooks/useAccordionChange'
 
 interface WindRoseChartProps {
@@ -112,6 +108,10 @@ export function WindRoseChart({
     // Calculate total frequency for each direction to normalize
     const directionTotals = new Map<string, number>()
     data.forEach(d => {
+
+
+
+      
       const current = directionTotals.get(d.direction) || 0
       directionTotals.set(d.direction, current + d.frequency)
     })

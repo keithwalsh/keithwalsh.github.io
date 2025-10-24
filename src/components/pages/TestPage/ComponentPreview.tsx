@@ -1,210 +1,95 @@
 /**
- * @fileoverview Component preview demonstrating MUI Autocomplete combo box
- * with documentation-style presentation including expandable code section.
+ * @fileoverview Reusable component preview system similar to Storybook for
+ * displaying components with interactive props and code examples.
  */
 
 import { useState } from 'react';
-import { alpha, Autocomplete, Box, Button, Collapse, Container, Grid, Input, Paper, Slider, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { alpha, Box, Button, Collapse, Container, Grid, Input, Paper, Slider, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import { CodeHighlighter } from '../CodeAnnotator/components';
 import { LinSelect } from '../../shared-components';
-
-
-// Define the movie option type
-interface MovieOption {
-  label: string;
-  year: number;
-}
 
 // Prop table types
 type PropControlType = 'boolean' | 'number' | 'string' | 'select' | 'text' | 'callback' | 'object';
 
-interface PropDefinition {
+export interface PropDefinition {
   name: string;
   description: string;
   type: string;
   defaultValue: string | number | boolean;
   controlType: PropControlType;
   options?: string[];
-  currentValue?: any;
+  min?: number;
+  max?: number;
+  step?: number;
 }
 
-// Top 100 films as per IMDB
-const top100Films: MovieOption[] = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-  { label: 'The Lord of the Rings: The Return of the King', year: 2003 },
-  { label: 'The Good, the Bad and the Ugly', year: 1966 },
-  { label: 'Fight Club', year: 1999 },
-  { label: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-  { label: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-  { label: 'Forrest Gump', year: 1994 },
-  { label: 'Inception', year: 2010 },
-  { label: 'The Lord of the Rings: The Two Towers', year: 2002 },
-  { label: "One Flew Over the Cuckoo's Nest", year: 1975 },
-  { label: 'Goodfellas', year: 1990 },
-  { label: 'The Matrix', year: 1999 },
-  { label: 'Seven Samurai', year: 1954 },
-  { label: 'Star Wars: Episode IV - A New Hope', year: 1977 },
-  { label: 'City of God', year: 2002 },
-  { label: 'Se7en', year: 1995 },
-  { label: 'The Silence of the Lambs', year: 1991 },
-  { label: "It's a Wonderful Life", year: 1946 },
-  { label: 'Life Is Beautiful', year: 1997 },
-  { label: 'The Usual Suspects', year: 1995 },
-  { label: 'Léon: The Professional', year: 1994 },
-  { label: 'Spirited Away', year: 2001 },
-  { label: 'Saving Private Ryan', year: 1998 },
-  { label: 'Once Upon a Time in the West', year: 1968 },
-];
+export interface ComponentPreviewProps {
+  title: string;
+  description: string;
+  codeExample: string;
+  propDefinitions: PropDefinition[];
+  renderComponent: (props: Record<string, any>) => React.ReactNode;
+  initialProps?: Record<string, any>;
+}
 
-const comboCodeTsx = `import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import top100Films from './top100Films';
-
-export default function ComboBox() {
-  return (
-    <Autocomplete
-      disablePortal
-      options={top100Films}
-      sx={{ width: 300 }}
-      renderInput={(params) => <TextField {...params} label="Movie" />}
-    />
-  );
-}`;
-
-export const ComponentPreview = () => {
+export const ComponentPreview = ({
+  title,
+  description,
+  codeExample,
+  propDefinitions,
+  renderComponent,
+  initialProps = {}
+}: ComponentPreviewProps) => {
   const [codeExpanded, setCodeExpanded] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState<MovieOption | null>(null);
   
-  // Prop table state
-  const [componentWidth, setComponentWidth] = useState(300);
-  const [disabled, setDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [size, setSize] = useState<'small' | 'medium'>('medium');
-  const [variant, setVariant] = useState<'outlined' | 'filled' | 'standard'>('outlined');
-  const [placeholder, setPlaceholder] = useState('Search movies...');
-  
-  // Define props for the table
-  const propDefinitions: PropDefinition[] = [
-    {
-      name: 'disabled',
-      description: 'If true, the component is disabled.',
-      type: 'boolean',
-      defaultValue: false,
-      controlType: 'boolean',
-      currentValue: disabled
-    },
-    {
-      name: 'loading',
-      description: 'If true, the component is in a loading state.',
-      type: 'boolean',
-      defaultValue: false,
-      controlType: 'boolean',
-      currentValue: loading
-    },
-    {
-      name: 'size',
-      description: 'The size of the component.',
-      type: '"small" | "medium"',
-      defaultValue: 'medium',
-      controlType: 'select',
-      options: ['small', 'medium'],
-      currentValue: size
-    },
-    {
-      name: 'variant',
-      description: 'The variant to use for the TextField.',
-      type: '"outlined" | "filled" | "standard"',
-      defaultValue: 'outlined',
-      controlType: 'select',
-      options: ['outlined', 'filled', 'standard'],
-      currentValue: variant
-    },
-    {
-      name: 'width',
-      description: 'The width of the component in pixels.',
-      type: 'number',
-      defaultValue: 300,
-      controlType: 'number',
-      currentValue: componentWidth
-    },
-    {
-      name: 'placeholder',
-      description: 'Placeholder text for the input field.',
-      type: 'string',
-      defaultValue: 'Search movies...',
-      controlType: 'text',
-      currentValue: placeholder
-    },
-    {
-      name: 'onChange',
-      description: 'Callback fired when the value changes.',
-      type: '(event: SyntheticEvent, value: T) => void',
-      defaultValue: '-',
-      controlType: 'callback'
-    },
-    {
-      name: 'options',
-      description: 'Array of options.',
-      type: 'T[]',
-      defaultValue: '-',
-      controlType: 'object'
-    }
-  ];
+  // Initialize dynamic props state
+  const [componentProps, setComponentProps] = useState<Record<string, any>>(() => {
+    const initial: Record<string, any> = { ...initialProps };
+    propDefinitions.forEach(prop => {
+      if (!(prop.name in initial) && prop.controlType !== 'callback' && prop.controlType !== 'object') {
+        initial[prop.name] = prop.defaultValue;
+      }
+    });
+    return initial;
+  });
   
   const handlePropChange = (propName: string, value: any) => {
-    switch (propName) {
-      case 'disabled':
-        setDisabled(value);
-        break;
-      case 'loading':
-        setLoading(value);
-        break;
-      case 'size':
-        setSize(value);
-        break;
-      case 'variant':
-        setVariant(value);
-        break;
-      case 'width':
-        setComponentWidth(value);
-        break;
-      case 'placeholder':
-        setPlaceholder(value);
-        break;
-    }
+    setComponentProps(prev => ({
+      ...prev,
+      [propName]: value
+    }));
   };
   
   const renderControl = (prop: PropDefinition) => {
+    const currentValue = componentProps[prop.name];
+    
     switch (prop.controlType) {
       case 'boolean':
         return (
           <Switch
-            checked={prop.currentValue}
+            checked={currentValue ?? false}
             onChange={(e) => handlePropChange(prop.name, e.target.checked)}
             size="small"
           />
         );
       case 'number':
+        const min = prop.min ?? 0;
+        const max = prop.max ?? 500;
+        const step = prop.step ?? 10;
+        
         const handleSliderChange = (_: Event, newValue: number | number[]) => {
           handlePropChange(prop.name, newValue as number);
         };
 
         const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-          handlePropChange(prop.name, event.target.value === '' ? 0 : Number(event.target.value));
+          handlePropChange(prop.name, event.target.value === '' ? min : Number(event.target.value));
         };
 
         const handleBlur = () => {
-          if (prop.currentValue < 0) {
-            handlePropChange(prop.name, 0);
-          } else if (prop.currentValue > 100) {
-            handlePropChange(prop.name, 100);
+          if (currentValue < min) {
+            handlePropChange(prop.name, min);
+          } else if (currentValue > max) {
+            handlePropChange(prop.name, max);
           }
         };
 
@@ -213,21 +98,24 @@ export const ComponentPreview = () => {
             <Grid container spacing={2} sx={{ alignItems: 'center' }}>
               <Grid xs>
                 <Slider
-                  value={typeof prop.currentValue === 'number' ? prop.currentValue : 0}
+                  value={typeof currentValue === 'number' ? currentValue : min}
                   onChange={handleSliderChange}
                   aria-labelledby="input-slider"
+                  min={min}
+                  max={max}
+                  step={step}
                 />
               </Grid>
               <Grid xs="auto">
                 <Input
-                  value={prop.currentValue}
+                  value={currentValue}
                   size="small"
                   onChange={handleInputChange}
                   onBlur={handleBlur}
                   inputProps={{
-                    step: 10,
-                    min: 0,
-                    max: 100,
+                    step,
+                    min,
+                    max,
                     type: 'number',
                     'aria-labelledby': 'input-slider',
                   }}
@@ -239,7 +127,7 @@ export const ComponentPreview = () => {
       case 'text':
         return (
           <TextField
-            value={prop.currentValue}
+            value={currentValue ?? ''}
             onChange={(e) => handlePropChange(prop.name, e.target.value)}
             size="small"
             sx={{ width: 200 }}
@@ -251,7 +139,7 @@ export const ComponentPreview = () => {
           <LinSelect
             label=""
             values={prop.options?.map(option => ({ value: option, label: option })) || []}
-            selectedValue={prop.currentValue}
+            selectedValue={currentValue}
             onChange={(value) => handlePropChange(prop.name, value)}
             width={120}
           />
@@ -283,7 +171,7 @@ export const ComponentPreview = () => {
             letterSpacing: '0.1px',
             mb: 0.5
           }}>
-          Combo box
+          {title}
         </Typography>
         <Typography
           variant="subtitle1"
@@ -293,7 +181,7 @@ export const ComponentPreview = () => {
             lineHeight: 1.625,
             letterSpacing: 0
           }}>
-          The value must be chosen from a predefined set of allowed values.
+          {description}
         </Typography>
       </Box>
 
@@ -320,25 +208,7 @@ export const ComponentPreview = () => {
           justifyContent: 'center',
           bgcolor: 'background.paper'
         }}>
-          
-          <Autocomplete
-            disablePortal
-            options={top100Films}
-            sx={{ width: componentWidth }}
-            value={selectedMovie}
-            onChange={(_, newValue) => setSelectedMovie(newValue)}
-            disabled={disabled}
-            loading={loading}
-            size={size}
-            renderInput={(params) => (
-              <TextField 
-                {...params} 
-                label="Movie" 
-                variant={variant}
-                placeholder={placeholder}
-              />
-            )}
-          />
+          {renderComponent(componentProps)}
         </Box>
 
         {/* Toolbar */}
@@ -411,7 +281,7 @@ export const ComponentPreview = () => {
               borderColor: 'divider',
             }}>
               <CodeHighlighter
-                code={comboCodeTsx}
+                code={codeExample}
                 language="tsx"
                 showLineNumbers
                 disableBorders
@@ -461,90 +331,95 @@ export const ComponentPreview = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {propDefinitions.map((prop) => (
-                <TableRow 
-                  key={prop.name}
-                  sx={{ 
-                    '&:last-child td, &:last-child th': { border: 0 },
-                    '&:hover': {
-                      bgcolor: theme => alpha(theme.palette.text.primary, 0.02),
-                    }
-                  }}>
-                  <TableCell>
-                    <Typography 
-                      component="code" 
-                      sx={{ 
-                        fontFamily: 'monospace',
-                        fontSize: '0.8125rem',
-                        color: 'primary.main',
-                        fontWeight: 600
-                      }}>
-                      {prop.name}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontWeight: 400,
-                        fontSize: '0.8125rem',
-                        lineHeight: 1.5,
-                        letterSpacing: '0px',
-                        color: theme => alpha(theme.palette.text.primary, 0.7),
-                      }}
-                    >
-                      {prop.description}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography 
-                      component="code" 
-                      sx={{ 
-                        fontFamily: 'monospace',
-                        fontWeight: 400,
-                        fontSize: '0.75rem',
-                        lineHeight: 1.5,
-                        letterSpacing: '0px',
-                        color: theme => alpha(theme.palette.text.primary, 0.8),
-                        bgcolor: theme => alpha(theme.palette.primary.light, 0.1),
-                        px: 0.75,
-                        py: 0.25,
-                        borderRadius: 1,
-                        borderStyle: 'solid',
-                        borderWidth: '1px',
-                        borderColor: theme => alpha(theme.palette.primary.main, 0.1),
-                        display: 'inline-block'
-                      }}>
-                      {prop.type}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography 
-                      component="code" 
-                      sx={{ 
-                        fontFamily: 'monospace',
-                        fontWeight: 400,
-                        fontSize: '0.75rem',
-                        lineHeight: 1.5,
-                        letterSpacing: '0px',
-                        color: theme => alpha(theme.palette.text.primary, 0.8),
-                        bgcolor: theme => alpha(theme.palette.text.primary, 0.035),
-                        px: 0.75,
-                        py: 0.25,
-                        borderRadius: 1,
-                        borderStyle: 'solid',
-                        borderWidth: '1px',
-                        borderColor: theme => alpha(theme.palette.text.primary, 0.1),
-                        display: 'inline-block'
-                      }}>
-                      {String(prop.defaultValue)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    {renderControl(prop)}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {propDefinitions.map((prop) => {
+                const currentValue = componentProps[prop.name];
+                const displayValue = currentValue !== undefined ? String(currentValue) : String(prop.defaultValue);
+                
+                return (
+                  <TableRow 
+                    key={prop.name}
+                    sx={{ 
+                      '&:last-child td, &:last-child th': { border: 0 },
+                      '&:hover': {
+                        bgcolor: theme => alpha(theme.palette.text.primary, 0.02),
+                      }
+                    }}>
+                    <TableCell>
+                      <Typography 
+                        component="code" 
+                        sx={{ 
+                          fontFamily: 'monospace',
+                          fontSize: '0.8125rem',
+                          color: 'primary.main',
+                          fontWeight: 600
+                        }}>
+                        {prop.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: '0.8125rem',
+                          lineHeight: 1.5,
+                          letterSpacing: '0px',
+                          color: theme => alpha(theme.palette.text.primary, 0.7),
+                        }}
+                      >
+                        {prop.description}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography 
+                        component="code" 
+                        sx={{ 
+                          fontFamily: 'monospace',
+                          fontWeight: 400,
+                          fontSize: '0.75rem',
+                          lineHeight: 1.5,
+                          letterSpacing: '0px',
+                          color: theme => alpha(theme.palette.text.primary, 0.8),
+                          bgcolor: theme => alpha(theme.palette.primary.light, 0.1),
+                          px: 0.75,
+                          py: 0.25,
+                          borderRadius: 1,
+                          borderStyle: 'solid',
+                          borderWidth: '1px',
+                          borderColor: theme => alpha(theme.palette.primary.main, 0.1),
+                          display: 'inline-block'
+                        }}>
+                        {prop.type}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography 
+                        component="code" 
+                        sx={{ 
+                          fontFamily: 'monospace',
+                          fontWeight: 400,
+                          fontSize: '0.75rem',
+                          lineHeight: 1.5,
+                          letterSpacing: '0px',
+                          color: theme => alpha(theme.palette.text.primary, 0.8),
+                          bgcolor: theme => alpha(theme.palette.text.primary, 0.035),
+                          px: 0.75,
+                          py: 0.25,
+                          borderRadius: 1,
+                          borderStyle: 'solid',
+                          borderWidth: '1px',
+                          borderColor: theme => alpha(theme.palette.text.primary, 0.1),
+                          display: 'inline-block'
+                        }}>
+                        {displayValue}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      {renderControl(prop)}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>

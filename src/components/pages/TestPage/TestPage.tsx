@@ -1,16 +1,22 @@
-import { Box } from '@mui/material';
-import { ComponentPreview } from './ComponentPreview';
+import { Container } from '@mui/material';
+import { MarkdownTable } from 'react-markdown-table-ts';
+import { AutocompleteStory } from './AutocompleteStory';
 
 export const TestPage = () => {
-
+  const sampleData = [
+    ['Package ID', 'Weight (kg)', 'Status', 'Destination'],
+    ['PKG-2024-001', '12.50', 'In Transit', 'Dublin, IE'],
+    ['PKG-2024-002', '3.75', 'Delivered', 'New York, US'],
+    ['PKG-2024-003', '8.20', 'Processing', 'Frankfurt, DE'],
+    ['PKG-2024-004', '5.60', 'In Transit', 'London, GB']
+  ]
   return (
-    <Box sx={{ 
-      flex: 1,
-      padding: 3,
-      transition: 'all 0.5s ease-in-out',
-      mx: { xs: 2, sm: 3, md: 3, lg: 3, xl: 3 },
-  }}>
-    <ComponentPreview />
-    </Box>
+    <Container maxWidth="lg">
+    <MarkdownTable
+    inputData={sampleData}
+    showLineNumbers={true}
+/>
+<AutocompleteStory />
+</Container>
   );  
 };
