@@ -86,7 +86,11 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
           <Stack direction="row">
             <Typography variant="subtitle1" sx={{ width: '100%' }} />
             <Stack direction="row" spacing={1}>
-              <Tooltip title="Generate Random Cron Expression" placement="top" arrow>
+              <Tooltip
+                title="Generate Random Cron Expression"
+                placement="top"
+                arrow
+              >
                 <IconButton
                   size="small"
                   onClick={handleDiceClick}
@@ -97,21 +101,22 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
                 >
                   <GiPerspectiveDiceSixFacesRandom
                     style={{
-                      animation: isRolling ? 'diceRoll 0.6s ease-in-out' : 'none',
+                      animation: isRolling
+                        ? 'diceRoll 0.6s ease-in-out'
+                        : 'none',
                       transformOrigin: 'center',
                     }}
                   />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Copy to Clipboard" placement="top" arrow>
-                <IconButton
-                  size="small"
-                  onClick={handleCopyClick}
-                >
+                <IconButton size="small" onClick={handleCopyClick}>
                   <ContentCopy
                     sx={{
                       fontSize: '0.8em',
-                      animation: isCopying ? 'copyPulse 0.5s ease-in-out' : 'none',
+                      animation: isCopying
+                        ? 'copyPulse 0.5s ease-in-out'
+                        : 'none',
                       transformOrigin: 'center',
                       color: 'primary.main',
                     }}
@@ -121,52 +126,54 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
             </Stack>
           </Stack>
           <Box>
-              <TextField
-                value={cronExpression}
-                variant="outlined"
-                onChange={handleExpressionChange}
-                slotProps={{
-                  input: {
-                    autoComplete: 'off',
-                    autoCorrect: 'off',
-                    autoCapitalize: 'off',
-                    spellCheck: false,
-                  },
-                }}
-                sx={{
-                  fontFamily: 'monospace',
+            <TextField
+              value={cronExpression}
+              variant="outlined"
+              onChange={handleExpressionChange}
+              slotProps={{
+                input: {
+                  autoComplete: 'off',
+                  autoCorrect: 'off',
+                  autoCapitalize: 'off',
+                  spellCheck: false,
+                },
+              }}
+              sx={{
+                fontFamily: 'monospace',
+                width: '100%',
+                '& .MuiInputBase-input': {
                   width: '100%',
-                  '& .MuiInputBase-input': {
-                    width: '100%',
-                    textAlign: 'center',
-                    fontFamily: 'monospace',
-                    fontSize: {
-                      xs: '1.5em',
-                      sm: '1.5em',
-                      md: '1.5em',
-                      lg: '2em',
-                      xl: '2em',
-                    },
-                    p: 1.5,
+                  textAlign: 'center',
+                  fontFamily: 'monospace',
+                  fontSize: {
+                    xs: '1.5em',
+                    sm: '1.5em',
+                    md: '1.5em',
+                    lg: '2em',
+                    xl: '2em',
                   },
-                  '& .MuiOutlinedInput-root': {
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'primary.main',
-                      borderWidth: '1px',
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'primary.light',
-                      borderWidth: '2px',
-                    },
+                  padding: '0.5rem 0.75rem',
+                  color: '#4F7577',
+                  backgroundColor: '#F5FAFA',
+                  backgroundClip: 'padding-box',
+                  borderRadius: '2px',
+                },
+                '& .MuiOutlinedInput-root': {
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    border: '1px solid #D8E3E4',
+                    borderRadius: '2px',
                   },
-                  '& .MuiOutlinedInput-root.Mui-focused': {
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'primary.main',
-                      boxShadow: (theme) => `0 0 5px 5px ${theme.palette.primary.main}25`
-                    },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    border: '1px solid #D8E3E4',
                   },
-                }}
-              />
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    border: '1px solid #14767D',
+                    boxShadow: '0px 0px 10px rgba(20, 118, 125, 0.8)',
+                    transition: 'border-color .15s ease-in-out, box-shadow .15s ease-in-out',
+                  },
+                },
+              }}
+            />
           </Box>
         </Stack>
         <Alert
@@ -178,14 +185,15 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
               mr: { xs: 2, sm: 3, md: 0, lg: 0, xl: 0 },
               mb: 3,
             },
-          }}>
+          }}
+        >
           <Typography variant="body2">
             <strong>{isValid ? '' : 'Error:'}</strong> {description}
           </Typography>
         </Alert>
       </Paper>
     </>
-  );
+  )
 };
 
 export default CronExpressionResult;

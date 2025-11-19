@@ -14,7 +14,6 @@ import {
   useMediaQuery,
   Fab,
 } from '@mui/material'
-import { createTheme } from '@mui/material/styles'
 import { Routes, Route, HashRouter, useLocation } from 'react-router-dom'
 import {
   AboutPage,
@@ -43,6 +42,7 @@ import emailjs from '@emailjs/browser'
 import { initGA, logPageView } from './utils/analytics'
 import { LinAppBar, LinDrawer } from './components/shared-components'
 import { getAppConfig } from './config/appConfig'
+import { customTheme } from './config/theme'
 
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
@@ -56,14 +56,16 @@ export function App() {
   const isAccessibilityMenuOpen = Boolean(anchorEl)
 
   const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: isDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [isDarkMode]
+    () => customTheme,
+    []
   )
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      'data-toolpad-color-scheme',
+      isDarkMode ? 'dark' : 'light'
+    )
+  }, [isDarkMode])
 
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'))
 
