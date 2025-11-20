@@ -7,13 +7,18 @@ export const lightPalette = {
   },
   primary: {
     main: "#14767D",
-    light: "#0068A8",
+    light: "#0C884C",
   },
   secondary: {
     main: "#0068A8",
   },
   info: {
     main: '#0072B8',
+    light: "#F4F9FD",
+  },
+  action: {
+    hover: "rgba(0, 0, 0, 0.01)",
+    selected: "#F5F6FA",
   },
 };
 

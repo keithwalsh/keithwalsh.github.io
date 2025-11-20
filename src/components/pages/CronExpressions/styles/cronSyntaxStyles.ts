@@ -34,7 +34,7 @@ export const getBadgeStyles = (
   width: { xs: 30, sm: 30, md: 40, lg: 40, xl: 40 },
   height: { xs: 30, sm: 30, md: 40, lg: 40, xl: 40 },
   borderRadius: { xs: 2, sm: 2, md: 3, lg: 3, xl: 3 },
-  bgcolor: isActive ? theme.palette.secondary.main : theme.palette.primary.main,
+  bgcolor: isActive ? theme.palette.primary.light : theme.palette.secondary.main,
   color: theme.palette.common.white,
   display: "flex",
   alignItems: "center",
@@ -135,12 +135,12 @@ export const getSymbolCellStyles = (theme: Theme): SxProps<Theme> => ({
   lineHeight: 1.5,
   border: theme.palette.mode === 'dark' 
     ? '1px solid hsla(210, 14%, 28%, 0.3)' 
-    : '1px solid rgba(204, 230, 255, 0.8)',
+    : `1px solid ${theme.palette.info.main}`,
   borderRadius: 1,
   width: 45,
   backgroundColor: theme.palette.mode === 'dark' 
     ? 'rgba(0, 59, 117, 0.3)' 
-    : 'hsl(210, 100%, 96%)'
+    : theme.palette.info.light
 });
 
 /**
