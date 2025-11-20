@@ -42,7 +42,7 @@ import emailjs from '@emailjs/browser'
 import { initGA, logPageView } from './utils/analytics'
 import { LinAppBar, LinDrawer } from './components/shared-components'
 import { getAppConfig } from './config/appConfig'
-import { customTheme } from './config/theme'
+import { createCustomTheme } from './config/theme'
 
 emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY)
 
@@ -56,8 +56,8 @@ export function App() {
   const isAccessibilityMenuOpen = Boolean(anchorEl)
 
   const theme = useMemo(
-    () => customTheme,
-    []
+    () => createCustomTheme(isDarkMode ? 'dark' : 'light'),
+    [isDarkMode]
   )
 
   useEffect(() => {

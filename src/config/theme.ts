@@ -1,34 +1,56 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeOptions } from '@mui/material/styles';
 
-export const customTheme = createTheme({
-  colorSchemes: {
-    light: {
-      palette: {
-        text: {
-          primary: '#4F7577',
-        },
-        primary: {
-          main: '#0068A8',
-        },
-        secondary: {
-          main: '#0C884C',
-        },
-        info: {
-          main: '#0072B8',
-        },
-      },
-    },
-    dark: {
-      palette: {
-        text: {
-          primary: '#CECFD2',
-          secondary: '#96999E',
-        },
-        action: {
-          active: '#CECFD2',
+// Define palette configurations for each mode
+export const lightPalette = {
+  text: {
+    primary: "#4F7577",
+  },
+  primary: {
+    main: "#14767D",
+    light: "#0068A8",
+  },
+  secondary: {
+    main: "#0068A8",
+  },
+  info: {
+    main: '#0072B8',
+  },
+};
+
+export const darkPalette = {
+  text: {
+    primary: "#CECFD2",
+    secondary: "#96999E",
+  },
+  action: {
+    active: "#CECFD2",
+  },
+};
+
+// Base theme configuration (shared across modes)
+export const baseThemeOptions: ThemeOptions = {
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          minHeight: "46px",
+          height: "46px",
         },
       },
     },
   },
-});
+};
 
+// Create theme based on mode
+export const createCustomTheme = (mode: 'light' | 'dark') => {
+  return createTheme({
+    ...baseThemeOptions,
+    palette: {
+      mode,
+      ...(mode === 'light' ? lightPalette : darkPalette),
+    },
+  });
+};
+
+// Pre-created themes for convenience (if needed elsewhere)
+export const customTheme = createCustomTheme('light');

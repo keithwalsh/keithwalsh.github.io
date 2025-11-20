@@ -153,22 +153,22 @@ const CronExpressionResult: React.FC<CronExpressionResultProps> = ({
                     xl: '2em',
                   },
                   padding: '0.5rem 0.75rem',
-                  color: '#4F7577',
-                  backgroundColor: '#F5FAFA',
+                  color: (theme) => theme.palette.mode === 'light' ? '#4F7577' : undefined,
+                  backgroundColor: (theme) => theme.palette.mode === 'light' ? '#F5FAFA' : undefined,
                   backgroundClip: 'padding-box',
                   borderRadius: '2px',
                 },
                 '& .MuiOutlinedInput-root': {
                   '& .MuiOutlinedInput-notchedOutline': {
-                    border: '1px solid #D8E3E4',
+                    border: (theme) => theme.palette.mode === 'light' ? '1px solid #D8E3E4' : undefined,
                     borderRadius: '2px',
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline': {
-                    border: '1px solid #D8E3E4',
+                    border: (theme) => theme.palette.mode === 'light' ? '1px solid #D8E3E4' : undefined,
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    border: '1px solid #14767D',
-                    boxShadow: '0px 0px 10px rgba(20, 118, 125, 0.8)',
+                    border: (theme) => theme.palette.mode === 'light' ? '1px solid #14767D' : undefined,
+                    boxShadow: (theme) => theme.palette.mode === 'light' ? '0px 0px 10px rgba(20, 118, 125, 0.8)' : undefined,
                     transition: 'border-color .15s ease-in-out, box-shadow .15s ease-in-out',
                   },
                 },
