@@ -1,0 +1,186 @@
+.code-block {
+  --code-comment: #6e7781;
+  --code-keyword: #cf222e;
+  --code-string: #0a3069;
+  --code-number: #0550ae;
+  --code-function: #8250df;
+  --code-tag: #116329;
+  --code-variable: #953800;
+  --code-add-bg: #e6ffec;
+  --code-add-accent: #1a7f37;
+  --code-add-word: #abf2bc;
+  --code-remove-bg: #ffebe9;
+  --code-remove-accent: #cf222e;
+  --code-remove-word: #ffc1bc;
+  --code-highlight-bg: rgb(212 167 44 / 0.15);
+  --code-highlight-accent: #d4a72c;
+}
+
+.dark .code-block {
+  --code-comment: #8b949e;
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-function: #d2a8ff;
+  --code-tag: #7ee787;
+  --code-variable: #ffa657;
+  --code-add-bg: rgb(46 160 67 / 0.15);
+  --code-add-accent: #3fb950;
+  --code-add-word: rgb(46 160 67 / 0.4);
+  --code-remove-bg: rgb(248 81 73 / 0.12);
+  --code-remove-accent: #f85149;
+  --code-remove-word: rgb(248 81 73 / 0.4);
+  --code-highlight-bg: rgb(187 128 9 / 0.18);
+  --code-highlight-accent: #bb8009;
+}
+
+.code-line {
+  display: flex;
+  padding-inline: 0.75rem;
+}
+
+.code-line-number {
+  width: 2rem;
+  flex-shrink: 0;
+  padding-right: 0.75rem;
+  text-align: right;
+  color: var(--muted-foreground);
+  user-select: none;
+}
+
+.code-line-content {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding-left: 1.25rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.code-block[data-wrap="false"] code {
+  width: max-content;
+  min-width: 100%;
+  tab-size: 4;
+}
+
+.code-block[data-wrap="false"] .code-line-content {
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.code-line[data-kind="add"] {
+  background: var(--code-add-bg);
+  box-shadow: inset 3px 0 var(--code-add-accent);
+}
+
+.code-line[data-kind="remove"] {
+  background: var(--code-remove-bg);
+  box-shadow: inset 3px 0 var(--code-remove-accent);
+}
+
+.code-line[data-kind] > .code-line-content::before {
+  position: absolute;
+  left: 0.25rem;
+  font-weight: 600;
+}
+
+.code-line[data-kind="add"] > .code-line-content::before {
+  content: "+";
+  color: var(--code-add-accent);
+}
+
+.code-line[data-kind="remove"] > .code-line-content::before {
+  content: "−";
+  color: var(--code-remove-accent);
+}
+
+.code-line[data-highlighted] {
+  background: var(--code-highlight-bg);
+  box-shadow: inset 3px 0 var(--code-highlight-accent);
+}
+
+.code-block .word-add,
+.code-block .word-delete {
+  padding-block: 1px;
+}
+
+.code-block .word-start {
+  padding-left: 2px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.code-block .word-end {
+  padding-right: 2px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.code-block .word-add {
+  background: var(--code-add-word);
+}
+
+.code-block .word-delete {
+  background: var(--code-remove-word);
+}
+
+.code-block[data-strikethrough="true"] .word-delete {
+  text-decoration: line-through;
+}
+
+.code-block .token.comment,
+.code-block .token.prolog,
+.code-block .token.doctype,
+.code-block .token.cdata {
+  color: var(--code-comment);
+  font-style: italic;
+}
+
+.code-block .token.keyword,
+.code-block .token.atrule,
+.code-block .token.important,
+.code-block .token.deleted {
+  color: var(--code-keyword);
+}
+
+.code-block .token.string,
+.code-block .token.char,
+.code-block .token.attr-value,
+.code-block .token.url,
+.code-block .token.inserted {
+  color: var(--code-string);
+}
+
+.code-block .token.number,
+.code-block .token.boolean,
+.code-block .token.constant,
+.code-block .token.symbol,
+.code-block .token.property,
+.code-block .token.attr-name {
+  color: var(--code-number);
+}
+
+.code-block .token.function,
+.code-block .token.class-name {
+  color: var(--code-function);
+}
+
+.code-block .token.tag,
+.code-block .token.selector,
+.code-block .token.builtin {
+  color: var(--code-tag);
+}
+
+.code-block .token.variable,
+.code-block .token.regex {
+  color: var(--code-variable);
+}
+
+.code-block .token.italic {
+  font-style: italic;
+}
+
+.code-block .token.bold,
+.code-block .token.important {
+  font-weight: 600;
+}

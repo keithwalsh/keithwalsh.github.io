@@ -1,0 +1,51 @@
+{
+  "projects": [
+    {
+      "title": "Personal Portfolio Website (← You are here! 👋)",
+      "points": [
+        "Plot twist: This is the very website you're looking at right now",
+        "Modern, responsive portfolio built with React, TypeScript, Tailwind CSS and shadcn/ui",
+        "Implements accessibility considerations and dark mode support (try it, it's cool)",
+        "Features component-based architecture for maintainability (meta: like this component!)"
+      ],
+      "repoUrl": "https://github.com/keithwalsh/keithwalsh.github.io",
+      "demoUrl": "https://keithwalsh.github.io",
+      "technologies": ["React", "TypeScript", "Tailwind CSS", "shadcn/ui", "Vite"]
+    },
+    {
+      "title": "React Markdown Table",
+      "points": [
+        "React component for rendering and editing markdown tables with TypeScript support",
+        "Built with Material-UI for an intuitive interface",
+        "Features include column sorting and row operations",
+        "Maintains markdown compatibility with customizable styling options"
+      ],
+      "repoUrl": "https://github.com/keithwalsh/react-markdown-table-ts",
+      "demoUrl": "https://main--67509fe7e9653ea59a634ef5.chromatic.com/?path=/docs/components-markdowntable--docs&globals=backgrounds.grid:!false;backgrounds.value:transparent&singleStory=true",
+      "technologies": ["React", "TypeScript", "Material-UI", "Markdown"]
+    },
+    {
+      "title": "Jira Data ETL",
+      "points": [
+        "An ETL (Extract, Transform, Load) utility for Jira data analysis",
+        "This tool extracts data from a Jira Cloud instance",
+        "The extracted data is transformed into a structured format suitable for a SQL DB",
+        "It then loads it into a database for easy reporting"
+      ],
+      "repoUrl": "https://github.com/keithwalsh/jira-data-etl",
+      "technologies": ["Python", "Jira API", "SQLAlchemy", "Pandas"]
+    },
+    {
+      "title": "React Spreadsheet",
+      "points": [
+        "A lightweight, fully-typed React spreadsheet component",
+        "Features including CSV export, cell formatting, clipboard operations, and undo/redo functionality",
+        "Built with TypeScript and Material-UI",
+        "Supports theming, row/column operations, and multi-cell selection while maintaining a clean, modern interface"
+      ],
+      "repoUrl": "https://github.com/keithwalsh/react-spreadsheet-ts",
+      "demoUrl": "https://main--66fec51ab2591570ea1067cd.chromatic.com/?path=/docs/spreadsheet--docs&globals=backgrounds.grid:!false;backgrounds.value:transparent&singleStory=true",
+      "technologies": ["React", "TypeScript", "Material-UI", "Redux"]
+    }
+  ]
+}

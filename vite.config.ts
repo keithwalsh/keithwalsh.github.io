@@ -1,18 +1,24 @@
-/**
- * @fileoverview Vite configuration for React application with source maps enabled
- * and custom build output directory. Uses React plugin and sets base URL for
- * GitHub Pages deployment.
- */
+import path from "path"
+import tailwindcss from "@tailwindcss/vite"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
 
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
+// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  assetsInclude: ['**/*.csv'],
-  base: './',
+  // Relative base so the build runs from any static host path (GitHub Pages).
+  base: "./",
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      "@": path.resolve(import.meta.dirname, "./src"),
+    },
+  },
+  // Node resolves "localhost" to IPv6 (::1) first, which leaves
+  // http://127.0.0.1:5173 unreachable; bind to IPv4 loopback explicitly.
+  server: {
+    host: "127.0.0.1",
+  },
   build: {
-    outDir: 'dist',
-    sourcemap: true
-  }
+    sourcemap: true,
+  },
 })

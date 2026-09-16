@@ -1,0 +1,253 @@
+import { useRef, useState } from "react"
+import { Copy, ImageDown } from "lucide-react"
+
+import { CodeHighlighter } from "@/components/code-highlighter"
+import { InlineCode } from "@/components/inline-code"
+import { Page, PageHeader } from "@/components/page"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Field, FieldLabel, FieldTitle } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Spinner } from "@/components/ui/spinner"
+import { Switch } from "@/components/ui/switch"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { useDownloadImage } from "@/hooks/use-download-image"
+import { copyWithToast } from "@/lib/browser"
+import { toMarkdownCodeBlock } from "@/lib/code-highlight"
+import { cn } from "@/lib/utils"
+
+const LANGUAGE_OPTIONS = [
+  { value: "javascript", label: "JavaScript", comment: "//" },
+  { value: "typescript", label: "TypeScript", comment: "//" },
+  { value: "python", label: "Python", comment: "#" },
+  { value: "java", label: "Java", comment: "//" },
+  { value: "c", label: "C", comment: "//" },
+  { value: "cpp", label: "C++", comment: "//" },
+  { value: "sql", label: "SQL", comment: "--" },
+  { value: "ruby", label: "Ruby", comment: "#" },
+  { value: "php", label: "PHP", comment: "//" },
+  { value: "bash", label: "Bash", comment: "#" },
+  { value: "json", label: "JSON", comment: "//" },
+]
+
+const DISPLAY_OPTIONS = [
+  { key: "showLineNumbers", id: "code-line-numbers", label: "Line numbers" },
+  { key: "wrap", id: "code-wrap", label: "Wrap lines" },
+  {
+    key: "strikethrough",
+    id: "code-strikethrough",
+    label: "Strike through removed words",
+  },
+] as const
+
+type DisplayOptions = Record<(typeof DISPLAY_OPTIONS)[number]["key"], boolean>
+
+// Written with `//`, which is swapped for the selected language's comment.
+const SYNTAX = [
+  {
+    markers: ["// Add", "// Remove"],
+    effect: "Marks the next line as added or removed",
+  },
+  {
+    markers: ["[+new+]", "[-old-]"],
+    effect: "Marks the wrapped text as added or removed",
+  },
+  { markers: ["// highlight-next-line"], effect: "Highlights the next line" },
+  {
+    markers: ["// highlight-start", "// highlight-end"],
+    effect: "Highlights every line between them",
+  },
+]
+
+const DEFAULT_CODE = `<?php
+// Remove
+echo "Hello [-Room-]";
+// Add
+echo "Hello [+World+]";
+?>`
+
+/** Turns the filename into a safe name for the downloaded image. */
+function imageName(filename: string) {
+  return (
+    filename
+      .trim()
+      .replace(/[^\w-]+/g, "-")
+      .replace(/^-|-$/g, "") || "code"
+  )
+}
+
+export default function CodeAnnotatorPage() {
+  const [code, setCode] = useState(DEFAULT_CODE)
+  const [language, setLanguage] = useState("php")
+  const [filename, setFilename] = useState("")
+  const [options, setOptions] = useState<DisplayOptions>({
+    showLineNumbers: true,
+    wrap: true,
+    strikethrough: true,
+  })
+  const outputRef = useRef<HTMLDivElement>(null)
+  const { downloadImage, isDownloading } = useDownloadImage()
+
+  const hasCode = code.trim().length > 0
+  const comment =
+    LANGUAGE_OPTIONS.find((option) => option.value === language)?.comment ??
+    "//"
+
+  const handleDownload = () => {
+    if (!outputRef.current) return
+    downloadImage(outputRef.current, { filename: imageName(filename) })
+  }
+
+  return (
+    <Page>
+      <PageHeader
+        title="Code Annotator"
+        description="Mark lines and words as added, removed or highlighted, then copy the result as Markdown or download it as a PNG."
+      />
+
+      <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+        <Field orientation="horizontal" className="w-auto">
+          <FieldLabel htmlFor="code-language">Language</FieldLabel>
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger id="code-language" className="w-36">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {LANGUAGE_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+        <Field orientation="horizontal" className="w-auto">
+          <FieldLabel htmlFor="code-filename">Filename</FieldLabel>
+          <Input
+            id="code-filename"
+            value={filename}
+            onChange={(event) => setFilename(event.target.value)}
+            placeholder="Optional"
+            spellCheck={false}
+            autoComplete="off"
+            className="w-40"
+          />
+        </Field>
+        {DISPLAY_OPTIONS.map(({ key, id, label }) => (
+          <Field key={key} orientation="horizontal" className="w-auto">
+            <Switch
+              id={id}
+              checked={options[key]}
+              onCheckedChange={(checked) =>
+                setOptions((previous) => ({ ...previous, [key]: checked }))
+              }
+            />
+            <FieldLabel htmlFor={id}>{label}</FieldLabel>
+          </Field>
+        ))}
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field>
+          <FieldLabel htmlFor="code-input">Input</FieldLabel>
+          <Textarea
+            id="code-input"
+            value={code}
+            onChange={(event) => setCode(event.target.value)}
+            spellCheck={false}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            className="min-h-64 font-mono text-xs leading-relaxed md:text-xs"
+          />
+        </Field>
+        <Field>
+          <div className="flex items-center justify-between gap-2">
+            <FieldTitle>Output</FieldTitle>
+            <div className="-my-1 flex gap-1">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Copy as Markdown"
+                    disabled={!hasCode}
+                    onClick={() =>
+                      copyWithToast(
+                        toMarkdownCodeBlock(code, language),
+                        "Markdown copied"
+                      )
+                    }
+                  >
+                    <Copy />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy as Markdown</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Download PNG"
+                    disabled={!hasCode || isDownloading}
+                    onClick={handleDownload}
+                  >
+                    {isDownloading ? <Spinner /> : <ImageDown />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download PNG</TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+          {/* Unwrapped lines scroll here rather than inside the block, so the
+              downloaded image isn't cropped to the visible width. */}
+          <div className={cn(!options.wrap && "overflow-x-auto")}>
+            <CodeHighlighter
+              ref={outputRef}
+              code={code}
+              language={language}
+              title={filename.trim() || undefined}
+              className={cn(!options.wrap && "w-max min-w-full")}
+              {...options}
+            />
+          </div>
+        </Field>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Syntax</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <dl className="grid items-baseline gap-x-6 gap-y-3 sm:grid-cols-[auto_1fr]">
+            {SYNTAX.map(({ markers, effect }) => (
+              <div key={effect} className="flex flex-col gap-1 sm:contents">
+                <dt className="flex flex-wrap gap-1.5">
+                  {markers.map((marker) => (
+                    <InlineCode key={marker}>
+                      {marker.replace("//", comment)}
+                    </InlineCode>
+                  ))}
+                </dt>
+                <dd className="text-muted-foreground">{effect}</dd>
+              </div>
+            ))}
+          </dl>
+        </CardContent>
+      </Card>
+    </Page>
+  )
+}
