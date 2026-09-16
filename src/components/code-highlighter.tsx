@@ -1,7 +1,7 @@
 import { useMemo, type Ref } from "react"
 
 import "@/components/code-highlighter.css"
-import { highlightCode, type HighlightedLine } from "@/lib/code-highlight"
+import { highlightCode } from "@/lib/code-highlight"
 import { cn } from "@/lib/utils"
 
 export type CodeHighlighterProps = {
@@ -19,19 +19,6 @@ export type CodeHighlighterProps = {
   ref?: Ref<HTMLDivElement>
 }
 
-/**
- * Numbers lines the way a unified diff does: removed lines only exist in the
- * code before the change, and added lines only in the code after it.
- */
-function numberLines(lines: HighlightedLine[]) {
-  let before = 0
-  let after = 0
-  return lines.map(({ kind }) => ({
-    before: kind === "add" ? undefined : ++before,
-    after: kind === "remove" ? undefined : ++after,
-  }))
-}
-
 export function CodeHighlighter({
   code,
   language,
@@ -47,9 +34,6 @@ export function CodeHighlighter({
     () => highlightCode(code, language, { annotations }),
     [code, language, annotations]
   )
-  const lineNumbers = useMemo(() => numberLines(lines), [lines])
-  // A diff gets a second gutter so both versions keep their own line numbers.
-  const isDiff = lines.some((line) => line.kind)
 
   return (
     <div
@@ -78,14 +62,9 @@ export function CodeHighlighter({
               data-kind={line.kind}
               data-highlighted={line.highlighted || undefined}
             >
-              {showLineNumbers && isDiff && (
-                <span className="code-line-number" aria-hidden="true">
-                  {lineNumbers[index].before}
-                </span>
-              )}
               {showLineNumbers && (
                 <span className="code-line-number" aria-hidden="true">
-                  {lineNumbers[index].after}
+                  {index + 1}
                 </span>
               )}
               <span
