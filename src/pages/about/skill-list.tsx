@@ -13,7 +13,6 @@ import {
 
 import { PageSection } from "@/components/page"
 import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
 import skillsData from "@/data/skills.json"
 
 const ICONS: Record<string, IconType> = {
@@ -53,10 +52,9 @@ export function SkillList() {
                     </span>
                   </div>
                 </div>
-                <Progress
-                  value={skill.level}
-                  aria-label={`${skill.name} proficiency: ${skill.level}%`}
-                />
+                <p className="text-sm text-muted-foreground">
+                  {skill.context}
+                </p>
               </CardContent>
             </Card>
           )

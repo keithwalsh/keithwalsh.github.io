@@ -1,8 +1,33 @@
 {
   "positions": [
     {
-      "year": "2024",
-      "title": "Data Analyst", 
+      "year": "2025",
+      "title": "CONFIRM TITLE",
+      "company": "Portwest",
+      "companyDescription": "Irish manufacturer of workwear, PPE and safety footwear, founded in 1904.",
+      "companyDescription2": "Sells internationally through its own e-commerce platform and a distributor network.",
+      "dateRange": "CONFIRM START 2025 – Present",
+      "location": "Ireland",
+      "details": [
+        "Maintain and extend the Laravel sync layer that pulls the Akeneo PIM and the Infor M3 ERP into the MySQL schema behind the company webshop.",
+        "Diagnose pricing defects across the full resolution chain — customer price list, general price list, promotion, clearance, cost factor and uplift.",
+        "Delivered a dual-warehouse rollout showing Poland and Milan stock side by side for Italian customers, behind a staged go-live gate.",
+        "Took ownership of the courier shipping station used by the Poland warehouse, covering the GLS and FedEx API integrations and delivery confirmation back into M3.",
+        "Built internal MCP servers and CLI tooling giving the team documented read access to M3 and the data warehouse replica."
+      ],
+      "technologies": [
+        "PHP",
+        "Laravel",
+        "MySQL",
+        "Python",
+        "Infor M3",
+        "Akeneo PIM",
+        "REST APIs"
+      ]
+    },
+    {
+      "year": "2021",
+      "title": "Data Analyst",
       "company": "Pitney Bowes",
       "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
       "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
@@ -15,7 +40,17 @@
         "Developed algorithms and reporting tools to streamline the Loss Prevention team’s operations and inform risk assessments",
         "Designed and maintained both internal and client-facing dashboards using Tableau and Power BI, offering real-time insights.",
         "Automated workflows with Power Automate, Jira automation rules, and Python scripts, saving significant administrative time.",
-        "Worked with various teams to identify operational bottlenecks and provide data-led solutions, improving overall efficiency."
+        "Worked with various teams to identify operational bottlenecks and provide data-led solutions, improving overall efficiency.",
+        "Received leadership recognition for developing a universal analytics toolkit.",
+        "Earned the Cross-Functional Collaboration Award (2023–2024) with four quarterly nominations."
+      ],
+      "technologies": [
+        "Python",
+        "SQL",
+        "Tableau",
+        "Power BI",
+        "Power Automate",
+        "Jira"
       ]
     },
     {
@@ -31,7 +66,13 @@
         "Developed automated KPI reports to monitor performance metrics and identify service delivery gaps.",
         "Led daily stand-ups and one-on-ones to clarify goals, provide feedback, and align with company objectives.",
         "Collaborated with department leaders to refine cross-functional workflows, improving communication and reducing escalations by 25%.",
-        "Implemented training for new tools and processes, enhancing team efficiency and client engagement quality."
+        "Implemented training for new tools and processes, enhancing team efficiency and client engagement quality.",
+        "Took 3rd place in the Continuous Innovation Award (2021) for the Client Connect & Support Platform."
+      ],
+      "technologies": [
+        "KPI Automation",
+        "Team Management",
+        "Process Optimization"
       ]
     },
     {
@@ -46,7 +87,8 @@
         "Created Agent Proficiency Score (APS) system, enabling better performance tracking and weekly trend analysis.",
         "Developed browser extension to automate tasks, boosting productivity 23% and improving accuracy.",
         "Deployed custom scripts to streamline agent tasks, reducing average handling times by 15%."
-      ]
+      ],
+      "technologies": ["Browser Extensions", "Automation", "Analytics"]
     },
     {
       "year": "2015",
@@ -60,7 +102,8 @@
         "Led risk assessment initiatives and fraud prevention systems, reducing payment disputes by 28%",
         "Streamlined KYC/AML processes, halving client verification times while maintaining compliance",
         "Collaborated with IT on payment gateway API integrations to enhance transaction security"
-      ]
+      ],
+      "technologies": ["Risk Management", "KYC/AML", "Payment APIs"]
     },
     {
       "year": "2013",
@@ -74,7 +117,8 @@
         "Analysed transaction data using Oracle to identify fraud patterns and prevent financial loss",
         "Monitored multi-channel activity to assess fraud risk, collaborating with law enforcement and payment processors when needed",
         "Processed chargeback notifications and analyzed account histories to take preventive action against suspicious accounts"
-      ]
+      ],
+      "technologies": ["Oracle", "Fraud Analytics"]
     },
     {
       "year": "2011",
@@ -88,7 +132,8 @@
         "Performed transaction-level reconciliation and customer journal adjustments to maintain financial accuracy",
         "Monitored payment systems across website and internal platforms to ensure operational reliability",
         "Collaborated with VIP, Risk & Fraud and Finance teams on process improvements and compliance checks"
-      ]
+      ],
+      "technologies": ["Reconciliation", "Payment Systems"]
     }
   ]
 }

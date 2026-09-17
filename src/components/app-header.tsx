@@ -1,7 +1,9 @@
+import { Download } from "lucide-react"
 import { useLocation } from "react-router"
 
 import { AccessibilityMenu } from "@/components/accessibility-menu"
 import { ModeToggle } from "@/components/mode-toggle"
+import { Button } from "@/components/ui/button"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,6 +14,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { findNavLocation } from "@/config/navigation"
+import { assetUrl } from "@/lib/browser"
 
 export function AppHeader() {
   const { pathname } = useLocation()
@@ -42,6 +45,12 @@ export function AppHeader() {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="ml-auto flex items-center gap-1">
+        <Button variant="outline" size="sm" asChild>
+          <a href={assetUrl("keith-walsh-cv.pdf")} download>
+            <Download />
+            CV
+          </a>
+        </Button>
         <AccessibilityMenu />
         <ModeToggle />
       </div>

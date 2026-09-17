@@ -31,7 +31,7 @@ export function AppLayout() {
     document.title =
       title && pathname !== "/"
         ? `${title} · ${siteConfig.name}`
-        : siteConfig.name
+        : `${siteConfig.name} — ${siteConfig.tagline}`
     window.scrollTo(0, 0)
     trackPageView(pathname)
   }, [pathname])
