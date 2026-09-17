@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router"
 import { AppLayout } from "@/components/app-layout"
 
 const AboutPage = lazy(() => import("@/pages/about/about-page"))
+const BlogPage = lazy(() => import("@/pages/blog/blog-page"))
+const PostPage = lazy(() => import("@/pages/blog/post-page"))
 const ContactPage = lazy(() => import("@/pages/contact/contact-page"))
 const WeatherPage = lazy(() => import("@/pages/weather/weather-page"))
 const BrowserMockupPage = lazy(
@@ -38,6 +40,8 @@ export function App() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<AboutPage />} />
+        <Route path="blog" element={<BlogPage />} />
+        <Route path="blog/:slug" element={<PostPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="visualizations/weather" element={<WeatherPage />} />
         <Route path="tools/browser-mockup" element={<BrowserMockupPage />} />

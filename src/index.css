@@ -226,3 +226,30 @@
     @apply font-sans;
   }
 }
+
+/* About page: masthead line wipe and the location dot's pulse. */
+@keyframes masthead-in {
+  from {
+    transform: translateY(108%);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes halo {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.35);
+  }
+}

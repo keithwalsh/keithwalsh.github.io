@@ -11,6 +11,7 @@ import {
   FlaskConical,
   House,
   Mail,
+  PenLine,
   Rocket,
   Table,
   Type,
@@ -33,6 +34,7 @@ export type NavSection = {
 
 export const primaryNav: NavItem[] = [
   { title: "About", url: "/", icon: House },
+  { title: "Blog", url: "/blog", icon: PenLine },
   { title: "Contact", url: "/contact", icon: Mail },
 ]
 
@@ -76,17 +78,23 @@ export const sectionNav: NavSection[] = [
 ]
 
 export function findNavLocation(pathname: string) {
-  const primary = primaryNav.find((item) => item.url === pathname)
-  if (primary) {
-    return { item: primary, section: undefined }
+  const entries: { item: NavItem; section?: NavSection }[] = [
+    ...primaryNav.map((item) => ({ item, section: undefined })),
+    ...sectionNav.flatMap((section) =>
+      section.items.map((item) => ({ item, section }))
+    ),
+  ]
+
+  const exact = entries.find((entry) => entry.item.url === pathname)
+  if (exact) {
+    return exact
   }
 
-  for (const section of sectionNav) {
-    const item = section.items.find((entry) => entry.url === pathname)
-    if (item) {
-      return { item, section }
-    }
-  }
-
-  return null
+  // Nested routes such as /blog/:slug fall back to their closest parent entry,
+  // so they still get a breadcrumb and a document title.
+  return (
+    entries
+      .filter((entry) => pathname.startsWith(`${entry.item.url}/`))
+      .sort((a, b) => b.item.url.length - a.item.url.length)[0] ?? null
+  )
 }

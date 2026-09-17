@@ -1,97 +1,197 @@
-import { useState } from "react"
-import { Calendar, ChevronDown, MapPin } from "lucide-react"
+import { useId, useRef, useState } from "react"
 
-import { PageSection } from "@/components/page"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
 import journey from "@/data/professionalJourney.json"
 import { cn } from "@/lib/utils"
+import {
+  eyebrowClass,
+  sectionClass,
+  useReducedMotion,
+  useScrollEffect,
+} from "@/pages/about/about-shared"
+
+const { positions } = journey
+
+function pad(n: number) {
+  return String(n).padStart(2, "0")
+}
 
 export function ProfessionalJourney() {
-  const [expanded, setExpanded] = useState<string | null>(null)
-  const { positions } = journey
+  const [active, setActive] = useState(0)
+  const [pinned, setPinned] = useState<number | null>(null)
+  const reduced = useReducedMotion()
+  const rowRefs = useRef<(HTMLLIElement | null)[]>([])
+  const progressRef = useRef<HTMLSpanElement>(null)
+  const panelId = useId()
+
+  const open = pinned ?? active
+  const current = positions[open]
+
+  useScrollEffect(!reduced, () => {
+    const rows = rowRefs.current.filter(Boolean) as HTMLLIElement[]
+    if (rows.length === 0) return
+
+    const anchor = window.innerHeight * 0.34
+    let best = 0
+    let bestDistance = Infinity
+    rows.forEach((row, index) => {
+      const distance = Math.abs(row.getBoundingClientRect().top - anchor)
+      if (distance < bestDistance) {
+        bestDistance = distance
+        best = index
+      }
+    })
+    setActive(best)
+
+    if (progressRef.current) {
+      const first = rows[0].getBoundingClientRect()
+      const last = rows[rows.length - 1].getBoundingClientRect()
+      const span = Math.max(
+        1,
+        last.bottom - first.top - window.innerHeight * 0.2
+      )
+      const done = Math.min(1, Math.max(0, (anchor - first.top) / span))
+      progressRef.current.style.width = `${(done * 100).toFixed(1)}%`
+    }
+  })
 
   return (
-    <PageSection
-      title="Professional Journey"
-      description="Select a role to see what it involved."
-    >
-      <ol className="flex flex-col">
-        {positions.map((position, index) => {
-          const id = `${position.year}-${position.title}`
-          const isFirst = index === 0
-          const isLast = index === positions.length - 1
-
-          return (
-            <li
-              key={id}
-              className="grid grid-cols-[3rem_1rem_minmax(0,1fr)] gap-x-3 sm:grid-cols-[3.5rem_1rem_minmax(0,1fr)]"
-            >
-              <span className="pt-2.5 text-right text-sm font-medium text-muted-foreground tabular-nums">
-                {position.year}
+    <section className={cn(sectionClass, "py-[clamp(3rem,6vw,6rem)]")}>
+      {/* `items-stretch` is what gives the sticky rail its travel. */}
+      <div className="flex flex-wrap items-stretch gap-[clamp(1.25rem,3vw,3.5rem)]">
+        <div className="max-w-[21.25rem] min-w-0 flex-[1_1_10.625rem]">
+          <div className="sticky top-24 flex flex-col gap-[1.125rem]">
+            <div className={eyebrowClass}>01 — Professional Journey</div>
+            <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-cron-accent tabular-nums">
+              {current.year}
+            </div>
+            <div className="text-[0.9375rem] leading-normal text-foreground/85">
+              {current.title} · {current.company}
+            </div>
+            <div className="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.14em] text-muted-foreground">
+              <span>
+                {pad(open + 1)} / {pad(positions.length)}
               </span>
-
-              <div className="relative flex justify-center" aria-hidden="true">
-                <span
-                  className={cn(
-                    "absolute inset-y-0 w-px bg-border",
-                    isFirst && "top-4",
-                    isLast && "bottom-auto h-4"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "relative mt-3.5 size-2.5 rounded-full ring-4 ring-background",
-                    isFirst ? "bg-primary" : "bg-muted-foreground/50"
-                  )}
-                />
-              </div>
-
-              <Collapsible
-                open={expanded === id}
-                onOpenChange={(open) => setExpanded(open ? id : null)}
-                className="pb-3"
+              <span
+                aria-hidden="true"
+                className="relative h-px flex-1 bg-border"
               >
-                <CollapsibleTrigger className="group flex w-full items-start justify-between gap-3 rounded-lg px-3 py-2 text-left outline-none hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/50">
-                  <span className="flex flex-col">
-                    <span className="font-medium">{position.title}</span>
-                    <span className="text-sm text-muted-foreground">
+                <span
+                  ref={progressRef}
+                  className="absolute inset-y-0 left-0 w-0 bg-cron-accent"
+                />
+              </span>
+            </div>
+            <p className="text-[0.8125rem] leading-normal text-cron-subtle">
+              Scroll, or select a role to pin it open.
+            </p>
+          </div>
+        </div>
+
+        <ol className="flex min-w-0 flex-[3_1_22.5rem] flex-col">
+          {positions.map((position, index) => {
+            const isOpen = index === open
+
+            return (
+              <li
+                key={`${position.year}-${position.title}`}
+                ref={(el) => {
+                  rowRefs.current[index] = el
+                }}
+                className="border-t"
+              >
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={`${panelId}-${index}`}
+                  onClick={() => {
+                    setPinned(pinned === index ? null : index)
+                    setActive(index)
+                  }}
+                  className="flex w-full items-baseline gap-[clamp(0.75rem,2vw,1.75rem)] py-[clamp(1.125rem,2vw,1.625rem)] text-left transition-[padding-left] duration-350 ease-[cubic-bezier(.2,.8,.2,1)] outline-none hover:pl-2.5 focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <span
+                    className={cn(
+                      "flex-none font-mono text-xs tracking-[0.12em] tabular-nums transition-colors duration-300",
+                      isOpen ? "text-cron-accent" : "text-cron-subtle"
+                    )}
+                  >
+                    {position.year}
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col gap-[5px]">
+                    <span
+                      className={cn(
+                        "text-[clamp(1.25rem,2.4vw,1.875rem)] leading-[1.12] font-medium tracking-[-0.025em] text-pretty transition-colors duration-300",
+                        isOpen ? "text-foreground" : "text-foreground/72"
+                      )}
+                    >
+                      {position.title}
+                    </span>
+                    <span className="font-mono text-[0.71875rem] tracking-[0.12em] text-muted-foreground uppercase">
                       {position.company}
                     </span>
                   </span>
-                  <ChevronDown className="mt-1 size-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
-                </CollapsibleTrigger>
-                <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
-                  <div className="mx-3 mt-2 flex flex-col gap-3 rounded-lg border bg-muted/30 p-4 text-sm">
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-muted-foreground">
-                      <span className="inline-flex items-center gap-1.5">
-                        <Calendar className="size-3.5" />
-                        {position.dateRange}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5">
-                        <MapPin className="size-3.5" />
-                        {position.location}
-                      </span>
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "size-2 flex-none rounded-full transition-all duration-300",
+                      isOpen
+                        ? "scale-[1.3] bg-cron-accent"
+                        : "scale-100 bg-muted-foreground/30"
+                    )}
+                  />
+                </button>
+
+                <div
+                  id={`${panelId}-${index}`}
+                  style={{
+                    gridTemplateRows: isOpen ? "1fr" : "0fr",
+                    opacity: isOpen ? 1 : 0,
+                  }}
+                  className="grid [transition:grid-template-rows_.55s_cubic-bezier(.2,.8,.2,1),opacity_.4s] motion-reduce:[transition:none]"
+                >
+                  <div className="overflow-hidden">
+                    <div className="flex flex-col gap-4 pb-[clamp(1.5rem,3vw,2.25rem)] pl-[clamp(0px,4vw,4rem)]">
+                      <div className="flex flex-wrap gap-x-5 gap-y-1.5 font-mono text-[0.6875rem] tracking-[0.1em] text-muted-foreground uppercase">
+                        <span>{position.dateRange}</span>
+                        <span>{position.location}</span>
+                      </div>
+                      <p className="max-w-[66ch] text-[0.9375rem] leading-[1.6] text-pretty text-muted-foreground">
+                        {position.companyDescription}{" "}
+                        {position.companyDescription2}
+                      </p>
+                      <ul className="flex max-w-[72ch] flex-col gap-2.5">
+                        {position.details.map((detail) => (
+                          <li
+                            key={detail}
+                            className="flex gap-3 text-[0.9375rem] leading-[1.55] text-pretty text-foreground/90"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className="mt-[0.5625rem] h-px w-3.5 flex-none bg-cron-accent"
+                            />
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex flex-wrap gap-2">
+                        {position.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="rounded-full border px-2.5 py-[5px] font-mono text-[0.65625rem] tracking-[0.1em] text-foreground/85 uppercase"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <p className="text-muted-foreground">
-                      {position.companyDescription}{" "}
-                      {position.companyDescription2}
-                    </p>
-                    <ul className="ml-4 flex list-disc flex-col gap-1.5 marker:text-muted-foreground">
-                      {position.details.map((detail) => (
-                        <li key={detail}>{detail}</li>
-                      ))}
-                    </ul>
                   </div>
-                </CollapsibleContent>
-              </Collapsible>
-            </li>
-          )
-        })}
-      </ol>
-    </PageSection>
+                </div>
+              </li>
+            )
+          })}
+          <li className="border-t" />
+        </ol>
+      </div>
+    </section>
   )
 }

@@ -2,11 +2,11 @@
   "positions": [
     {
       "year": "2025",
-      "title": "CONFIRM TITLE",
+      "title": "Data & Integrations Analyst",
       "company": "Portwest",
       "companyDescription": "Irish manufacturer of workwear, PPE and safety footwear, founded in 1904.",
       "companyDescription2": "Sells internationally through its own e-commerce platform and a distributor network.",
-      "dateRange": "CONFIRM START 2025 – Present",
+      "dateRange": "2025 – Present",
       "location": "Ireland",
       "details": [
         "Maintain and extend the Laravel sync layer that pulls the Akeneo PIM and the Infor M3 ERP into the MySQL schema behind the company webshop.",
