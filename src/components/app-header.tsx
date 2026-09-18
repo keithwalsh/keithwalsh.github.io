@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { findNavLocation, notFoundTitle } from "@/config/navigation"
 import { assetUrl } from "@/lib/browser"
 
@@ -28,7 +33,14 @@ export function AppHeader({ ref }: { ref?: Ref<HTMLElement> }) {
       ref={ref}
       className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/90 px-4 backdrop-blur-sm"
     >
-      <SidebarTrigger className="-ml-1" />
+      {/* The same tooltip-and-name pairing `IconButton` gives the header's
+          other icon buttons; the trigger renders its own button. */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <SidebarTrigger aria-label="Toggle sidebar" className="-ml-1" />
+        </TooltipTrigger>
+        <TooltipContent>Toggle sidebar</TooltipContent>
+      </Tooltip>
       <Separator
         orientation="vertical"
         className="mr-2 data-vertical:h-4 data-vertical:self-center"

@@ -6,6 +6,9 @@ import { downloadBlob } from "@/lib/browser"
 
 const SHADOW_PADDING = 16
 
+// Unsupported and failed image copies read the same: the fix is the same.
+const COPY_FAILED = "Copy failed. Download the PNG instead."
+
 function pageBackgroundColor() {
   return document.documentElement.classList.contains("dark")
     ? "#0a0a0a"
@@ -95,7 +98,7 @@ export function useDownloadImage() {
   const copyImage = useCallback(
     async (element: HTMLElement, options: RenderOptions = {}) => {
       if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
-        toast.error("Copying images isn't supported in this browser")
+        toast.error(COPY_FAILED)
         return
       }
 
@@ -106,9 +109,9 @@ export function useDownloadImage() {
         await navigator.clipboard.write([
           new ClipboardItem({ "image/png": renderPng(element, options) }),
         ])
-        toast.success("Image copied to clipboard")
-      } catch (error) {
-        toast.error(`Copy failed: ${errorMessage(error)}`)
+        toast.success("Image copied")
+      } catch {
+        toast.error(COPY_FAILED)
       } finally {
         setIsCopying(false)
       }

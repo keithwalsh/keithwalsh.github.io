@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { AArrowDown, AArrowUp, Accessibility, RotateCcw } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/icon-button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,9 +38,9 @@ export function AccessibilityMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" aria-label="Accessibility settings">
+        <IconButton label="Accessibility settings" size="icon">
           <Accessibility />
-        </Button>
+        </IconButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex items-center justify-between">

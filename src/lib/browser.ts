@@ -6,7 +6,7 @@ export function assetUrl(path: string) {
 }
 
 /** Copies text, falling back to execCommand where the Clipboard API is unavailable. */
-export async function copyToClipboard(text: string): Promise<boolean> {
+async function copyToClipboard(text: string): Promise<boolean> {
   try {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text)
@@ -28,10 +28,8 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   }
 }
 
-export async function copyWithToast(
-  text: string,
-  message = "Copied to clipboard"
-) {
+/** The site's one copy confirmation: a toast, e.g. "Markdown copied". */
+export async function copyWithToast(text: string, message: string) {
   if (await copyToClipboard(text)) {
     toast.success(message)
   } else {

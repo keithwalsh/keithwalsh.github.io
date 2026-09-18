@@ -1,9 +1,8 @@
-import { memo, useEffect, useRef, useState } from "react"
+import { memo } from "react"
 import type { Root } from "hast"
-import { Check, Copy } from "lucide-react"
+import { Copy } from "lucide-react"
 import ReactMarkdown, { type Components } from "react-markdown"
 import remarkGfm from "remark-gfm"
-import { toast } from "sonner"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
 import { InlineCode } from "@/components/inline-code"
@@ -15,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { copyToClipboard } from "@/lib/browser"
+import { copyWithToast } from "@/lib/browser"
 
 // No @tailwindcss/typography here; a dozen class strings cover what posts use.
 const components: Components = {
@@ -122,44 +121,15 @@ const components: Components = {
 }
 
 function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
-  const copiedTimeout = useRef<number>(undefined)
-
-  useEffect(() => () => window.clearTimeout(copiedTimeout.current), [])
-
-  const copy = async () => {
-    if (!(await copyToClipboard(text))) {
-      toast.error("Copy failed. Select the code and copy it by hand.")
-      return
-    }
-    setCopied(true)
-    window.clearTimeout(copiedTimeout.current)
-    copiedTimeout.current = window.setTimeout(() => setCopied(false), 1600)
-  }
-
   return (
-    <>
-      <button
-        type="button"
-        onClick={copy}
-        className="inline-flex flex-none items-center gap-1.5 rounded-full border bg-background px-2.25 py-1 text-meta uppercase transition-colors outline-none hover:border-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-      >
-        {copied ? (
-          <>
-            <Check className="size-3 text-success" />
-            <span className="text-success">Copied</span>
-          </>
-        ) : (
-          <>
-            <Copy className="size-3" />
-            Copy
-          </>
-        )}
-      </button>
-      <span role="status" className="sr-only">
-        {copied ? "Code copied" : ""}
-      </span>
-    </>
+    <button
+      type="button"
+      onClick={() => copyWithToast(text, "Code copied")}
+      className="inline-flex flex-none items-center gap-1.5 rounded-full border bg-background px-2.25 py-1 text-meta uppercase transition-colors outline-none hover:border-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+    >
+      <Copy className="size-3" />
+      Copy
+    </button>
   )
 }
 

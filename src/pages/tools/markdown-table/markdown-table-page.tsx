@@ -2,8 +2,8 @@ import { useMemo, useState } from "react"
 import { Copy, Download, Settings2 } from "lucide-react"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
+import { IconButton } from "@/components/icon-button"
 import { Page, PageHeader } from "@/components/page"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   DropdownMenu,
@@ -14,11 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { copyWithToast, downloadTextFile } from "@/lib/browser"
 import { generateMarkdownTable } from "@/lib/markdown-table"
 import { MarkdownPreview } from "@/pages/tools/markdown-table/markdown-preview"
@@ -75,20 +70,11 @@ export default function MarkdownTablePage() {
           </TabsList>
           <div className="flex items-center gap-1">
             <DropdownMenu>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="Output options"
-                    >
-                      <Settings2 />
-                    </Button>
-                  </DropdownMenuTrigger>
-                </TooltipTrigger>
-                <TooltipContent>Output options</TooltipContent>
-              </Tooltip>
+              <DropdownMenuTrigger asChild>
+                <IconButton label="Output options">
+                  <Settings2 />
+                </IconButton>
+              </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuLabel>Output options</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -109,36 +95,18 @@ export default function MarkdownTablePage() {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Copy Markdown"
-                  onClick={() =>
-                    copyWithToast(markdown, "Markdown table copied")
-                  }
-                >
-                  <Copy />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Copy Markdown</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Download Markdown"
-                  onClick={() =>
-                    downloadTextFile(markdown, "markdown-table.md")
-                  }
-                >
-                  <Download />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Download .md file</TooltipContent>
-            </Tooltip>
+            <IconButton
+              label="Copy Markdown"
+              onClick={() => copyWithToast(markdown, "Markdown copied")}
+            >
+              <Copy />
+            </IconButton>
+            <IconButton
+              label="Download Markdown"
+              onClick={() => downloadTextFile(markdown, "markdown-table.md")}
+            >
+              <Download />
+            </IconButton>
           </div>
         </div>
         <TabsContent value="markdown">

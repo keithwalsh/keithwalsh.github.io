@@ -1,7 +1,7 @@
 import { Star } from "lucide-react"
 
+import { IconButton } from "@/components/icon-button"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardAction,
@@ -10,11 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import type { NavIcon } from "@/config/navigation"
 
 export type ProjectLink = {
@@ -44,21 +39,11 @@ export function ProjectCard({
         {links.length > 0 && (
           <CardAction className="flex gap-1">
             {links.map((link) => (
-              <Tooltip key={link.href}>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon-sm" asChild>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={link.label}
-                    >
-                      <link.icon />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>{link.label}</TooltipContent>
-              </Tooltip>
+              <IconButton key={link.href} label={link.label} asChild>
+                <a href={link.href} target="_blank" rel="noopener noreferrer">
+                  <link.icon />
+                </a>
+              </IconButton>
             ))}
           </CardAction>
         )}

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Minus, Plus } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/icon-button"
 import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group"
 import { cn } from "@/lib/utils"
 
@@ -32,15 +32,15 @@ export function NumberStepper({
 
   return (
     <ButtonGroup aria-label={label}>
-      <Button
+      <IconButton
         variant="outline"
         size="icon"
-        aria-label={`Decrease ${label.toLowerCase()}`}
+        label={`Decrease ${label.toLowerCase()}`}
         disabled={disabled || value <= min}
         onClick={() => change(-step)}
       >
         <Minus />
-      </Button>
+      </IconButton>
       <ButtonGroupText
         aria-live="polite"
         className="w-14 justify-center overflow-hidden bg-transparent font-mono tabular-nums dark:bg-input/30"
@@ -57,15 +57,15 @@ export function NumberStepper({
           {value}
         </span>
       </ButtonGroupText>
-      <Button
+      <IconButton
         variant="outline"
         size="icon"
-        aria-label={`Increase ${label.toLowerCase()}`}
+        label={`Increase ${label.toLowerCase()}`}
         disabled={disabled || value >= max}
         onClick={() => change(step)}
       >
         <Plus />
-      </Button>
+      </IconButton>
     </ButtonGroup>
   )
 }

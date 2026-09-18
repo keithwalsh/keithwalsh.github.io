@@ -18,7 +18,6 @@
   --color-brand-hover: var(--brand-hover);
   --color-brand-foreground: var(--brand-foreground);
   --color-subtle: var(--subtle);
-  --color-success: var(--success);
   --color-tool-muted: var(--tool-muted);
   --color-tool-pane: var(--tool-pane);
   --color-tool-tab: var(--tool-tab);
@@ -26,7 +25,6 @@
   --color-tool-raised-hover: var(--tool-raised-hover);
   --color-tool-control: var(--tool-control);
   --color-tool-control-ring: var(--tool-control-ring);
-  --color-tool-control-active: var(--tool-control-active);
   --color-tool-row-hover: var(--tool-row-hover);
   --color-tool-symbol: var(--tool-symbol);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -205,7 +203,6 @@
   --brand-hover: oklch(0.4 0.15 264);
   --brand-foreground: oklch(1 0 0);
   --subtle: oklch(0.52 0 0);
-  --success: oklch(0.55 0.15 150);
   --tool-muted: oklch(0.5 0 0);
   --tool-pane: oklch(0.985 0 0);
   --tool-tab: oklch(1 0 0);
@@ -213,7 +210,6 @@
   --tool-raised-hover: oklch(0.97 0 0);
   --tool-control: oklch(1 0 0);
   --tool-control-ring: oklch(0.145 0 0 / 10%);
-  --tool-control-active: oklch(0.94 0 0);
   --tool-row-hover: oklch(0.96 0 0);
   --tool-symbol: oklch(0.94 0 0);
 }
@@ -225,7 +221,6 @@
   --brand-hover: oklch(0.8 0.13 264);
   --brand-foreground: oklch(0.145 0 0);
   --subtle: oklch(0.6 0 0);
-  --success: oklch(0.78 0.16 150);
   --tool-muted: oklch(0.7 0 0);
   --tool-pane: oklch(0.165 0 0);
   --tool-tab: oklch(0.19 0 0);
@@ -233,7 +228,6 @@
   --tool-raised-hover: oklch(0.25 0 0);
   --tool-control: oklch(0.205 0 0);
   --tool-control-ring: transparent;
-  --tool-control-active: oklch(0.3 0 0);
   --tool-row-hover: oklch(0.22 0 0);
   --tool-symbol: oklch(0.235 0 0);
 }

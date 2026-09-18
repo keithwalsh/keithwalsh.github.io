@@ -14,14 +14,9 @@ import {
   Undo2,
 } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/icon-button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { columnName, type Alignment } from "@/lib/markdown-table"
 import { cn } from "@/lib/utils"
 import {
@@ -38,25 +33,6 @@ const ALIGN_CLASS: Record<Alignment, string> = {
   center: "text-center",
   right: "text-right",
   none: "text-left",
-}
-
-function ToolbarButton({
-  label,
-  ...props
-}: React.ComponentProps<typeof Button> & { label: string }) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon-sm"
-          aria-label={label}
-          {...props}
-        />
-      </TooltipTrigger>
-      <TooltipContent>{label}</TooltipContent>
-    </Tooltip>
-  )
 }
 
 export function TableEditor({
@@ -133,20 +109,22 @@ export function TableEditor({
         className="flex flex-wrap items-center gap-2"
       >
         <ButtonGroup>
-          <ToolbarButton
+          <IconButton
+            variant="outline"
             label="Undo"
             disabled={!canUndo}
             onClick={() => dispatch({ type: "undo" })}
           >
             <Undo2 />
-          </ToolbarButton>
-          <ToolbarButton
+          </IconButton>
+          <IconButton
+            variant="outline"
             label="Redo"
             disabled={!canRedo}
             onClick={() => dispatch({ type: "redo" })}
           >
             <Redo2 />
-          </ToolbarButton>
+          </IconButton>
         </ButtonGroup>
 
         <ToggleGroup
@@ -208,54 +186,60 @@ export function TableEditor({
         </ToggleGroup>
 
         <ButtonGroup>
-          <ToolbarButton
+          <IconButton
+            variant="outline"
             label="Insert row below"
             onClick={() => dispatch({ type: "insertRow", index: row + 1 })}
           >
             <Plus />
-          </ToolbarButton>
-          <ToolbarButton
+          </IconButton>
+          <IconButton
+            variant="outline"
             label="Remove row"
             disabled={rowCount <= 1}
             onClick={() => dispatch({ type: "removeRow", index: row })}
           >
             <Minus />
-          </ToolbarButton>
+          </IconButton>
         </ButtonGroup>
         <span className="-ml-1 text-xs text-muted-foreground">Row</span>
 
         <ButtonGroup>
-          <ToolbarButton
+          <IconButton
+            variant="outline"
             label="Insert column right"
             onClick={() =>
               dispatch({ type: "insertColumn", index: column + 1 })
             }
           >
             <Plus />
-          </ToolbarButton>
-          <ToolbarButton
+          </IconButton>
+          <IconButton
+            variant="outline"
             label="Remove column"
             disabled={columnCount <= 1}
             onClick={() => dispatch({ type: "removeColumn", index: column })}
           >
             <Minus />
-          </ToolbarButton>
+          </IconButton>
         </ButtonGroup>
         <span className="-ml-1 text-xs text-muted-foreground">Column</span>
 
         <ButtonGroup className="ml-auto">
-          <ToolbarButton
+          <IconButton
+            variant="outline"
             label="Swap rows and columns"
             onClick={() => dispatch({ type: "transpose" })}
           >
             <ArrowLeftRight />
-          </ToolbarButton>
-          <ToolbarButton
+          </IconButton>
+          <IconButton
+            variant="outline"
             label="Clear all cells"
             onClick={() => dispatch({ type: "clear" })}
           >
             <Eraser />
-          </ToolbarButton>
+          </IconButton>
         </ButtonGroup>
       </div>
 

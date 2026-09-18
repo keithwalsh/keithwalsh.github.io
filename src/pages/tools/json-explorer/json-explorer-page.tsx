@@ -2,11 +2,11 @@ import { useMemo, useState } from "react"
 import { Braces, Copy, Eraser, FileJson, Search } from "lucide-react"
 import { toast } from "sonner"
 
+import { IconButton } from "@/components/icon-button"
 import { InstructionsCard } from "@/components/instructions-card"
 import { OptionSelect } from "@/components/option-select"
 import { Page, PageHeader } from "@/components/page"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Empty,
@@ -23,11 +23,6 @@ import {
 } from "@/components/ui/input-group"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { assetUrl, copyWithToast } from "@/lib/browser"
 import { parseJson, queryJson } from "@/pages/tools/json-explorer/json-query"
 import { JsonTree } from "@/pages/tools/json-explorer/json-tree"
@@ -238,7 +233,8 @@ export default function JsonExplorerPage() {
               onClick={() =>
                 result?.ok &&
                 copyWithToast(
-                  JSON.stringify(result.value, null, Number(indentWidth))
+                  JSON.stringify(result.value, null, Number(indentWidth)),
+                  "JSON copied"
                 )
               }
             >
@@ -278,19 +274,5 @@ export default function JsonExplorerPage() {
         </Field>
       </div>
     </Page>
-  )
-}
-
-function IconButton({
-  label,
-  ...props
-}: React.ComponentProps<typeof Button> & { label: string }) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label={label} {...props} />
-      </TooltipTrigger>
-      <TooltipContent>{label}</TooltipContent>
-    </Tooltip>
   )
 }

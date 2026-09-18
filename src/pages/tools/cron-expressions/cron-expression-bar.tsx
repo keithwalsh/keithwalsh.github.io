@@ -1,15 +1,9 @@
-import { useEffect, useRef, useState } from "react"
-import { Check, Copy, Dices } from "lucide-react"
-import { toast } from "sonner"
+import { useRef, useState } from "react"
+import { Copy, Dices } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { IconButton } from "@/components/icon-button"
 import { Input } from "@/components/ui/input"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { copyToClipboard } from "@/lib/browser"
+import { copyWithToast } from "@/lib/browser"
 import { cn } from "@/lib/utils"
 import {
   CRON_FIELDS,
@@ -71,11 +65,7 @@ export function CronExpressionBar({
   } | null>(null)
   // Changing the key remounts the dice icon so its spin replays on every roll.
   const [rolls, setRolls] = useState(0)
-  const [copied, setCopied] = useState(false)
-  const copiedTimeout = useRef<number>(undefined)
   const pasteToggle = useRef<HTMLButtonElement>(null)
-
-  useEffect(() => () => window.clearTimeout(copiedTimeout.current), [])
 
   const rawText = draft?.expression === expression ? draft.text : expression
 
@@ -93,16 +83,6 @@ export function CronExpressionBar({
   const togglePasting = () => {
     setIsPasting((current) => !current)
     setDraft(null)
-  }
-
-  const copy = async () => {
-    if (!(await copyToClipboard(expression))) {
-      toast.error("Copy failed. Use Paste expression to copy it by hand.")
-      return
-    }
-    setCopied(true)
-    window.clearTimeout(copiedTimeout.current)
-    copiedTimeout.current = window.setTimeout(() => setCopied(false), 1200)
   }
 
   return (
@@ -159,46 +139,30 @@ export function CronExpressionBar({
         </div>
       )}
 
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Random expression"
-            onClick={() => {
-              setRolls((count) => count + 1)
-              onFieldsChange(randomCronFields())
-            }}
-            className={ICON_BUTTON}
-          >
-            <Dices
-              key={rolls}
-              className={cn(
-                rolls > 0 && "motion-safe:animate-[spin_0.5s_ease-in-out]"
-              )}
-            />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>Random expression</TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Copy expression"
-            onClick={copy}
-            className={ICON_BUTTON}
-          >
-            {copied ? (
-              <Check strokeWidth={2.5} className="text-success" />
-            ) : (
-              <Copy />
-            )}
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>Copy expression</TooltipContent>
-      </Tooltip>
+      <IconButton
+        label="Random expression"
+        size="icon"
+        onClick={() => {
+          setRolls((count) => count + 1)
+          onFieldsChange(randomCronFields())
+        }}
+        className={ICON_BUTTON}
+      >
+        <Dices
+          key={rolls}
+          className={cn(
+            rolls > 0 && "motion-safe:animate-[spin_0.5s_ease-in-out]"
+          )}
+        />
+      </IconButton>
+      <IconButton
+        label="Copy expression"
+        size="icon"
+        onClick={() => copyWithToast(expression, "Expression copied")}
+        className={ICON_BUTTON}
+      >
+        <Copy />
+      </IconButton>
 
       <div
         aria-hidden="true"
@@ -235,10 +199,6 @@ export function CronExpressionBar({
       >
         {isPasting ? "Done" : "Paste expression"}
       </button>
-
-      <span role="status" className="sr-only">
-        {copied ? "Expression copied" : ""}
-      </span>
     </div>
   )
 }

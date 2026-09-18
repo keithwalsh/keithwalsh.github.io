@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import figlet from "figlet"
 import { CircleAlert, Copy, Download, Type } from "lucide-react"
 
+import { IconButton } from "@/components/icon-button"
 import { InstructionsCard } from "@/components/instructions-card"
 import { NumberStepper } from "@/components/number-stepper"
 import { OptionSelect } from "@/components/option-select"
 import { Page, PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardAction,
@@ -29,11 +29,6 @@ import {
 } from "@/components/ui/field"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { copyWithToast, downloadTextFile } from "@/lib/browser"
 
 // Fonts ship as JS modules, so each one is only fetched when first selected.
@@ -206,34 +201,20 @@ export default function TextToAsciiPage() {
         <CardHeader>
           <CardTitle>Output</CardTitle>
           <CardAction className="flex gap-1">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Copy ASCII art"
-                  disabled={!visibleOutput}
-                  onClick={() => copyWithToast(visibleOutput)}
-                >
-                  <Copy />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Copy to clipboard</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Download as text file"
-                  disabled={!visibleOutput}
-                  onClick={() => downloadTextFile(visibleOutput, filename)}
-                >
-                  <Download />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Download as text file</TooltipContent>
-            </Tooltip>
+            <IconButton
+              label="Copy ASCII art"
+              disabled={!visibleOutput}
+              onClick={() => copyWithToast(visibleOutput, "ASCII art copied")}
+            >
+              <Copy />
+            </IconButton>
+            <IconButton
+              label="Download as text file"
+              disabled={!visibleOutput}
+              onClick={() => downloadTextFile(visibleOutput, filename)}
+            >
+              <Download />
+            </IconButton>
           </CardAction>
         </CardHeader>
         <CardContent>

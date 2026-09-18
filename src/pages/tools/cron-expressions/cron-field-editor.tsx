@@ -1,6 +1,7 @@
 import { useId, useState } from "react"
 import { Tabs as TabsPrimitive } from "radix-ui"
 
+import { SegmentedControl } from "@/components/segmented-control"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -127,26 +128,12 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
             {field.min}-{field.max}
           </span>
         </h2>
-        <ToggleGroup
-          type="single"
-          value={mode}
-          onValueChange={(next) => {
-            if (next) onChange(modeStartValue(field, next as FieldMode))
-          }}
-          spacing={0.5}
+        <SegmentedControl
           aria-label={`${field.label} format`}
-          className="rounded-[9px] bg-tool-control p-[3px] ring-1 ring-tool-control-ring"
-        >
-          {MODES.map((option) => (
-            <ToggleGroupItem
-              key={option.value}
-              value={option.value}
-              className="h-6 min-w-0 rounded-sm px-2.5 text-xs font-medium text-muted-foreground hover:bg-transparent data-[state=on]:bg-tool-control-active data-[state=on]:text-foreground"
-            >
-              {option.label}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+          value={mode}
+          onValueChange={(next) => onChange(modeStartValue(field, next))}
+          options={MODES}
+        />
       </div>
 
       <p className="text-[0.8125rem] text-pretty text-muted-foreground">

@@ -2,9 +2,9 @@ import type { ReactNode } from "react"
 import { SlidersHorizontal } from "lucide-react"
 
 import { eyebrowClass } from "@/components/editorial"
+import { SegmentedControl } from "@/components/segmented-control"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
 import {
   PADDING,
@@ -39,23 +39,25 @@ export function SettingsRail({
       </div>
 
       <RailSection title="Window">
-        <Segmented
-          label="Frame style"
+        <SegmentedControl
+          aria-label="Frame style"
           value={settings.frame}
           onValueChange={(frame) => onChange({ frame })}
           options={[
-            ["mac", "macOS"],
-            ["minimal", "Minimal"],
+            { value: "mac", label: "macOS" },
+            { value: "minimal", label: "Minimal" },
           ]}
+          className="w-full"
         />
-        <Segmented
-          label="Chrome colour"
+        <SegmentedControl
+          aria-label="Chrome colour"
           value={settings.chrome}
           onValueChange={(chrome) => onChange({ chrome })}
           options={[
-            ["dark", "Dark"],
-            ["light", "Light"],
+            { value: "dark", label: "Dark" },
+            { value: "light", label: "Light" },
           ]}
+          className="w-full"
         />
         <RangeControl
           id="mockup-width"
@@ -83,15 +85,16 @@ export function SettingsRail({
       </RailSection>
 
       <RailSection title="Backdrop">
-        <Segmented
-          label="Backdrop"
+        <SegmentedControl
+          aria-label="Backdrop"
           value={settings.backdrop}
           onValueChange={(backdrop) => onChange({ backdrop })}
           options={[
-            ["none", "None"],
-            ["solid", "Solid"],
-            ["gradient", "Gradient"],
+            { value: "none", label: "None" },
+            { value: "solid", label: "Solid" },
+            { value: "gradient", label: "Gradient" },
           ]}
+          className="w-full"
         />
         <RangeControl
           id="mockup-padding"
@@ -107,31 +110,33 @@ export function SettingsRail({
           >
             Shadow
           </span>
-          <Segmented
-            labelledBy="mockup-shadow"
+          <SegmentedControl
+            aria-labelledby="mockup-shadow"
             value={settings.shadow}
             onValueChange={(shadow) => onChange({ shadow })}
             options={[
-              ["none", "None"],
-              ["soft", "Soft"],
-              ["deep", "Deep"],
+              { value: "none", label: "None" },
+              { value: "soft", label: "Soft" },
+              { value: "deep", label: "Deep" },
             ]}
+            className="w-full"
           />
         </div>
       </RailSection>
 
       <RailSection title="Export">
-        <Segmented
-          label="Export scale"
+        <SegmentedControl
+          aria-label="Export scale"
           value={String(settings.scale)}
           onValueChange={(scale) =>
             onChange({ scale: Number(scale) as ExportScale })
           }
           options={[
-            ["1", "1x"],
-            ["2", "2x"],
-            ["3", "3x"],
+            { value: "1", label: "1x" },
+            { value: "2", label: "2x" },
+            { value: "3", label: "3x" },
           ]}
+          className="w-full"
         />
         <p className="-mt-1 text-xs leading-[1.45] text-subtle">
           Exports at {exportWidth * settings.scale} px wide —{" "}
@@ -155,43 +160,6 @@ function RailSection({
       <h2 className={cn(eyebrowClass, "mb-3")}>{title}</h2>
       <div className="flex flex-col gap-3.5">{children}</div>
     </section>
-  )
-}
-
-function Segmented<T extends string>({
-  label,
-  labelledBy,
-  value,
-  onValueChange,
-  options,
-}: {
-  label?: string
-  labelledBy?: string
-  value: T
-  onValueChange: (value: T) => void
-  options: [T, string][]
-}) {
-  return (
-    <ToggleGroup
-      type="single"
-      spacing={0.5}
-      aria-label={label}
-      aria-labelledby={labelledBy}
-      value={value}
-      // Radix clears the value when the active item is pressed again; keep it.
-      onValueChange={(next) => next && onValueChange(next as T)}
-      className="w-full bg-tool-control p-0.5 ring-1 ring-tool-control-ring"
-    >
-      {options.map(([optionValue, optionLabel]) => (
-        <ToggleGroupItem
-          key={optionValue}
-          value={optionValue}
-          className="h-7 flex-1 rounded-md text-[0.8125rem] text-muted-foreground transition-colors duration-150 hover:bg-transparent hover:text-foreground data-[state=on]:bg-brand/16 data-[state=on]:text-brand"
-        >
-          {optionLabel}
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
   )
 }
 

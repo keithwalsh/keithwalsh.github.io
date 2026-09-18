@@ -1,7 +1,8 @@
 import { useDeferredValue, useEffect, useRef, useState } from "react"
-import { Copy, ImageDown, Images } from "lucide-react"
+import { Copy, Download, Images } from "lucide-react"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
+import { IconButton } from "@/components/icon-button"
 import { InlineCode } from "@/components/inline-code"
 import { Page, PageHeader } from "@/components/page"
 import { Button } from "@/components/ui/button"
@@ -18,11 +19,6 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 import { useDownloadImage } from "@/hooks/use-download-image"
 import { copyWithToast } from "@/lib/browser"
 import { toMarkdownCodeBlock } from "@/lib/code-highlight"
@@ -260,54 +256,36 @@ export default function CodeAnnotatorPage() {
         <Field>
           <div className="flex items-center justify-between gap-2">
             <FieldTitle>Output</FieldTitle>
-            <div className="-my-1 flex gap-1">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label="Copy as Markdown"
-                    disabled={!hasCode}
-                    onClick={() =>
-                      copyWithToast(
-                        toMarkdownCodeBlock(code, language),
-                        "Markdown copied"
-                      )
-                    }
-                  >
-                    <Copy />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Copy as Markdown</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label="Copy image"
-                    disabled={!hasCode || isCopying}
-                    onClick={handleCopyImage}
-                  >
-                    {isCopying ? <Spinner /> : <Images />}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Copy image</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label="Download PNG"
-                    disabled={!hasCode || isDownloading}
-                    onClick={handleDownload}
-                  >
-                    {isDownloading ? <Spinner /> : <ImageDown />}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Download PNG</TooltipContent>
-              </Tooltip>
+            <div className="-my-1 flex items-center gap-1">
+              <IconButton
+                label="Copy as Markdown"
+                disabled={!hasCode}
+                onClick={() =>
+                  copyWithToast(
+                    toMarkdownCodeBlock(code, language),
+                    "Markdown copied"
+                  )
+                }
+              >
+                <Copy />
+              </IconButton>
+              <IconButton
+                label="Copy image"
+                disabled={!hasCode || isCopying}
+                onClick={handleCopyImage}
+              >
+                {isCopying ? <Spinner /> : <Images />}
+              </IconButton>
+              {/* The same primary export as Browser Mockup's. */}
+              <Button
+                size="sm"
+                disabled={!hasCode || isDownloading}
+                onClick={handleDownload}
+                className="ml-1 bg-brand font-semibold text-brand-foreground transition-colors duration-150 hover:bg-brand-hover"
+              >
+                {isDownloading ? <Spinner /> : <Download />}
+                Download PNG
+              </Button>
             </div>
           </div>
           {/* Unwrapped lines scroll here rather than inside the block, so the
