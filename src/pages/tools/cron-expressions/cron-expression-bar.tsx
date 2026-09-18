@@ -22,7 +22,7 @@ import {
 } from "@/pages/tools/cron-expressions/cron"
 
 const ICON_BUTTON =
-  "size-11 rounded-lg border-0 bg-cron-raised ring-1 ring-foreground/8 hover:bg-cron-raised-hover dark:hover:bg-cron-raised-hover"
+  "size-11 rounded-lg border-0 bg-tool-raised ring-1 ring-foreground/8 hover:bg-tool-raised-hover dark:hover:bg-tool-raised-hover"
 
 // A label's column narrows as other tokens grow. Below these widths the label
 // switches to an abbreviation rather than running into its neighbour.
@@ -134,7 +134,7 @@ export function CronExpressionBar({
         <div
           role="group"
           aria-label="Expression fields"
-          className="col-span-5 grid h-11 grid-cols-subgrid items-center gap-x-1 rounded-lg bg-cron-raised px-1.5 ring-1 ring-foreground/8"
+          className="col-span-5 grid h-11 grid-cols-subgrid items-center gap-x-1 rounded-lg bg-tool-raised px-1.5 ring-1 ring-foreground/8"
         >
           {FIELD_KEYS.map((key) => (
             <button
@@ -149,8 +149,8 @@ export function CronExpressionBar({
               onBlur={() => onHoverChange([])}
               className={cn(
                 "h-8 min-w-0 truncate rounded-[7px] px-2 text-center font-mono text-lg font-medium transition-colors duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-                hover.includes(key) && "bg-cron-accent-soft text-cron-accent",
-                key === active && "bg-cron-accent-strong text-cron-accent"
+                hover.includes(key) && "bg-brand-soft text-brand",
+                key === active && "bg-brand-strong text-brand"
               )}
             >
               {fields[key]}
@@ -191,7 +191,7 @@ export function CronExpressionBar({
             className={ICON_BUTTON}
           >
             {copied ? (
-              <Check strokeWidth={2.5} className="text-cron-success" />
+              <Check strokeWidth={2.5} className="text-success" />
             ) : (
               <Copy />
             )}
@@ -202,7 +202,7 @@ export function CronExpressionBar({
 
       <div
         aria-hidden="true"
-        className="col-span-5 grid grid-cols-subgrid gap-x-1 px-1.5 text-center text-[0.6875rem] font-medium tracking-widest text-cron-subtle uppercase"
+        className="col-span-5 grid grid-cols-subgrid gap-x-1 px-1.5 text-center text-[0.6875rem] font-medium tracking-widest text-subtle uppercase"
       >
         {FIELD_KEYS.map((key) => {
           const abbreviation = ABBREVIATIONS[key]

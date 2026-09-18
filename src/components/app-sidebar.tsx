@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils"
 // The current page gets a soft accent tint instead of the primitive's solid
 // fill, and keeps it under hover.
 const activeClass =
-  "data-active:bg-cron-accent-soft data-active:font-medium data-active:text-cron-accent data-active:hover:bg-cron-accent-soft data-active:hover:text-cron-accent"
+  "data-active:bg-brand-soft data-active:font-medium data-active:text-brand data-active:hover:bg-brand-soft data-active:hover:text-brand"
 
 // Primary pages and the Explore section parents share one row shape.
 const rowClass = cn(
@@ -66,7 +66,7 @@ export function AppSidebar() {
             />
             <span
               aria-hidden="true"
-              className="absolute inset-x-0 -bottom-0.75 block h-px bg-cron-accent/55"
+              className="absolute inset-x-0 -bottom-0.75 block h-px bg-brand/55"
             />
           </span>
           <span className="flex min-w-0 flex-col gap-0.75">

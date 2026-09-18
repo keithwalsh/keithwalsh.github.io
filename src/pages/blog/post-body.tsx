@@ -29,7 +29,7 @@ const components: Components = {
     >
       <span
         aria-hidden="true"
-        className="font-mono text-[0.6875rem] tracking-[0.16em] text-cron-accent tabular-nums before:content-[counter(section,decimal-leading-zero)]"
+        className="font-mono text-[0.6875rem] tracking-[0.16em] text-brand tabular-nums before:content-[counter(section,decimal-leading-zero)]"
       />
       <h2
         tabIndex={-1}
@@ -50,7 +50,7 @@ const components: Components = {
   // The About timeline's accent dash stands in for a disc.
   ul: ({ node, ...props }) => (
     <ul
-      className="mt-5 flex max-w-[68ch] flex-col gap-3 *:relative *:pl-7 *:before:absolute *:before:top-3.5 *:before:left-0 *:before:h-px *:before:w-3.5 *:before:bg-cron-accent"
+      className="mt-5 flex max-w-[68ch] flex-col gap-3 *:relative *:pl-7 *:before:absolute *:before:top-3.5 *:before:left-0 *:before:h-px *:before:w-3.5 *:before:bg-brand"
       {...props}
     />
   ),
@@ -146,8 +146,8 @@ function CopyButton({ text }: { text: string }) {
       >
         {copied ? (
           <>
-            <Check className="size-3 text-cron-success" />
-            <span className="text-cron-success">Copied</span>
+            <Check className="size-3 text-success" />
+            <span className="text-success">Copied</span>
           </>
         ) : (
           <>

@@ -33,7 +33,7 @@ const MODES: { value: FieldMode; label: string }[] = [
 ]
 
 const CHIP =
-  "h-8 font-mono text-[0.8125rem] hover:bg-cron-control data-[state=on]:bg-cron-accent-strong data-[state=on]:text-cron-accent"
+  "h-8 font-mono text-[0.8125rem] hover:bg-tool-control data-[state=on]:bg-brand-strong data-[state=on]:text-brand"
 
 export function CronFieldEditor({
   fields,
@@ -56,7 +56,7 @@ export function CronFieldEditor({
     <TabsPrimitive.Root
       value={active}
       onValueChange={(value) => onActiveChange(value as CronFieldKey)}
-      className={cn("flex min-w-0 flex-col bg-cron-pane", className)}
+      className={cn("flex min-w-0 flex-col bg-tool-pane", className)}
     >
       <TabsPrimitive.List
         aria-label="Cron fields"
@@ -71,12 +71,12 @@ export function CronFieldEditor({
               value={key}
               onPointerEnter={() => onHoverChange([key])}
               onPointerLeave={() => onHoverChange([])}
-              className="flex min-w-0 flex-col items-start gap-1 border-b-2 border-transparent px-1.5 pt-3.5 pb-3 text-left transition-[background-color,border-color] duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset data-[state=active]:border-cron-accent data-[state=active]:bg-cron-tab @md:px-3.5"
+              className="flex min-w-0 flex-col items-start gap-1 border-b-2 border-transparent px-1.5 pt-3.5 pb-3 text-left transition-[background-color,border-color] duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset data-[state=active]:border-brand data-[state=active]:bg-tool-tab @md:px-3.5"
             >
               <span
                 className={cn(
-                  "max-w-full truncate text-[0.6875rem] font-medium tracking-widest text-cron-subtle uppercase transition-colors duration-150",
-                  isHighlighted && "text-cron-accent"
+                  "max-w-full truncate text-[0.6875rem] font-medium tracking-widest text-subtle uppercase transition-colors duration-150",
+                  isHighlighted && "text-brand"
                 )}
               >
                 {CRON_FIELDS[key].short}
@@ -84,7 +84,7 @@ export function CronFieldEditor({
               <span
                 className={cn(
                   "max-w-full truncate font-mono text-[0.9375rem] font-medium transition-colors duration-150",
-                  isHighlighted && "text-cron-accent"
+                  isHighlighted && "text-brand"
                 )}
               >
                 {fields[key]}
@@ -135,13 +135,13 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
           }}
           spacing={0.5}
           aria-label={`${field.label} format`}
-          className="rounded-[9px] bg-cron-control p-[3px] ring-1 ring-cron-control-ring"
+          className="rounded-[9px] bg-tool-control p-[3px] ring-1 ring-tool-control-ring"
         >
           {MODES.map((option) => (
             <ToggleGroupItem
               key={option.value}
               value={option.value}
-              className="h-6 min-w-0 rounded-sm px-2.5 text-xs font-medium text-muted-foreground hover:bg-transparent data-[state=on]:bg-cron-control-active data-[state=on]:text-foreground"
+              className="h-6 min-w-0 rounded-sm px-2.5 text-xs font-medium text-muted-foreground hover:bg-transparent data-[state=on]:bg-tool-control-active data-[state=on]:text-foreground"
             >
               {option.label}
             </ToggleGroupItem>
@@ -154,7 +154,7 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
       </p>
 
       {mode === "every" && (
-        <div className="flex h-30 items-center justify-center rounded-[0.75rem] border border-dashed border-foreground/12 px-4 text-center text-[0.8125rem] text-cron-subtle">
+        <div className="flex h-30 items-center justify-center rounded-[0.75rem] border border-dashed border-foreground/12 px-4 text-center text-[0.8125rem] text-subtle">
           Matches every {field.unit} — the “{value}” wildcard.
         </div>
       )}
@@ -181,20 +181,19 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
                   aria-pressed={isSelected}
                   onClick={() => onChange(code)}
                   className={cn(
-                    "-mx-2 flex h-7 w-[calc(100%+1rem)] items-center gap-3 rounded-[7px] px-2 text-left text-[0.8125rem] transition-colors duration-150 outline-none hover:bg-cron-row-hover focus-visible:ring-3 focus-visible:ring-ring/50",
-                    isSelected &&
-                      "bg-cron-accent-soft hover:bg-cron-accent-soft"
+                    "-mx-2 flex h-7 w-[calc(100%+1rem)] items-center gap-3 rounded-[7px] px-2 text-left text-[0.8125rem] transition-colors duration-150 outline-none hover:bg-tool-row-hover focus-visible:ring-3 focus-visible:ring-ring/50",
+                    isSelected && "bg-brand-soft hover:bg-brand-soft"
                   )}
                 >
                   <code
                     className={cn(
                       "min-w-16 font-mono text-xs text-foreground/80",
-                      isSelected && "text-cron-accent"
+                      isSelected && "text-brand"
                     )}
                   >
                     {code}
                   </code>
-                  <span className="truncate text-cron-muted">{meaning}</span>
+                  <span className="truncate text-tool-muted">{meaning}</span>
                 </button>
               </li>
             )
@@ -238,7 +237,7 @@ function StepPicker({ field, value, onChange }: FieldEditorProps) {
             value={String(option)}
             className={cn(
               CHIP,
-              "min-w-11 rounded-md bg-cron-control px-2.5 text-foreground ring-1 ring-foreground/10 hover:ring-foreground/25 data-[state=on]:ring-cron-accent"
+              "min-w-11 rounded-md bg-tool-control px-2.5 text-foreground ring-1 ring-foreground/10 hover:ring-foreground/25 data-[state=on]:ring-brand"
             )}
           >
             {option}
@@ -277,7 +276,7 @@ function SpecificPicker({ field, value, onChange }: FieldEditorProps) {
           value={String(option)}
           className={cn(
             CHIP,
-            "min-w-0 rounded-[7px] bg-cron-control px-0 text-foreground/80 ring-1 ring-cron-control-ring hover:ring-foreground/25 aria-pressed:bg-cron-accent-strong data-[state=on]:ring-transparent"
+            "min-w-0 rounded-[7px] bg-tool-control px-0 text-foreground/80 ring-1 ring-tool-control-ring hover:ring-foreground/25 aria-pressed:bg-brand-strong data-[state=on]:ring-transparent"
           )}
         >
           {valueLabel(field, option)}
@@ -330,7 +329,7 @@ function RangeSelect({
     >
       <SelectTrigger
         aria-label={label}
-        className="min-w-20 rounded-md bg-cron-control font-mono text-[0.8125rem] text-foreground dark:bg-cron-control dark:hover:bg-cron-raised-hover"
+        className="min-w-20 rounded-md bg-tool-control font-mono text-[0.8125rem] text-foreground dark:bg-tool-control dark:hover:bg-tool-raised-hover"
       >
         <SelectValue />
       </SelectTrigger>

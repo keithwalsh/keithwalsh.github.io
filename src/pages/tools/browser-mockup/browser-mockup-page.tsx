@@ -210,7 +210,7 @@ export default function BrowserMockupPage() {
             type="button"
             onClick={chooseFile}
             title={image ? "Choose a different image" : "Choose an image"}
-            className="flex min-w-0 items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-[13px] text-muted-foreground ring-1 ring-cron-control-ring transition-colors duration-150 outline-none hover:bg-cron-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card"
+            className="flex min-w-0 items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-[13px] text-muted-foreground ring-1 ring-tool-control-ring transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card"
           >
             <ImageIcon className="size-3.5 shrink-0" />
             <span className="truncate text-foreground">
@@ -239,7 +239,7 @@ export default function BrowserMockupPage() {
             <Button
               onClick={handleDownload}
               disabled={!image || isDownloading}
-              className="bg-cron-accent px-3 font-semibold text-white transition-colors duration-150 hover:bg-cron-accent/85 dark:text-[oklch(0.18_0.04_264)] dark:hover:bg-[oklch(0.8_0.12_264)]"
+              className="bg-brand px-3 font-semibold text-brand-foreground transition-colors duration-150 hover:bg-brand-hover"
             >
               {isDownloading ? <Spinner /> : <Download />}
               <span className="@max-2xl/mockup:sr-only">Download PNG</span>
@@ -257,7 +257,7 @@ export default function BrowserMockupPage() {
 
           <DropZone
             onFile={handleFile}
-            className="flex h-[60svh] min-h-[420px] min-w-0 flex-col overflow-hidden bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] @3xl/mockup:h-auto @3xl/mockup:min-h-0 @3xl/mockup:flex-1 dark:bg-cron-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
+            className="flex h-[60svh] min-h-[420px] min-w-0 flex-col overflow-hidden bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] @3xl/mockup:h-auto @3xl/mockup:min-h-0 @3xl/mockup:flex-1 dark:bg-tool-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
           >
             {error && (
               <Alert
@@ -311,11 +311,11 @@ export default function BrowserMockupPage() {
               </div>
             </div>
 
-            <p className="pointer-events-none absolute bottom-3.5 left-[18px] flex items-center gap-2 font-mono text-[11px] text-cron-subtle @max-xl/mockup:hidden">
+            <p className="pointer-events-none absolute bottom-3.5 left-[18px] flex items-center gap-2 font-mono text-[11px] text-subtle @max-xl/mockup:hidden">
               <SquareDashed className="size-[13px]" />
               drop or paste a new image anywhere on the canvas
             </p>
-            <p className="pointer-events-none absolute right-[18px] bottom-3.5 font-mono text-[11px] text-cron-subtle tabular-nums">
+            <p className="pointer-events-none absolute right-[18px] bottom-3.5 font-mono text-[11px] text-subtle tabular-nums">
               {fit.width} × {fit.height}
               {fit.scale < 1 && ` · ${Math.round(fit.scale * 100)}%`}
             </p>

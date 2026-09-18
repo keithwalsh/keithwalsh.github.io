@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils"
  * on `className` rather than being edited in.
  */
 const underlineFieldClass =
-  "h-[2.125rem] rounded-none border-0 border-b bg-transparent px-0 pt-0 pb-1.5 text-base transition-[border-color,box-shadow] focus-visible:border-cron-accent focus-visible:shadow-[0_1px_0_0_var(--cron-accent)] focus-visible:ring-0 aria-invalid:border-destructive aria-invalid:shadow-none aria-invalid:ring-0 md:text-base dark:bg-transparent"
+  "h-[2.125rem] rounded-none border-0 border-b bg-transparent px-0 pt-0 pb-1.5 text-base transition-[border-color,box-shadow] focus-visible:border-brand focus-visible:shadow-[0_1px_0_0_var(--brand)] focus-visible:ring-0 aria-invalid:border-destructive aria-invalid:shadow-none aria-invalid:ring-0 md:text-base dark:bg-transparent"
 
 const labelClass =
   "font-mono text-[0.65625rem] tracking-[0.18em] text-muted-foreground uppercase group-data-[invalid=true]/field:text-destructive"
@@ -120,8 +120,8 @@ export function ContactForm() {
 
   if (sent) {
     return (
-      <div className="flex flex-col gap-4 border-t border-cron-accent bg-cron-accent-soft p-8">
-        <span className="font-mono text-[0.65625rem] tracking-[0.2em] text-cron-accent uppercase">
+      <div className="flex flex-col gap-4 border-t border-brand bg-brand-soft p-8">
+        <span className="font-mono text-[0.65625rem] tracking-[0.2em] text-brand uppercase">
           Message sent
         </span>
         <p className="max-w-[46ch] text-[1.0625rem] leading-[1.55] text-pretty">
@@ -250,14 +250,10 @@ export function ContactForm() {
       />
 
       <div className="flex flex-wrap items-center gap-4.5">
-        {/* The one place the accent is a fill. `text-background` keeps the
-            label readable against the light indigo `--cron-accent` in dark
-            mode, and the hover mixes toward `--foreground` so it darkens in
-            light mode and lightens in dark. */}
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-[2.875rem] gap-2.5 bg-cron-accent px-6 font-mono text-[0.71875rem] tracking-[0.16em] text-background uppercase hover:bg-[color-mix(in_oklab,var(--cron-accent)_88%,var(--foreground))] [&_svg:not([class*='size-'])]:size-[0.9375rem]"
+          className="h-[2.875rem] gap-2.5 bg-brand px-6 font-mono text-[0.71875rem] tracking-[0.16em] text-brand-foreground uppercase hover:bg-brand-hover [&_svg:not([class*='size-'])]:size-[0.9375rem]"
         >
           Send message
           {isSubmitting ? <Spinner /> : <Send />}

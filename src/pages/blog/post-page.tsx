@@ -99,7 +99,7 @@ function Post({ index }: { index: number }) {
           <span
             ref={progressRef}
             aria-hidden="true"
-            className="absolute -bottom-px left-0 h-0.5 w-0 bg-cron-accent transition-[width] duration-100 ease-linear"
+            className="absolute -bottom-px left-0 h-0.5 w-0 bg-brand transition-[width] duration-100 ease-linear"
           />,
           header
         )}
@@ -111,7 +111,7 @@ function Post({ index }: { index: number }) {
         )}
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 font-mono text-[0.65625rem] tracking-[0.2em] text-muted-foreground uppercase">
-          <span className="text-cron-accent">Post {pad(index + 1)}</span>
+          <span className="text-brand">Post {pad(index + 1)}</span>
           <span>{formatPostDate(post.date)}</span>
           <span>{minutes} min read</span>
           {post.draft && (
@@ -179,7 +179,7 @@ function Post({ index }: { index: number }) {
                         <span
                           aria-hidden="true"
                           className={cn(
-                            "mt-1.5 h-px w-3.5 flex-none origin-left bg-cron-accent transition-[scale,opacity] duration-350",
+                            "mt-1.5 h-px w-3.5 flex-none origin-left bg-brand transition-[scale,opacity] duration-350",
                             isActive
                               ? "scale-x-100 opacity-100"
                               : "scale-x-35 opacity-40"

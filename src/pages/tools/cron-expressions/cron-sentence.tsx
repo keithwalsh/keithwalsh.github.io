@@ -41,7 +41,7 @@ export function CronSentence({
               segment.keys.length > 0 && "underline",
               segment.keys.some(
                 (key) => key === active || hover.includes(key)
-              ) && "text-cron-accent decoration-cron-accent"
+              ) && "text-brand decoration-brand"
             )}
           >
             {segment.text}

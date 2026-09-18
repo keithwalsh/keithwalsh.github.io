@@ -82,7 +82,7 @@ function PostIndex() {
           <span className="flex items-center gap-2.5">
             <span
               aria-hidden="true"
-              className="block size-1.25 rounded-full bg-cron-accent motion-safe:animate-[halo_2.6s_ease-in-out_infinite]"
+              className="block size-1.25 rounded-full bg-brand motion-safe:animate-[halo_2.6s_ease-in-out_infinite]"
             />
             {countOf(posts.length, "write-up")}
             {/* Drafts are only ever listed by the dev server. */}
@@ -143,7 +143,7 @@ function PostIndex() {
           <div className="max-w-[21.25rem] min-w-0 flex-[1_1_15rem]">
             <div className="sticky top-24 flex flex-col gap-4.5">
               <div className={eyebrowClass}>01 — Index</div>
-              <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-cron-accent tabular-nums">
+              <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-brand tabular-nums">
                 {pad(active + 1)}
               </div>
               <div className="text-[0.9375rem] leading-normal text-pretty text-foreground/85">
@@ -159,11 +159,11 @@ function PostIndex() {
                 >
                   <span
                     ref={progressRef}
-                    className="absolute inset-y-0 left-0 w-0 bg-cron-accent"
+                    className="absolute inset-y-0 left-0 w-0 bg-brand"
                   />
                 </span>
               </div>
-              <p className="text-[0.8125rem] leading-normal text-cron-subtle">
+              <p className="text-[0.8125rem] leading-normal text-subtle">
                 Scroll the index, or open a post to read it.
               </p>
             </div>
@@ -206,12 +206,12 @@ function PostIndex() {
                       </span>
                       <span
                         aria-hidden="true"
-                        className="h-px w-full origin-left scale-x-0 bg-cron-accent transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                        className="h-px w-full origin-left scale-x-0 bg-brand transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
                       />
                     </span>
                     <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 font-mono text-[0.65625rem] tracking-[0.14em] text-muted-foreground uppercase">
                       {index === 0 && (
-                        <span className="text-cron-accent">Latest</span>
+                        <span className="text-brand">Latest</span>
                       )}
                       {post.tags.map((tag) => (
                         <span key={tag}>{tag}</span>
@@ -226,7 +226,7 @@ function PostIndex() {
                     <ArrowUpRight className={rowArrowClass} />
                     <span
                       aria-hidden="true"
-                      className="size-2 rounded-full bg-muted-foreground/30 transition-all duration-300 group-hover:scale-[1.3] group-hover:bg-cron-accent group-focus-visible:scale-[1.3] group-focus-visible:bg-cron-accent"
+                      className="size-2 rounded-full bg-muted-foreground/30 transition-all duration-300 group-hover:scale-[1.3] group-hover:bg-brand group-focus-visible:scale-[1.3] group-focus-visible:bg-brand"
                     />
                   </span>
                 </Link>
@@ -243,7 +243,7 @@ function PostIndex() {
           <span>That is everything. New posts start as drafts.</span>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 border-b border-cron-accent/35 pb-0.75 text-cron-accent transition-colors hover:border-cron-accent"
+            className="inline-flex items-center gap-2 border-b border-brand/35 pb-0.75 text-brand transition-colors hover:border-brand"
           >
             Tell me I am wrong
             <ArrowUpRight className="size-[0.8125rem]" />

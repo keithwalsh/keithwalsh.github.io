@@ -45,7 +45,7 @@ export function ProfileIntro() {
         <span className="flex items-center gap-2.5">
           <span
             aria-hidden="true"
-            className="block size-[0.3125rem] rounded-full bg-cron-accent motion-safe:animate-[halo_2.6s_ease-in-out_infinite]"
+            className="block size-[0.3125rem] rounded-full bg-brand motion-safe:animate-[halo_2.6s_ease-in-out_infinite]"
           />
           Ballindine, Co. Mayo, Ireland
         </span>
@@ -56,7 +56,7 @@ export function ProfileIntro() {
           <div
             ref={glowRef}
             aria-hidden="true"
-            className="pointer-events-none absolute -inset-x-[34%] -top-[28%] -bottom-[18%] rounded-full bg-[radial-gradient(circle_at_50%_45%,var(--cron-accent-strong),transparent_70%)] blur-[8px]"
+            className="pointer-events-none absolute -inset-x-[34%] -top-[28%] -bottom-[18%] rounded-full bg-[radial-gradient(circle_at_50%_45%,var(--brand-strong),transparent_70%)] blur-[8px]"
           />
           <div ref={portraitRef} className="relative w-full">
             <img
@@ -66,7 +66,7 @@ export function ProfileIntro() {
             />
             <span
               aria-hidden="true"
-              className="absolute inset-x-0 -bottom-[9px] block h-px border-t border-cron-accent/55"
+              className="absolute inset-x-0 -bottom-[9px] block h-px border-t border-brand/55"
             />
           </div>
         </div>
@@ -90,10 +90,7 @@ export function ProfileIntro() {
             className="flex flex-wrap items-center gap-2.5 font-mono text-[0.71875rem] tracking-[0.14em] text-foreground/85 uppercase"
           >
             <span>Data Analyst</span>
-            <span
-              aria-hidden="true"
-              className="h-px w-[1.125rem] bg-cron-accent"
-            />
+            <span aria-hidden="true" className="h-px w-[1.125rem] bg-brand" />
             <span>Strategic Operations</span>
           </div>
 

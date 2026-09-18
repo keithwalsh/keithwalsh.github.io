@@ -47,7 +47,7 @@ export function SkillList() {
     >
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className={eyebrowClass}>02 — Skills &amp; Expertise</div>
-        <div className="font-mono text-[0.6875rem] tracking-[0.14em] text-cron-subtle">
+        <div className="font-mono text-[0.6875rem] tracking-[0.14em] text-subtle">
           {total} / {COUNT_WORDS[skills.length] ?? skills.length}
         </div>
       </div>
@@ -95,9 +95,9 @@ function SkillRow({
     <div
       onPointerMove={move}
       onPointerLeave={reset}
-      className="flex flex-wrap items-center gap-[clamp(0.75rem,2vw,1.75rem)] border-t py-[clamp(1rem,1.8vw,1.375rem)] transition-[background-color,padding-left] duration-300 hover:bg-cron-accent/[7%] hover:pl-3"
+      className="flex flex-wrap items-center gap-[clamp(0.75rem,2vw,1.75rem)] border-t py-[clamp(1rem,1.8vw,1.375rem)] transition-[background-color,padding-left] duration-300 hover:bg-brand/[7%] hover:pl-3"
     >
-      <span className="flex-[0_0_1.75rem] font-mono text-[0.6875rem] text-cron-subtle">
+      <span className="flex-[0_0_1.75rem] font-mono text-[0.6875rem] text-subtle">
         {String(index + 1).padStart(2, "0")}
       </span>
       <span

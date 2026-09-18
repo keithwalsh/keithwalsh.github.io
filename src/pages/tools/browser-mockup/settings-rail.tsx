@@ -28,12 +28,12 @@ export function SettingsRail({
     <aside
       aria-label="Mockup settings"
       className={cn(
-        "flex min-h-0 flex-col bg-cron-pane @3xl/mockup:w-72 @3xl/mockup:shrink-0 @3xl/mockup:overflow-y-auto @3xl/mockup:border-l",
+        "flex min-h-0 flex-col bg-tool-pane @3xl/mockup:w-72 @3xl/mockup:shrink-0 @3xl/mockup:overflow-y-auto @3xl/mockup:border-l",
         className
       )}
     >
       <div className="flex items-center gap-2 px-5 pt-3.5 pb-3 text-[13px] font-semibold">
-        <SlidersHorizontal className="size-3.5 text-cron-accent" />
+        <SlidersHorizontal className="size-3.5 text-brand" />
         Mockup settings
       </div>
 
@@ -76,7 +76,7 @@ export function SettingsRail({
             spellCheck={false}
             autoComplete="off"
             onChange={(event) => onChange({ url: event.target.value })}
-            className="border-foreground/12 bg-cron-control font-mono text-xs focus-visible:border-cron-accent focus-visible:ring-cron-accent/25 md:text-xs dark:bg-cron-control"
+            className="border-foreground/12 bg-tool-control font-mono text-xs focus-visible:border-brand focus-visible:ring-brand/25 md:text-xs dark:bg-tool-control"
           />
         </div>
       </RailSection>
@@ -132,7 +132,7 @@ export function SettingsRail({
             ["3", "3x"],
           ]}
         />
-        <p className="-mt-1 text-xs leading-[1.45] text-cron-subtle">
+        <p className="-mt-1 text-xs leading-[1.45] text-subtle">
           Exports at {exportWidth * settings.scale} px wide —{" "}
           {settings.scale === 1 ? "the same as" : `${settings.scale}×`} the
           canvas size.
@@ -151,7 +151,7 @@ function RailSection({
 }) {
   return (
     <section className="border-t border-foreground/8 px-5 py-4">
-      <h2 className="mb-3 text-[11px] font-semibold tracking-[0.08em] text-cron-subtle uppercase">
+      <h2 className="mb-3 text-[11px] font-semibold tracking-[0.08em] text-subtle uppercase">
         {title}
       </h2>
       <div className="flex flex-col gap-3.5">{children}</div>
@@ -181,13 +181,13 @@ function Segmented<T extends string>({
       value={value}
       // Radix clears the value when the active item is pressed again; keep it.
       onValueChange={(next) => next && onValueChange(next as T)}
-      className="w-full bg-cron-control p-0.5 ring-1 ring-cron-control-ring"
+      className="w-full bg-tool-control p-0.5 ring-1 ring-tool-control-ring"
     >
       {options.map(([optionValue, optionLabel]) => (
         <ToggleGroupItem
           key={optionValue}
           value={optionValue}
-          className="h-7 flex-1 rounded-md text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-transparent hover:text-foreground data-[state=on]:bg-cron-accent/16 data-[state=on]:text-cron-accent dark:data-[state=on]:text-[oklch(0.82_0.11_264)]"
+          className="h-7 flex-1 rounded-md text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-transparent hover:text-foreground data-[state=on]:bg-brand/16 data-[state=on]:text-brand"
         >
           {optionLabel}
         </ToggleGroupItem>
@@ -222,7 +222,7 @@ function RangeControl({
         {...range}
         value={[value]}
         onValueChange={([next]) => onValueChange(next)}
-        className="py-[5px] [&_[data-slot=slider-range]]:bg-cron-accent [&_[data-slot=slider-thumb]]:border-cron-accent [&_[data-slot=slider-thumb]]:ring-cron-accent/30"
+        className="py-[5px] [&_[data-slot=slider-range]]:bg-brand [&_[data-slot=slider-thumb]]:border-brand [&_[data-slot=slider-thumb]]:ring-brand/30"
       />
     </div>
   )

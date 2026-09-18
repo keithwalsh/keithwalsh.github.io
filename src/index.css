@@ -12,21 +12,23 @@
   --font-mono:
     "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas,
     monospace;
-  --color-cron-accent: var(--cron-accent);
-  --color-cron-accent-soft: var(--cron-accent-soft);
-  --color-cron-accent-strong: var(--cron-accent-strong);
-  --color-cron-success: var(--cron-success);
-  --color-cron-muted: var(--cron-muted);
-  --color-cron-subtle: var(--cron-subtle);
-  --color-cron-pane: var(--cron-pane);
-  --color-cron-tab: var(--cron-tab);
-  --color-cron-raised: var(--cron-raised);
-  --color-cron-raised-hover: var(--cron-raised-hover);
-  --color-cron-control: var(--cron-control);
-  --color-cron-control-ring: var(--cron-control-ring);
-  --color-cron-control-active: var(--cron-control-active);
-  --color-cron-row-hover: var(--cron-row-hover);
-  --color-cron-symbol: var(--cron-symbol);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-subtle: var(--subtle);
+  --color-success: var(--success);
+  --color-tool-muted: var(--tool-muted);
+  --color-tool-pane: var(--tool-pane);
+  --color-tool-tab: var(--tool-tab);
+  --color-tool-raised: var(--tool-raised);
+  --color-tool-raised-hover: var(--tool-raised-hover);
+  --color-tool-control: var(--tool-control);
+  --color-tool-control-ring: var(--tool-control-ring);
+  --color-tool-control-active: var(--tool-control-active);
+  --color-tool-row-hover: var(--tool-row-hover);
+  --color-tool-symbol: var(--tool-symbol);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -164,8 +166,6 @@
   --weather-scale-5: #b7d3f6;
 }
 
-/* Cron Expressions tool: the redesign's indigo accent and surface steps are
-   specified for dark mode; the light values keep every text pairing at 4.5:1. */
 @theme {
   /* Nudges with `top` rather than a transform, so it also works on inline
      text that wraps across lines. Needs a positioned element. */
@@ -179,40 +179,49 @@
   }
 }
 
+/* The site accent (`brand-*`) and the text steps used with it, then the
+   surface steps shared by the workspace tools (`tool-*`). Specified for dark
+   mode; the light values keep every text pairing at 4.5:1. `brand-hover` moves
+   away from the page background, darker in light mode and lighter in dark, so
+   `brand-foreground` text keeps its contrast on hover. */
 :root {
-  --cron-accent: oklch(0.46 0.15 264);
-  --cron-accent-soft: oklch(0.46 0.15 264 / 8%);
-  --cron-accent-strong: oklch(0.46 0.15 264 / 12%);
-  --cron-success: oklch(0.55 0.15 150);
-  --cron-muted: oklch(0.5 0 0);
-  --cron-subtle: oklch(0.52 0 0);
-  --cron-pane: oklch(0.985 0 0);
-  --cron-tab: oklch(1 0 0);
-  --cron-raised: oklch(1 0 0);
-  --cron-raised-hover: oklch(0.97 0 0);
-  --cron-control: oklch(1 0 0);
-  --cron-control-ring: oklch(0.145 0 0 / 10%);
-  --cron-control-active: oklch(0.94 0 0);
-  --cron-row-hover: oklch(0.96 0 0);
-  --cron-symbol: oklch(0.94 0 0);
+  --brand: oklch(0.46 0.15 264);
+  --brand-soft: oklch(0.46 0.15 264 / 8%);
+  --brand-strong: oklch(0.46 0.15 264 / 12%);
+  --brand-hover: oklch(0.4 0.15 264);
+  --brand-foreground: oklch(1 0 0);
+  --subtle: oklch(0.52 0 0);
+  --success: oklch(0.55 0.15 150);
+  --tool-muted: oklch(0.5 0 0);
+  --tool-pane: oklch(0.985 0 0);
+  --tool-tab: oklch(1 0 0);
+  --tool-raised: oklch(1 0 0);
+  --tool-raised-hover: oklch(0.97 0 0);
+  --tool-control: oklch(1 0 0);
+  --tool-control-ring: oklch(0.145 0 0 / 10%);
+  --tool-control-active: oklch(0.94 0 0);
+  --tool-row-hover: oklch(0.96 0 0);
+  --tool-symbol: oklch(0.94 0 0);
 }
 
 .dark {
-  --cron-accent: oklch(0.74 0.13 264);
-  --cron-accent-soft: oklch(0.74 0.13 264 / 14%);
-  --cron-accent-strong: oklch(0.74 0.13 264 / 22%);
-  --cron-success: oklch(0.78 0.16 150);
-  --cron-muted: oklch(0.7 0 0);
-  --cron-subtle: oklch(0.6 0 0);
-  --cron-pane: oklch(0.165 0 0);
-  --cron-tab: oklch(0.19 0 0);
-  --cron-raised: oklch(0.185 0 0);
-  --cron-raised-hover: oklch(0.25 0 0);
-  --cron-control: oklch(0.205 0 0);
-  --cron-control-ring: transparent;
-  --cron-control-active: oklch(0.3 0 0);
-  --cron-row-hover: oklch(0.22 0 0);
-  --cron-symbol: oklch(0.235 0 0);
+  --brand: oklch(0.74 0.13 264);
+  --brand-soft: oklch(0.74 0.13 264 / 14%);
+  --brand-strong: oklch(0.74 0.13 264 / 22%);
+  --brand-hover: oklch(0.8 0.13 264);
+  --brand-foreground: oklch(0.145 0 0);
+  --subtle: oklch(0.6 0 0);
+  --success: oklch(0.78 0.16 150);
+  --tool-muted: oklch(0.7 0 0);
+  --tool-pane: oklch(0.165 0 0);
+  --tool-tab: oklch(0.19 0 0);
+  --tool-raised: oklch(0.185 0 0);
+  --tool-raised-hover: oklch(0.25 0 0);
+  --tool-control: oklch(0.205 0 0);
+  --tool-control-ring: transparent;
+  --tool-control-active: oklch(0.3 0 0);
+  --tool-row-hover: oklch(0.22 0 0);
+  --tool-symbol: oklch(0.235 0 0);
 }
 
 @layer base {

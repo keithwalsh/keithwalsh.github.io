@@ -36,7 +36,7 @@ export function SocialLinks() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3.5 border-b border-l-2 border-l-transparent py-4 pr-3 pl-0.5 transition-[background-color,padding,border-color] duration-250 ease-linear outline-none hover:border-l-cron-accent hover:bg-cron-accent-soft hover:pl-3 focus-visible:border-l-cron-accent focus-visible:bg-cron-accent-soft focus-visible:pl-3"
+            className="flex items-center gap-3.5 border-b border-l-2 border-l-transparent py-4 pr-3 pl-0.5 transition-[background-color,padding,border-color] duration-250 ease-linear outline-none hover:border-l-brand hover:bg-brand-soft hover:pl-3 focus-visible:border-l-brand focus-visible:bg-brand-soft focus-visible:pl-3"
           >
             {Icon && (
               <Icon aria-hidden="true" className="size-[1.125rem] flex-none" />

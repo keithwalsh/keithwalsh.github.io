@@ -60,19 +60,17 @@ export function EducationCerts() {
       </div>
 
       <div className="flex flex-wrap items-center gap-4 pt-2">
-        {/* Hover lightens the accent in dark mode and darkens it in light, so
-            the `text-background` ink keeps its contrast either way. */}
         <a
           href={assetUrl("keith-walsh-cv.pdf")}
           download
-          className="inline-flex items-center gap-2.5 rounded-full bg-cron-accent px-[1.375rem] py-3.5 text-sm font-semibold tracking-[0.01em] text-background transition-colors outline-none hover:bg-[oklch(0.4_0.15_264)] focus-visible:ring-3 focus-visible:ring-ring/50 dark:hover:bg-[oklch(0.8_0.13_264)]"
+          className="inline-flex items-center gap-2.5 rounded-full bg-brand px-[1.375rem] py-3.5 text-sm font-semibold tracking-[0.01em] text-brand-foreground transition-colors outline-none hover:bg-brand-hover focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           Download CV
           <ArrowDown className="size-4" />
         </a>
         <Link
           to="/contact"
-          className="inline-flex items-center gap-2.5 rounded-full border border-input px-[1.375rem] py-3.5 text-sm font-medium transition-colors outline-none hover:border-cron-accent focus-visible:ring-3 focus-visible:ring-ring/50"
+          className="inline-flex items-center gap-2.5 rounded-full border border-input px-[1.375rem] py-3.5 text-sm font-medium transition-colors outline-none hover:border-brand focus-visible:ring-3 focus-visible:ring-ring/50"
         >
           Get in touch
           <ArrowUpRight className="size-4" />

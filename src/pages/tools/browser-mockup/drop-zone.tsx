@@ -40,8 +40,8 @@ export function DropZone({
     >
       {children}
       {isDragging && (
-        <div className="pointer-events-none absolute inset-3 z-10 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-cron-accent bg-background/70 backdrop-blur-[2px]">
-          <div className="flex size-10 items-center justify-center rounded-lg bg-cron-accent-strong text-cron-accent">
+        <div className="pointer-events-none absolute inset-3 z-10 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-brand bg-background/70 backdrop-blur-[2px]">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-brand-strong text-brand">
             <ImageUp className="size-5" />
           </div>
           <p className="text-sm font-medium">Drop your image to frame it</p>

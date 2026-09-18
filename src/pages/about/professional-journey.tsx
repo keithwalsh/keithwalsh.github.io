@@ -35,7 +35,7 @@ export function ProfessionalJourney() {
         <div className="max-w-[21.25rem] min-w-0 flex-[1_1_10.625rem]">
           <div className="sticky top-24 flex flex-col gap-[1.125rem]">
             <div className={eyebrowClass}>01 — Professional Journey</div>
-            <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-cron-accent tabular-nums">
+            <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-brand tabular-nums">
               {current.year}
             </div>
             <div className="text-[0.9375rem] leading-normal text-foreground/85">
@@ -51,11 +51,11 @@ export function ProfessionalJourney() {
               >
                 <span
                   ref={progressRef}
-                  className="absolute inset-y-0 left-0 w-0 bg-cron-accent"
+                  className="absolute inset-y-0 left-0 w-0 bg-brand"
                 />
               </span>
             </div>
-            <p className="text-[0.8125rem] leading-normal text-cron-subtle">
+            <p className="text-[0.8125rem] leading-normal text-subtle">
               Scroll, or select a role to pin it open.
             </p>
           </div>
@@ -86,7 +86,7 @@ export function ProfessionalJourney() {
                   <span
                     className={cn(
                       "flex-none font-mono text-xs tracking-[0.12em] tabular-nums transition-colors duration-300",
-                      isOpen ? "text-cron-accent" : "text-cron-subtle"
+                      isOpen ? "text-brand" : "text-subtle"
                     )}
                   >
                     {position.year}
@@ -109,7 +109,7 @@ export function ProfessionalJourney() {
                     className={cn(
                       "size-2 flex-none rounded-full transition-all duration-300",
                       isOpen
-                        ? "scale-[1.3] bg-cron-accent"
+                        ? "scale-[1.3] bg-brand"
                         : "scale-100 bg-muted-foreground/30"
                     )}
                   />
@@ -141,7 +141,7 @@ export function ProfessionalJourney() {
                           >
                             <span
                               aria-hidden="true"
-                              className="mt-[0.5625rem] h-px w-3.5 flex-none bg-cron-accent"
+                              className="mt-[0.5625rem] h-px w-3.5 flex-none bg-brand"
                             />
                             <span>{detail}</span>
                           </li>

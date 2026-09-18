@@ -89,7 +89,7 @@ function CountrySelect({
           type="button"
           variant="ghost"
           disabled={disabled}
-          className="h-[2.125rem] gap-2 rounded-none border-0 border-b px-0 pt-0 pb-1.5 font-mono text-[0.8125rem] font-normal transition-colors hover:border-cron-accent hover:bg-transparent"
+          className="h-[2.125rem] gap-2 rounded-none border-0 border-b px-0 pt-0 pb-1.5 font-mono text-[0.8125rem] font-normal transition-colors hover:border-brand hover:bg-transparent"
           aria-label={`Country: ${selectedLabel}`}
         >
           <FlagIcon country={selectedCountry} />
