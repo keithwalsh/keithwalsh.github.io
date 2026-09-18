@@ -8,7 +8,7 @@ import { ProjectCard, type ProjectLink } from "@/pages/projects/project-card"
 export default function PersonalProjectsPage() {
   return (
     <Page>
-      <PageHeader title="Personal Projects" />
+      <PageHeader />
       <div className="flex flex-col gap-4">
         {data.projects.map((project) => {
           const links: ProjectLink[] = [

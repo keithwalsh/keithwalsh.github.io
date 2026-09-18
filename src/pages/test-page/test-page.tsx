@@ -6,10 +6,7 @@ import { MarkdownTableStory } from "@/pages/test-page/markdown-table-story"
 export default function TestPage() {
   return (
     <Page className="max-w-5xl">
-      <PageHeader
-        title="Test Page"
-        description="A playground for previewing components with live props."
-      />
+      <PageHeader description="A playground for previewing components with live props." />
       <MarkdownTableStory />
       <Separator />
       <ButtonStory />

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import { findNavLocation } from "@/config/navigation"
+import { findNavLocation, notFoundTitle } from "@/config/navigation"
 import { assetUrl } from "@/lib/browser"
 
 export function AppHeader({ ref }: { ref?: Ref<HTMLElement> }) {
@@ -45,7 +45,7 @@ export function AppHeader({ ref }: { ref?: Ref<HTMLElement> }) {
           )}
           <BreadcrumbItem>
             <BreadcrumbPage>
-              {location?.item.title ?? "Page not found"}
+              {location?.item.title ?? notFoundTitle}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>

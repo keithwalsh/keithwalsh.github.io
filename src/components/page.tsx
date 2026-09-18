@@ -19,8 +19,9 @@ function Page({ className, ...props }: React.ComponentProps<"div">) {
 
 /**
  * The title block every page opens with: a status line, the masthead and an
- * optional lead. The status line defaults to the page's sidebar section, and
- * is left out when there is neither.
+ * optional lead. The title and status line default to the page's sidebar label
+ * and section, so the masthead matches the breadcrumb and browser tab. The
+ * status line is left out when there is neither.
  */
 function PageHeader({
   title,
@@ -31,7 +32,7 @@ function PageHeader({
   className,
 }: {
   /** A string, or one string per masthead line. */
-  title: string | string[]
+  title?: string | string[]
   eyebrow?: ReactNode
   meta?: ReactNode
   description?: ReactNode
@@ -40,7 +41,9 @@ function PageHeader({
   className?: string
 }) {
   const { pathname } = useLocation()
-  const label = eyebrow ?? findNavLocation(pathname)?.section?.title
+  const location = findNavLocation(pathname)
+  const label = eyebrow ?? location?.section?.title
+  const lines = title ?? location?.item.title ?? ""
 
   return (
     <header className={cn("flex flex-col", className)}>
@@ -52,7 +55,7 @@ function PageHeader({
         )}
       >
         <Masthead
-          lines={typeof title === "string" ? [title] : title}
+          lines={typeof lines === "string" ? [lines] : lines}
           className="min-w-0 flex-[1_1_26rem]"
         />
         {aside}

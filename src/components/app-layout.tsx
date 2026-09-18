@@ -9,7 +9,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Spinner } from "@/components/ui/spinner"
-import { findNavLocation } from "@/config/navigation"
+import { findNavLocation, notFoundTitle } from "@/config/navigation"
 import { siteConfig } from "@/config/site"
 import { trackPageView } from "@/lib/analytics"
 
@@ -30,11 +30,11 @@ export function AppLayout() {
   const hideHeader = searchParams.has("notoolbar")
 
   useEffect(() => {
-    const title = findNavLocation(pathname)?.item.title
+    const title = findNavLocation(pathname)?.item.title ?? notFoundTitle
     document.title =
-      title && pathname !== "/"
-        ? `${title} · ${siteConfig.name}`
-        : `${siteConfig.name} — ${siteConfig.tagline}`
+      pathname === "/"
+        ? `${siteConfig.name} — ${siteConfig.tagline}`
+        : `${title} · ${siteConfig.name}`
     window.scrollTo(0, 0)
     trackPageView(pathname)
   }, [pathname])

@@ -11,6 +11,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
+import { notFoundTitle } from "@/config/navigation"
 
 export default function NotFoundPage() {
   return (
@@ -20,7 +21,9 @@ export default function NotFoundPage() {
           <EmptyMedia variant="icon">
             <Compass />
           </EmptyMedia>
-          <EmptyTitle>Page not found</EmptyTitle>
+          <EmptyTitle>
+            <h1>{notFoundTitle}</h1>
+          </EmptyTitle>
           <EmptyDescription>
             This page doesn&apos;t exist or has moved.
           </EmptyDescription>

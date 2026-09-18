@@ -124,10 +124,7 @@ export default function TextToAsciiPage() {
 
   return (
     <Page>
-      <PageHeader
-        title="Text to ASCII Art"
-        description="Convert your text into ASCII art using various fonts. Perfect for creating banners, headers, or decorative text."
-      />
+      <PageHeader description="Convert your text into ASCII art using various fonts. Perfect for creating banners, headers, or decorative text." />
 
       <Card>
         <CardContent className="flex flex-col gap-5">

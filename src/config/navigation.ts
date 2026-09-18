@@ -59,6 +59,9 @@ export const sectionNav: NavSection[] = [
   },
 ]
 
+/** The breadcrumb, tab and page title for a URL with no nav entry. */
+export const notFoundTitle = "Page not found"
+
 export function findNavLocation(pathname: string) {
   const entries: { item: NavItem; section?: NavSection }[] = [
     ...primaryNav.map((item) => ({ item, section: undefined })),

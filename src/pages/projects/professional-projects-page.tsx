@@ -7,7 +7,7 @@ import { ProjectCard } from "@/pages/projects/project-card"
 export default function ProfessionalProjectsPage() {
   return (
     <Page>
-      <PageHeader title="Professional Projects" />
+      <PageHeader />
       <div className="flex flex-col gap-4">
         {journey.positions.map((position) => (
           <ProjectCard

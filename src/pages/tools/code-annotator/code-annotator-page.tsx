@@ -196,10 +196,7 @@ export default function CodeAnnotatorPage() {
 
   return (
     <Page>
-      <PageHeader
-        title="Code Annotator"
-        description="Mark lines and words as added, removed or highlighted, then copy the result as Markdown or download it as a PNG."
-      />
+      <PageHeader description="Mark lines and words as added, removed or highlighted, then copy the result as Markdown or download it as a PNG." />
 
       <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
         <Field orientation="horizontal" className="w-auto">

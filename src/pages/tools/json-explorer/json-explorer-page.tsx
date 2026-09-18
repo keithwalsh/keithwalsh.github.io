@@ -107,7 +107,7 @@ export default function JsonExplorerPage() {
 
   return (
     <Page>
-      <PageHeader title="JSON Explorer" />
+      <PageHeader />
 
       <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <InstructionsCard

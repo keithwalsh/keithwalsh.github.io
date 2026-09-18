@@ -45,14 +45,16 @@ look odd in isolation:
 ### Adding a route touches two files
 
 `src/config/navigation.ts` is the single source of route metadata. A route
-registered only in `App.tsx` renders, but gets no sidebar entry, no breadcrumb
-and no document title — `findNavLocation(pathname)` drives all three from
-`primaryNav`/`sectionNav`. Add the lazy `<Route>` in `App.tsx` **and** the nav
-entry in `navigation.ts`.
+registered only in `App.tsx` renders, but gets no sidebar entry, no breadcrumb,
+no document title and no `PageHeader` title — `findNavLocation(pathname)`
+drives all four from `primaryNav`/`sectionNav`. Add the lazy `<Route>` in
+`App.tsx` **and** the nav entry in `navigation.ts`. To rename a page, change
+its nav label; the masthead follows unless the page passes its own `title`.
 
 Nested routes (`/blog/:slug`) have no nav entry of their own. `findNavLocation`
 falls back to the longest matching parent URL, so they inherit that parent's
-breadcrumb and title rather than rendering "Page not found" in the header.
+breadcrumb, title and sidebar highlight rather than rendering "Page not found"
+in the header.
 
 ### The blog is a folder of Markdown files
 

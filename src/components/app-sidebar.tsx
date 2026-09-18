@@ -21,7 +21,7 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { primaryNav, sectionNav } from "@/config/navigation"
+import { findNavLocation, primaryNav, sectionNav } from "@/config/navigation"
 import { siteConfig } from "@/config/site"
 import { assetUrl } from "@/lib/browser"
 import { cn } from "@/lib/utils"
@@ -40,6 +40,9 @@ const rowClass = cn(
 export function AppSidebar() {
   const { pathname } = useLocation()
   const { isMobile, setOpenMobile } = useSidebar()
+  // The breadcrumb's own lookup, so nested routes such as /blog/:slug
+  // highlight their parent entry.
+  const current = findNavLocation(pathname)
 
   // The mobile sidebar is a sheet, so close it once a page is chosen.
   const closeOnMobile = () => {
@@ -87,7 +90,7 @@ export function AppSidebar() {
               <SidebarMenuItem key={item.url}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.url}
+                  isActive={current?.item === item}
                   className={rowClass}
                 >
                   <Link to={item.url} onClick={closeOnMobile}>
@@ -113,9 +116,7 @@ export function AppSidebar() {
               <Collapsible
                 key={section.title}
                 asChild
-                defaultOpen={section.items.some(
-                  (item) => item.url === pathname
-                )}
+                defaultOpen={current?.section === section}
                 className="group/collapsible"
               >
                 <SidebarMenuItem>
@@ -137,7 +138,7 @@ export function AppSidebar() {
                         <SidebarMenuSubItem key={item.url}>
                           <SidebarMenuSubButton
                             asChild
-                            isActive={pathname === item.url}
+                            isActive={current?.item === item}
                             className={cn(
                               "h-7.5 translate-x-0 rounded-sm px-2.5 text-muted-foreground hover:bg-sidebar-accent/70 data-[size=md]:text-[0.8125rem]",
                               activeClass

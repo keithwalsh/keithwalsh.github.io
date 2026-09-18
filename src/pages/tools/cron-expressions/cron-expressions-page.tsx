@@ -26,10 +26,7 @@ export default function CronExpressionsPage() {
     <div className="@container flex flex-1 flex-col">
       <div className="grid flex-1 grid-rows-[auto_1fr] @4xl:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] @4xl:grid-rows-none">
         <div className="flex min-w-0 flex-col gap-6 p-4 @md:p-8 @4xl:border-r @4xl:border-foreground/8 @4xl:pr-7 @4xl:pb-7">
-          <PageHeader
-            title="Cron Expressions"
-            description="Build, check and decode cron schedules."
-          />
+          <PageHeader description="Build, check and decode cron schedules." />
 
           <div className="flex flex-col gap-3.5">
             <CronSentence

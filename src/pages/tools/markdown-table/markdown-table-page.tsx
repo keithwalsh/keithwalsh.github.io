@@ -54,10 +54,7 @@ export default function MarkdownTablePage() {
 
   return (
     <Page>
-      <PageHeader
-        title="Markdown Table Generator"
-        description="Build a table and copy it as GitHub-flavored Markdown."
-      />
+      <PageHeader description="Build a table and copy it as GitHub-flavored Markdown." />
 
       <Card>
         <CardContent>

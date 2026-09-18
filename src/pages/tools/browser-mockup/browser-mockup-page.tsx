@@ -204,7 +204,7 @@ export default function BrowserMockupPage() {
     <div className="@container/mockup flex flex-1 flex-col">
       <div className="flex flex-1 flex-col @3xl/mockup:h-[calc(100svh-3.5rem)] @3xl/mockup:flex-none">
         <Page className="shrink-0">
-          <PageHeader title="Browser Window Mockup" />
+          <PageHeader />
         </Page>
         <div className="flex h-15 shrink-0 items-center gap-3 border-y px-4 @3xl/mockup:px-5">
           <button
