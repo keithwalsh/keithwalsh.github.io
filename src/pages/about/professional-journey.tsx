@@ -4,16 +4,14 @@ import journey from "@/data/professionalJourney.json"
 import { cn } from "@/lib/utils"
 import {
   eyebrowClass,
+  pad,
   sectionClass,
+  trackRows,
   useReducedMotion,
   useScrollEffect,
 } from "@/pages/about/about-shared"
 
 const { positions } = journey
-
-function pad(n: number) {
-  return String(n).padStart(2, "0")
-}
 
 export function ProfessionalJourney() {
   const [active, setActive] = useState(0)
@@ -27,31 +25,7 @@ export function ProfessionalJourney() {
   const current = positions[open]
 
   useScrollEffect(!reduced, () => {
-    const rows = rowRefs.current.filter(Boolean) as HTMLLIElement[]
-    if (rows.length === 0) return
-
-    const anchor = window.innerHeight * 0.34
-    let best = 0
-    let bestDistance = Infinity
-    rows.forEach((row, index) => {
-      const distance = Math.abs(row.getBoundingClientRect().top - anchor)
-      if (distance < bestDistance) {
-        bestDistance = distance
-        best = index
-      }
-    })
-    setActive(best)
-
-    if (progressRef.current) {
-      const first = rows[0].getBoundingClientRect()
-      const last = rows[rows.length - 1].getBoundingClientRect()
-      const span = Math.max(
-        1,
-        last.bottom - first.top - window.innerHeight * 0.2
-      )
-      const done = Math.min(1, Math.max(0, (anchor - first.top) / span))
-      progressRef.current.style.width = `${(done * 100).toFixed(1)}%`
-    }
+    setActive(trackRows(rowRefs.current, progressRef.current))
   })
 
   return (

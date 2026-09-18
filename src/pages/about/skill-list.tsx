@@ -15,6 +15,7 @@ import {
 import skillsData from "@/data/skills.json"
 import { cn } from "@/lib/utils"
 import {
+  COUNT_WORDS,
   eyebrowClass,
   sectionClass,
   useReducedMotion,
@@ -31,19 +32,6 @@ const ICONS: Record<string, IconType> = {
   react: SiReact,
   node: SiNodedotjs,
 }
-
-const COUNT_WORDS = [
-  "Zero",
-  "One",
-  "Two",
-  "Three",
-  "Four",
-  "Five",
-  "Six",
-  "Seven",
-  "Eight",
-  "Nine",
-]
 
 export function SkillList() {
   const reduced = useReducedMotion()

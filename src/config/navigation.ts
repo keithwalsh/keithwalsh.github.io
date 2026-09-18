@@ -18,6 +18,8 @@ import {
   Wrench,
 } from "lucide-react"
 
+import { siteConfig } from "@/config/site"
+
 export type NavIcon = ComponentType<{ className?: string }>
 
 export type NavItem = {
@@ -64,7 +66,9 @@ export const sectionNav: NavSection[] = [
       { title: "JSON Explorer", url: "/tools/json-explorer", icon: Braces },
       { title: "Markdown Table", url: "/tools/markdown-table", icon: Table },
       { title: "Text to ASCII", url: "/tools/text-to-ascii", icon: Type },
-      { title: "Test Page", url: "/test-page", icon: FlaskConical },
+      ...(siteConfig.showTestPage
+        ? [{ title: "Test Page", url: "/test-page", icon: FlaskConical }]
+        : []),
     ],
   },
   {

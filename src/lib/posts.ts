@@ -50,17 +50,25 @@ export const posts = Object.entries(files)
   .filter((post) => import.meta.env.DEV || !post.draft)
   .sort((a, b) => b.date.localeCompare(a.date))
 
-export function findPost(slug: string | undefined) {
-  return posts.find((post) => post.slug === slug)
-}
-
-export function formatPostDate(date: string) {
+/** `17 September 2026` by default; pass options for shorter forms. */
+export function formatPostDate(
+  date: string,
+  options?: Intl.DateTimeFormatOptions
+) {
   const parsed = new Date(date)
   return Number.isNaN(parsed.valueOf())
     ? date
-    : parsed.toLocaleDateString("en-IE", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
+    : parsed
+        .toLocaleDateString("en-IE", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+          // Dates are calendar days parsed as UTC midnight; formatting in the
+          // reader's zone would show the day before anywhere west of UTC.
+          timeZone: "UTC",
+          ...options,
+        })
+        // en-IE abbreviates September as "Sept"; the index's date column
+        // is sized for three-letter months.
+        .replace(/\bSept\b/, "Sep")
 }

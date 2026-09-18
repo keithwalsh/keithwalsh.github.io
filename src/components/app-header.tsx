@@ -1,3 +1,4 @@
+import type { Ref } from "react"
 import { Download } from "lucide-react"
 import { useLocation } from "react-router"
 
@@ -16,12 +17,17 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { findNavLocation } from "@/config/navigation"
 import { assetUrl } from "@/lib/browser"
 
-export function AppHeader() {
+export function AppHeader({ ref }: { ref?: Ref<HTMLElement> }) {
   const { pathname } = useLocation()
   const location = findNavLocation(pathname)
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/90 px-4 backdrop-blur-sm">
+    // `sticky` also makes the header the containing block for anything a
+    // route portals into it, such as the blog's reading-progress hairline.
+    <header
+      ref={ref}
+      className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/90 px-4 backdrop-blur-sm"
+    >
       <SidebarTrigger className="-ml-1" />
       <Separator
         orientation="vertical"

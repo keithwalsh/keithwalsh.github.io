@@ -23,6 +23,9 @@ export function AppLayout() {
   const { pathname } = useLocation()
   const [searchParams] = useSearchParams()
   const [defaultOpen] = useState(readSidebarCookie)
+  // Handed to routes as outlet context so they can portal into the header;
+  // null while `?notoolbar` hides it, so nothing portals then.
+  const [header, setHeader] = useState<HTMLElement | null>(null)
   // `?notoolbar` hides the header, e.g. when a tool is embedded elsewhere.
   const hideHeader = searchParams.has("notoolbar")
 
@@ -45,10 +48,10 @@ export function AppLayout() {
             <SidebarTrigger className="m-2 bg-background/80 opacity-70 hover:opacity-100" />
           </div>
         ) : (
-          <AppHeader />
+          <AppHeader ref={setHeader} />
         )}
         <Suspense fallback={<PageFallback />}>
-          <Outlet />
+          <Outlet context={header} />
         </Suspense>
       </SidebarInset>
     </SidebarProvider>

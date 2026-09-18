@@ -8,6 +8,57 @@ export const sectionClass =
 export const eyebrowClass =
   "font-mono text-[0.6875rem] tracking-[0.2em] text-muted-foreground uppercase"
 
+export const COUNT_WORDS = [
+  "Zero",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+]
+
+export function pad(n: number) {
+  return String(n).padStart(2, "0")
+}
+
+/**
+ * Returns the row nearest a line 34% down the viewport, and fills `bar` with
+ * how far that line has travelled through the rows. Drives the sticky rails
+ * on the About timeline and the blog index.
+ */
+export function trackRows(
+  rows: (HTMLElement | null)[],
+  bar: HTMLElement | null
+) {
+  const present = rows.filter((row) => row !== null)
+  if (present.length === 0) return 0
+
+  const anchor = window.innerHeight * 0.34
+  let best = 0
+  let bestDistance = Infinity
+  present.forEach((row, index) => {
+    const distance = Math.abs(row.getBoundingClientRect().top - anchor)
+    if (distance < bestDistance) {
+      bestDistance = distance
+      best = index
+    }
+  })
+
+  if (bar) {
+    const first = present[0].getBoundingClientRect()
+    const last = present[present.length - 1].getBoundingClientRect()
+    const span = Math.max(1, last.bottom - first.top - window.innerHeight * 0.2)
+    const done = Math.min(1, Math.max(0, (anchor - first.top) / span))
+    bar.style.width = `${(done * 100).toFixed(1)}%`
+  }
+
+  return best
+}
+
 export function useReducedMotion() {
   const [reduced, setReduced] = useState(
     () =>

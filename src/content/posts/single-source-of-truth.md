@@ -42,7 +42,7 @@ At that point you have built a worse version of the actual fix.
 Delete one file. Give the surviving one the fields the second page needed, and
 derive that page from it:
 
-```tsx
+```tsx professional-projects-page.tsx
 // Roles live in professionalJourney.json so the About timeline and this page
 // can never disagree about dates.
 {journey.positions.map((position) => (

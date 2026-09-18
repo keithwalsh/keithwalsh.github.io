@@ -74,6 +74,11 @@ is no `@tailwindcss/typography`; element styling lives in that one `components`
 map. Note the `pre` override returning a fragment: `CodeHighlighter` renders a
 `div`, which cannot legally nest inside a `pre`.
 
+Each `## ` heading opens a numbered section and a Contents rail entry. The rail
+reads headings with a regex over the raw Markdown, so write ATX `##` headings,
+not setext underlines. Text after a fence's language becomes the code block's
+caption, e.g. ```` ```tsx professional-projects-page.tsx ````.
+
 ### Content lives in JSON, not JSX
 
 `src/data/*.json` holds all CV-style content. Components map over it; they do not
@@ -99,6 +104,9 @@ load, so replacing those files changes the charts with no rebuild.
   — every Tailwind size is rem-based, so the whole UI scales.
 - **`?notoolbar`** hides the header (`app-layout.tsx`) so a tool page can be
   embedded elsewhere. Preserve it when touching the layout.
+- **Routes can portal into the header.** `app-layout.tsx` passes the header
+  element as outlet context (`useOutletContext`); the blog post portals its
+  reading-progress hairline into it. It is `null` under `?notoolbar`.
 - **Analytics only initialise in production builds** and page views are sent
   manually per route change via `trackPageView`, not by gtag's automatic tracking.
 
