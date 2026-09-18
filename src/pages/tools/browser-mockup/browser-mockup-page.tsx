@@ -14,6 +14,7 @@ import {
   Upload,
 } from "lucide-react"
 
+import { Page, PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
@@ -202,10 +203,10 @@ export default function BrowserMockupPage() {
     // still fits beside the canvas when the site sidebar is open.
     <div className="@container/mockup flex flex-1 flex-col">
       <div className="flex flex-1 flex-col @3xl/mockup:h-[calc(100svh-3.5rem)] @3xl/mockup:flex-none">
-        <div className="flex h-15 shrink-0 items-center gap-3 border-b px-4 @3xl/mockup:px-5">
-          <h1 className="min-w-0 truncate text-base font-semibold tracking-[-0.01em] @max-xl/mockup:sr-only">
-            Browser Window Mockup
-          </h1>
+        <Page className="shrink-0">
+          <PageHeader title="Browser Window Mockup" />
+        </Page>
+        <div className="flex h-15 shrink-0 items-center gap-3 border-y px-4 @3xl/mockup:px-5">
           <button
             type="button"
             onClick={chooseFile}

@@ -2,7 +2,8 @@ import { useRef, useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
 
-import { eyebrowClass, Masthead, sectionClass } from "@/components/editorial"
+import { eyebrowClass, sectionClass } from "@/components/editorial"
+import { PageHeader } from "@/components/page"
 import { formatPostDate, posts } from "@/lib/posts"
 import { cn } from "@/lib/utils"
 import {
@@ -73,64 +74,45 @@ function PostIndex() {
           "pt-[clamp(1.75rem,3.5vw,2.75rem)] pb-[clamp(2.25rem,5vw,4rem)]"
         )}
       >
-        <div
-          data-reveal="0"
-          className="flex flex-wrap items-center justify-between gap-3 border-b pb-3.5 font-mono text-eyebrow text-muted-foreground uppercase"
-        >
-          <span className="flex items-center gap-2.5">
-            <span
-              aria-hidden="true"
-              className="block size-1.25 rounded-full bg-brand motion-safe:animate-[halo_2.6s_ease-in-out_infinite]"
-            />
-            {countOf(posts.length, "write-up")}
-            {/* Drafts are only ever listed by the dev server. */}
-            {drafts > 0 && (
-              <span>
-                ·{" "}
-                {drafts === posts.length
-                  ? "all drafts"
-                  : countOf(drafts, "draft")}
-              </span>
-            )}
-          </span>
-          <span>
-            Last edit {formatPostDate(posts[0].date, { month: "short" })}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap items-end justify-between gap-[clamp(1.5rem,3vw,3rem)] pt-[clamp(1.5rem,3vw,2.5rem)]">
-          <Masthead
-            lines={["Problems", "worth the detour"]}
-            className="min-w-0 flex-[1_1_26rem]"
-          />
-          {subjects.length > 0 && (
-            <div
-              data-reveal="2"
-              className="flex flex-[0_1_20rem] flex-col gap-2.5 pb-1.5"
-            >
-              <span className={eyebrowClass}>Recurring subjects</span>
-              <div className="flex flex-wrap gap-1.5">
-                {subjects.map(([tag, count]) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border px-2.5 py-1.25 font-mono text-meta text-foreground/85 uppercase"
-                  >
-                    {tag} · {count}
-                  </span>
-                ))}
+        <PageHeader
+          eyebrow={
+            <>
+              {countOf(posts.length, "write-up")}
+              {/* Drafts are only ever listed by the dev server. */}
+              {drafts > 0 && (
+                <span>
+                  ·{" "}
+                  {drafts === posts.length
+                    ? "all drafts"
+                    : countOf(drafts, "draft")}
+                </span>
+              )}
+            </>
+          }
+          meta={`Last edit ${formatPostDate(posts[0].date, { month: "short" })}`}
+          title={["Problems", "worth the detour"]}
+          aside={
+            subjects.length > 0 && (
+              <div
+                data-reveal="2"
+                className="flex flex-[0_1_20rem] flex-col gap-2.5 pb-1.5"
+              >
+                <span className={eyebrowClass}>Recurring subjects</span>
+                <div className="flex flex-wrap gap-1.5">
+                  {subjects.map(([tag, count]) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border px-2.5 py-1.25 font-mono text-meta text-foreground/85 uppercase"
+                    >
+                      {tag} · {count}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-
-        <p
-          data-reveal="3"
-          className="max-w-[56ch] pt-[clamp(1rem,2vw,1.375rem)] text-[clamp(1rem,1.35vw,1.15625rem)] leading-[1.6] text-pretty text-foreground/85"
-        >
-          Write-ups, mostly from data plumbing and e-commerce systems. Each one
-          started as a problem I could not explain to someone else quickly
-          enough.
-        </p>
+            )
+          }
+          description="Write-ups, mostly from data plumbing and e-commerce systems. Each one started as a problem I could not explain to someone else quickly enough."
+        />
       </section>
 
       <section className={cn(sectionClass, "pb-[clamp(3.5rem,8vw,6.5rem)]")}>

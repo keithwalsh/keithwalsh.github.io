@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
 
-import { Masthead, sectionClass } from "@/components/editorial"
+import { leadClass, Masthead, sectionClass } from "@/components/editorial"
 import { cn } from "@/lib/utils"
 
 // Index rows and the post's "Next in the index" row share one hover language:
@@ -50,9 +50,7 @@ export function ZeroState({
         </div>
         <div className="flex min-w-0 flex-[1_1_22rem] flex-col gap-4.5">
           <Masthead lines={lines} />
-          <p className="max-w-[52ch] text-[clamp(1rem,1.35vw,1.125rem)] leading-[1.6] text-pretty text-foreground/85">
-            {children}
-          </p>
+          <p className={leadClass}>{children}</p>
           {/* The pill pair from the About page's closing row. */}
           <div className="flex flex-wrap items-center gap-3.5 pt-1">
             <Link

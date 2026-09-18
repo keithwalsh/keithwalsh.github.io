@@ -1,6 +1,8 @@
 import type { ReactNode } from "react"
+import { useLocation } from "react-router"
 
-import type { NavIcon } from "@/config/navigation"
+import { leadClass, Masthead, StatusBar } from "@/components/editorial"
+import { findNavLocation } from "@/config/navigation"
 import { cn } from "@/lib/utils"
 
 function Page({ className, ...props }: React.ComponentProps<"div">) {
@@ -15,67 +17,56 @@ function Page({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * The title block every page opens with: a status line, the masthead and an
+ * optional lead. The status line defaults to the page's sidebar section, and
+ * is left out when there is neither.
+ */
 function PageHeader({
   title,
+  eyebrow,
+  meta,
   description,
-  icon: Icon,
-  actions,
+  aside,
   className,
 }: {
-  title: ReactNode
+  /** A string, or one string per masthead line. */
+  title: string | string[]
+  eyebrow?: ReactNode
+  meta?: ReactNode
   description?: ReactNode
-  icon?: NavIcon
-  actions?: ReactNode
+  /** Sits beside the masthead, aligned to its last line. */
+  aside?: ReactNode
   className?: string
 }) {
+  const { pathname } = useLocation()
+  const label = eyebrow ?? findNavLocation(pathname)?.section?.title
+
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between",
-        className
-      )}
-    >
-      <div className="flex min-w-0 flex-col gap-1.5">
-        <h1 className="flex items-center gap-2.5 font-heading text-2xl font-semibold tracking-tight">
-          {Icon && <Icon className="size-6 shrink-0 text-muted-foreground" />}
-          {title}
-        </h1>
-        {description && (
-          <p className="max-w-3xl text-muted-foreground">{description}</p>
+    <header className={cn("flex flex-col", className)}>
+      {label && <StatusBar meta={meta}>{label}</StatusBar>}
+      <div
+        className={cn(
+          "flex flex-wrap items-end justify-between gap-[clamp(1.5rem,3vw,3rem)]",
+          label && "pt-[clamp(1.5rem,3vw,2.5rem)]"
         )}
+      >
+        <Masthead
+          lines={typeof title === "string" ? [title] : title}
+          className="min-w-0 flex-[1_1_26rem]"
+        />
+        {aside}
       </div>
-      {actions && (
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
-          {actions}
-        </div>
+      {description && (
+        <p
+          data-reveal="3"
+          className={cn(leadClass, "pt-[clamp(1rem,2vw,1.375rem)]")}
+        >
+          {description}
+        </p>
       )}
-    </div>
+    </header>
   )
 }
 
-function PageSection({
-  title,
-  description,
-  className,
-  children,
-  ...props
-}: Omit<React.ComponentProps<"section">, "title"> & {
-  title: ReactNode
-  description?: ReactNode
-}) {
-  return (
-    <section className={cn("flex flex-col gap-4", className)} {...props}>
-      <div className="flex flex-col gap-1">
-        <h2 className="font-heading text-lg font-semibold tracking-tight">
-          {title}
-        </h2>
-        {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-export { Page, PageHeader, PageSection }
+export { Page, PageHeader }

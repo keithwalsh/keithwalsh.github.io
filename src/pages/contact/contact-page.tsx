@@ -1,5 +1,5 @@
-import { eyebrowClass, Masthead } from "@/components/editorial"
-import { Page } from "@/components/page"
+import { eyebrowClass } from "@/components/editorial"
+import { Page, PageHeader } from "@/components/page"
 import { useReducedMotion, useReveal } from "@/pages/about/about-shared"
 import { ContactForm } from "@/pages/contact/contact-form"
 import { SocialLinks } from "@/pages/contact/social-links"
@@ -22,8 +22,6 @@ function SectionEyebrow({ label, delay }: { label: string; delay: string }) {
 
 export default function ContactPage() {
   const reduced = useReducedMotion()
-  // The masthead replaces `PageHeader`; the document title and breadcrumb
-  // still come from `navigation.ts` via `findNavLocation`.
   const revealRef = useReveal<HTMLDivElement>(!reduced)
 
   return (
@@ -31,12 +29,7 @@ export default function ContactPage() {
       ref={revealRef}
       className="gap-0 px-6 pt-7 pb-18 md:px-6 md:pt-7 md:pb-18"
     >
-      {/* Flex scaffolding intentionally leaves room for a right-hand block. */}
-      <div className="flex flex-wrap items-end justify-between gap-8 pt-1.5">
-        <div className="flex min-w-0 flex-[1_1_26.25rem] flex-col">
-          <Masthead lines={MASTHEAD_LINES} />
-        </div>
-      </div>
+      <PageHeader title={MASTHEAD_LINES} className="pt-1.5" />
 
       <div className="grid grid-cols-1 items-start pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-x-14">
         <div data-reveal="0" className="flex min-w-0 flex-col gap-5">

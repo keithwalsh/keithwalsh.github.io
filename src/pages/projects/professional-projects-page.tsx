@@ -1,5 +1,3 @@
-import { Briefcase } from "lucide-react"
-
 import { Page, PageHeader } from "@/components/page"
 import journey from "@/data/professionalJourney.json"
 import { ProjectCard } from "@/pages/projects/project-card"
@@ -9,7 +7,7 @@ import { ProjectCard } from "@/pages/projects/project-card"
 export default function ProfessionalProjectsPage() {
   return (
     <Page>
-      <PageHeader icon={Briefcase} title="Professional Projects" />
+      <PageHeader title="Professional Projects" />
       <div className="flex flex-col gap-4">
         {journey.positions.map((position) => (
           <ProjectCard

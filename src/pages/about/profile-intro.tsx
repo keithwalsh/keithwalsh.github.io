@@ -1,6 +1,11 @@
 import { useRef } from "react"
 
-import { Masthead, sectionClass } from "@/components/editorial"
+import {
+  leadClass,
+  Masthead,
+  sectionClass,
+  StatusBar,
+} from "@/components/editorial"
 import { assetUrl } from "@/lib/browser"
 import {
   useReducedMotion,
@@ -38,18 +43,7 @@ export function ProfileIntro() {
         "relative overflow-hidden pt-[clamp(1.75rem,3.5vw,2.75rem)] pb-[clamp(2.25rem,5vw,4rem)]"
       )}
     >
-      <div
-        data-reveal="0"
-        className="flex flex-wrap items-center justify-between gap-3 border-b pb-3.5 font-mono text-eyebrow text-muted-foreground uppercase"
-      >
-        <span className="flex items-center gap-2.5">
-          <span
-            aria-hidden="true"
-            className="block size-[0.3125rem] rounded-full bg-brand motion-safe:animate-[halo_2.6s_ease-in-out_infinite]"
-          />
-          Ballindine, Co. Mayo, Ireland
-        </span>
-      </div>
+      <StatusBar>Ballindine, Co. Mayo, Ireland</StatusBar>
 
       <div className="flex flex-wrap items-start gap-[clamp(1.25rem,3vw,2.75rem)] pt-[clamp(1.5rem,3vw,2.5rem)]">
         <div className="relative w-[clamp(7.25rem,15vw,10.5rem)] flex-none">
@@ -83,10 +77,7 @@ export function ProfileIntro() {
             <span>Strategic Operations</span>
           </div>
 
-          <p
-            data-reveal="3"
-            className="mt-0.5 max-w-[56ch] text-[clamp(1rem,1.35vw,1.15625rem)] leading-[1.6] text-pretty text-foreground/85"
-          >
+          <p data-reveal="3" className={cn(leadClass, "mt-0.5")}>
             I turn messy operational data into things people actually use —
             pipelines that run themselves, dashboards that answer the question,
             and reports that end the argument. Fifteen years across payments,

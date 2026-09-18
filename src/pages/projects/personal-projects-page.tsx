@@ -1,4 +1,4 @@
-import { Coffee, ExternalLink } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { FaGithub } from "react-icons/fa6"
 
 import { Page, PageHeader } from "@/components/page"
@@ -8,7 +8,7 @@ import { ProjectCard, type ProjectLink } from "@/pages/projects/project-card"
 export default function PersonalProjectsPage() {
   return (
     <Page>
-      <PageHeader icon={Coffee} title="Personal Projects" />
+      <PageHeader title="Personal Projects" />
       <div className="flex flex-col gap-4">
         {data.projects.map((project) => {
           const links: ProjectLink[] = [
