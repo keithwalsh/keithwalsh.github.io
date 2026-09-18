@@ -118,6 +118,12 @@ Each tool under `src/pages/tools/<name>/` is self-contained, lazy-loaded, and ru
 entirely in the browser — no backend, no network calls beyond `public/`. Follow
 the existing folder-per-tool shape rather than adding shared tool infrastructure.
 
+Tools come in two shapes. Most stack inside `Page` in one order: `PageHeader`
+with a description, one options `Card`, then the input and output panels —
+each a label row (label or `TabsList` on the left, `IconButton`s on the right)
+over its surface — and any help `Card` last. Cron Expressions and Browser
+Mockup are full-height workspaces: `PageHeader`, then their own panes.
+
 ## Conventions
 
 - **Prettier**: no semicolons, double quotes, 80 columns, ES5 trailing commas,

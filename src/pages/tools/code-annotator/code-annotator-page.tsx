@@ -194,50 +194,52 @@ export default function CodeAnnotatorPage() {
     <Page>
       <PageHeader description="Mark lines and words as added, removed or highlighted, then copy the result as Markdown or download it as a PNG." />
 
-      <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-        <Field orientation="horizontal" className="w-auto">
-          <FieldLabel htmlFor="code-language">Language</FieldLabel>
-          <Select
-            value={language}
-            onValueChange={(value) => update({ language: value })}
-          >
-            <SelectTrigger id="code-language" className="w-36">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {LANGUAGE_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </Field>
-        <Field orientation="horizontal" className="w-auto">
-          <FieldLabel htmlFor="code-filename">Filename</FieldLabel>
-          <Input
-            id="code-filename"
-            value={filename}
-            onChange={(event) => update({ filename: event.target.value })}
-            placeholder="Optional"
-            spellCheck={false}
-            autoComplete="off"
-            className="w-40"
-          />
-        </Field>
-        {DISPLAY_OPTIONS.map(({ key, id, label }) => (
-          <Field key={key} orientation="horizontal" className="w-auto">
-            <Switch
-              id={id}
-              checked={options[key]}
-              onCheckedChange={(checked) =>
-                update({ options: { ...options, [key]: checked } })
-              }
-            />
-            <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <Card>
+        <CardContent className="flex flex-wrap items-center gap-x-8 gap-y-4">
+          <Field orientation="horizontal" className="w-auto">
+            <FieldLabel htmlFor="code-language">Language</FieldLabel>
+            <Select
+              value={language}
+              onValueChange={(value) => update({ language: value })}
+            >
+              <SelectTrigger id="code-language" className="w-36">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {LANGUAGE_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
-        ))}
-      </div>
+          <Field orientation="horizontal" className="w-auto">
+            <FieldLabel htmlFor="code-filename">Filename</FieldLabel>
+            <Input
+              id="code-filename"
+              value={filename}
+              onChange={(event) => update({ filename: event.target.value })}
+              placeholder="Optional"
+              spellCheck={false}
+              autoComplete="off"
+              className="w-40"
+            />
+          </Field>
+          {DISPLAY_OPTIONS.map(({ key, id, label }) => (
+            <Field key={key} orientation="horizontal" className="w-auto">
+              <Switch
+                id={id}
+                checked={options[key]}
+                onCheckedChange={(checked) =>
+                  update({ options: { ...options, [key]: checked } })
+                }
+              />
+              <FieldLabel htmlFor={id}>{label}</FieldLabel>
+            </Field>
+          ))}
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 md:grid-cols-2">
         <Field>

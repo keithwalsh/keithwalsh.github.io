@@ -8,13 +8,7 @@ import { NumberStepper } from "@/components/number-stepper"
 import { OptionSelect } from "@/components/option-select"
 import { Page, PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Empty,
   EmptyDescription,
@@ -26,6 +20,7 @@ import {
   FieldContent,
   FieldDescription,
   FieldLabel,
+  FieldTitle,
 } from "@/components/ui/field"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
@@ -197,10 +192,10 @@ export default function TextToAsciiPage() {
         </Alert>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Output</CardTitle>
-          <CardAction className="flex gap-1">
+      <Field>
+        <div className="flex items-center justify-between gap-2">
+          <FieldTitle>Output</FieldTitle>
+          <div className="-my-1 flex items-center gap-1">
             <IconButton
               label="Copy ASCII art"
               disabled={!visibleOutput}
@@ -215,29 +210,27 @@ export default function TextToAsciiPage() {
             >
               <Download />
             </IconButton>
-          </CardAction>
-        </CardHeader>
-        <CardContent>
-          {visibleOutput ? (
-            <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-4 font-mono text-[0.6rem] leading-tight sm:text-xs md:text-sm">
-              {visibleOutput}
-            </pre>
-          ) : (
-            <Empty className="border">
-              <EmptyHeader>
-                <EmptyMedia variant="icon">
-                  <Type />
-                </EmptyMedia>
-                <EmptyDescription>
-                  {hasText
-                    ? "ASCII art will appear here"
-                    : "Enter some text to get started"}
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          )}
-        </CardContent>
-      </Card>
+          </div>
+        </div>
+        {visibleOutput ? (
+          <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-4 font-mono text-[0.6rem] leading-tight sm:text-xs md:text-sm">
+            {visibleOutput}
+          </pre>
+        ) : (
+          <Empty className="border">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Type />
+              </EmptyMedia>
+              <EmptyDescription>
+                {hasText
+                  ? "ASCII art will appear here"
+                  : "Enter some text to get started"}
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
+      </Field>
 
       <InstructionsCard
         title="Tips"

@@ -102,103 +102,91 @@ export default function JsonExplorerPage() {
 
   return (
     <Page>
-      <PageHeader />
+      <PageHeader description="Paste or load JSON, query it by path and explore it as a collapsible tree." />
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <InstructionsCard
-          title="How to Use"
-          steps={[
-            "Paste or load JSON data into the input field",
-            "Use the JSON path to query specific data (e.g. user.name)",
-            "Toggle display options for data types and object sizes",
-            "Adjust collapse depth and string length limits",
-            "View the formatted JSON output",
-          ]}
-        />
-        <Card>
-          <CardContent className="flex flex-col gap-5">
-            <form
-              onSubmit={(event) => {
-                event.preventDefault()
-                setAppliedQuery(queryPath)
-              }}
-            >
-              <Field>
-                <FieldLabel htmlFor="json-path">JSON path</FieldLabel>
-                <InputGroup>
-                  <InputGroupInput
-                    id="json-path"
-                    placeholder="Dot notation, e.g. user.name"
-                    value={queryPath}
-                    onChange={(event) => setQueryPath(event.target.value)}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                  />
-                  <InputGroupAddon align="inline-end">
-                    <InputGroupButton
-                      type="submit"
-                      size="icon-xs"
-                      aria-label="Run query"
-                    >
-                      <Search />
-                    </InputGroupButton>
-                  </InputGroupAddon>
-                </InputGroup>
+      <Card>
+        <CardContent className="flex flex-col gap-5">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault()
+              setAppliedQuery(queryPath)
+            }}
+          >
+            <Field>
+              <FieldLabel htmlFor="json-path">JSON path</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id="json-path"
+                  placeholder="Dot notation, e.g. user.name"
+                  value={queryPath}
+                  onChange={(event) => setQueryPath(event.target.value)}
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    type="submit"
+                    size="icon-xs"
+                    aria-label="Run query"
+                  >
+                    <Search />
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+            </Field>
+          </form>
+
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            {DISPLAY_SWITCHES.map(({ key, label }) => (
+              <Field key={key} orientation="horizontal" className="w-auto">
+                <Switch
+                  id={`json-${key}`}
+                  checked={display[key]}
+                  onCheckedChange={(checked) =>
+                    setDisplay((previous) => ({
+                      ...previous,
+                      [key]: checked,
+                    }))
+                  }
+                />
+                <FieldLabel htmlFor={`json-${key}`}>{label}</FieldLabel>
               </Field>
-            </form>
+            ))}
+          </div>
 
-            <div className="flex flex-wrap gap-x-6 gap-y-3">
-              {DISPLAY_SWITCHES.map(({ key, label }) => (
-                <Field key={key} orientation="horizontal" className="w-auto">
-                  <Switch
-                    id={`json-${key}`}
-                    checked={display[key]}
-                    onCheckedChange={(checked) =>
-                      setDisplay((previous) => ({
-                        ...previous,
-                        [key]: checked,
-                      }))
-                    }
-                  />
-                  <FieldLabel htmlFor={`json-${key}`}>{label}</FieldLabel>
-                </Field>
-              ))}
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-3">
-              <OptionSelect
-                id="json-collapse"
-                label="Collapse"
-                value={collapse}
-                onValueChange={setCollapse}
-                options={COLLAPSE_OPTIONS}
-              />
-              <OptionSelect
-                id="json-string-limit"
-                label="String limit"
-                value={stringLimit}
-                onValueChange={setStringLimit}
-                options={STRING_LIMIT_OPTIONS}
-              />
-              <OptionSelect
-                id="json-indent"
-                label="Indent width"
-                value={indentWidth}
-                onValueChange={setIndentWidth}
-                options={INDENT_OPTIONS}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <OptionSelect
+              id="json-collapse"
+              label="Collapse"
+              value={collapse}
+              onValueChange={setCollapse}
+              options={COLLAPSE_OPTIONS}
+            />
+            <OptionSelect
+              id="json-string-limit"
+              label="String limit"
+              value={stringLimit}
+              onValueChange={setStringLimit}
+              options={STRING_LIMIT_OPTIONS}
+            />
+            <OptionSelect
+              id="json-indent"
+              label="Indent width"
+              value={indentWidth}
+              onValueChange={setIndentWidth}
+              options={INDENT_OPTIONS}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-6 md:grid-cols-2">
         <Field>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <FieldLabel htmlFor="json-input">Input</FieldLabel>
-            <div className="flex gap-1">
+            <div className="-my-1 flex items-center gap-1">
               <IconButton label="Load example JSON" onClick={loadExample}>
                 <FileJson />
               </IconButton>
@@ -225,21 +213,23 @@ export default function JsonExplorerPage() {
         </Field>
 
         <Field>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <FieldTitle>Output</FieldTitle>
-            <IconButton
-              label="Copy output"
-              disabled={!result?.ok}
-              onClick={() =>
-                result?.ok &&
-                copyWithToast(
-                  JSON.stringify(result.value, null, Number(indentWidth)),
-                  "JSON copied"
-                )
-              }
-            >
-              <Copy />
-            </IconButton>
+            <div className="-my-1 flex items-center gap-1">
+              <IconButton
+                label="Copy output"
+                disabled={!result?.ok}
+                onClick={() =>
+                  result?.ok &&
+                  copyWithToast(
+                    JSON.stringify(result.value, null, Number(indentWidth)),
+                    "JSON copied"
+                  )
+                }
+              >
+                <Copy />
+              </IconButton>
+            </div>
           </div>
           <div className="min-h-80 overflow-auto rounded-lg border bg-muted/40 p-3">
             {result === null ? (
@@ -273,6 +263,17 @@ export default function JsonExplorerPage() {
           </div>
         </Field>
       </div>
+
+      <InstructionsCard
+        title="How to Use"
+        steps={[
+          "Paste or load JSON data into the input field",
+          "Use the JSON path to query specific data (e.g. user.name)",
+          "Toggle display options for data types and object sizes",
+          "Adjust collapse depth and string length limits",
+          "View the formatted JSON output",
+        ]}
+      />
     </Page>
   )
 }
