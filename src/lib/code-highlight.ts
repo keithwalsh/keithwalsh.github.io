@@ -13,6 +13,10 @@ import "prismjs/components/prism-java"
 import "prismjs/components/prism-c"
 import "prismjs/components/prism-cpp"
 import "prismjs/components/prism-ruby"
+import "prismjs/components/prism-csharp"
+import "prismjs/components/prism-go"
+import "prismjs/components/prism-rust"
+import "prismjs/components/prism-yaml"
 
 export type LineKind = "add" | "remove"
 
@@ -24,11 +28,11 @@ export type HighlightedLine = {
 
 type WordMark = "add" | "delete"
 
-const COMMENT = String.raw`(?:\/\/|#|--|<!--)`
+const COMMENT = String.raw`(?:\/\/|#|--|<!--|\/\*)`
 
 /** Matches a line holding nothing but the given magic comment. */
 function commentLine(marker: string) {
-  return new RegExp(String.raw`^\s*${COMMENT}\s*${marker}\s*(?:-->)?\s*$`)
+  return new RegExp(String.raw`^\s*${COMMENT}\s*${marker}\s*(?:-->|\*\/)?\s*$`)
 }
 
 const LINE_MARKER = commentLine("(Remove|Add)")

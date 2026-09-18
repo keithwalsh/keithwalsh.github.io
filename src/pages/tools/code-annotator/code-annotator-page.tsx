@@ -1,5 +1,5 @@
-import { useRef, useState } from "react"
-import { Copy, ImageDown } from "lucide-react"
+import { useDeferredValue, useEffect, useRef, useState } from "react"
+import { Copy, ImageDown, Images } from "lucide-react"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
 import { InlineCode } from "@/components/inline-code"
@@ -28,18 +28,32 @@ import { copyWithToast } from "@/lib/browser"
 import { toMarkdownCodeBlock } from "@/lib/code-highlight"
 import { cn } from "@/lib/utils"
 
-const LANGUAGE_OPTIONS = [
+/** `commentEnd` is set for languages whose comments have to be closed. */
+const LANGUAGE_OPTIONS: {
+  value: string
+  label: string
+  comment: string
+  commentEnd?: string
+}[] = [
   { value: "javascript", label: "JavaScript", comment: "//" },
   { value: "typescript", label: "TypeScript", comment: "//" },
+  { value: "tsx", label: "TSX", comment: "//" },
   { value: "python", label: "Python", comment: "#" },
   { value: "java", label: "Java", comment: "//" },
+  { value: "csharp", label: "C#", comment: "//" },
   { value: "c", label: "C", comment: "//" },
   { value: "cpp", label: "C++", comment: "//" },
-  { value: "sql", label: "SQL", comment: "--" },
+  { value: "go", label: "Go", comment: "//" },
+  { value: "rust", label: "Rust", comment: "//" },
   { value: "ruby", label: "Ruby", comment: "#" },
   { value: "php", label: "PHP", comment: "//" },
+  { value: "sql", label: "SQL", comment: "--" },
   { value: "bash", label: "Bash", comment: "#" },
+  { value: "markup", label: "HTML", comment: "<!--", commentEnd: "-->" },
+  { value: "css", label: "CSS", comment: "/*", commentEnd: "*/" },
   { value: "json", label: "JSON", comment: "//" },
+  { value: "yaml", label: "YAML", comment: "#" },
+  { value: "markdown", label: "Markdown", comment: "<!--", commentEnd: "-->" },
 ]
 
 const DISPLAY_OPTIONS = [
@@ -54,19 +68,26 @@ const DISPLAY_OPTIONS = [
 
 type DisplayOptions = Record<(typeof DISPLAY_OPTIONS)[number]["key"], boolean>
 
-// Written with `//`, which is swapped for the selected language's comment.
+// `comment: true` markers are written in the selected language's comment style.
 const SYNTAX = [
   {
-    markers: ["// Add", "// Remove"],
+    comment: true,
+    markers: ["Add", "Remove"],
     effect: "Marks the next line as added or removed",
   },
   {
+    comment: false,
     markers: ["[+new+]", "[-old-]"],
     effect: "Marks the wrapped text as added or removed",
   },
-  { markers: ["// highlight-next-line"], effect: "Highlights the next line" },
   {
-    markers: ["// highlight-start", "// highlight-end"],
+    comment: true,
+    markers: ["highlight-next-line"],
+    effect: "Highlights the next line",
+  },
+  {
+    comment: true,
+    markers: ["highlight-start", "highlight-end"],
     effect: "Highlights every line between them",
   },
 ]
@@ -77,6 +98,52 @@ echo "Hello [-Room-]";
 // Add
 echo "Hello [+World+]";
 ?>`
+
+const STORAGE_KEY = "code-annotator"
+
+type AnnotatorState = {
+  code: string
+  language: string
+  filename: string
+  options: DisplayOptions
+}
+
+const DEFAULT_STATE: AnnotatorState = {
+  code: DEFAULT_CODE,
+  language: "php",
+  filename: "",
+  options: { showLineNumbers: true, wrap: true, strikethrough: true },
+}
+
+// The input and display options persist between visits. Anything unrecognised
+// in storage falls back to its default.
+function loadState(): AnnotatorState {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null")
+    if (!saved || typeof saved !== "object") return DEFAULT_STATE
+    const text = (key: "code" | "language" | "filename") =>
+      typeof saved[key] === "string" ? (saved[key] as string) : undefined
+    const language = text("language")
+    return {
+      code: text("code") ?? DEFAULT_STATE.code,
+      language:
+        language && LANGUAGE_OPTIONS.some((option) => option.value === language)
+          ? language
+          : DEFAULT_STATE.language,
+      filename: text("filename") ?? DEFAULT_STATE.filename,
+      options: Object.fromEntries(
+        DISPLAY_OPTIONS.map(({ key }) => [
+          key,
+          typeof saved.options?.[key] === "boolean"
+            ? saved.options[key]
+            : DEFAULT_STATE.options[key],
+        ])
+      ) as DisplayOptions,
+    }
+  } catch {
+    return DEFAULT_STATE
+  }
+}
 
 /** Turns the filename into a safe name for the downloaded image. */
 function imageName(filename: string) {
@@ -89,25 +156,42 @@ function imageName(filename: string) {
 }
 
 export default function CodeAnnotatorPage() {
-  const [code, setCode] = useState(DEFAULT_CODE)
-  const [language, setLanguage] = useState("php")
-  const [filename, setFilename] = useState("")
-  const [options, setOptions] = useState<DisplayOptions>({
-    showLineNumbers: true,
-    wrap: true,
-    strikethrough: true,
-  })
+  const [state, setState] = useState(loadState)
+  const { code, language, filename, options } = state
   const outputRef = useRef<HTMLDivElement>(null)
-  const { downloadImage, isDownloading } = useDownloadImage()
+  const { downloadImage, copyImage, isDownloading, isCopying } =
+    useDownloadImage()
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    } catch {
+      // Storage can be unavailable (private mode, blocked site data).
+    }
+  }, [state])
+
+  const update = (patch: Partial<AnnotatorState>) =>
+    setState((current) => ({ ...current, ...patch }))
+
+  // Highlighting the whole document on every keystroke makes typing lag on a
+  // long paste, so the output trails the textarea by a render when it's busy.
+  const deferredCode = useDeferredValue(code)
 
   const hasCode = code.trim().length > 0
-  const comment =
-    LANGUAGE_OPTIONS.find((option) => option.value === language)?.comment ??
-    "//"
+  const selected = LANGUAGE_OPTIONS.find((option) => option.value === language)
+  const writeComment = (marker: string) =>
+    [selected?.comment ?? "//", marker, selected?.commentEnd]
+      .filter(Boolean)
+      .join(" ")
 
   const handleDownload = () => {
     if (!outputRef.current) return
     downloadImage(outputRef.current, { filename: imageName(filename) })
+  }
+
+  const handleCopyImage = () => {
+    if (!outputRef.current) return
+    copyImage(outputRef.current)
   }
 
   return (
@@ -120,7 +204,10 @@ export default function CodeAnnotatorPage() {
       <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
         <Field orientation="horizontal" className="w-auto">
           <FieldLabel htmlFor="code-language">Language</FieldLabel>
-          <Select value={language} onValueChange={setLanguage}>
+          <Select
+            value={language}
+            onValueChange={(value) => update({ language: value })}
+          >
             <SelectTrigger id="code-language" className="w-36">
               <SelectValue />
             </SelectTrigger>
@@ -138,7 +225,7 @@ export default function CodeAnnotatorPage() {
           <Input
             id="code-filename"
             value={filename}
-            onChange={(event) => setFilename(event.target.value)}
+            onChange={(event) => update({ filename: event.target.value })}
             placeholder="Optional"
             spellCheck={false}
             autoComplete="off"
@@ -151,7 +238,7 @@ export default function CodeAnnotatorPage() {
               id={id}
               checked={options[key]}
               onCheckedChange={(checked) =>
-                setOptions((previous) => ({ ...previous, [key]: checked }))
+                update({ options: { ...options, [key]: checked } })
               }
             />
             <FieldLabel htmlFor={id}>{label}</FieldLabel>
@@ -165,7 +252,7 @@ export default function CodeAnnotatorPage() {
           <Textarea
             id="code-input"
             value={code}
-            onChange={(event) => setCode(event.target.value)}
+            onChange={(event) => update({ code: event.target.value })}
             spellCheck={false}
             autoComplete="off"
             autoCorrect="off"
@@ -201,6 +288,20 @@ export default function CodeAnnotatorPage() {
                   <Button
                     variant="ghost"
                     size="icon-sm"
+                    aria-label="Copy image"
+                    disabled={!hasCode || isCopying}
+                    onClick={handleCopyImage}
+                  >
+                    {isCopying ? <Spinner /> : <Images />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Copy image</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
                     aria-label="Download PNG"
                     disabled={!hasCode || isDownloading}
                     onClick={handleDownload}
@@ -217,7 +318,7 @@ export default function CodeAnnotatorPage() {
           <div className={cn(!options.wrap && "overflow-x-auto")}>
             <CodeHighlighter
               ref={outputRef}
-              code={code}
+              code={deferredCode}
               language={language}
               title={filename.trim() || undefined}
               className={cn(!options.wrap && "w-max min-w-full")}
@@ -233,12 +334,12 @@ export default function CodeAnnotatorPage() {
         </CardHeader>
         <CardContent>
           <dl className="grid items-baseline gap-x-6 gap-y-3 sm:grid-cols-[auto_1fr]">
-            {SYNTAX.map(({ markers, effect }) => (
+            {SYNTAX.map(({ comment, markers, effect }) => (
               <div key={effect} className="flex flex-col gap-1 sm:contents">
                 <dt className="flex flex-wrap gap-1.5">
                   {markers.map((marker) => (
                     <InlineCode key={marker}>
-                      {marker.replace("//", comment)}
+                      {comment ? writeComment(marker) : marker}
                     </InlineCode>
                   ))}
                 </dt>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import emailjs from "@emailjs/browser"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Send } from "lucide-react"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import {
   isSupportedCountry,
   isValidPhoneNumber,
@@ -13,16 +13,27 @@ import { z } from "zod"
 
 import { PhoneInput } from "@/components/phone-input"
 import { Button } from "@/components/ui/button"
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
 import { siteConfig } from "@/config/site"
+import { cn } from "@/lib/utils"
+
+/**
+ * Underlined field treatment for this page: the boxed shadcn control is
+ * stripped back to a hairline that thickens to indigo on focus. `Input` and
+ * `Textarea` live in the generated `components/ui`, so the overrides ride in
+ * on `className` rather than being edited in.
+ */
+const underlineFieldClass =
+  "h-[2.125rem] rounded-none border-0 border-b bg-transparent px-0 pt-0 pb-1.5 text-base transition-[border-color,box-shadow] focus-visible:border-cron-accent focus-visible:shadow-[0_1px_0_0_var(--cron-accent)] focus-visible:ring-0 aria-invalid:border-destructive aria-invalid:shadow-none aria-invalid:ring-0 md:text-base dark:bg-transparent"
+
+const labelClass =
+  "font-mono text-[0.65625rem] tracking-[0.18em] text-muted-foreground uppercase group-data-[invalid=true]/field:text-destructive"
+
+const metaClass =
+  "font-mono text-[0.65625rem] tracking-[0.14em] text-muted-foreground uppercase"
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
@@ -76,11 +87,16 @@ function useDetectedCountry(fallback: Country) {
 
 export function ContactForm() {
   const country = useDetectedCountry("IE")
+  // Success swaps the form for an inline panel rather than firing a toast —
+  // one confirmation, not both. Failure still toasts; there is no panel for it.
+  const [sent, setSent] = useState<{ name: string; email: string } | null>(null)
   const form = useForm<ContactValues>({
     resolver: zodResolver(contactSchema),
     defaultValues: DEFAULT_VALUES,
   })
   const { isSubmitting } = form.formState
+  const message = useWatch({ control: form.control, name: "message" })
+  const messageLength = message.trim().length
 
   async function onSubmit(values: ContactValues) {
     try {
@@ -96,106 +112,158 @@ export function ContactForm() {
         { publicKey: siteConfig.emailjs.publicKey }
       )
       form.reset()
-      toast.success("Message sent successfully!")
+      setSent({ name: values.name, email: values.email })
     } catch {
       toast.error("Failed to send message. Please try again.")
     }
   }
 
-  return (
-    <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-      <FieldGroup>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Controller
-            name="name"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="contact-name">Name</FieldLabel>
-                <Input
-                  {...field}
-                  id="contact-name"
-                  autoComplete="name"
-                  autoCapitalize="words"
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-          <Controller
-            name="email"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="contact-email">Email</FieldLabel>
-                <Input
-                  {...field}
-                  id="contact-email"
-                  type="email"
-                  autoComplete="email"
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </div>
-
-        <Controller
-          name="phone"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="contact-phone">
-                Phone
-                <span className="font-normal text-muted-foreground">
-                  (optional)
-                </span>
-              </FieldLabel>
-              <PhoneInput
-                // Remount once the detected country arrives so it becomes the default.
-                key={country}
-                id="contact-phone"
-                name={field.name}
-                value={field.value}
-                onChange={field.onChange}
-                onBlur={field.onBlur}
-                defaultCountry={country}
-                autoComplete="tel"
-                aria-invalid={fieldState.invalid}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="message"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="contact-message">Message</FieldLabel>
-              <Textarea
-                {...field}
-                id="contact-message"
-                className="min-h-32"
-                aria-invalid={fieldState.invalid}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Button type="submit" size="lg" disabled={isSubmitting}>
-          {isSubmitting ? <Spinner /> : <Send />}
-          Send Message
+  if (sent) {
+    return (
+      <div className="flex flex-col gap-4 border-t border-cron-accent bg-cron-accent-soft p-8">
+        <span className="font-mono text-[0.65625rem] tracking-[0.2em] text-cron-accent uppercase">
+          Message sent
+        </span>
+        <p className="max-w-[46ch] text-[1.0625rem] leading-[1.55] text-pretty">
+          Thanks {sent.name.split(/\s+/)[0]} — it&rsquo;s in my inbox.
+          I&rsquo;ll reply to {sent.email}.
+        </p>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setSent(null)}
+          className="h-[2.125rem] w-fit px-3.5 font-mono text-[0.65625rem] tracking-[0.16em] uppercase"
+        >
+          Write another
         </Button>
-      </FieldGroup>
+      </div>
+    )
+  }
+
+  return (
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      noValidate
+      className="flex flex-col gap-7.5"
+    >
+      <div className="grid gap-7.5 sm:grid-cols-2">
+        <Controller
+          name="name"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="contact-name" className={labelClass}>
+                Name
+              </FieldLabel>
+              <Input
+                {...field}
+                id="contact-name"
+                placeholder="Who's writing?"
+                autoComplete="name"
+                autoCapitalize="words"
+                aria-invalid={fieldState.invalid}
+                className={underlineFieldClass}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="email"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="contact-email" className={labelClass}>
+                Email
+              </FieldLabel>
+              <Input
+                {...field}
+                id="contact-email"
+                type="email"
+                placeholder="you@company.com"
+                autoComplete="email"
+                aria-invalid={fieldState.invalid}
+                className={underlineFieldClass}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      </div>
+
+      <Controller
+        name="phone"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="contact-phone" className={labelClass}>
+              Phone
+              <span className="text-muted-foreground/75">(optional)</span>
+            </FieldLabel>
+            <PhoneInput
+              // Remount once the detected country arrives so it becomes the default.
+              key={country}
+              id="contact-phone"
+              name={field.name}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              defaultCountry={country}
+              placeholder="85 123 4567"
+              autoComplete="tel"
+              aria-invalid={fieldState.invalid}
+              numberInputProps={{ className: underlineFieldClass }}
+            />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+
+      <Controller
+        name="message"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <div className="flex items-baseline justify-between gap-3">
+              <FieldLabel htmlFor="contact-message" className={labelClass}>
+                Message
+              </FieldLabel>
+              {/* Decorative: the schema has no max length, so this never warns. */}
+              <span className={cn(metaClass, "tabular-nums")}>
+                {messageLength ? `${messageLength} chars` : ""}
+              </span>
+            </div>
+            <Textarea
+              {...field}
+              id="contact-message"
+              rows={4}
+              placeholder="What are you working on, and where do I fit?"
+              aria-invalid={fieldState.invalid}
+              className={cn(
+                underlineFieldClass,
+                "field-sizing-fixed h-auto min-h-26 resize-y pb-2.5 leading-[1.55]"
+              )}
+            />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+
+      <div className="flex flex-wrap items-center gap-4.5">
+        {/* The one place the accent is a fill. `text-background` keeps the
+            label readable against the light indigo `--cron-accent` in dark
+            mode, and the hover mixes toward `--foreground` so it darkens in
+            light mode and lightens in dark. */}
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="h-[2.875rem] gap-2.5 bg-cron-accent px-6 font-mono text-[0.71875rem] tracking-[0.16em] text-background uppercase hover:bg-[color-mix(in_oklab,var(--cron-accent)_88%,var(--foreground))] [&_svg:not([class*='size-'])]:size-[0.9375rem]"
+        >
+          Send message
+          {isSubmitting ? <Spinner /> : <Send />}
+        </Button>
+        <span className={metaClass}>Goes straight to my inbox</span>
+      </div>
     </form>
   )
 }

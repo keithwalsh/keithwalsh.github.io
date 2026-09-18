@@ -253,3 +253,13 @@
     transform: scale(1.35);
   }
 }
+
+/* Contact page: section eyebrow rules sweep in from the left. */
+@keyframes rule-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

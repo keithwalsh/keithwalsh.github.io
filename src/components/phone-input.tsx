@@ -6,7 +6,6 @@ import PhoneInputWithCountrySelect, {
 } from "react-phone-number-input"
 
 import { Button } from "@/components/ui/button"
-import { buttonGroupVariants } from "@/components/ui/button-group"
 import {
   Command,
   CommandEmpty,
@@ -34,6 +33,8 @@ type PhoneInputProps = Omit<
   value?: string
   onChange?: (value: string) => void
   defaultCountry?: Country
+  /** Forwarded to the underlying number input; `className` lands there too. */
+  numberInputProps?: React.ComponentProps<"input">
 }
 
 /** Phone number input with a searchable country picker; the value is E.164. */
@@ -46,7 +47,7 @@ function PhoneInput({
 }: PhoneInputProps) {
   return (
     <PhoneInputWithCountrySelect
-      className={cn(buttonGroupVariants(), "w-full", className)}
+      className={cn("flex w-full items-end gap-3", className)}
       flagComponent={FlagIcon}
       countrySelectComponent={CountrySelect}
       inputComponent={Input}
@@ -86,12 +87,15 @@ function CountrySelect({
       <PopoverTrigger asChild>
         <Button
           type="button"
-          variant="outline"
+          variant="ghost"
           disabled={disabled}
-          className="gap-1.5 px-2.5"
+          className="h-[2.125rem] gap-2 rounded-none border-0 border-b px-0 pt-0 pb-1.5 font-mono text-[0.8125rem] font-normal transition-colors hover:border-cron-accent hover:bg-transparent"
           aria-label={`Country: ${selectedLabel}`}
         >
           <FlagIcon country={selectedCountry} />
+          {selectedCountry && (
+            <span>+{getCountryCallingCode(selectedCountry)}</span>
+          )}
           <ChevronsUpDown className="size-3.5 text-muted-foreground" />
         </Button>
       </PopoverTrigger>

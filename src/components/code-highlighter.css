@@ -60,7 +60,6 @@
 .code-block[data-wrap="false"] code {
   width: max-content;
   min-width: 100%;
-  tab-size: 4;
 }
 
 .code-block[data-wrap="false"] .code-line-content {

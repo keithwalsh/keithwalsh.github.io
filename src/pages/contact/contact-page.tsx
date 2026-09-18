@@ -1,29 +1,74 @@
-import { Page, PageHeader } from "@/components/page"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Page } from "@/components/page"
+import {
+  eyebrowClass,
+  useReducedMotion,
+  useReveal,
+} from "@/pages/about/about-shared"
 import { ContactForm } from "@/pages/contact/contact-form"
 import { SocialLinks } from "@/pages/contact/social-links"
 
-export default function ContactPage() {
+const MASTHEAD_LINES = ["Let's", "Connect"]
+
+/** Mono section label with a rule that sweeps out to fill the row. */
+function SectionEyebrow({ label, delay }: { label: string; delay: string }) {
   return (
-    <Page>
-      <PageHeader title="Let's Connect" />
-      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <Card>
-          <CardHeader>
-            <CardTitle>You can find me here</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <SocialLinks />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Or send me a message</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ContactForm />
-          </CardContent>
-        </Card>
+    <div className="flex items-baseline gap-3">
+      <span className={eyebrowClass}>{label}</span>
+      <span
+        aria-hidden="true"
+        className="h-px flex-1 origin-left bg-border motion-safe:animate-[rule-in_0.9s_cubic-bezier(.16,1,.3,1)_both]"
+        style={{ animationDelay: delay }}
+      />
+    </div>
+  )
+}
+
+export default function ContactPage() {
+  const reduced = useReducedMotion()
+  // The masthead replaces `PageHeader`; the document title and breadcrumb
+  // still come from `navigation.ts` via `findNavLocation`.
+  const revealRef = useReveal<HTMLDivElement>(!reduced)
+
+  return (
+    <Page
+      ref={revealRef}
+      className="gap-0 px-6 pt-7 pb-18 md:px-6 md:pt-7 md:pb-18"
+    >
+      {/* Flex scaffolding intentionally leaves room for a right-hand block. */}
+      <div className="flex flex-wrap items-end justify-between gap-8 pt-1.5">
+        <div className="flex min-w-0 flex-[1_1_26.25rem] flex-col">
+          <h1 className="font-heading text-[clamp(2.5rem,6vw,3.875rem)] leading-[0.92] font-semibold tracking-[-0.04em] uppercase">
+            {MASTHEAD_LINES.map((line, index) => (
+              <span key={line} className="block overflow-hidden pb-[0.04em]">
+                <span
+                  className="block motion-safe:animate-[masthead-in_1s_cubic-bezier(.16,1,.3,1)_both]"
+                  style={{ animationDelay: `${0.08 + index * 0.12}s` }}
+                >
+                  {line}
+                </span>
+              </span>
+            ))}
+          </h1>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 items-start pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-x-14">
+        <div data-reveal="0" className="flex min-w-0 flex-col gap-5">
+          <SectionEyebrow label="01 — Find me" delay="0.6s" />
+          <SocialLinks />
+        </div>
+
+        {/* The rule sits in the middle of the 56px gutter: the negative margin
+            pulls the column back so its content starts at the gutter's edge.
+            Stacked below `lg` there is no rule — the channel list already ends
+            in a hairline, so a second one reads as a double rule. */}
+        <div
+          data-reveal="1"
+          className="mt-10 flex min-w-0 flex-col gap-5 lg:mt-0 lg:-ml-14 lg:border-l lg:pl-14"
+        >
+          <SectionEyebrow label="02 — Send a message" delay="0.68s" />
+          <ContactForm />
+        </div>
       </div>
     </Page>
   )
