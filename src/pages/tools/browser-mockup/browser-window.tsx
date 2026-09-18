@@ -117,6 +117,8 @@ export function BrowserWindow({
           className="block h-auto w-full"
         />
       ) : (
+        // Never exported (export needs an image), so unlike the rest of the
+        // frame its label is rem-sized and follows the text-size setting.
         <button
           type="button"
           onClick={onPlaceholderClick}
@@ -127,7 +129,7 @@ export function BrowserWindow({
               color: colors.placeholderText,
             } as CSSProperties
           }
-          className="flex aspect-video w-full cursor-pointer items-center justify-center bg-[image:repeating-linear-gradient(45deg,var(--stripe-a)_0_7px,var(--stripe-b)_7px_14px)] font-mono text-[13px] tracking-[0.02em] outline-none focus-visible:ring-3 focus-visible:ring-brand/50 focus-visible:ring-inset"
+          className="flex aspect-video w-full cursor-pointer items-center justify-center bg-[image:repeating-linear-gradient(45deg,var(--stripe-a)_0_7px,var(--stripe-b)_7px_14px)] font-mono text-[0.8125rem] tracking-[0.02em] outline-none focus-visible:ring-3 focus-visible:ring-brand/50 focus-visible:ring-inset"
         >
           your screenshot goes here
         </button>

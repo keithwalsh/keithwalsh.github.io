@@ -211,7 +211,7 @@ export default function BrowserMockupPage() {
             type="button"
             onClick={chooseFile}
             title={image ? "Choose a different image" : "Choose an image"}
-            className="flex min-w-0 items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-[13px] text-muted-foreground ring-1 ring-tool-control-ring transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card"
+            className="flex min-w-0 items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-[0.8125rem] text-muted-foreground ring-1 ring-tool-control-ring transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card"
           >
             <ImageIcon className="size-3.5 shrink-0" />
             <span className="truncate text-foreground">
@@ -312,11 +312,11 @@ export default function BrowserMockupPage() {
               </div>
             </div>
 
-            <p className="pointer-events-none absolute bottom-3.5 left-[18px] flex items-center gap-2 font-mono text-[11px] text-subtle @max-xl/mockup:hidden">
-              <SquareDashed className="size-[13px]" />
+            <p className="pointer-events-none absolute bottom-3.5 left-4.5 flex items-center gap-2 font-mono text-[0.6875rem] text-subtle @max-xl/mockup:hidden">
+              <SquareDashed className="size-3.25" />
               drop or paste a new image anywhere on the canvas
             </p>
-            <p className="pointer-events-none absolute right-[18px] bottom-3.5 font-mono text-[11px] text-subtle tabular-nums">
+            <p className="pointer-events-none absolute right-4.5 bottom-3.5 font-mono text-[0.6875rem] text-subtle tabular-nums">
               {fit.width} × {fit.height}
               {fit.scale < 1 && ` · ${Math.round(fit.scale * 100)}%`}
             </p>

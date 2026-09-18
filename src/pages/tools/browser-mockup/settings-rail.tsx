@@ -33,7 +33,7 @@ export function SettingsRail({
         className
       )}
     >
-      <div className="flex items-center gap-2 px-5 pt-3.5 pb-3 text-[13px] font-semibold">
+      <div className="flex items-center gap-2 px-5 pt-3.5 pb-3 text-[0.8125rem] font-semibold">
         <SlidersHorizontal className="size-3.5 text-brand" />
         Mockup settings
       </div>
@@ -67,7 +67,7 @@ export function SettingsRail({
         <div className="flex flex-col gap-2">
           <label
             htmlFor="mockup-url"
-            className="text-[13px] text-muted-foreground"
+            className="text-[0.8125rem] text-muted-foreground"
           >
             URL
           </label>
@@ -103,7 +103,7 @@ export function SettingsRail({
         <div className="flex flex-col gap-2">
           <span
             id="mockup-shadow"
-            className="text-[13px] text-muted-foreground"
+            className="text-[0.8125rem] text-muted-foreground"
           >
             Shadow
           </span>
@@ -186,7 +186,7 @@ function Segmented<T extends string>({
         <ToggleGroupItem
           key={optionValue}
           value={optionValue}
-          className="h-7 flex-1 rounded-md text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-transparent hover:text-foreground data-[state=on]:bg-brand/16 data-[state=on]:text-brand"
+          className="h-7 flex-1 rounded-md text-[0.8125rem] text-muted-foreground transition-colors duration-150 hover:bg-transparent hover:text-foreground data-[state=on]:bg-brand/16 data-[state=on]:text-brand"
         >
           {optionLabel}
         </ToggleGroupItem>
@@ -210,7 +210,7 @@ function RangeControl({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between text-[13px]">
+      <div className="flex items-center justify-between text-[0.8125rem]">
         <label htmlFor={id} className="text-muted-foreground">
           {label}
         </label>
@@ -221,7 +221,7 @@ function RangeControl({
         {...range}
         value={[value]}
         onValueChange={([next]) => onValueChange(next)}
-        className="py-[5px] [&_[data-slot=slider-range]]:bg-brand [&_[data-slot=slider-thumb]]:border-brand [&_[data-slot=slider-thumb]]:ring-brand/30"
+        className="py-1.25 [&_[data-slot=slider-range]]:bg-brand [&_[data-slot=slider-thumb]]:border-brand [&_[data-slot=slider-thumb]]:ring-brand/30"
       />
     </div>
   )

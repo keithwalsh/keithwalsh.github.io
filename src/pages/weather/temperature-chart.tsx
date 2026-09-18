@@ -98,7 +98,7 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
             />
             <YAxis
               yAxisId="temperature"
-              width={36}
+              width="auto"
               domain={[-10, 30]}
               tickFormatter={(value) => `${value}°`}
               {...axis}
@@ -106,7 +106,7 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
             <YAxis
               yAxisId="humidity"
               orientation="right"
-              width={36}
+              width="auto"
               domain={[20, 100]}
               ticks={[20, 40, 60, 80, 100]}
               tickFormatter={(value) => `${value}%`}

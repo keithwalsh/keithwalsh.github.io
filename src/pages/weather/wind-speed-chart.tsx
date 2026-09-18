@@ -92,7 +92,7 @@ export function WindSpeedChart({ data }: { data: WindRow[] }) {
               tickMargin={8}
               minTickGap={24}
             />
-            <YAxis width={36} tickLine={false} axisLine={false} />
+            <YAxis width="auto" tickLine={false} axisLine={false} />
             <ChartTooltip
               cursor={{ stroke: "var(--border)" }}
               content={

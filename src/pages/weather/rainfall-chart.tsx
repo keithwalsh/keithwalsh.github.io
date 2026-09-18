@@ -115,7 +115,7 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
               tickMargin={8}
             />
             <YAxis
-              width={36}
+              width="auto"
               domain={[0, 31]}
               ticks={[0, 10, 20, 30]}
               tickLine={false}
