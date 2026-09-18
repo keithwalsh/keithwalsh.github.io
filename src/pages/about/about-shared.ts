@@ -1,13 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 
-/** The About route widens past the shared `Page` container to 1400px. */
-export const sectionClass =
-  "mx-auto w-full max-w-[87.5rem] px-[clamp(1.25rem,4vw,3.5rem)]"
-
-/** Mono section label, e.g. `01 — Professional Journey`. */
-export const eyebrowClass =
-  "font-mono text-[0.6875rem] tracking-[0.2em] text-muted-foreground uppercase"
-
 export const COUNT_WORDS = [
   "Zero",
   "One",

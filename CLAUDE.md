@@ -124,6 +124,10 @@ the existing folder-per-tool shape rather than adding shared tool infrastructure
   `npx shadcn@latest add <component>`; they land in `src/components/ui/`. Treat
   that directory as generated — it has its own ESLint exemption for exporting
   variant helpers next to components.
+- **`import { cn } from "cn"` does not load the package.** `vite.config.ts`
+  aliases it to `src/lib/utils.ts`, which registers the custom `--text-*`
+  sizes (`text-eyebrow`, `text-meta`, `text-display`). Add any new `--text-*`
+  token there too, or `cn()` reads it as a text colour and drops it.
 - **`verbatimModuleSyntax`** is on: type-only imports must use `import type`.
 - **`erasableSyntaxOnly`** is on: no `enum`, no constructor parameter properties.
 - `noUnusedLocals` and `noUnusedParameters` are errors, so `typecheck` fails on

@@ -73,7 +73,7 @@ export function AppSidebar() {
             <span className="text-sm leading-none font-medium tracking-[-0.01em]">
               {siteConfig.name}
             </span>
-            <span className="font-mono text-[0.59375rem] leading-none tracking-[0.2em] text-muted-foreground uppercase">
+            <span className="font-mono text-eyebrow leading-none text-muted-foreground uppercase">
               {siteConfig.domain}
             </span>
           </span>
@@ -101,7 +101,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className="px-2.5 py-0">
-          <SidebarGroupLabel className="h-auto gap-2.5 px-2.5 pt-5.5 pb-2 font-mono text-[0.59375rem] leading-[0.8125rem] font-normal tracking-[0.2em] text-muted-foreground uppercase">
+          <SidebarGroupLabel className="h-auto gap-2.5 px-2.5 pt-5.5 pb-2 font-mono text-eyebrow leading-[0.8125rem] font-normal text-muted-foreground uppercase">
             Explore
             <span
               aria-hidden="true"
@@ -123,7 +123,7 @@ export function AppSidebar() {
                     <SidebarMenuButton className={rowClass}>
                       <section.icon />
                       <span>{section.title}</span>
-                      <span className="ml-auto font-mono text-[0.625rem] text-muted-foreground">
+                      <span className="ml-auto font-mono text-meta text-muted-foreground">
                         {section.items.length}
                       </span>
                       <ChevronRight className="size-3.5! text-muted-foreground transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

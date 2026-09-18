@@ -1,8 +1,8 @@
 import { useRef } from "react"
 
+import { Masthead, sectionClass } from "@/components/editorial"
 import { assetUrl } from "@/lib/browser"
 import {
-  sectionClass,
   useReducedMotion,
   useReveal,
   useScrollEffect,
@@ -40,7 +40,7 @@ export function ProfileIntro() {
     >
       <div
         data-reveal="0"
-        className="flex flex-wrap items-center justify-between gap-3 border-b pb-3.5 font-mono text-[0.65625rem] tracking-[0.2em] text-muted-foreground uppercase"
+        className="flex flex-wrap items-center justify-between gap-3 border-b pb-3.5 font-mono text-eyebrow text-muted-foreground uppercase"
       >
         <span className="flex items-center gap-2.5">
           <span
@@ -72,22 +72,11 @@ export function ProfileIntro() {
         </div>
 
         <div className="flex min-w-0 flex-[1_1_18.75rem] flex-col gap-[clamp(0.875rem,1.6vw,1.25rem)]">
-          <h1 className="font-heading text-[clamp(1.875rem,3.7vw,3.125rem)] leading-none font-semibold tracking-[-0.04em] uppercase">
-            {NAME_LINES.map((line, index) => (
-              <span key={line} className="block overflow-hidden pb-[0.04em]">
-                <span
-                  className="block motion-safe:animate-[masthead-in_1s_cubic-bezier(.16,1,.3,1)_both]"
-                  style={{ animationDelay: `${0.08 + index * 0.12}s` }}
-                >
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h1>
+          <Masthead lines={NAME_LINES} />
 
           <div
             data-reveal="2"
-            className="flex flex-wrap items-center gap-2.5 font-mono text-[0.71875rem] tracking-[0.14em] text-foreground/85 uppercase"
+            className="flex flex-wrap items-center gap-2.5 font-mono text-meta text-foreground/85 uppercase"
           >
             <span>Data Analyst</span>
             <span aria-hidden="true" className="h-px w-[1.125rem] bg-brand" />

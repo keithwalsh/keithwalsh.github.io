@@ -1,11 +1,10 @@
 import { useId, useRef, useState } from "react"
 
+import { eyebrowClass, sectionClass } from "@/components/editorial"
 import journey from "@/data/professionalJourney.json"
 import { cn } from "@/lib/utils"
 import {
-  eyebrowClass,
   pad,
-  sectionClass,
   trackRows,
   useReducedMotion,
   useScrollEffect,
@@ -41,7 +40,7 @@ export function ProfessionalJourney() {
             <div className="text-[0.9375rem] leading-normal text-foreground/85">
               {current.title} · {current.company}
             </div>
-            <div className="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.14em] text-muted-foreground">
+            <div className="flex items-center gap-3 font-mono text-meta text-muted-foreground">
               <span>
                 {pad(open + 1)} / {pad(positions.length)}
               </span>
@@ -85,7 +84,7 @@ export function ProfessionalJourney() {
                 >
                   <span
                     className={cn(
-                      "flex-none font-mono text-xs tracking-[0.12em] tabular-nums transition-colors duration-300",
+                      "flex-none font-mono text-meta tabular-nums transition-colors duration-300",
                       isOpen ? "text-brand" : "text-subtle"
                     )}
                   >
@@ -100,7 +99,7 @@ export function ProfessionalJourney() {
                     >
                       {position.title}
                     </span>
-                    <span className="font-mono text-[0.71875rem] tracking-[0.12em] text-muted-foreground uppercase">
+                    <span className="font-mono text-meta text-muted-foreground uppercase">
                       {position.company}
                     </span>
                   </span>
@@ -125,7 +124,7 @@ export function ProfessionalJourney() {
                 >
                   <div className="overflow-hidden">
                     <div className="flex flex-col gap-4 pb-[clamp(1.5rem,3vw,2.25rem)] pl-[clamp(0px,4vw,4rem)]">
-                      <div className="flex flex-wrap gap-x-5 gap-y-1.5 font-mono text-[0.6875rem] tracking-[0.1em] text-muted-foreground uppercase">
+                      <div className="flex flex-wrap gap-x-5 gap-y-1.5 font-mono text-meta text-muted-foreground uppercase">
                         <span>{position.dateRange}</span>
                         <span>{position.location}</span>
                       </div>
@@ -151,7 +150,7 @@ export function ProfessionalJourney() {
                         {position.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="rounded-full border px-2.5 py-[5px] font-mono text-[0.65625rem] tracking-[0.1em] text-foreground/85 uppercase"
+                            className="rounded-full border px-2.5 py-1.25 font-mono text-meta text-foreground/85 uppercase"
                           >
                             {tech}
                           </span>

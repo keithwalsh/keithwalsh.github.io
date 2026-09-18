@@ -69,6 +69,20 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Type roles. `eyebrow` is a standalone label (a section heading, form label
+   or status line) and `meta` an inline run such as a date, tag or caption;
+   both are set in mono uppercase. `display` is the page masthead. Register any
+   new `--text-*` name in src/lib/utils.ts too, or cn() merges it away. */
+@theme {
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--letter-spacing: 0.2em;
+  --text-meta: 0.6875rem;
+  --text-meta--letter-spacing: 0.14em;
+  --text-display: clamp(2.5rem, 6vw, 3.875rem);
+  --text-display--line-height: 0.92;
+  --text-display--letter-spacing: -0.04em;
+}
+
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -236,7 +250,7 @@
   }
 }
 
-/* About page: masthead line wipe and the location dot's pulse. */
+/* The `Masthead` line wipe and the status dot's pulse. */
 @keyframes masthead-in {
   from {
     transform: translateY(108%);

@@ -1,15 +1,11 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
 
+import { eyebrowClass, sectionClass } from "@/components/editorial"
 import certData from "@/data/certifications.json"
 import { assetUrl } from "@/lib/browser"
 import { cn } from "@/lib/utils"
-import {
-  eyebrowClass,
-  sectionClass,
-  useReducedMotion,
-  useReveal,
-} from "@/pages/about/about-shared"
+import { useReducedMotion, useReveal } from "@/pages/about/about-shared"
 
 const EDUCATION = {
   kicker: "Education",
@@ -48,9 +44,7 @@ export function EducationCerts() {
             data-reveal={index}
             className="flex flex-col gap-3 bg-background p-[clamp(1.375rem,2.5vw,2rem)]"
           >
-            <div className="font-mono text-[0.65625rem] tracking-[0.18em] text-muted-foreground uppercase">
-              {cell.kicker}
-            </div>
+            <div className={eyebrowClass}>{cell.kicker}</div>
             <div className="text-[clamp(1.125rem,1.9vw,1.375rem)] leading-[1.25] font-medium tracking-[-0.02em] text-pretty">
               {cell.title}
             </div>

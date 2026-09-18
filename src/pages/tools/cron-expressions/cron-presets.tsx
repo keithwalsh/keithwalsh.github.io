@@ -1,3 +1,4 @@
+import { eyebrowClass } from "@/components/editorial"
 import {
   Tooltip,
   TooltipContent,
@@ -23,10 +24,7 @@ export function CronPresets({
       aria-labelledby="cron-presets-heading"
       className={cn("flex flex-col gap-2", className)}
     >
-      <h2
-        id="cron-presets-heading"
-        className="text-xs font-semibold tracking-widest text-muted-foreground uppercase"
-      >
+      <h2 id="cron-presets-heading" className={eyebrowClass}>
         Presets
       </h2>
       <div className="grid gap-1 @sm:grid-cols-2">

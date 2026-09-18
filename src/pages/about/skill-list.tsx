@@ -12,14 +12,10 @@ import {
   SiTypescript,
 } from "react-icons/si"
 
+import { eyebrowClass, sectionClass } from "@/components/editorial"
 import skillsData from "@/data/skills.json"
 import { cn } from "@/lib/utils"
-import {
-  COUNT_WORDS,
-  eyebrowClass,
-  sectionClass,
-  useReducedMotion,
-} from "@/pages/about/about-shared"
+import { COUNT_WORDS, useReducedMotion } from "@/pages/about/about-shared"
 
 const ICONS: Record<string, IconType> = {
   python: SiPython,
@@ -47,7 +43,7 @@ export function SkillList() {
     >
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className={eyebrowClass}>02 — Skills &amp; Expertise</div>
-        <div className="font-mono text-[0.6875rem] tracking-[0.14em] text-subtle">
+        <div className="font-mono text-meta text-subtle">
           {total} / {COUNT_WORDS[skills.length] ?? skills.length}
         </div>
       </div>
@@ -97,7 +93,7 @@ function SkillRow({
       onPointerLeave={reset}
       className="flex flex-wrap items-center gap-[clamp(0.75rem,2vw,1.75rem)] border-t py-[clamp(1rem,1.8vw,1.375rem)] transition-[background-color,padding-left] duration-300 hover:bg-brand/[7%] hover:pl-3"
     >
-      <span className="flex-[0_0_1.75rem] font-mono text-[0.6875rem] text-subtle">
+      <span className="flex-[0_0_1.75rem] font-mono text-meta text-subtle">
         {String(index + 1).padStart(2, "0")}
       </span>
       <span
@@ -115,7 +111,7 @@ function SkillRow({
       <span className="min-w-[7.5rem] flex-[0_1_11.25rem] text-[clamp(1.0625rem,1.7vw,1.3125rem)] font-medium tracking-[-0.015em]">
         {skill.name}
       </span>
-      <span className="min-w-[6.875rem] flex-[0_1_10rem] font-mono text-[0.6875rem] tracking-[0.12em] text-muted-foreground uppercase">
+      <span className="min-w-[6.875rem] flex-[0_1_10rem] font-mono text-meta text-muted-foreground uppercase">
         {skill.category}
       </span>
       <span className="min-w-[12.5rem] flex-[2_1_18.75rem] text-[0.90625rem] leading-normal text-pretty text-muted-foreground">

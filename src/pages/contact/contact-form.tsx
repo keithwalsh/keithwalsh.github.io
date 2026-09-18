@@ -11,6 +11,7 @@ import {
 import { toast } from "sonner"
 import { z } from "zod"
 
+import { eyebrowClass } from "@/components/editorial"
 import { PhoneInput } from "@/components/phone-input"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
@@ -29,11 +30,12 @@ import { cn } from "@/lib/utils"
 const underlineFieldClass =
   "h-[2.125rem] rounded-none border-0 border-b bg-transparent px-0 pt-0 pb-1.5 text-base transition-[border-color,box-shadow] focus-visible:border-brand focus-visible:shadow-[0_1px_0_0_var(--brand)] focus-visible:ring-0 aria-invalid:border-destructive aria-invalid:shadow-none aria-invalid:ring-0 md:text-base dark:bg-transparent"
 
-const labelClass =
-  "font-mono text-[0.65625rem] tracking-[0.18em] text-muted-foreground uppercase group-data-[invalid=true]/field:text-destructive"
+const labelClass = cn(
+  eyebrowClass,
+  "group-data-[invalid=true]/field:text-destructive"
+)
 
-const metaClass =
-  "font-mono text-[0.65625rem] tracking-[0.14em] text-muted-foreground uppercase"
+const metaClass = "font-mono text-meta text-muted-foreground uppercase"
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
@@ -121,7 +123,7 @@ export function ContactForm() {
   if (sent) {
     return (
       <div className="flex flex-col gap-4 border-t border-brand bg-brand-soft p-8">
-        <span className="font-mono text-[0.65625rem] tracking-[0.2em] text-brand uppercase">
+        <span className="font-mono text-eyebrow text-brand uppercase">
           Message sent
         </span>
         <p className="max-w-[46ch] text-[1.0625rem] leading-[1.55] text-pretty">
@@ -132,7 +134,7 @@ export function ContactForm() {
           type="button"
           variant="outline"
           onClick={() => setSent(null)}
-          className="h-[2.125rem] w-fit px-3.5 font-mono text-[0.65625rem] tracking-[0.16em] uppercase"
+          className="h-[2.125rem] w-fit px-3.5 font-mono text-meta uppercase"
         >
           Write another
         </Button>
@@ -253,7 +255,7 @@ export function ContactForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-[2.875rem] gap-2.5 bg-brand px-6 font-mono text-[0.71875rem] tracking-[0.16em] text-brand-foreground uppercase hover:bg-brand-hover [&_svg:not([class*='size-'])]:size-[0.9375rem]"
+          className="h-[2.875rem] gap-2.5 bg-brand px-6 font-mono text-meta text-brand-foreground uppercase hover:bg-brand-hover [&_svg:not([class*='size-'])]:size-[0.9375rem]"
         >
           Send message
           {isSubmitting ? <Spinner /> : <Send />}

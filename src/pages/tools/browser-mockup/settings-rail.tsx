@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
 import { SlidersHorizontal } from "lucide-react"
 
+import { eyebrowClass } from "@/components/editorial"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -151,9 +152,7 @@ function RailSection({
 }) {
   return (
     <section className="border-t border-foreground/8 px-5 py-4">
-      <h2 className="mb-3 text-[11px] font-semibold tracking-[0.08em] text-subtle uppercase">
-        {title}
-      </h2>
+      <h2 className={cn(eyebrowClass, "mb-3")}>{title}</h2>
       <div className="flex flex-col gap-3.5">{children}</div>
     </section>
   )

@@ -3,12 +3,11 @@ import { createPortal } from "react-dom"
 import { ArrowUpRight } from "lucide-react"
 import { Link, useOutletContext, useParams } from "react-router"
 
+import { eyebrowClass, sectionClass } from "@/components/editorial"
 import { formatPostDate, posts } from "@/lib/posts"
 import { cn } from "@/lib/utils"
 import {
-  eyebrowClass,
   pad,
-  sectionClass,
   useReducedMotion,
   useReveal,
   useScrollEffect,
@@ -110,12 +109,12 @@ function Post({ index }: { index: number }) {
           "pt-[clamp(1.25rem,2.5vw,1.875rem)] pb-[clamp(2rem,4vw,3.25rem)]"
         )}
       >
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 font-mono text-[0.65625rem] tracking-[0.2em] text-muted-foreground uppercase">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 font-mono text-eyebrow text-muted-foreground uppercase">
           <span className="text-brand">Post {pad(index + 1)}</span>
           <span>{formatPostDate(post.date)}</span>
           <span>{minutes} min read</span>
           {post.draft && (
-            <span className="rounded-full border px-2.25 py-1 tracking-[0.14em]">
+            <span className="rounded-full border px-2.25 py-1 text-meta">
               Draft
             </span>
           )}
@@ -172,7 +171,7 @@ function Post({ index }: { index: number }) {
                         aria-current={isActive ? "location" : undefined}
                         onClick={() => jump(i)}
                         className={cn(
-                          "flex items-start gap-2.5 py-1.75 text-left font-mono text-[0.65625rem] tracking-[0.12em] uppercase transition-colors duration-300 hover:text-foreground",
+                          "flex items-start gap-2.5 py-1.75 text-left font-mono text-meta uppercase transition-colors duration-300 hover:text-foreground",
                           isActive ? "text-foreground" : "text-muted-foreground"
                         )}
                       >
@@ -202,9 +201,7 @@ function Post({ index }: { index: number }) {
 
             {next && (
               <div className="mt-[clamp(2.75rem,5vw,4.5rem)] border-t border-foreground pt-4.5">
-                <div className={cn(eyebrowClass, "text-[0.65625rem]")}>
-                  Next in the index
-                </div>
+                <div className={eyebrowClass}>Next in the index</div>
                 <Link
                   to={`/blog/${next.slug}`}
                   className={cn(rowLinkClass, "pt-5")}

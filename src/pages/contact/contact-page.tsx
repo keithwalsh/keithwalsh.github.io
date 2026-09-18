@@ -1,9 +1,6 @@
+import { eyebrowClass, Masthead } from "@/components/editorial"
 import { Page } from "@/components/page"
-import {
-  eyebrowClass,
-  useReducedMotion,
-  useReveal,
-} from "@/pages/about/about-shared"
+import { useReducedMotion, useReveal } from "@/pages/about/about-shared"
 import { ContactForm } from "@/pages/contact/contact-form"
 import { SocialLinks } from "@/pages/contact/social-links"
 
@@ -37,18 +34,7 @@ export default function ContactPage() {
       {/* Flex scaffolding intentionally leaves room for a right-hand block. */}
       <div className="flex flex-wrap items-end justify-between gap-8 pt-1.5">
         <div className="flex min-w-0 flex-[1_1_26.25rem] flex-col">
-          <h1 className="font-heading text-[clamp(2.5rem,6vw,3.875rem)] leading-[0.92] font-semibold tracking-[-0.04em] uppercase">
-            {MASTHEAD_LINES.map((line, index) => (
-              <span key={line} className="block overflow-hidden pb-[0.04em]">
-                <span
-                  className="block motion-safe:animate-[masthead-in_1s_cubic-bezier(.16,1,.3,1)_both]"
-                  style={{ animationDelay: `${0.08 + index * 0.12}s` }}
-                >
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h1>
+          <Masthead lines={MASTHEAD_LINES} />
         </div>
       </div>
 

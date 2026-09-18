@@ -43,7 +43,7 @@ export function SocialLinks() {
             )}
             <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
               <span className="text-[0.9375rem] font-medium">{link.label}</span>
-              <span className="truncate font-mono text-[0.71875rem] text-muted-foreground">
+              <span className="truncate font-mono text-xs text-muted-foreground">
                 {handleFor(link.href)}
               </span>
             </span>

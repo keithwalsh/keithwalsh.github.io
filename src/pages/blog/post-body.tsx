@@ -29,7 +29,7 @@ const components: Components = {
     >
       <span
         aria-hidden="true"
-        className="font-mono text-[0.6875rem] tracking-[0.16em] text-brand tabular-nums before:content-[counter(section,decimal-leading-zero)]"
+        className="font-mono text-meta text-brand tabular-nums before:content-[counter(section,decimal-leading-zero)]"
       />
       <h2
         tabIndex={-1}
@@ -102,7 +102,7 @@ const components: Components = {
 
     return (
       <figure className="mt-6 mb-5.5 overflow-hidden rounded-lg border bg-muted/40">
-        <figcaption className="flex items-center justify-between gap-3 border-b px-3 py-2.25 font-mono text-[0.65625rem] tracking-[0.14em] text-muted-foreground uppercase">
+        <figcaption className="flex items-center justify-between gap-3 border-b px-3 py-2.25 font-mono text-meta text-muted-foreground uppercase">
           {/* Text after the fence's language names the file:
               ```tsx professional-projects-page.tsx */}
           <span className="min-w-0 truncate">
@@ -142,7 +142,7 @@ function CopyButton({ text }: { text: string }) {
       <button
         type="button"
         onClick={copy}
-        className="inline-flex flex-none items-center gap-1.5 rounded-full border bg-background px-2.25 py-1 text-[0.625rem] tracking-[0.12em] uppercase transition-colors outline-none hover:border-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="inline-flex flex-none items-center gap-1.5 rounded-full border bg-background px-2.25 py-1 text-meta uppercase transition-colors outline-none hover:border-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         {copied ? (
           <>
