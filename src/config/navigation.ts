@@ -1,30 +1,18 @@
 import type { ComponentType } from "react"
-import {
-  AppWindow,
-  Braces,
-  Briefcase,
-  CalendarClock,
-  ChartColumn,
-  CloudSun,
-  CodeXml,
-  Coffee,
-  FlaskConical,
-  House,
-  Mail,
-  PenLine,
-  Rocket,
-  Table,
-  Type,
-  Wrench,
-} from "lucide-react"
+import { ChartColumn, House, Mail, PenLine, Rocket, Wrench } from "lucide-react"
 
 import { siteConfig } from "@/config/site"
 
 export type NavIcon = ComponentType<{ className?: string }>
 
+// Section items render label-only in the sidebar, so only top-level rows
+// (primary items and sections) carry an icon.
 export type NavItem = {
   title: string
   url: string
+}
+
+export type PrimaryNavItem = NavItem & {
   icon: NavIcon
 }
 
@@ -34,7 +22,7 @@ export type NavSection = {
   items: NavItem[]
 }
 
-export const primaryNav: NavItem[] = [
+export const primaryNav: PrimaryNavItem[] = [
   { title: "About", url: "/", icon: House },
   { title: "Blog", url: "/blog", icon: PenLine },
   { title: "Contact", url: "/contact", icon: Mail },
@@ -42,41 +30,31 @@ export const primaryNav: NavItem[] = [
 
 export const sectionNav: NavSection[] = [
   {
-    title: "Visualizations",
-    icon: ChartColumn,
-    items: [
-      { title: "Weather", url: "/visualizations/weather", icon: CloudSun },
-    ],
-  },
-  {
     title: "Tools",
     icon: Wrench,
     items: [
-      {
-        title: "Browser Mockup",
-        url: "/tools/browser-mockup",
-        icon: AppWindow,
-      },
-      { title: "Code Annotator", url: "/tools/code-annotator", icon: CodeXml },
-      {
-        title: "Cron Expressions",
-        url: "/tools/cron-expressions",
-        icon: CalendarClock,
-      },
-      { title: "JSON Explorer", url: "/tools/json-explorer", icon: Braces },
-      { title: "Markdown Table", url: "/tools/markdown-table", icon: Table },
-      { title: "Text to ASCII", url: "/tools/text-to-ascii", icon: Type },
+      { title: "Browser Mockup", url: "/tools/browser-mockup" },
+      { title: "Code Annotator", url: "/tools/code-annotator" },
+      { title: "Cron Expressions", url: "/tools/cron-expressions" },
+      { title: "JSON Explorer", url: "/tools/json-explorer" },
+      { title: "Markdown Table", url: "/tools/markdown-table" },
+      { title: "Text to ASCII", url: "/tools/text-to-ascii" },
       ...(siteConfig.showTestPage
-        ? [{ title: "Test Page", url: "/test-page", icon: FlaskConical }]
+        ? [{ title: "Test Page", url: "/test-page" }]
         : []),
     ],
+  },
+  {
+    title: "Visualizations",
+    icon: ChartColumn,
+    items: [{ title: "Weather", url: "/visualizations/weather" }],
   },
   {
     title: "Projects",
     icon: Rocket,
     items: [
-      { title: "Professional", url: "/projects/professional", icon: Briefcase },
-      { title: "Personal", url: "/projects/personal", icon: Coffee },
+      { title: "Professional", url: "/projects/professional" },
+      { title: "Personal", url: "/projects/personal" },
     ],
   },
 ]
