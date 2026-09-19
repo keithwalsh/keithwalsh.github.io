@@ -1,6 +1,7 @@
 import { useRef, useState } from "react"
 import { Copy, Dices } from "lucide-react"
 
+import { linkClass } from "@/components/editorial"
 import { IconButton } from "@/components/icon-button"
 import { Input } from "@/components/ui/input"
 import { copyWithToast } from "@/lib/browser"
@@ -108,7 +109,7 @@ export function CronExpressionBar({
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="col-span-5 h-11 rounded-lg bg-background px-3 font-mono text-lg tracking-[0.04em] md:text-lg dark:bg-background"
+          className="col-span-5 h-11 rounded-lg bg-background px-3 font-mono text-lg tracking-wider md:text-lg dark:bg-background"
         />
       ) : (
         <div
@@ -128,7 +129,7 @@ export function CronExpressionBar({
               onFocus={() => onHoverChange([key])}
               onBlur={() => onHoverChange([])}
               className={cn(
-                "h-8 min-w-0 truncate rounded-[7px] px-2 text-center font-mono text-lg font-medium transition-colors duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+                "h-8 min-w-0 truncate rounded-md px-2 text-center font-mono text-lg font-medium transition-colors duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
                 hover.includes(key) && "bg-brand-soft text-brand",
                 key === active && "bg-brand-strong text-brand"
               )}
@@ -150,9 +151,7 @@ export function CronExpressionBar({
       >
         <Dices
           key={rolls}
-          className={cn(
-            rolls > 0 && "motion-safe:animate-[spin_0.5s_ease-in-out]"
-          )}
+          className={cn(rolls > 0 && "motion-safe:animate-roll")}
         />
       </IconButton>
       <IconButton
@@ -166,7 +165,7 @@ export function CronExpressionBar({
 
       <div
         aria-hidden="true"
-        className="col-span-5 grid grid-cols-subgrid gap-x-1 px-1.5 text-center text-[0.6875rem] font-medium tracking-widest text-subtle uppercase"
+        className="col-span-5 grid grid-cols-subgrid gap-x-1 px-1.5 text-center text-meta font-medium text-subtle uppercase"
       >
         {FIELD_KEYS.map((key) => {
           const abbreviation = ABBREVIATIONS[key]
@@ -195,7 +194,10 @@ export function CronExpressionBar({
         ref={pasteToggle}
         type="button"
         onClick={togglePasting}
-        className="col-span-2 h-6 rounded-sm text-xs text-muted-foreground underline decoration-foreground/25 underline-offset-3 transition-colors outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+        className={cn(
+          linkClass,
+          "col-span-2 h-6 rounded-sm text-xs text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        )}
       >
         {isPasting ? "Done" : "Paste expression"}
       </button>

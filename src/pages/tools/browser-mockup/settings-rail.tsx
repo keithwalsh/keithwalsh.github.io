@@ -33,7 +33,7 @@ export function SettingsRail({
         className
       )}
     >
-      <div className="flex items-center gap-2 px-5 pt-3.5 pb-3 text-[0.8125rem] font-semibold">
+      <div className="flex items-center gap-2 px-5 pt-3.5 pb-3 text-caption font-semibold">
         <SlidersHorizontal className="size-3.5 text-brand" />
         Mockup settings
       </div>
@@ -69,7 +69,7 @@ export function SettingsRail({
         <div className="flex flex-col gap-2">
           <label
             htmlFor="mockup-url"
-            className="text-[0.8125rem] text-muted-foreground"
+            className="text-caption text-muted-foreground"
           >
             URL
           </label>
@@ -106,7 +106,7 @@ export function SettingsRail({
         <div className="flex flex-col gap-2">
           <span
             id="mockup-shadow"
-            className="text-[0.8125rem] text-muted-foreground"
+            className="text-caption text-muted-foreground"
           >
             Shadow
           </span>
@@ -178,7 +178,7 @@ function RangeControl({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between text-[0.8125rem]">
+      <div className="flex items-center justify-between text-caption">
         <label htmlFor={id} className="text-muted-foreground">
           {label}
         </label>

@@ -43,12 +43,12 @@ export function ProfileIntro() {
       ref={revealRef}
       className={cn(
         sectionClass,
-        "relative overflow-hidden pt-[clamp(1.75rem,3.5vw,2.75rem)] pb-[clamp(2.25rem,5vw,4rem)]"
+        "relative overflow-hidden pt-page-top pb-header-bottom"
       )}
     >
       <StatusBar>Ballindine, Co. Mayo, Ireland</StatusBar>
 
-      <div className="flex flex-wrap items-start gap-[clamp(1.25rem,3vw,2.75rem)] pt-[clamp(1.5rem,3vw,2.5rem)]">
+      <div className="flex flex-wrap items-start gap-stack pt-stack">
         <div className="relative w-[clamp(7.25rem,15vw,10.5rem)] flex-none">
           <div
             ref={glowRef}
@@ -59,7 +59,7 @@ export function ProfileIntro() {
             <img
               src={assetUrl("photo.jpg")}
               alt="Keith Walsh"
-              className="relative block aspect-square w-full rounded-[3px] object-cover object-[50%_20%] contrast-[1.06] grayscale dark:brightness-90"
+              className="relative block aspect-square w-full rounded-xs object-cover object-[50%_20%] contrast-[1.06] grayscale dark:brightness-90"
             />
             <span
               aria-hidden="true"
@@ -68,7 +68,7 @@ export function ProfileIntro() {
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-[1_1_18.75rem] flex-col gap-[clamp(0.875rem,1.6vw,1.25rem)]">
+        <div className="flex min-w-0 flex-[1_1_18.75rem] flex-col gap-stack-sm">
           <Masthead lines={NAME_LINES} />
 
           <div

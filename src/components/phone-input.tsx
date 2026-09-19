@@ -89,7 +89,7 @@ function CountrySelect({
           type="button"
           variant="ghost"
           disabled={disabled}
-          className="h-[2.125rem] gap-2 rounded-none border-0 border-b px-0 pt-0 pb-1.5 font-mono text-[0.8125rem] font-normal transition-colors hover:border-brand hover:bg-transparent"
+          className="h-[2.125rem] gap-2 rounded-none border-0 border-b px-0 pt-0 pb-1.5 font-mono text-caption font-normal transition-colors hover:border-brand hover:bg-transparent"
           aria-label={`Country: ${selectedLabel}`}
         >
           <FlagIcon country={selectedCountry} />
@@ -136,7 +136,7 @@ function CountrySelect({
 
 function FlagIcon({ country }: { country?: Country }) {
   return (
-    <span className="flex h-4 w-6 shrink-0 overflow-hidden rounded-[3px] bg-muted">
+    <span className="flex h-4 w-6 shrink-0 overflow-hidden rounded-xs bg-muted">
       {country && (
         <img
           src={`${FLAG_URL}/${country}.svg`}

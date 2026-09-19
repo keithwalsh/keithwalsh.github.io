@@ -49,7 +49,7 @@ function JsonNode({ name, value, depth, inArray, options }: NodeProps) {
   const showKey = name !== undefined && (!inArray || options.displayArrayKey)
   const key = showKey && (
     <>
-      <span className="text-foreground">{inArray ? name : `"${name}"`}</span>
+      <span className="text-code-number">{inArray ? name : `"${name}"`}</span>
       <span className="text-muted-foreground">: </span>
     </>
   )
@@ -105,7 +105,7 @@ function JsonContainer({
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label={open ? "Collapse" : "Expand"}
-          className="absolute top-0.5 -left-4 flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+          className="absolute top-0.5 -left-4 flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
           <ChevronRight
             className={cn("size-3 transition-transform", open && "rotate-90")}
@@ -126,7 +126,7 @@ function JsonContainer({
           {!open && closeBracket}
         </span>
         {options.displayObjectSize && (
-          <span className="ml-2 text-[0.7rem] text-muted-foreground italic">
+          <span className="ml-2 text-2xs text-muted-foreground italic">
             {entries.length} {entries.length === 1 ? "item" : "items"}
           </span>
         )}
@@ -168,7 +168,7 @@ function JsonValue({
   const [expanded, setExpanded] = useState(false)
   const limit = options.collapseStringsAfterLength
   const dataType = options.displayDataTypes && (
-    <span className="mr-1 text-[0.7rem] text-muted-foreground">
+    <span className="mr-1 text-2xs text-muted-foreground">
       {typeLabel(value)}
     </span>
   )
@@ -180,7 +180,7 @@ function JsonValue({
         {dataType}
         <span
           className={cn(
-            "text-emerald-700 dark:text-emerald-400",
+            "text-code-string",
             limit !== false && value.length > limit && "cursor-pointer"
           )}
           onClick={() => setExpanded(!expanded)}
@@ -196,12 +196,9 @@ function JsonValue({
       {dataType}
       <span
         className={cn(
-          typeof value === "number" &&
-            (Number.isInteger(value)
-              ? "text-blue-700 dark:text-blue-400"
-              : "text-violet-700 dark:text-violet-400"),
-          typeof value === "boolean" && "text-orange-700 dark:text-orange-400",
-          value === null && "text-muted-foreground italic"
+          (typeof value === "number" || typeof value === "boolean") &&
+            "text-code-number",
+          value === null && "text-code-keyword"
         )}
       >
         {String(value)}

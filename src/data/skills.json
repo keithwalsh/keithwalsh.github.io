@@ -4,63 +4,54 @@
       "name": "SQL",
       "category": "Data",
       "iconKey": "database",
-      "color": "#00758F",
       "context": "Daily against an Infor M3 replica and the MySQL schema behind a live webshop."
     },
     {
       "name": "Python",
       "category": "Data & Automation",
       "iconKey": "python",
-      "color": "#3776AB",
       "context": "ETL pipelines, invoice rerating, reporting and internal CLI tooling."
     },
     {
       "name": "PHP",
       "category": "Backend",
       "iconKey": "php",
-      "color": "#777BB4",
       "context": "Laravel services syncing a PIM and an ERP into an e-commerce platform."
     },
     {
       "name": "TypeScript",
       "category": "Frontend",
       "iconKey": "typescript",
-      "color": "#3178C6",
       "context": "Two published npm component libraries and every tool on this site."
     },
     {
       "name": "React",
       "category": "Frontend",
       "iconKey": "react",
-      "color": "#61DAFB",
       "context": "react-spreadsheet-ts, react-markdown-table-ts and this site."
     },
     {
       "name": "JavaScript",
       "category": "Frontend",
       "iconKey": "javascript",
-      "color": "#F7DF1E",
       "context": "Browser extensions and workflow automation for support teams."
     },
     {
       "name": "Node.js",
       "category": "Tooling",
       "iconKey": "node",
-      "color": "#339933",
       "context": "Build pipelines, scripts and publishing packages to npm."
     },
     {
       "name": "HTML",
       "category": "Frontend",
       "iconKey": "html",
-      "color": "#E34F26",
       "context": "Semantic markup and accessibility, including this site's keyboard support."
     },
     {
       "name": "CSS",
       "category": "Frontend",
       "iconKey": "css",
-      "color": "#1572B6",
       "context": "Tailwind CSS v4 and shadcn/ui, light and dark themes."
     }
   ]

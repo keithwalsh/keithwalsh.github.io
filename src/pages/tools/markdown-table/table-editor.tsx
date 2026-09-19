@@ -296,7 +296,7 @@ export function TableEditor({
                       onKeyDown={(event) => handleKeyDown(event, r, c)}
                       onPaste={(event) => handlePaste(event, r, c)}
                       className={cn(
-                        "block field-sizing-content min-h-9 w-full min-w-32 resize-none bg-transparent px-2.5 py-2 outline-none placeholder:text-muted-foreground/60 focus-visible:bg-accent/40 focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset",
+                        "block field-sizing-content min-h-9 w-full min-w-32 resize-none bg-transparent px-2.5 py-2 outline-none placeholder:text-muted-foreground/60 focus-visible:bg-accent/40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset",
                         r === 0 && "font-medium",
                         ALIGN_CLASS[table.alignments[c]]
                       )}

@@ -1,6 +1,12 @@
 import { useId, useRef, useState } from "react"
 
-import { eyebrowClass, sectionClass } from "@/components/editorial"
+import {
+  dashListClass,
+  eyebrowClass,
+  metaClass,
+  nudgeClass,
+  sectionClass,
+} from "@/components/editorial"
 import journey from "@/data/professionalJourney.json"
 import { cn } from "@/lib/utils"
 import {
@@ -28,19 +34,19 @@ export function ProfessionalJourney() {
   })
 
   return (
-    <section className={cn(sectionClass, "py-[clamp(3rem,6vw,6rem)]")}>
+    <section className={cn(sectionClass, "py-section")}>
       {/* `items-stretch` is what gives the sticky rail its travel. */}
-      <div className="flex flex-wrap items-stretch gap-[clamp(1.25rem,3vw,3.5rem)]">
+      <div className="flex flex-wrap items-stretch gap-columns">
         <div className="max-w-[21.25rem] min-w-0 flex-[1_1_10.625rem]">
           <div className="sticky top-24 flex flex-col gap-[1.125rem]">
             <div className={eyebrowClass}>01 — Professional Journey</div>
-            <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-brand tabular-nums">
+            <div className="font-heading text-numeral font-semibold text-brand tabular-nums">
               {current.year}
             </div>
-            <div className="text-[0.9375rem] leading-normal text-foreground/85">
+            <div className="text-body-sm leading-normal text-foreground/85">
               {current.title} · {current.company}
             </div>
-            <div className="flex items-center gap-3 font-mono text-meta text-muted-foreground">
+            <div className={cn(metaClass, "flex items-center gap-3")}>
               <span>
                 {pad(open + 1)} / {pad(positions.length)}
               </span>
@@ -54,7 +60,7 @@ export function ProfessionalJourney() {
                 />
               </span>
             </div>
-            <p className="text-[0.8125rem] leading-normal text-subtle">
+            <p className="text-caption leading-normal text-subtle">
               Scroll, or select a role to pin it open.
             </p>
           </div>
@@ -80,7 +86,10 @@ export function ProfessionalJourney() {
                     setPinned(pinned === index ? null : index)
                     setActive(index)
                   }}
-                  className="flex w-full items-baseline gap-[clamp(0.75rem,2vw,1.75rem)] py-[clamp(1.125rem,2vw,1.625rem)] text-left transition-[padding-left] duration-350 ease-[cubic-bezier(.2,.8,.2,1)] outline-none hover:pl-2.5 focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className={cn(
+                    nudgeClass,
+                    "flex w-full items-baseline gap-cells py-row text-left outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+                  )}
                 >
                   <span
                     className={cn(
@@ -93,15 +102,13 @@ export function ProfessionalJourney() {
                   <span className="flex min-w-0 flex-1 flex-col gap-[5px]">
                     <span
                       className={cn(
-                        "text-[clamp(1.25rem,2.4vw,1.875rem)] leading-[1.12] font-medium tracking-[-0.025em] text-pretty transition-colors duration-300",
+                        "text-title font-medium text-pretty transition-colors duration-300",
                         isOpen ? "text-foreground" : "text-foreground/72"
                       )}
                     >
                       {position.title}
                     </span>
-                    <span className="font-mono text-meta text-muted-foreground uppercase">
-                      {position.company}
-                    </span>
+                    <span className={metaClass}>{position.company}</span>
                   </span>
                   <span
                     aria-hidden="true"
@@ -120,29 +127,35 @@ export function ProfessionalJourney() {
                     gridTemplateRows: isOpen ? "1fr" : "0fr",
                     opacity: isOpen ? 1 : 0,
                   }}
-                  className="grid [transition:grid-template-rows_.55s_cubic-bezier(.2,.8,.2,1),opacity_.4s] motion-reduce:[transition:none]"
+                  className="grid transition-[grid-template-rows,opacity] duration-500 ease-glide motion-reduce:transition-none"
                 >
                   <div className="overflow-hidden">
-                    <div className="flex flex-col gap-4 pb-[clamp(1.5rem,3vw,2.25rem)] pl-[clamp(0px,4vw,4rem)]">
-                      <div className="flex flex-wrap gap-x-5 gap-y-1.5 font-mono text-meta text-muted-foreground uppercase">
+                    <div className="flex flex-col gap-4 pb-stack pl-[clamp(0px,4vw,4rem)]">
+                      <div
+                        className={cn(
+                          metaClass,
+                          "flex flex-wrap gap-x-5 gap-y-1.5"
+                        )}
+                      >
                         <span>{position.dateRange}</span>
                         <span>{position.location}</span>
                       </div>
-                      <p className="max-w-[66ch] text-[0.9375rem] leading-[1.6] text-pretty text-muted-foreground">
+                      <p className="max-w-[66ch] text-body-sm leading-[1.6] text-pretty text-muted-foreground">
                         {position.companyDescription}{" "}
                         {position.companyDescription2}
                       </p>
-                      <ul className="flex max-w-[72ch] flex-col gap-2.5">
+                      <ul
+                        className={cn(
+                          dashListClass,
+                          "flex max-w-[72ch] flex-col gap-2.5"
+                        )}
+                      >
                         {position.details.map((detail) => (
                           <li
                             key={detail}
-                            className="flex gap-3 text-[0.9375rem] leading-[1.55] text-pretty text-foreground/90"
+                            className="text-body-sm leading-[1.55] text-pretty text-foreground/90"
                           >
-                            <span
-                              aria-hidden="true"
-                              className="mt-[0.5625rem] h-px w-3.5 flex-none bg-brand"
-                            />
-                            <span>{detail}</span>
+                            {detail}
                           </li>
                         ))}
                       </ul>
@@ -150,7 +163,10 @@ export function ProfessionalJourney() {
                         {position.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="rounded-full border px-2.5 py-1.25 font-mono text-meta text-foreground/85 uppercase"
+                            className={cn(
+                              metaClass,
+                              "rounded-full border px-2.5 py-1.25 text-foreground/85"
+                            )}
                           >
                             {tech}
                           </span>

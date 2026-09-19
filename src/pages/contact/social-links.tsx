@@ -2,7 +2,9 @@ import { ArrowUpRight } from "lucide-react"
 import type { IconType } from "react-icons"
 import { FaGithub, FaLinkedin, FaStackOverflow } from "react-icons/fa6"
 
+import { NewTabHint, nudgeClass } from "@/components/editorial"
 import socialLinks from "@/data/socialLinks.json"
+import { cn } from "@/lib/utils"
 
 const ICONS: Record<string, IconType> = {
   github: FaGithub,
@@ -36,19 +38,22 @@ export function SocialLinks() {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3.5 border-b border-l-2 border-l-transparent py-4 pr-3 pl-0.5 transition-[background-color,padding,border-color] duration-250 ease-linear outline-none hover:border-l-brand hover:bg-brand-soft hover:pl-3 focus-visible:border-l-brand focus-visible:bg-brand-soft focus-visible:pl-3"
+            className={cn(
+              nudgeClass,
+              "flex items-center gap-3.5 border-b border-l-2 border-l-transparent py-4 pr-3 outline-none hover:border-l-brand hover:bg-brand-soft focus-visible:border-l-brand focus-visible:bg-brand-soft"
+            )}
           >
             {Icon && (
               <Icon aria-hidden="true" className="size-[1.125rem] flex-none" />
             )}
             <span className="flex min-w-0 flex-1 flex-col gap-[3px]">
-              <span className="text-[0.9375rem] font-medium">{link.label}</span>
+              <span className="text-body-sm font-medium">{link.label}</span>
               <span className="truncate font-mono text-xs text-muted-foreground">
                 {handleFor(link.href)}
               </span>
             </span>
             <ArrowUpRight className="size-4 flex-none text-muted-foreground" />
-            <span className="sr-only">(opens in a new tab)</span>
+            <NewTabHint />
           </a>
         )
       })}

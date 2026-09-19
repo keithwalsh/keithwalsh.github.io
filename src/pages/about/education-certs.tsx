@@ -1,7 +1,12 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
 
-import { eyebrowClass, sectionClass } from "@/components/editorial"
+import {
+  brandPillClass,
+  eyebrowClass,
+  outlinePillClass,
+  sectionClass,
+} from "@/components/editorial"
 import certData from "@/data/certifications.json"
 import { assetUrl } from "@/lib/browser"
 import { cn } from "@/lib/utils"
@@ -29,15 +34,12 @@ export function EducationCerts() {
   return (
     <section
       ref={revealRef}
-      className={cn(
-        sectionClass,
-        "flex flex-col gap-[clamp(1.5rem,3vw,2.5rem)] pb-[clamp(4rem,8vw,7.5rem)]"
-      )}
+      className={cn(sectionClass, "flex flex-col gap-stack pb-page-bottom")}
     >
       <div className={eyebrowClass}>03 — Education &amp; Certifications</div>
 
       {/* The 1px grid gap over a border-coloured background draws the dividers. */}
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(16.25rem,1fr))] gap-px overflow-hidden rounded-[6px] border bg-border">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(16.25rem,1fr))] gap-px overflow-hidden rounded-sm border bg-border">
         {cells.map((cell, index) => (
           <div
             key={cell.title}
@@ -45,7 +47,7 @@ export function EducationCerts() {
             className="flex flex-col gap-3 bg-background p-[clamp(1.375rem,2.5vw,2rem)]"
           >
             <div className={eyebrowClass}>{cell.kicker}</div>
-            <div className="text-[clamp(1.125rem,1.9vw,1.375rem)] leading-[1.25] font-medium tracking-[-0.02em] text-pretty">
+            <div className="text-subtitle leading-[1.25] font-medium text-pretty">
               {cell.title}
             </div>
             <div className="text-sm text-muted-foreground">{cell.meta}</div>
@@ -57,15 +59,12 @@ export function EducationCerts() {
         <a
           href={assetUrl("keith-walsh-cv.pdf")}
           download
-          className="inline-flex items-center gap-2.5 rounded-full bg-brand px-[1.375rem] py-3.5 text-sm font-semibold tracking-[0.01em] text-brand-foreground transition-colors outline-none hover:bg-brand-hover focus-visible:ring-3 focus-visible:ring-ring/50"
+          className={brandPillClass}
         >
           Download CV
           <ArrowDown className="size-4" />
         </a>
-        <Link
-          to="/contact"
-          className="inline-flex items-center gap-2.5 rounded-full border border-input px-[1.375rem] py-3.5 text-sm font-medium transition-colors outline-none hover:border-brand focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
+        <Link to="/contact" className={outlinePillClass}>
           Get in touch
           <ArrowUpRight className="size-4" />
         </Link>

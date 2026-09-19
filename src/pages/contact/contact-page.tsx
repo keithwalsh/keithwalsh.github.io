@@ -1,5 +1,6 @@
-import { eyebrowClass } from "@/components/editorial"
-import { Page, PageHeader } from "@/components/page"
+import { eyebrowClass, sectionClass } from "@/components/editorial"
+import { PageHeader } from "@/components/page"
+import { cn } from "@/lib/utils"
 import { useReducedMotion, useReveal } from "@/pages/about/about-shared"
 import { ContactForm } from "@/pages/contact/contact-form"
 import { SocialLinks } from "@/pages/contact/social-links"
@@ -13,7 +14,7 @@ function SectionEyebrow({ label, delay }: { label: string; delay: string }) {
       <span className={eyebrowClass}>{label}</span>
       <span
         aria-hidden="true"
-        className="h-px flex-1 origin-left bg-border motion-safe:animate-[rule-in_0.9s_cubic-bezier(.16,1,.3,1)_both]"
+        className="h-px flex-1 origin-left bg-border motion-safe:animate-rule-in"
         style={{ animationDelay: delay }}
       />
     </div>
@@ -22,14 +23,15 @@ function SectionEyebrow({ label, delay }: { label: string; delay: string }) {
 
 export default function ContactPage() {
   const reduced = useReducedMotion()
-  const revealRef = useReveal<HTMLDivElement>(!reduced)
+  const revealRef = useReveal<HTMLElement>(!reduced)
 
   return (
-    <Page
+    // The 1400px frame and padding of the About and Blog sections.
+    <section
       ref={revealRef}
-      className="gap-0 px-6 pt-7 pb-18 md:px-6 md:pt-7 md:pb-18"
+      className={cn(sectionClass, "pt-page-top pb-page-bottom")}
     >
-      <PageHeader title={MASTHEAD_LINES} className="pt-1.5" />
+      <PageHeader title={MASTHEAD_LINES} />
 
       <div className="grid grid-cols-1 items-start pt-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] lg:gap-x-14">
         <div data-reveal="0" className="flex min-w-0 flex-col gap-5">
@@ -49,6 +51,6 @@ export default function ContactPage() {
           <ContactForm />
         </div>
       </div>
-    </Page>
+    </section>
   )
 }

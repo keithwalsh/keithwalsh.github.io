@@ -34,7 +34,7 @@ const MODES: { value: FieldMode; label: string }[] = [
 ]
 
 const CHIP =
-  "h-8 font-mono text-[0.8125rem] hover:bg-tool-control data-[state=on]:bg-brand-strong data-[state=on]:text-brand"
+  "h-8 font-mono text-caption hover:bg-tool-control data-[state=on]:bg-brand-strong data-[state=on]:text-brand"
 
 export function CronFieldEditor({
   fields,
@@ -76,7 +76,7 @@ export function CronFieldEditor({
             >
               <span
                 className={cn(
-                  "max-w-full truncate text-[0.6875rem] font-medium tracking-widest text-subtle uppercase transition-colors duration-150",
+                  "max-w-full truncate text-meta font-medium text-subtle uppercase transition-colors duration-150",
                   isHighlighted && "text-brand"
                 )}
               >
@@ -84,7 +84,7 @@ export function CronFieldEditor({
               </span>
               <span
                 className={cn(
-                  "max-w-full truncate font-mono text-[0.9375rem] font-medium transition-colors duration-150",
+                  "max-w-full truncate font-mono text-body-sm font-medium transition-colors duration-150",
                   isHighlighted && "text-brand"
                 )}
               >
@@ -123,7 +123,7 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
     <>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="flex items-baseline gap-2">
-          <span className="text-[0.9375rem] font-semibold">{field.label}</span>
+          <span className="text-body-sm font-semibold">{field.label}</span>
           <span className="font-mono text-xs text-muted-foreground">
             {field.min}-{field.max}
           </span>
@@ -136,12 +136,12 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
         />
       </div>
 
-      <p className="text-[0.8125rem] text-pretty text-muted-foreground">
+      <p className="text-caption text-pretty text-muted-foreground">
         {field.details}
       </p>
 
       {mode === "every" && (
-        <div className="flex h-30 items-center justify-center rounded-[0.75rem] border border-dashed border-foreground/12 px-4 text-center text-[0.8125rem] text-subtle">
+        <div className="flex h-30 items-center justify-center rounded-xl border border-dashed border-foreground/12 px-4 text-center text-caption text-subtle">
           Matches every {field.unit} — the “{value}” wildcard.
         </div>
       )}
@@ -168,7 +168,7 @@ function FieldPanel({ field, value, onChange }: FieldEditorProps) {
                   aria-pressed={isSelected}
                   onClick={() => onChange(code)}
                   className={cn(
-                    "-mx-2 flex h-7 w-[calc(100%+1rem)] items-center gap-3 rounded-[7px] px-2 text-left text-[0.8125rem] transition-colors duration-150 outline-none hover:bg-tool-row-hover focus-visible:ring-3 focus-visible:ring-ring/50",
+                    "-mx-2 flex h-7 w-[calc(100%+1rem)] items-center gap-3 rounded-md px-2 text-left text-caption transition-colors duration-150 outline-none hover:bg-tool-row-hover focus-visible:ring-3 focus-visible:ring-ring/50",
                     isSelected && "bg-brand-soft hover:bg-brand-soft"
                   )}
                 >
@@ -206,7 +206,7 @@ function StepPicker({ field, value, onChange }: FieldEditorProps) {
     : [...field.steps, step].sort((a, b) => a - b)
 
   return (
-    <div className="flex flex-wrap items-center gap-1.5 text-[0.8125rem] text-muted-foreground">
+    <div className="flex flex-wrap items-center gap-1.5 text-caption text-muted-foreground">
       <span className="mr-1">Every</span>
       <ToggleGroup
         type="single"
@@ -263,7 +263,7 @@ function SpecificPicker({ field, value, onChange }: FieldEditorProps) {
           value={String(option)}
           className={cn(
             CHIP,
-            "min-w-0 rounded-[7px] bg-tool-control px-0 text-foreground/80 ring-1 ring-tool-control-ring hover:ring-foreground/25 aria-pressed:bg-brand-strong data-[state=on]:ring-transparent"
+            "min-w-0 rounded-md bg-tool-control px-0 text-foreground/80 ring-1 ring-tool-control-ring hover:ring-foreground/25 aria-pressed:bg-brand-strong data-[state=on]:ring-transparent"
           )}
         >
           {valueLabel(field, option)}
@@ -279,7 +279,7 @@ function RangePicker({ field, value, onChange }: FieldEditorProps) {
     onChange(start <= end ? `${start}-${end}` : `${end}-${start}`)
 
   return (
-    <div className="flex flex-wrap items-center gap-2 text-[0.8125rem] text-muted-foreground">
+    <div className="flex flex-wrap items-center gap-2 text-caption text-muted-foreground">
       <span>From</span>
       <RangeSelect
         field={field}
@@ -316,7 +316,7 @@ function RangeSelect({
     >
       <SelectTrigger
         aria-label={label}
-        className="min-w-20 rounded-md bg-tool-control font-mono text-[0.8125rem] text-foreground dark:bg-tool-control dark:hover:bg-tool-raised-hover"
+        className="min-w-20 rounded-md bg-tool-control font-mono text-caption text-foreground dark:bg-tool-control dark:hover:bg-tool-raised-hover"
       >
         <SelectValue />
       </SelectTrigger>
@@ -325,7 +325,7 @@ function RangeSelect({
           <SelectItem
             key={option}
             value={String(option)}
-            className="font-mono text-[0.8125rem]"
+            className="font-mono text-caption"
           >
             {valueLabel(field, option)}
           </SelectItem>
@@ -366,7 +366,7 @@ function RawValueInput({ field, value, onChange }: FieldEditorProps) {
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck={false}
-        className="h-7.5 w-35 rounded-[7px] bg-background px-2 font-mono text-[0.8125rem] md:text-[0.8125rem] dark:bg-background"
+        className="h-7.5 w-35 rounded-md bg-background px-2 font-mono text-caption md:text-caption dark:bg-background"
       />
     </div>
   )

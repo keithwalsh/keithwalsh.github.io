@@ -1,5 +1,4 @@
-import { Star } from "lucide-react"
-
+import { dashListClass } from "@/components/editorial"
 import { IconButton } from "@/components/icon-button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -11,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import type { NavIcon } from "@/config/navigation"
+import { cn } from "@/lib/utils"
 
 export type ProjectLink = {
   label: string
@@ -39,7 +39,12 @@ export function ProjectCard({
         {links.length > 0 && (
           <CardAction className="flex gap-1">
             {links.map((link) => (
-              <IconButton key={link.href} label={link.label} asChild>
+              <IconButton
+                key={link.href}
+                label={link.label}
+                aria-label={`${link.label} (opens in a new tab)`}
+                asChild
+              >
                 <a href={link.href} target="_blank" rel="noopener noreferrer">
                   <link.icon />
                 </a>
@@ -49,15 +54,9 @@ export function ProjectCard({
         )}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <ul className="flex flex-col gap-2">
+        <ul className={cn(dashListClass, "flex flex-col gap-2")}>
           {points.map((point) => (
-            <li key={point} className="flex gap-2.5">
-              <Star
-                aria-hidden="true"
-                className="mt-0.5 size-4 shrink-0 text-muted-foreground"
-              />
-              <span>{point}</span>
-            </li>
+            <li key={point}>{point}</li>
           ))}
         </ul>
         {technologies.length > 0 && (

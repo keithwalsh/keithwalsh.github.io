@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { CalendarDays, CircleAlert, RefreshCw } from "lucide-react"
 
+import { linkClass, NewTabHint } from "@/components/editorial"
 import { Page, PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -154,9 +155,10 @@ export default function WeatherPage() {
           href="https://creativecommons.org/licenses/by/4.0/"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline underline-offset-4 hover:text-foreground"
+          className={linkClass}
         >
           Creative Commons Attribution 4.0 International License
+          <NewTabHint />
         </a>
       </p>
     </Page>

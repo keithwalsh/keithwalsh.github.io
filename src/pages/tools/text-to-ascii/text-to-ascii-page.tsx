@@ -235,6 +235,7 @@ export default function TextToAsciiPage() {
 
       <InstructionsCard
         title="Tips"
+        ordered={false}
         steps={[
           "Try different fonts to find the perfect style for your text",
           "Shorter text works best for complex fonts",

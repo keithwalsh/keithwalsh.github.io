@@ -27,6 +27,9 @@
   --color-tool-control-ring: var(--tool-control-ring);
   --color-tool-row-hover: var(--tool-row-hover);
   --color-tool-symbol: var(--tool-symbol);
+  --color-code-string: var(--code-string);
+  --color-code-number: var(--code-number);
+  --color-code-keyword: var(--code-keyword);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -58,6 +61,7 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --radius-xs: calc(var(--radius) * 0.2);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -67,18 +71,66 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Type roles. `eyebrow` is a standalone label (a section heading, form label
-   or status line) and `meta` an inline run such as a date, tag or caption;
-   both are set in mono uppercase. `display` is the page masthead. Register any
-   new `--text-*` name in src/lib/utils.ts too, or cn() merges it away. */
+/* Type roles, on top of Tailwind's xs–3xl. `eyebrow` is a standalone label (a
+   section heading, form label or status line) and `meta` an inline run such
+   as a date, tag or caption; both are set in mono uppercase. `2xs` is small
+   print, `caption` a secondary line and the dense tool controls, `body-sm`
+   and `body-lg` editorial detail and long-form reading, `lead` an intro
+   paragraph. For headings: `subtitle` names an item (a skill, a certificate),
+   `heading` a post section, `title` an index row, `headline` a post and
+   `display` a page masthead; `numeral` is the brand counter beside a list.
+   Register any new `--text-*` name in src/lib/utils.ts too, or cn() merges
+   it away. */
 @theme {
   --text-eyebrow: 0.6875rem;
   --text-eyebrow--letter-spacing: 0.2em;
   --text-meta: 0.6875rem;
   --text-meta--letter-spacing: 0.14em;
+  --text-2xs: 0.6875rem;
+  --text-caption: 0.8125rem;
+  --text-body-sm: 0.9375rem;
+  --text-body-lg: 1.0625rem;
+  --text-lead: clamp(1rem, 1.35vw, 1.15625rem);
+  --text-lead--line-height: 1.6;
+  --text-subtitle: clamp(1.125rem, 1.9vw, 1.375rem);
+  --text-subtitle--letter-spacing: -0.02em;
+  --text-heading: clamp(1.25rem, 2vw, 1.5rem);
+  --text-heading--line-height: 1.2;
+  --text-heading--letter-spacing: -0.025em;
+  --text-title: clamp(1.25rem, 2.4vw, 1.875rem);
+  --text-title--line-height: 1.12;
+  --text-title--letter-spacing: -0.025em;
+  --text-headline: clamp(2rem, 4.6vw, 3.25rem);
+  --text-headline--line-height: 1;
+  --text-headline--letter-spacing: -0.035em;
   --text-display: clamp(2.5rem, 6vw, 3.875rem);
   --text-display--line-height: 0.92;
   --text-display--letter-spacing: -0.04em;
+  --text-numeral: clamp(3.5rem, 7vw, 6.5rem);
+  --text-numeral--line-height: 0.9;
+  --text-numeral--letter-spacing: -0.04em;
+  --text-numeral-lg: clamp(4.5rem, 10vw, 8.5rem);
+  --text-numeral-lg--line-height: 0.82;
+  --text-numeral-lg--letter-spacing: -0.05em;
+}
+
+/* Fluid spacing for the editorial routes, by role: the page's side `gutter`,
+   the padding above the first section and below the last, the gap under a
+   page header, a long page's `section` rhythm, `stack` between blocks and
+   `stack-sm` under a title, `columns` between a rail and its list, and an
+   index row's `row` padding and `cells` gap. Register new names in
+   src/lib/utils.ts too, like the type roles. */
+@theme {
+  --spacing-gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --spacing-page-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  --spacing-page-bottom: clamp(3.5rem, 8vw, 6.5rem);
+  --spacing-header-bottom: clamp(2.25rem, 5vw, 4rem);
+  --spacing-section: clamp(3rem, 6vw, 6rem);
+  --spacing-stack: clamp(1.5rem, 3vw, 2.5rem);
+  --spacing-stack-sm: clamp(0.875rem, 1.6vw, 1.25rem);
+  --spacing-columns: clamp(1.25rem, 3vw, 3.5rem);
+  --spacing-row: clamp(1.125rem, 2vw, 1.625rem);
+  --spacing-cells: clamp(0.75rem, 2vw, 1.75rem);
 }
 
 :root {
@@ -178,6 +230,44 @@
   --weather-scale-5: #b7d3f6;
 }
 
+/* Syntax colours from GitHub's Primer palette, shared by code blocks and the JSON
+   Explorer tree so a value reads the same in both. */
+:root {
+  --code-comment: #6e7781;
+  --code-keyword: #cf222e;
+  --code-string: #0a3069;
+  --code-number: #0550ae;
+  --code-function: #8250df;
+  --code-tag: #116329;
+  --code-variable: #953800;
+  --code-add-bg: #e6ffec;
+  --code-add-accent: #1a7f37;
+  --code-add-word: #abf2bc;
+  --code-remove-bg: #ffebe9;
+  --code-remove-accent: #cf222e;
+  --code-remove-word: #ffc1bc;
+  --code-highlight-bg: rgb(212 167 44 / 0.15);
+  --code-highlight-accent: #d4a72c;
+}
+
+.dark {
+  --code-comment: #8b949e;
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-number: #79c0ff;
+  --code-function: #d2a8ff;
+  --code-tag: #7ee787;
+  --code-variable: #ffa657;
+  --code-add-bg: rgb(46 160 67 / 0.15);
+  --code-add-accent: #3fb950;
+  --code-add-word: rgb(46 160 67 / 0.4);
+  --code-remove-bg: rgb(248 81 73 / 0.12);
+  --code-remove-accent: #f85149;
+  --code-remove-word: rgb(248 81 73 / 0.4);
+  --code-highlight-bg: rgb(187 128 9 / 0.18);
+  --code-highlight-accent: #bb8009;
+}
+
 @theme {
   /* Nudges with `top` rather than a transform, so it also works on inline
      text that wraps across lines. Needs a positioned element. */
@@ -241,7 +331,29 @@
   }
   html {
     @apply font-sans;
+    /* Reserve the scrollbar's width on every page, so centred content doesn't
+       shift sideways between pages that scroll and pages that don't. */
+    scrollbar-gutter: stable;
   }
+  /* Radix menus lock scrolling by adding the scrollbar's width to <body> as a
+     margin. The gutter above already reserves it, so without this the page
+     shifts left whenever a select or dropdown opens. */
+  body[data-scroll-locked] {
+    margin-right: 0 !important;
+  }
+}
+
+/* Motion. Transitions take one of three durations: 150ms on controls, 300ms
+   for the editorial hover choreography (rows travelling, colours warming up)
+   and 500ms for sweeps. `ease-glide` carries hover travel and `ease-expo`
+   entrances and sweeps. Static, so the About reveal can read them from JS. */
+@theme static {
+  --ease-glide: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-masthead-in: masthead-in 1s var(--ease-expo) both;
+  --animate-rule-in: rule-in 0.9s var(--ease-expo) both;
+  --animate-halo: halo 2.6s ease-in-out infinite;
+  --animate-roll: spin 0.5s ease-in-out;
 }
 
 /* The `Masthead` line wipe and the status dot's pulse. */

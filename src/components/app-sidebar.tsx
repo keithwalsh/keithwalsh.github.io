@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router"
 import { ChevronRight } from "lucide-react"
 
+import { eyebrowClass } from "@/components/editorial"
 import {
   Collapsible,
   CollapsibleContent,
@@ -31,10 +32,14 @@ import { cn } from "@/lib/utils"
 const activeClass =
   "data-active:bg-brand-soft data-active:font-medium data-active:text-brand data-active:hover:bg-brand-soft data-active:hover:text-brand"
 
+// The site's 3px focus ring; the sidebar primitives default to 2px.
+const focusClass = "focus-visible:ring-3 focus-visible:ring-ring/50"
+
 // Primary pages and the Explore section parents share one row shape.
 const rowClass = cn(
   "h-8.5 gap-2.5 px-2.5 text-sidebar-foreground/82",
-  activeClass
+  activeClass,
+  focusClass
 )
 
 export function AppSidebar() {
@@ -57,7 +62,10 @@ export function AppSidebar() {
         <Link
           to="/"
           onClick={closeOnMobile}
-          className="flex items-center gap-2.5 rounded-md ring-sidebar-ring outline-hidden focus-visible:ring-2"
+          className={cn(
+            "flex items-center gap-2.5 rounded-md outline-hidden",
+            focusClass
+          )}
         >
           {/* Squared off and graded like the About page portrait, hairline
               included, so it reads as a photo rather than an account avatar. */}
@@ -65,7 +73,7 @@ export function AppSidebar() {
             <img
               src={assetUrl("photo.jpg")}
               alt=""
-              className="size-7 rounded-[4px] object-cover object-[50%_12%] contrast-[1.06] grayscale dark:brightness-90"
+              className="size-7 rounded-xs object-cover object-[50%_12%] contrast-[1.06] grayscale dark:brightness-90"
             />
             <span
               aria-hidden="true"
@@ -73,10 +81,10 @@ export function AppSidebar() {
             />
           </span>
           <span className="flex min-w-0 flex-col gap-0.75">
-            <span className="text-sm leading-none font-medium tracking-[-0.01em]">
+            <span className="text-sm leading-none font-medium">
               {siteConfig.name}
             </span>
-            <span className="font-mono text-eyebrow leading-none text-muted-foreground uppercase">
+            <span className={cn(eyebrowClass, "leading-none")}>
               {siteConfig.domain}
             </span>
           </span>
@@ -104,7 +112,12 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup className="px-2.5 py-0">
-          <SidebarGroupLabel className="h-auto gap-2.5 px-2.5 pt-5.5 pb-2 font-mono text-eyebrow leading-[0.8125rem] font-normal text-muted-foreground uppercase">
+          <SidebarGroupLabel
+            className={cn(
+              eyebrowClass,
+              "h-auto gap-2.5 px-2.5 pt-5.5 pb-2 leading-[0.8125rem] font-normal"
+            )}
+          >
             Explore
             <span
               aria-hidden="true"
@@ -127,7 +140,7 @@ export function AppSidebar() {
                       <span className="ml-auto font-mono text-meta text-muted-foreground">
                         {section.items.length}
                       </span>
-                      <ChevronRight className="size-3.5! text-muted-foreground transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="size-3.5! text-muted-foreground transition-transform duration-150 group-data-[state=open]/collapsible:rotate-90" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
@@ -140,8 +153,9 @@ export function AppSidebar() {
                             asChild
                             isActive={current?.item === item}
                             className={cn(
-                              "h-7.5 translate-x-0 rounded-sm px-2.5 text-muted-foreground hover:bg-sidebar-accent/70 data-[size=md]:text-[0.8125rem]",
-                              activeClass
+                              "h-7.5 translate-x-0 rounded-sm px-2.5 text-muted-foreground hover:bg-sidebar-accent/70 data-[size=md]:text-caption",
+                              activeClass,
+                              focusClass
                             )}
                           >
                             <Link to={item.url} onClick={closeOnMobile}>

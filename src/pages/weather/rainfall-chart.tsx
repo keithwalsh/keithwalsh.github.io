@@ -7,6 +7,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import { dashListClass } from "@/components/editorial"
+import { cn } from "@/lib/utils"
 import { ChartCard } from "@/pages/weather/chart-card"
 import { DataTable } from "@/pages/weather/data-table"
 import { SeriesLegend, TooltipRow } from "@/pages/weather/series-legend"
@@ -198,7 +200,7 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
           <h4 className="font-medium text-foreground">
             Understanding rainfall categories
           </h4>
-          <ul className="ml-4 flex list-disc flex-col gap-1">
+          <ul className={cn(dashListClass, "flex flex-col gap-1")}>
             <li>Dry days (&lt;0.2 mm): Days with negligible rainfall</li>
             <li>Very light (0.2–1 mm): Drizzle or misty conditions</li>
             <li>Light rain (1–5 mm): Common occurrence</li>

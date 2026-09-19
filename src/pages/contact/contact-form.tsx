@@ -11,7 +11,7 @@ import {
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { eyebrowClass } from "@/components/editorial"
+import { brandFillClass, eyebrowClass, metaClass } from "@/components/editorial"
 import { PhoneInput } from "@/components/phone-input"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
@@ -34,8 +34,6 @@ const labelClass = cn(
   eyebrowClass,
   "group-data-[invalid=true]/field:text-destructive"
 )
-
-const metaClass = "font-mono text-meta text-muted-foreground uppercase"
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
@@ -123,10 +121,8 @@ export function ContactForm() {
   if (sent) {
     return (
       <div className="flex flex-col gap-4 border-t border-brand bg-brand-soft p-8">
-        <span className="font-mono text-eyebrow text-brand uppercase">
-          Message sent
-        </span>
-        <p className="max-w-[46ch] text-[1.0625rem] leading-[1.55] text-pretty">
+        <span className={cn(eyebrowClass, "text-brand")}>Message sent</span>
+        <p className="max-w-[46ch] text-body-lg leading-[1.55] text-pretty">
           Thanks {sent.name.split(/\s+/)[0]} — it&rsquo;s in my inbox.
           I&rsquo;ll reply to {sent.email}.
         </p>
@@ -255,7 +251,10 @@ export function ContactForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="h-[2.875rem] gap-2.5 bg-brand px-6 font-mono text-meta text-brand-foreground uppercase hover:bg-brand-hover [&_svg:not([class*='size-'])]:size-[0.9375rem]"
+          className={cn(
+            brandFillClass,
+            "h-[2.875rem] gap-2.5 px-6 font-mono text-meta uppercase [&_svg:not([class*='size-'])]:size-[0.9375rem]"
+          )}
         >
           Send message
           {isSubmitting ? <Spinner /> : <Send />}

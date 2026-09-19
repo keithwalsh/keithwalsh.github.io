@@ -101,18 +101,18 @@ function Post({ index }: { index: number }) {
           <span
             ref={progressRef}
             aria-hidden="true"
-            className="absolute -bottom-px left-0 h-0.5 w-0 bg-brand transition-[width] duration-100 ease-linear"
+            className="absolute -bottom-px left-0 h-0.5 w-0 bg-brand transition-[width] duration-150 ease-linear"
           />,
           header
         )}
 
-      <section
-        className={cn(
-          sectionClass,
-          "pt-[clamp(1.25rem,2.5vw,1.875rem)] pb-[clamp(2rem,4vw,3.25rem)]"
-        )}
-      >
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 font-mono text-eyebrow text-muted-foreground uppercase">
+      <section className={cn(sectionClass, "pt-page-top pb-header-bottom")}>
+        <div
+          className={cn(
+            eyebrowClass,
+            "flex flex-wrap items-center gap-x-4 gap-y-2.5"
+          )}
+        >
           <span className="text-brand">Post {pad(index + 1)}</span>
           <span>{formatPostDate(post.date)}</span>
           <span>{minutes} min read</span>
@@ -123,7 +123,7 @@ function Post({ index }: { index: number }) {
           )}
           <span
             aria-hidden="true"
-            className="h-px min-w-10 flex-1 origin-left bg-border motion-safe:animate-[rule-in_0.9s_cubic-bezier(.16,1,.3,1)_both]"
+            className="h-px min-w-10 flex-1 origin-left bg-border motion-safe:animate-rule-in"
             style={{ animationDelay: "0.5s" }}
           />
         </div>
@@ -131,14 +131,14 @@ function Post({ index }: { index: number }) {
         {/* Titles are sentences, so they wipe in word by word rather than by
             line. The space stays inside each clipped word: between
             inline-blocks it would collapse. */}
-        <h1 className="max-w-[26ch] pt-[clamp(0.875rem,1.6vw,1.25rem)] font-heading text-[clamp(2rem,4.6vw,3.25rem)] leading-none font-semibold tracking-[-0.035em] text-pretty">
+        <h1 className="max-w-[26ch] pt-stack-sm font-heading text-headline font-semibold text-pretty">
           {post.title.split(" ").map((word, i, words) => (
             <span
               key={i}
               className="inline-block overflow-hidden pb-[0.06em] align-bottom"
             >
               <span
-                className="inline-block motion-safe:animate-[masthead-in_0.9s_cubic-bezier(.16,1,.3,1)_both]"
+                className="inline-block motion-safe:animate-masthead-in"
                 style={{ animationDelay: `${0.06 * (i + 1)}s` }}
               >
                 {word}
@@ -148,14 +148,14 @@ function Post({ index }: { index: number }) {
           ))}
         </h1>
 
-        <p className="max-w-[58ch] pt-[clamp(1rem,2vw,1.5rem)] text-[clamp(1.0625rem,1.5vw,1.25rem)] leading-[1.6] text-pretty text-foreground/85">
+        <p className="max-w-[58ch] pt-stack-sm text-lead text-pretty text-foreground/85">
           {post.summary}
         </p>
       </section>
 
-      <section className={cn(sectionClass, "pb-[clamp(3.5rem,8vw,6.5rem)]")}>
+      <section className={cn(sectionClass, "pb-page-bottom")}>
         {/* `items-stretch` gives the sticky rail its travel. */}
-        <div className="flex flex-wrap items-stretch gap-[clamp(1.5rem,4vw,4.5rem)]">
+        <div className="flex flex-wrap items-stretch gap-columns">
           {sections.length > 0 && (
             <div className="max-w-[13rem] min-w-0 flex-[1_1_11rem]">
               <nav
@@ -181,7 +181,7 @@ function Post({ index }: { index: number }) {
                         <span
                           aria-hidden="true"
                           className={cn(
-                            "mt-1.5 h-px w-3.5 flex-none origin-left bg-brand transition-[scale,opacity] duration-350",
+                            "mt-1.5 h-px w-3.5 flex-none origin-left bg-brand transition-[scale,opacity] duration-300 ease-glide",
                             isActive
                               ? "scale-x-100 opacity-100"
                               : "scale-x-35 opacity-40"
@@ -198,7 +198,7 @@ function Post({ index }: { index: number }) {
 
           <article
             ref={articleRef}
-            className="max-w-[70ch] min-w-0 flex-[3_1_28rem] text-[1.0625rem] leading-[1.7] text-foreground/92"
+            className="max-w-[70ch] min-w-0 flex-[3_1_28rem] text-body-lg leading-[1.7] text-foreground/92"
           >
             <PostBody body={post.body} />
 
@@ -218,7 +218,7 @@ function Post({ index }: { index: number }) {
                   <span
                     className={cn(
                       rowTitleClass,
-                      "min-w-0 flex-1 text-[clamp(1.125rem,1.9vw,1.5rem)] leading-[1.15]"
+                      "min-w-0 flex-1 text-subtitle leading-[1.15]"
                     )}
                   >
                     {next.title}

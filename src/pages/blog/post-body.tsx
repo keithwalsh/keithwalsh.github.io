@@ -5,6 +5,13 @@ import ReactMarkdown, { type Components } from "react-markdown"
 import remarkGfm from "remark-gfm"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
+import {
+  dashListClass,
+  linkClass,
+  metaClass,
+  NewTabHint,
+} from "@/components/editorial"
+import { IconButton } from "@/components/icon-button"
 import { InlineCode } from "@/components/inline-code"
 import {
   Table,
@@ -15,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { copyWithToast } from "@/lib/browser"
+import { cn } from "@/lib/utils"
 
 // No @tailwindcss/typography here; a dozen class strings cover what posts use.
 const components: Components = {
@@ -32,7 +40,7 @@ const components: Components = {
       />
       <h2
         tabIndex={-1}
-        className="font-heading text-[clamp(1.25rem,2vw,1.5rem)] leading-[1.2] font-semibold tracking-[-0.025em] outline-none"
+        className="font-heading text-heading font-semibold outline-none"
         {...props}
       />
     </div>
@@ -46,10 +54,9 @@ const components: Components = {
   p: ({ node, ...props }) => (
     <p className="mt-4.5 text-pretty first:mt-0" {...props} />
   ),
-  // The About timeline's accent dash stands in for a disc.
   ul: ({ node, ...props }) => (
     <ul
-      className="mt-5 flex max-w-[68ch] flex-col gap-3 *:relative *:pl-7 *:before:absolute *:before:top-3.5 *:before:left-0 *:before:h-px *:before:w-3.5 *:before:bg-brand"
+      className={cn(dashListClass, "mt-5 flex max-w-[68ch] flex-col gap-3")}
       {...props}
     />
   ),
@@ -63,13 +70,16 @@ const components: Components = {
   strong: ({ node, ...props }) => (
     <strong className="font-semibold text-foreground" {...props} />
   ),
-  a: ({ node, ...props }) => (
+  a: ({ node, children, ...props }) => (
     <a
-      className="underline underline-offset-4 hover:text-foreground"
+      className={linkClass}
       target="_blank"
       rel="noopener noreferrer"
       {...props}
-    />
+    >
+      {children}
+      <NewTabHint />
+    </a>
   ),
   blockquote: ({ node, ...props }) => (
     <blockquote
@@ -101,7 +111,12 @@ const components: Components = {
 
     return (
       <figure className="mt-6 mb-5.5 overflow-hidden rounded-lg border bg-muted/40">
-        <figcaption className="flex items-center justify-between gap-3 border-b px-3 py-2.25 font-mono text-meta text-muted-foreground uppercase">
+        <figcaption
+          className={cn(
+            metaClass,
+            "flex items-center justify-between gap-3 border-b px-3 py-2.25"
+          )}
+        >
           {/* Text after the fence's language names the file:
               ```tsx professional-projects-page.tsx */}
           <span className="min-w-0 truncate">
@@ -122,14 +137,13 @@ const components: Components = {
 
 function CopyButton({ text }: { text: string }) {
   return (
-    <button
-      type="button"
+    <IconButton
+      label="Copy code"
+      className="-my-1"
       onClick={() => copyWithToast(text, "Code copied")}
-      className="inline-flex flex-none items-center gap-1.5 rounded-full border bg-background px-2.25 py-1 text-meta uppercase transition-colors outline-none hover:border-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      <Copy className="size-3" />
-      Copy
-    </button>
+      <Copy />
+    </IconButton>
   )
 }
 

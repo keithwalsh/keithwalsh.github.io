@@ -93,7 +93,7 @@ export function useReveal<T extends HTMLElement>(enabled: boolean) {
       const delay = 0.1 + Number(el.dataset.reveal || index) * 0.09
       el.style.opacity = "0"
       el.style.transform = "translateY(22px)"
-      el.style.transition = `opacity .8s ease ${delay}s, transform .9s cubic-bezier(.16,1,.3,1) ${delay}s`
+      el.style.transition = `opacity .8s ease ${delay}s, transform .9s var(--ease-expo) ${delay}s`
     })
 
     const observer = new IntersectionObserver(

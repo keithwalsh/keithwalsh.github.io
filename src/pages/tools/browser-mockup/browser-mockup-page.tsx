@@ -14,7 +14,8 @@ import {
   Upload,
 } from "lucide-react"
 
-import { Page, PageHeader } from "@/components/page"
+import { brandFillClass } from "@/components/editorial"
+import { PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
@@ -203,15 +204,17 @@ export default function BrowserMockupPage() {
     // still fits beside the canvas when the site sidebar is open.
     <div className="@container/mockup flex flex-1 flex-col">
       <div className="flex flex-1 flex-col @3xl/mockup:h-[calc(100svh-3.5rem)] @3xl/mockup:flex-none">
-        <Page className="shrink-0">
+        {/* Flush with the toolbar below rather than centred like `Page`, since
+            the workspace runs full width. */}
+        <div className="shrink-0 px-4 py-6 md:py-8 @3xl/mockup:px-5">
           <PageHeader />
-        </Page>
+        </div>
         <div className="flex h-15 shrink-0 items-center gap-3 border-y px-4 @3xl/mockup:px-5">
           <button
             type="button"
             onClick={chooseFile}
             title={image ? "Choose a different image" : "Choose an image"}
-            className="flex min-w-0 items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-[0.8125rem] text-muted-foreground ring-1 ring-tool-control-ring transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card"
+            className="flex min-w-0 items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-caption text-muted-foreground ring-1 ring-tool-control-ring transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card"
           >
             <ImageIcon className="size-3.5 shrink-0" />
             <span className="truncate text-foreground">
@@ -240,7 +243,7 @@ export default function BrowserMockupPage() {
             <Button
               onClick={handleDownload}
               disabled={!image || isDownloading}
-              className="bg-brand px-3 font-semibold text-brand-foreground transition-colors duration-150 hover:bg-brand-hover"
+              className={cn(brandFillClass, "px-3 font-semibold")}
             >
               {isDownloading ? <Spinner /> : <Download />}
               <span className="@max-2xl/mockup:sr-only">Download PNG</span>
@@ -312,11 +315,11 @@ export default function BrowserMockupPage() {
               </div>
             </div>
 
-            <p className="pointer-events-none absolute bottom-3.5 left-4.5 flex items-center gap-2 font-mono text-[0.6875rem] text-subtle @max-xl/mockup:hidden">
+            <p className="pointer-events-none absolute bottom-3.5 left-4.5 flex items-center gap-2 font-mono text-2xs text-subtle @max-xl/mockup:hidden">
               <SquareDashed className="size-3.25" />
               Drop or paste a new image anywhere on the canvas
             </p>
-            <p className="pointer-events-none absolute right-4.5 bottom-3.5 font-mono text-[0.6875rem] text-subtle tabular-nums">
+            <p className="pointer-events-none absolute right-4.5 bottom-3.5 font-mono text-2xs text-subtle tabular-nums">
               {fit.width} × {fit.height}
               {fit.scale < 1 && ` · ${Math.round(fit.scale * 100)}%`}
             </p>

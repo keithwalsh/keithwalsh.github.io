@@ -18,7 +18,7 @@ export function LegendKey({ color, shape }: Omit<LegendItem, "label">) {
     return (
       <span
         aria-hidden="true"
-        className="size-2.5 shrink-0 rounded-[2px]"
+        className="size-2.5 shrink-0 rounded-xs"
         style={{
           background:
             shape === "area"

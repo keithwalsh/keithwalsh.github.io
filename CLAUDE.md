@@ -133,9 +133,17 @@ Mockup are full-height workspaces: `PageHeader`, then their own panes.
   that directory as generated — it has its own ESLint exemption for exporting
   variant helpers next to components.
 - **`import { cn } from "cn"` does not load the package.** `vite.config.ts`
-  aliases it to `src/lib/utils.ts`, which registers the custom `--text-*`
-  sizes (`text-eyebrow`, `text-meta`, `text-display`). Add any new `--text-*`
-  token there too, or `cn()` reads it as a text colour and drops it.
+  aliases it to `src/lib/utils.ts`, which registers the custom type roles
+  (`text-caption`, `text-title`, …) and spacing names (`pt-page-top`,
+  `gap-cells`, …). Add any new `--text-*` or `--spacing-*` token there too,
+  or `cn()` reads the size as a text colour and drops it, and can't merge the
+  spacing with a conflicting class.
+- **Use the scales and shared classes, not one-off values.** Type, fluid
+  spacing, radius, easing and animations are tokens in `index.css`, each
+  block commented with its roles. Repeated styles live in
+  `components/editorial.tsx` — `eyebrowClass`, `metaClass`, `linkClass`,
+  `dashListClass`, `nudgeClass`, `brandFillClass` and the pill classes — and
+  links that open a new tab end with `<NewTabHint />`.
 - **Empty states come in two sizes.** A route with nothing to show (the 404
   page, a missing post, the empty blog) renders `ZeroState` from
   `components/editorial.tsx`. A tool panel waiting for input puts the shadcn

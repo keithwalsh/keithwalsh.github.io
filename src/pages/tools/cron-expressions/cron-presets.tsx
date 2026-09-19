@@ -38,7 +38,7 @@ export function CronPresets({
               aria-pressed={isSelected}
               onClick={() => onSelect(preset.cron)}
               className={cn(
-                "flex h-8.5 items-center justify-between gap-2 rounded-md bg-tool-raised px-2.5 text-left text-[0.8125rem] text-foreground/90 ring-1 ring-foreground/8 transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50",
+                "flex h-8.5 items-center justify-between gap-2 rounded-md bg-tool-raised px-2.5 text-left text-caption text-foreground/90 ring-1 ring-foreground/8 transition-colors duration-150 outline-none hover:bg-tool-raised-hover focus-visible:ring-3 focus-visible:ring-ring/50",
                 isSelected &&
                   "bg-brand-soft text-brand ring-brand hover:bg-brand-soft"
               )}
@@ -69,7 +69,7 @@ export function CronLegend() {
                 tabIndex={0}
                 className="inline-flex items-center gap-1.5 rounded-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
-                <code className="inline-flex size-4.5 items-center justify-center rounded-[5px] bg-tool-symbol font-mono text-xs font-semibold text-foreground/90">
+                <code className="inline-flex size-4.5 items-center justify-center rounded-sm bg-tool-symbol font-mono text-xs font-semibold text-foreground/90">
                   {character.symbol}
                 </code>
                 {character.name}

@@ -2,6 +2,7 @@ import { useDeferredValue, useEffect, useRef, useState } from "react"
 import { Copy, Download, Images } from "lucide-react"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
+import { brandFillClass } from "@/components/editorial"
 import { IconButton } from "@/components/icon-button"
 import { InlineCode } from "@/components/inline-code"
 import { Page, PageHeader } from "@/components/page"
@@ -283,7 +284,7 @@ export default function CodeAnnotatorPage() {
                 size="sm"
                 disabled={!hasCode || isDownloading}
                 onClick={handleDownload}
-                className="ml-1 bg-brand font-semibold text-brand-foreground transition-colors duration-150 hover:bg-brand-hover"
+                className={cn(brandFillClass, "ml-1 font-semibold")}
               >
                 {isDownloading ? <Spinner /> : <Download />}
                 Download PNG

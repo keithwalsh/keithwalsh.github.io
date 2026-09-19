@@ -50,8 +50,8 @@ function PageHeader({
       {label && <StatusBar meta={meta}>{label}</StatusBar>}
       <div
         className={cn(
-          "flex flex-wrap items-end justify-between gap-[clamp(1.5rem,3vw,3rem)]",
-          label && "pt-[clamp(1.5rem,3vw,2.5rem)]"
+          "flex flex-wrap items-end justify-between gap-columns",
+          label && "pt-stack"
         )}
       >
         <Masthead
@@ -61,10 +61,7 @@ function PageHeader({
         {aside}
       </div>
       {description && (
-        <p
-          data-reveal="3"
-          className={cn(leadClass, "pt-[clamp(1rem,2vw,1.375rem)]")}
-        >
+        <p data-reveal="3" className={cn(leadClass, "pt-stack-sm")}>
           {description}
         </p>
       )}

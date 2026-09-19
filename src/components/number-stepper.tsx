@@ -48,7 +48,7 @@ export function NumberStepper({
         <span
           key={value}
           className={cn(
-            "animate-in duration-200 fade-in-0",
+            "animate-in duration-150 fade-in-0",
             direction === "up"
               ? "slide-in-from-bottom-2"
               : "slide-in-from-top-2"

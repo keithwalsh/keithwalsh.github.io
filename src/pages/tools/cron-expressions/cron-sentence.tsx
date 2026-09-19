@@ -23,7 +23,7 @@ export function CronSentence({
   return (
     <p
       aria-live="polite"
-      className="min-h-16 text-2xl leading-8 font-medium tracking-[-0.02em] text-pretty @md:min-h-19 @md:text-3xl @md:leading-[2.375rem]"
+      className="min-h-16 text-2xl leading-8 font-medium tracking-tight text-pretty @md:min-h-19 @md:text-3xl @md:leading-[2.375rem]"
     >
       {segments.map((segment, index) => (
         // Keyed by text, so a segment that changes remounts and replays its entrance.

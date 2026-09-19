@@ -2,7 +2,12 @@ import { useRef, useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
 
-import { eyebrowClass, sectionClass, ZeroState } from "@/components/editorial"
+import {
+  eyebrowClass,
+  metaClass,
+  sectionClass,
+  ZeroState,
+} from "@/components/editorial"
 import { PageHeader } from "@/components/page"
 import { formatPostDate, posts } from "@/lib/posts"
 import { cn } from "@/lib/utils"
@@ -71,12 +76,7 @@ function PostIndex() {
     // Sections carry their own 1400px container, as on the About route,
     // rather than sitting in the shared `Page` wrapper.
     <div ref={revealRef} className="flex flex-col">
-      <section
-        className={cn(
-          sectionClass,
-          "pt-[clamp(1.75rem,3.5vw,2.75rem)] pb-[clamp(2.25rem,5vw,4rem)]"
-        )}
-      >
+      <section className={cn(sectionClass, "pt-page-top pb-header-bottom")}>
         <PageHeader
           eyebrow={
             <>
@@ -105,7 +105,10 @@ function PostIndex() {
                   {subjects.map(([tag, count]) => (
                     <span
                       key={tag}
-                      className="rounded-full border px-2.5 py-1.25 font-mono text-meta text-foreground/85 uppercase"
+                      className={cn(
+                        metaClass,
+                        "rounded-full border px-2.5 py-1.25 text-foreground/85"
+                      )}
                     >
                       {tag} · {count}
                     </span>
@@ -118,20 +121,20 @@ function PostIndex() {
         />
       </section>
 
-      <section className={cn(sectionClass, "pb-[clamp(3.5rem,8vw,6.5rem)]")}>
+      <section className={cn(sectionClass, "pb-page-bottom")}>
         {/* `items-stretch` gives the sticky rail its travel, and the two flex
             bases stack rail over list below ~700px of content width. */}
-        <div className="flex flex-wrap items-stretch gap-[clamp(1.25rem,3vw,3.5rem)]">
+        <div className="flex flex-wrap items-stretch gap-columns">
           <div className="max-w-[21.25rem] min-w-0 flex-[1_1_15rem]">
             <div className="sticky top-24 flex flex-col gap-4.5">
               <div className={eyebrowClass}>01 — Index</div>
-              <div className="font-heading text-[clamp(3.5rem,7vw,6.5rem)] leading-[0.9] font-semibold tracking-[-0.04em] text-brand tabular-nums">
+              <div className="font-heading text-numeral font-semibold text-brand tabular-nums">
                 {pad(active + 1)}
               </div>
-              <div className="text-[0.9375rem] leading-normal text-pretty text-foreground/85">
+              <div className="text-body-sm leading-normal text-pretty text-foreground/85">
                 {posts[active].title}
               </div>
-              <div className="flex items-center gap-3 font-mono text-meta text-muted-foreground">
+              <div className={cn(metaClass, "flex items-center gap-3")}>
                 <span>
                   {pad(active + 1)} / {pad(posts.length)}
                 </span>
@@ -145,7 +148,7 @@ function PostIndex() {
                   />
                 </span>
               </div>
-              <p className="text-[0.8125rem] leading-normal text-subtle">
+              <p className="text-caption leading-normal text-subtle">
                 Scroll the index, or open a post to read it.
               </p>
             </div>
@@ -165,10 +168,7 @@ function PostIndex() {
               >
                 <Link
                   to={`/blog/${post.slug}`}
-                  className={cn(
-                    rowLinkClass,
-                    "py-[clamp(1.125rem,2vw,1.625rem)]"
-                  )}
+                  className={cn(rowLinkClass, "py-row")}
                 >
                   <span className={cn(rowDateClass, "pt-1.5")}>
                     {formatPostDate(post.date, {
@@ -178,20 +178,20 @@ function PostIndex() {
                   </span>
                   <span className="flex min-w-0 flex-1 flex-col gap-2.5">
                     <span className="flex flex-col gap-1.75">
-                      <span
-                        className={cn(
-                          rowTitleClass,
-                          "text-[clamp(1.25rem,2.4vw,1.875rem)] leading-[1.12]"
-                        )}
-                      >
+                      <span className={cn(rowTitleClass, "text-title")}>
                         {post.title}
                       </span>
                       <span
                         aria-hidden="true"
-                        className="h-px w-full origin-left scale-x-0 bg-brand transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
+                        className="h-px w-full origin-left scale-x-0 bg-brand transition-transform duration-500 ease-expo group-hover:scale-x-100 group-focus-visible:scale-x-100"
                       />
                     </span>
-                    <span className="flex flex-wrap items-center gap-x-3.5 gap-y-1.5 font-mono text-meta text-muted-foreground uppercase">
+                    <span
+                      className={cn(
+                        metaClass,
+                        "flex flex-wrap items-center gap-x-3.5 gap-y-1.5"
+                      )}
+                    >
                       {index === 0 && (
                         <span className="text-brand">Latest</span>
                       )}
@@ -200,7 +200,7 @@ function PostIndex() {
                       ))}
                       {post.draft && <span>Draft</span>}
                     </span>
-                    <span className="max-w-[64ch] text-[0.9375rem] leading-[1.6] text-pretty text-muted-foreground">
+                    <span className="max-w-[64ch] text-body-sm leading-[1.6] text-pretty text-muted-foreground">
                       {post.summary}
                     </span>
                   </span>
@@ -220,7 +220,10 @@ function PostIndex() {
 
         <div
           data-reveal="3"
-          className="flex flex-wrap items-center justify-between gap-4 pt-[clamp(1.75rem,4vw,3rem)] font-mono text-eyebrow text-muted-foreground uppercase"
+          className={cn(
+            eyebrowClass,
+            "flex flex-wrap items-center justify-between gap-4 pt-[clamp(1.75rem,4vw,3rem)]"
+          )}
         >
           <span>That is everything. New posts start as drafts.</span>
           <Link
