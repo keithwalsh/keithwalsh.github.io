@@ -204,17 +204,16 @@ export function rowsForYear<T extends { date: string }>(
     .sort((a, b) => a.date.localeCompare(b.date))
 }
 
+// en-IE abbreviates September as "Sept"; the blog uses three-letter months.
 export const MONTH_LABELS = Array.from({ length: 12 }, (_, month) =>
-  new Date(2024, month, 1).toLocaleString("en-IE", { month: "short" })
+  new Date(2024, month, 1)
+    .toLocaleString("en-IE", { month: "short" })
+    .replace("Sept", "Sep")
 )
 
 export const monthIndex = (date: string) => Number(date.slice(5, 7)) - 1
 
 export function formatDate(date: string) {
   const [year, month, day] = date.split("-").map(Number)
-  return new Date(year, month - 1, day).toLocaleDateString("en-IE", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  })
+  return `${day} ${MONTH_LABELS[month - 1]} ${year}`
 }

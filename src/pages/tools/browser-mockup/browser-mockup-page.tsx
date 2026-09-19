@@ -314,7 +314,7 @@ export default function BrowserMockupPage() {
 
             <p className="pointer-events-none absolute bottom-3.5 left-4.5 flex items-center gap-2 font-mono text-[0.6875rem] text-subtle @max-xl/mockup:hidden">
               <SquareDashed className="size-3.25" />
-              drop or paste a new image anywhere on the canvas
+              Drop or paste a new image anywhere on the canvas
             </p>
             <p className="pointer-events-none absolute right-4.5 bottom-3.5 font-mono text-[0.6875rem] text-subtle tabular-nums">
               {fit.width} × {fit.height}

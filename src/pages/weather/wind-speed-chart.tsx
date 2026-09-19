@@ -191,7 +191,7 @@ export function WindSpeedChart({ data }: { data: WindRow[] }) {
 
   return (
     <ChartCard
-      title="Wind Speed Measurements"
+      title="Wind speed measurements"
       description="Daily mean, gusts and sustained winds."
       chart={chart}
       table={table}
@@ -199,34 +199,34 @@ export function WindSpeedChart({ data }: { data: WindRow[] }) {
         <>
           <p>
             Wind speed measurements in Ireland are collected using various
-            time-averaged methods to capture different aspects of wind behavior.
-            These measurements help in understanding both sustained winds and
-            brief intense gusts that can affect infrastructure and daily
-            activities.
+            time-averaged methods to capture different aspects of wind
+            behaviour. These measurements help in understanding both sustained
+            winds and brief intense gusts that can affect infrastructure and
+            daily activities.
           </p>
           <h4 className="font-medium text-foreground">
-            Understanding Wind Measurements
+            Understanding wind measurements
           </h4>
           <p>
-            Mean Wind Speed represents the average wind conditions over time.
-            The Maximum Gust captures brief peaks in wind speed, typically
-            lasting 3-5 seconds. The 10-minute Mean provides a more stable
-            measure of sustained winds, while Hourly Means show longer-term
+            Mean wind speed represents the average wind conditions over time.
+            The maximum gust captures brief peaks in wind speed, typically
+            lasting 3–5 seconds. The 10-minute mean provides a more stable
+            measure of sustained winds, while hourly means show longer-term
             patterns, with maximum and minimum values indicating the range of
             wind conditions throughout each hour.
           </p>
-          <h4 className="font-medium text-foreground">Impact on Daily Life</h4>
+          <h4 className="font-medium text-foreground">Impact on daily life</h4>
           <p>
             Wind patterns significantly influence Ireland&apos;s weather systems
             and daily activities. This is dramatically demonstrated in the 2025
-            data by the large spike on January 24th, 2025, when Storm Éowyn
-            brought record-breaking wind gusts and caused widespread destruction
-            across the country. This devastating storm left 768,000 homes
-            without power and caused an estimated €200 million in damage.
-            Understanding these measurements helps in planning outdoor
-            activities, assessing weather-related risks, and preparing for
-            severe weather events, which Met Éireann warns are likely to become
-            more frequent in the years ahead.
+            data by the large spike on 24 January 2025, when Storm Éowyn brought
+            record-breaking wind gusts and caused widespread destruction across
+            the country. This devastating storm left 768,000 homes without power
+            and caused an estimated €200 million in damage. Understanding these
+            measurements helps in planning outdoor activities, assessing
+            weather-related risks, and preparing for severe weather events,
+            which Met Éireann warns are likely to become more frequent in the
+            years ahead.
           </p>
         </>
       }

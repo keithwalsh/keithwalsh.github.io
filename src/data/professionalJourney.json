@@ -72,7 +72,7 @@
       "technologies": [
         "KPI Automation",
         "Team Management",
-        "Process Optimization"
+        "Process Optimisation"
       ]
     },
     {
@@ -94,7 +94,7 @@
       "year": "2015",
       "title": "Payments & Risk Management Analyst",
       "company": "BetBright / 888",
-      "companyDescription": "Dublin-based Irish startup which specialized in online sports betting.",
+      "companyDescription": "Dublin-based Irish startup which specialised in online sports betting.",
       "companyDescription2": "BetBright was acquired by 888 Holdings in 2017.",
       "dateRange": "April 2015 – June 2017",
       "location": "Dublin, Ireland",
@@ -116,7 +116,7 @@
       "details": [
         "Analysed transaction data using Oracle to identify fraud patterns and prevent financial loss",
         "Monitored multi-channel activity to assess fraud risk, collaborating with law enforcement and payment processors when needed",
-        "Processed chargeback notifications and analyzed account histories to take preventive action against suspicious accounts"
+        "Processed chargeback notifications and analysed account histories to take preventive action against suspicious accounts"
       ],
       "technologies": ["Oracle", "Fraud Analytics"]
     },

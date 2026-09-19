@@ -57,7 +57,7 @@ export const CRON_FIELDS: Record<CronFieldKey, CronField> = {
       ["0", "Run at the top of the hour (minute 0)"],
       ["15", "Run at 15 minutes past the hour"],
       ["*/5", "Run every 5 minutes"],
-      ["0,20,40", "Run at 0, 20, 40 mins. past the hour"],
+      ["0,20,40", "Run at 0, 20 and 40 minutes past the hour"],
       ["10-20", "Run at minutes 10 through 20"],
     ],
   },
@@ -83,7 +83,7 @@ export const CRON_FIELDS: Record<CronFieldKey, CronField> = {
   },
   dayOfMonth: {
     key: "dayOfMonth",
-    label: "Day of Month",
+    label: "Day of month",
     short: "day",
     min: 1,
     max: 31,
@@ -137,7 +137,7 @@ export const CRON_FIELDS: Record<CronFieldKey, CronField> = {
   },
   dayOfWeek: {
     key: "dayOfWeek",
-    label: "Day of Week",
+    label: "Day of week",
     short: "weekday",
     min: 0,
     max: 6,

@@ -212,23 +212,23 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
 
   return (
     <ChartCard
-      title="Temperature and Humidity"
+      title="Temperature and humidity"
       description="Daily readings. Temperature on the left axis, humidity on the right."
       chart={chart}
       table={table}
       learnMore={
         <>
           <p>
-            Ireland&apos;s distinctive maritime climate is characterized by its
+            Ireland&apos;s distinctive maritime climate is characterised by its
             location, being completely surrounded by ocean. This creates a
             persistent pattern of mild temperatures and frequent rainfall,
             resulting in consistently high humidity levels throughout the year.
           </p>
           <h4 className="font-medium text-foreground">
-            Understanding Relative Humidity
+            Understanding relative humidity
           </h4>
           <p>
-            Relative humidity measures the amount of water vapor present in the
+            Relative humidity measures the amount of water vapour present in the
             air compared to the maximum amount it could hold at a specific
             temperature. During summer months, when temperatures rise, the
             air&apos;s capacity to hold moisture increases (a phenomenon
@@ -236,14 +236,14 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
             slight decreases in relative humidity, even though the actual amount
             of moisture in the air might remain similar.
           </p>
-          <h4 className="font-medium text-foreground">Impact on Daily Life</h4>
+          <h4 className="font-medium text-foreground">Impact on daily life</h4>
           <p>
             While high humidity combined with high temperatures can impair the
             body&apos;s cooling mechanism by reducing sweat evaporation,
             Ireland&apos;s moderate climate generally prevents the uncomfortable
             conditions often experienced in warmer regions. Instead, the main
             effects of Ireland&apos;s high humidity are more commonly felt
-            indoors, where it can create a damp environment conducive to mold
+            indoors, where it can create a damp environment conducive to mould
             and mildew growth.
           </p>
         </>

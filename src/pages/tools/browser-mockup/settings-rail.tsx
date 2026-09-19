@@ -132,9 +132,9 @@ export function SettingsRail({
             onChange({ scale: Number(scale) as ExportScale })
           }
           options={[
-            { value: "1", label: "1x" },
-            { value: "2", label: "2x" },
-            { value: "3", label: "3x" },
+            { value: "1", label: "1×" },
+            { value: "2", label: "2×" },
+            { value: "3", label: "3×" },
           ]}
           className="w-full"
         />

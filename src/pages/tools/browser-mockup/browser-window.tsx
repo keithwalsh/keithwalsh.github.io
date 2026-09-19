@@ -131,7 +131,7 @@ export function BrowserWindow({
           }
           className="flex aspect-video w-full cursor-pointer items-center justify-center bg-[image:repeating-linear-gradient(45deg,var(--stripe-a)_0_7px,var(--stripe-b)_7px_14px)] font-mono text-[0.8125rem] tracking-[0.02em] outline-none focus-visible:ring-3 focus-visible:ring-brand/50 focus-visible:ring-inset"
         >
-          your screenshot goes here
+          Your screenshot goes here
         </button>
       )}
     </div>

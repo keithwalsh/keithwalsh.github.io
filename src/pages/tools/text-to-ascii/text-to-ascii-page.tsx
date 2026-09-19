@@ -114,7 +114,7 @@ export default function TextToAsciiPage() {
 
   return (
     <Page>
-      <PageHeader description="Convert your text into ASCII art using various fonts. Perfect for creating banners, headers, or decorative text." />
+      <PageHeader description="Convert text into ASCII art for banners, headers or decorative text." />
 
       <Card>
         <CardContent className="flex flex-col gap-5">
@@ -124,7 +124,7 @@ export default function TextToAsciiPage() {
               id="ascii-text"
               value={text}
               onChange={(event) => setText(event.target.value)}
-              placeholder="Type something awesome..."
+              placeholder="Type a word or two"
               className="min-h-0"
               rows={2}
             />

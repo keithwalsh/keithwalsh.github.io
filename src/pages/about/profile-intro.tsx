@@ -6,6 +6,7 @@ import {
   sectionClass,
   StatusBar,
 } from "@/components/editorial"
+import journey from "@/data/professionalJourney.json"
 import { assetUrl } from "@/lib/browser"
 import {
   useReducedMotion,
@@ -15,6 +16,8 @@ import {
 import { cn } from "@/lib/utils"
 
 const NAME_LINES = ["Keith", "Walsh"]
+// The newest role, so the line under the name can't drift from the timeline.
+const [currentRole] = journey.positions
 
 export function ProfileIntro() {
   const reduced = useReducedMotion()
@@ -72,9 +75,9 @@ export function ProfileIntro() {
             data-reveal="2"
             className="flex flex-wrap items-center gap-2.5 font-mono text-meta text-foreground/85 uppercase"
           >
-            <span>Data Analyst</span>
+            <span>{currentRole.title}</span>
             <span aria-hidden="true" className="h-px w-[1.125rem] bg-brand" />
-            <span>Strategic Operations</span>
+            <span>{currentRole.company}</span>
           </div>
 
           <p data-reveal="3" className={cn(leadClass, "mt-0.5")}>

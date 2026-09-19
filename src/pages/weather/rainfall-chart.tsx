@@ -23,31 +23,31 @@ import {
 const RAIN_CLASSES = [
   {
     key: "dry",
-    label: "Dry (<0.2mm)",
+    label: "Dry (<0.2 mm)",
     buckets: ["Dry (<0.2mm)"],
     color: "var(--weather-scale-1)",
   },
   {
     key: "drizzle",
-    label: "0.2–1mm",
+    label: "0.2–1 mm",
     buckets: ["0.2mm-1mm"],
     color: "var(--weather-scale-2)",
   },
   {
     key: "light",
-    label: "1–5mm",
+    label: "1–5 mm",
     buckets: ["1-5mm"],
     color: "var(--weather-scale-3)",
   },
   {
     key: "moderate",
-    label: "5–15mm",
+    label: "5–15 mm",
     buckets: ["5-15mm"],
     color: "var(--weather-scale-4)",
   },
   {
     key: "heavy",
-    label: "15mm or more",
+    label: "15 mm or more",
     buckets: ["15-25mm", ">25mm"],
     color: "var(--weather-scale-5)",
   },
@@ -64,11 +64,11 @@ const chartConfig = Object.fromEntries(
 
 const BUCKET_LABELS: Record<RainfallBucket, string> = {
   "Dry (<0.2mm)": "Dry",
-  "0.2mm-1mm": "0.2–1mm",
-  "1-5mm": "1–5mm",
-  "5-15mm": "5–15mm",
-  "15-25mm": "15–25mm",
-  ">25mm": ">25mm",
+  "0.2mm-1mm": "0.2–1 mm",
+  "1-5mm": "1–5 mm",
+  "5-15mm": "5–15 mm",
+  "15-25mm": "15–25 mm",
+  ">25mm": ">25 mm",
 }
 
 export function RainfallChart({ data }: { data: RainRow[] }) {
@@ -183,30 +183,30 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
 
   return (
     <ChartCard
-      title="Monthly Rainfall Distribution"
+      title="Monthly rainfall distribution"
       description="Number of days in each daily rainfall band."
       chart={chart}
       table={table}
       learnMore={
         <>
           <p>
-            Ireland&apos;s rainfall patterns are characterized by their
+            Ireland&apos;s rainfall patterns are characterised by their
             frequency rather than intensity. The country experiences rain on
             many days throughout the year, but the amount of rainfall per day is
             typically moderate to light.
           </p>
           <h4 className="font-medium text-foreground">
-            Understanding Rainfall Categories
+            Understanding rainfall categories
           </h4>
           <ul className="ml-4 flex list-disc flex-col gap-1">
-            <li>Dry days (&lt;0.2mm): Days with negligible rainfall</li>
-            <li>Very light (0.2-1mm): Drizzle or misty conditions</li>
-            <li>Light rain (1-5mm): Common occurrence</li>
-            <li>Moderate rain (5-15mm): Regular rainfall events</li>
-            <li>Heavy rain (15-25mm): Significant rainfall events</li>
-            <li>Very heavy rain (&gt;25mm): Extreme rainfall events</li>
+            <li>Dry days (&lt;0.2 mm): Days with negligible rainfall</li>
+            <li>Very light (0.2–1 mm): Drizzle or misty conditions</li>
+            <li>Light rain (1–5 mm): Common occurrence</li>
+            <li>Moderate rain (5–15 mm): Regular rainfall events</li>
+            <li>Heavy rain (15–25 mm): Significant rainfall events</li>
+            <li>Very heavy rain (&gt;25 mm): Extreme rainfall events</li>
           </ul>
-          <h4 className="font-medium text-foreground">Impact on Environment</h4>
+          <h4 className="font-medium text-foreground">Impact on environment</h4>
           <p>
             This rainfall pattern is crucial for Ireland&apos;s ecosystem,
             supporting the country&apos;s famous green landscape and

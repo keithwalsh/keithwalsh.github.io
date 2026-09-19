@@ -71,7 +71,7 @@ export default function WeatherPage() {
 
   return (
     <Page>
-      <PageHeader description="The below data was recorded from the Claremorris Met Éireann meteorological station, situated about 2 Km south of the centre of the town (my home town), in county Mayo, Ireland. The weather data is updated monthly." />
+      <PageHeader description="The below data was recorded from the Claremorris Met Éireann meteorological station, situated about 2 km south of the centre of the town (my home town), in County Mayo, Ireland. The weather data is updated monthly." />
 
       <div className="flex flex-wrap items-center gap-2">
         <Select value={selectedYear} onValueChange={setYear} disabled={!data}>
@@ -100,7 +100,7 @@ export default function WeatherPage() {
           </TooltipTrigger>
           <TooltipContent>
             {lastRefresh
-              ? `Last refreshed at ${lastRefresh.toLocaleTimeString()}`
+              ? `Last refreshed at ${lastRefresh.toLocaleTimeString("en-IE")}`
               : "Reload the latest data"}
           </TooltipContent>
         </Tooltip>

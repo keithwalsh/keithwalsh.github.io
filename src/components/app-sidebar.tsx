@@ -158,7 +158,7 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarRail />
+      <SidebarRail aria-label="Toggle sidebar" title="Toggle sidebar" />
     </Sidebar>
   )
 }

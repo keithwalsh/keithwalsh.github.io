@@ -336,30 +336,30 @@ export function WindRoseChart({
 
   return (
     <ChartCard
-      title="Wind Rose"
+      title="Wind rose"
       description="Share of hours by wind direction and speed."
       chart={chart}
       table={table}
       learnMore={
         <>
           <p>
-            A wind rose is a specialized chart that visualizes wind patterns by
+            A wind rose is a specialised chart that visualises wind patterns by
             showing both direction and speed frequencies. The chart is divided
             into 16 directional sectors (N, NNE, NE, etc.), with the length of
             each sector indicating how often wind blows from that direction.
           </p>
           <h4 className="font-medium text-foreground">
-            Understanding the Visualization
+            Understanding the visualisation
           </h4>
           <p>
-            Each directional sector contains colored bands representing
+            Each directional sector contains coloured bands representing
             different wind speed ranges. The length of these bands shows the
             frequency of winds at those speeds from that direction. The
             concentric circles marked with percentages help quantify these
             frequencies, with longer sectors indicating more prevalent wind
             directions.
           </p>
-          <h4 className="font-medium text-foreground">Local Wind Patterns</h4>
+          <h4 className="font-medium text-foreground">Local wind patterns</h4>
           <p>
             Ireland&apos;s wind patterns are heavily influenced by its position
             in the North Atlantic, with prevailing winds typically coming from

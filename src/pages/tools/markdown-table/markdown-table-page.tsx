@@ -21,7 +21,7 @@ import { TableEditor } from "@/pages/tools/markdown-table/table-editor"
 import { useTableEditor } from "@/pages/tools/markdown-table/use-table-editor"
 
 const OUTPUT_OPTIONS = [
-  { key: "isCompact", label: "Minimize whitespace between cells" },
+  { key: "isCompact", label: "Minimise whitespace between cells" },
   { key: "hasTabs", label: "Use tabs instead of spaces" },
   { key: "convertLineBreaks", label: "Convert line breaks to <br>" },
   { key: "hasPadding", label: "Add padding around content" },
@@ -49,7 +49,7 @@ export default function MarkdownTablePage() {
 
   return (
     <Page>
-      <PageHeader description="Build a table and copy it as GitHub-flavored Markdown." />
+      <PageHeader description="Build a table and copy it as GitHub Flavored Markdown." />
 
       <Card>
         <CardContent>

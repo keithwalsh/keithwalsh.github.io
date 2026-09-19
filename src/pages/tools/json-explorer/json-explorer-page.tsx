@@ -265,7 +265,7 @@ export default function JsonExplorerPage() {
       </div>
 
       <InstructionsCard
-        title="How to Use"
+        title="How to use"
         steps={[
           "Paste or load JSON data into the input field",
           "Use the JSON path to query specific data (e.g. user.name)",

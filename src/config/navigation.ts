@@ -45,7 +45,7 @@ export const sectionNav: NavSection[] = [
     ],
   },
   {
-    title: "Visualizations",
+    title: "Visualisations",
     icon: ChartColumn,
     items: [{ title: "Weather", url: "/visualizations/weather" }],
   },

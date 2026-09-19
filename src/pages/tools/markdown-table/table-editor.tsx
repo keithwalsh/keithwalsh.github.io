@@ -177,7 +177,7 @@ export function TableEditor({
           <ToggleGroupItem value="left" aria-label="Align column left">
             <AlignLeft />
           </ToggleGroupItem>
-          <ToggleGroupItem value="center" aria-label="Center column">
+          <ToggleGroupItem value="center" aria-label="Centre column">
             <AlignCenter />
           </ToggleGroupItem>
           <ToggleGroupItem value="right" aria-label="Align column right">
