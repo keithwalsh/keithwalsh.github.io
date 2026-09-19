@@ -52,7 +52,7 @@ export function ChartCard({
             <Accordion type="single" collapsible className="border-t">
               <AccordionItem value="learn-more">
                 <AccordionTrigger>Learn more</AccordionTrigger>
-                <AccordionContent className="flex flex-col gap-3 text-muted-foreground">
+                <AccordionContent className="flex max-w-[72ch] flex-col gap-3 text-muted-foreground">
                   {learnMore}
                 </AccordionContent>
               </AccordionItem>

@@ -1,44 +1,42 @@
-import { useEffect, useState } from "react"
-import { CalendarDays, CircleAlert, RefreshCw } from "lucide-react"
+import { useEffect, useMemo, useState, type ReactNode } from "react"
+import { CircleAlert } from "lucide-react"
 
-import { linkClass, NewTabHint } from "@/components/editorial"
+import { eyebrowClass, linkClass, NewTabHint } from "@/components/editorial"
 import { Page, PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
+import { CalendarHeatmap } from "@/pages/weather/calendar-heatmap"
 import { RainfallChart } from "@/pages/weather/rainfall-chart"
 import { TemperatureChart } from "@/pages/weather/temperature-chart"
 import {
-  availableYears,
+  groupByYear,
   loadWeatherData,
-  rowsForYear,
   type WeatherData,
 } from "@/pages/weather/weather-data"
 import { WindRoseChart } from "@/pages/weather/wind-rose-chart"
 import { WindSpeedChart } from "@/pages/weather/wind-speed-chart"
+import { YearRail, YearStats } from "@/pages/weather/year-summary"
 
 const errorMessage = (cause: unknown) =>
   `Error loading data: ${cause instanceof Error ? cause.message : String(cause)}`
+
+/** A numbered part of the page: a mono label ruled off to the right. */
+function Section({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <h2 className={eyebrowClass}>{title}</h2>
+        <span aria-hidden="true" className="h-px flex-1 bg-border" />
+      </div>
+      {children}
+    </section>
+  )
+}
 
 export default function WeatherPage() {
   const [data, setData] = useState<WeatherData | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [year, setYear] = useState<string | null>(null)
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [lastRefresh, setLastRefresh] = useState<Date | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -54,58 +52,25 @@ export default function WeatherPage() {
     }
   }, [])
 
-  const refresh = async () => {
-    setIsRefreshing(true)
-    try {
-      setData(await loadWeatherData(true))
-      setError(null)
-      setLastRefresh(new Date())
-    } catch (cause) {
-      setError(errorMessage(cause))
-    } finally {
-      setIsRefreshing(false)
-    }
-  }
-
-  const years = data ? availableYears(data.temperature) : []
-  const selectedYear = year && years.includes(year) ? year : years[0]
+  const years = useMemo(() => (data ? groupByYear(data) : []), [data])
+  // Opens on the latest complete year: a partial year's records mislead.
+  const selected =
+    years.find((entry) => entry.year === year) ??
+    years.findLast((entry) => !entry.partial) ??
+    years.at(-1)
+  const span = years.length
+    ? `${years[0].year}–${years[years.length - 1].year}`
+    : undefined
+  const readings = data
+    ? `${data.temperature.length.toLocaleString("en-IE")} days of readings, updated monthly.`
+    : "Updated monthly."
 
   return (
-    <Page>
-      <PageHeader description="The below data was recorded from the Claremorris Met Éireann meteorological station, situated about 2 km south of the centre of the town (my home town), in County Mayo, Ireland. The weather data is updated monthly." />
-
-      <div className="flex flex-wrap items-center gap-2">
-        <Select value={selectedYear} onValueChange={setYear} disabled={!data}>
-          <SelectTrigger className="w-32" aria-label="Year">
-            <CalendarDays />
-            <SelectValue placeholder="Year" />
-          </SelectTrigger>
-          <SelectContent>
-            {years.map((option) => (
-              <SelectItem key={option} value={option}>
-                {option}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="outline"
-              onClick={refresh}
-              disabled={!data || isRefreshing}
-            >
-              <RefreshCw className={cn(isRefreshing && "animate-spin")} />
-              Refresh
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            {lastRefresh
-              ? `Last refreshed at ${lastRefresh.toLocaleTimeString("en-IE")}`
-              : "Reload the latest data"}
-          </TooltipContent>
-        </Tooltip>
-      </div>
+    <Page className="gap-10 md:pb-14">
+      <PageHeader
+        meta={span ? `Claremorris · ${span}` : "Claremorris"}
+        description={`Recorded at the Claremorris Met Éireann station, about 2 km south of my home town in County Mayo, Ireland. ${readings}`}
+      />
 
       {error && (
         <Alert variant="destructive">
@@ -114,39 +79,37 @@ export default function WeatherPage() {
         </Alert>
       )}
 
-      {data && selectedYear ? (
-        <div
-          className={cn(
-            "grid items-start gap-4 transition-opacity lg:grid-cols-2",
-            isRefreshing && "opacity-60"
-          )}
-        >
-          <TemperatureChart
-            key={`temperature-${selectedYear}`}
-            data={rowsForYear(data.temperature, selectedYear)}
-          />
-          <WindSpeedChart
-            key={`wind-${selectedYear}`}
-            data={rowsForYear(data.wind, selectedYear)}
-          />
-          <WindRoseChart
-            key={`rose-${selectedYear}`}
-            data={data.windRoseByYear[selectedYear]}
-            year={selectedYear}
-          />
-          <RainfallChart
-            key={`rain-${selectedYear}`}
-            data={rowsForYear(data.rain, selectedYear)}
-          />
-        </div>
+      {selected ? (
+        <>
+          <Section title="01 — The year">
+            <YearRail years={years} selected={selected} onSelect={setYear} />
+            <YearStats years={years} selected={selected} />
+          </Section>
+          <Section title="02 — Every day">
+            <CalendarHeatmap year={selected} />
+          </Section>
+          <Section title="03 — Temperature & humidity">
+            <TemperatureChart data={selected.temperature} />
+          </Section>
+          <Section title="04 — Wind">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,25rem),1fr))] items-start gap-4">
+              <WindRoseChart
+                data={selected.windRose}
+                year={selected.year}
+                partial={selected.partial}
+              />
+              <WindSpeedChart data={selected.wind} />
+            </div>
+          </Section>
+          <Section title="05 — Rainfall">
+            <RainfallChart data={selected.rain} />
+          </Section>
+        </>
       ) : (
-        !error && (
-          <div className="grid gap-4 lg:grid-cols-2">
-            {Array.from({ length: 4 }, (_, index) => (
-              <Skeleton key={index} className="h-[28rem] rounded-xl" />
-            ))}
-          </div>
-        )
+        !error &&
+        Array.from({ length: 3 }, (_, index) => (
+          <Skeleton key={index} className="h-[28rem] rounded-xl" />
+        ))
       )}
 
       <p className="text-center text-sm text-muted-foreground">

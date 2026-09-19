@@ -73,12 +73,14 @@
 
 /* Type roles, on top of Tailwind's xs–3xl. `eyebrow` is a standalone label (a
    section heading, form label or status line) and `meta` an inline run such
-   as a date, tag or caption; both are set in mono uppercase. `2xs` is small
-   print, `caption` a secondary line and the dense tool controls, `body-sm`
-   and `body-lg` editorial detail and long-form reading, `lead` an intro
-   paragraph. For headings: `subtitle` names an item (a skill, a certificate),
-   `heading` a post section, `title` an index row, `headline` a post and
-   `display` a page masthead; `numeral` is the brand counter beside a list.
+   as a date, tag or caption; both are set in mono uppercase. `micro` is the
+   mono label inside a chart or on a badge, e.g. a heatmap's month names.
+   `2xs` is small print, `caption` a secondary line and the dense tool
+   controls, `body-sm` and `body-lg` editorial detail and long-form reading,
+   `lead` an intro paragraph. For headings: `subtitle` names an item (a
+   skill, a certificate), `heading` a post section, `title` an index row,
+   `headline` a post and `display` a page masthead; `numeral` is the brand
+   counter beside a list.
    Register any new `--text-*` name in src/lib/utils.ts too, or cn() merges
    it away. */
 @theme {
@@ -86,6 +88,8 @@
   --text-eyebrow--letter-spacing: 0.2em;
   --text-meta: 0.6875rem;
   --text-meta--letter-spacing: 0.14em;
+  --text-micro: 0.625rem;
+  --text-micro--letter-spacing: 0.1em;
   --text-2xs: 0.6875rem;
   --text-caption: 0.8125rem;
   --text-body-sm: 0.9375rem;

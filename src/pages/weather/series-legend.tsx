@@ -1,5 +1,7 @@
 import type { ReactNode } from "react"
 
+import { cn } from "@/lib/utils"
+
 export type LegendShape = "line" | "dashed" | "dotted" | "area" | "square"
 
 export type LegendItem = {
@@ -46,9 +48,20 @@ export function LegendKey({ color, shape }: Omit<LegendItem, "label">) {
 }
 
 /** Legend rendered as HTML so each key mirrors its mark (line, dash or swatch). */
-export function SeriesLegend({ items }: { items: LegendItem[] }) {
+export function SeriesLegend({
+  items,
+  className,
+}: {
+  items: LegendItem[]
+  className?: string
+}) {
   return (
-    <ul className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+    <ul
+      className={cn(
+        "flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground",
+        className
+      )}
+    >
       {items.map(({ label, ...key }) => (
         <li key={label} className="flex items-center gap-1.5">
           <LegendKey {...key} />
@@ -66,16 +79,19 @@ export function TooltipRow({
   value,
 }: {
   label: ReactNode
-  color: string
+  /** Leave out when the row isn't a series on the chart. */
+  color?: string
   value: ReactNode
 }) {
   return (
     <div className="flex w-full items-center gap-2">
-      <span
-        aria-hidden="true"
-        className="h-0.5 w-3 shrink-0 rounded-full"
-        style={{ background: color }}
-      />
+      {color && (
+        <span
+          aria-hidden="true"
+          className="h-0.5 w-3 shrink-0 rounded-full"
+          style={{ background: color }}
+        />
+      )}
       <span className="text-muted-foreground">{label}</span>
       <span className="ml-auto pl-4 font-mono font-medium text-foreground tabular-nums">
         {value}

@@ -78,9 +78,12 @@ function ringStep(maxPercent: number) {
 export function WindRoseChart({
   data,
   year,
+  partial = false,
 }: {
   data?: WindRoseData
   year: string
+  /** The year is still in progress. */
+  partial?: boolean
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState<{
@@ -106,8 +109,15 @@ export function WindRoseChart({
     const scaleMax = step * Math.max(1, Math.ceil(maxPercent / step))
     const radiusFor = (hours: number) =>
       INNER + ((OUTER - INNER) * ((hours / data.totalHours) * 100)) / scaleMax
+    const prevailing = sectors.reduce((top, sector) =>
+      sector.total > top.total ? sector : top
+    )
 
     return {
+      prevailing: {
+        direction: prevailing.direction,
+        share: (prevailing.total / data.totalHours) * 100,
+      },
       sectors: sectors.map((sector) => {
         let cumulative = 0
         const segments = sector.classHours.map((hours, index) => {
@@ -158,7 +168,7 @@ export function WindRoseChart({
     <>
       <div
         ref={wrapperRef}
-        className="relative mx-auto w-full max-w-sm"
+        className="relative mx-auto w-full max-w-90"
         onPointerLeave={() => setActive(null)}
       >
         <svg
@@ -201,7 +211,7 @@ export function WindRoseChart({
                 key={sector.direction}
                 tabIndex={0}
                 aria-label={`${sector.direction}: ${formatNumber(sector.share)}% of hours`}
-                opacity={isDimmed ? 0.45 : 1}
+                opacity={isDimmed ? 0.4 : 1}
                 className="transition-opacity outline-none"
                 onPointerMove={(event) =>
                   showTooltip(index, event.clientX, event.clientY)
@@ -242,11 +252,13 @@ export function WindRoseChart({
             fill="var(--card)"
             stroke="var(--border)"
           />
+          {/* Just inside each ring: above it, the outer label meets the N. */}
           {rose.rings.map((ring) => (
             <text
               key={ring.percent}
               x={CENTER + 4}
-              y={CENTER - ring.radius - 3}
+              y={CENTER - ring.radius + 3}
+              dominantBaseline="hanging"
               fontSize={10}
               fill="currentColor"
               stroke="var(--card)"
@@ -258,14 +270,16 @@ export function WindRoseChart({
             </text>
           ))}
           {rose.sectors.map((sector, index) => {
-            const [x, y] = polar(OUTER + 14, index * STEP)
+            const [x, y] = polar(OUTER + 15, index * STEP)
+            const isPrevailing = sector.direction === rose.prevailing.direction
             return (
               <text
                 key={sector.direction}
                 x={x}
                 y={y}
                 fontSize={index % 2 === 0 ? 12 : 9}
-                fill="currentColor"
+                fontWeight={isPrevailing ? 600 : undefined}
+                fill={isPrevailing ? "var(--foreground)" : "currentColor"}
                 textAnchor="middle"
                 dominantBaseline="central"
                 className="pointer-events-none"
@@ -336,8 +350,12 @@ export function WindRoseChart({
 
   return (
     <ChartCard
-      title="Wind rose"
-      description="Share of hours by wind direction and speed."
+      title="Where the wind comes from"
+      description={
+        rose
+          ? `Share of hours by direction and speed. ${rose.prevailing.direction} leads with ${formatNumber(rose.prevailing.share)}% of the year${partial ? " so far" : ""}.`
+          : "Share of hours by direction and speed."
+      }
       chart={chart}
       table={table}
       learnMore={

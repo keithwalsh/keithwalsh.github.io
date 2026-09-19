@@ -94,14 +94,10 @@ type WindRoseRow = {
 const isNumber = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value)
 
-async function fetchCsv<T>(filename: string, forceRefresh: boolean) {
-  // Cache-bust hourly by default; a manual refresh skips the HTTP cache.
-  const version = forceRefresh
-    ? `t=${Date.now()}`
-    : `v=${Math.floor(Date.now() / 3_600_000)}`
-  const response = await fetch(`${assetUrl(`data/${filename}`)}?${version}`, {
-    cache: forceRefresh ? "no-store" : "default",
-  })
+async function fetchCsv<T>(filename: string) {
+  // Cache-bust hourly, so a monthly data drop shows up without a rebuild.
+  const version = Math.floor(Date.now() / 3_600_000)
+  const response = await fetch(`${assetUrl(`data/${filename}`)}?v=${version}`)
   if (!response.ok) {
     throw new Error(`Couldn't load ${filename} (HTTP ${response.status})`)
   }
@@ -151,14 +147,12 @@ function aggregateWindRose(rows: Partial<WindRoseRow>[]) {
   return result
 }
 
-export async function loadWeatherData(
-  forceRefresh = false
-): Promise<WeatherData> {
+export async function loadWeatherData(): Promise<WeatherData> {
   const [temperature, wind, rain, windRose] = await Promise.all([
-    fetchCsv<TemperatureRow>("temperature.csv", forceRefresh),
-    fetchCsv<WindRow>("wind.csv", forceRefresh),
-    fetchCsv<RainRow>("rain.csv", forceRefresh),
-    fetchCsv<WindRoseRow>("wind_rose.csv", forceRefresh),
+    fetchCsv<TemperatureRow>("temperature.csv"),
+    fetchCsv<WindRow>("wind.csv"),
+    fetchCsv<RainRow>("rain.csv"),
+    fetchCsv<WindRoseRow>("wind_rose.csv"),
   ])
 
   return {
@@ -189,19 +183,42 @@ export async function loadWeatherData(
   }
 }
 
-/** Years present in the data, newest first. */
-export function availableYears(rows: { date: string }[]) {
-  return [...new Set(rows.map((row) => row.date.slice(0, 4)))].sort().reverse()
-}
-
 /** Rows for one year in date order. ISO date strings avoid timezone shifts. */
-export function rowsForYear<T extends { date: string }>(
-  rows: T[],
-  year: string
-) {
+function rowsForYear<T extends { date: string }>(rows: T[], year: string) {
   return rows
     .filter((row) => row.date.startsWith(year))
     .sort((a, b) => a.date.localeCompare(b.date))
+}
+
+export type WeatherYear = {
+  year: string
+  temperature: TemperatureRow[]
+  wind: WindRow[]
+  rain: RainRow[]
+  windRose?: WindRoseData
+  /** Under 300 days recorded, e.g. the year in progress. */
+  partial: boolean
+}
+
+/**
+ * One entry per year, oldest first. Built once per load, so a year's row
+ * arrays keep their identity while the page switches between years.
+ */
+export function groupByYear(data: WeatherData): WeatherYear[] {
+  const years = [
+    ...new Set(data.temperature.map((row) => row.date.slice(0, 4))),
+  ]
+  return years.sort().map((year) => {
+    const temperature = rowsForYear(data.temperature, year)
+    return {
+      year,
+      temperature,
+      wind: rowsForYear(data.wind, year),
+      rain: rowsForYear(data.rain, year),
+      windRose: data.windRoseByYear[year],
+      partial: temperature.length < 300,
+    }
+  })
 }
 
 // en-IE abbreviates September as "Sept"; the blog uses three-letter months.

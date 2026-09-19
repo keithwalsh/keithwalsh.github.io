@@ -26,6 +26,7 @@ export const cn = createCn({
           text: [
             "eyebrow",
             "meta",
+            "micro",
             "2xs",
             "caption",
             "body-sm",

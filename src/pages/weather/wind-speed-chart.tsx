@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import {
   Area,
   CartesianGrid,
@@ -17,14 +17,14 @@ import {
 import { ChartCard } from "@/pages/weather/chart-card"
 import {
   average,
-  clampRange,
   formatAxisDate,
   formatNumber,
   groupByMonth,
+  inOrder,
   monthTicks,
+  niceTicks,
 } from "@/pages/weather/chart-utils"
 import { DataTable } from "@/pages/weather/data-table"
-import { DateRangeSlider } from "@/pages/weather/date-range-slider"
 import { SeriesLegend, TooltipRow } from "@/pages/weather/series-legend"
 import { formatDate, type WindRow } from "@/pages/weather/weather-data"
 
@@ -47,8 +47,6 @@ const TOOLTIP_ROWS: Record<string, { label: string; color: string }> = {
 }
 
 export function WindSpeedChart({ data }: { data: WindRow[] }) {
-  const [range, setRange] = useState<[number, number]>([0, data.length - 1])
-
   const points = useMemo(
     () =>
       data.map((row) => ({
@@ -64,108 +62,105 @@ export function WindSpeedChart({ data }: { data: WindRow[] }) {
     [data]
   )
 
-  const [start, end] = clampRange(range, points.length)
-  const visible = points.slice(start, end + 1)
-  const ticks = monthTicks(visible.map((point) => point.date))
+  const ticks = monthTicks(points.map((point) => point.date))
+  const speedTicks = niceTicks(Math.max(...points.map((point) => point.gust)))
 
   const chart = (
     <>
-      <div className="flex flex-col gap-1">
-        <p className="text-xs text-muted-foreground">Wind speed (km/h)</p>
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-72 w-full"
+      <ChartContainer config={chartConfig} className="aspect-auto h-72 w-full">
+        <ComposedChart
+          data={points}
+          margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
         >
-          <ComposedChart
-            data={visible}
-            margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              ticks={ticks}
-              tickFormatter={(date: string) =>
-                formatAxisDate(date, Boolean(ticks))
-              }
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={24}
-            />
-            <YAxis width="auto" tickLine={false} axisLine={false} />
-            <ChartTooltip
-              cursor={{ stroke: "var(--border)" }}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => formatDate(String(value))}
-                  formatter={(value, name) => {
-                    const row = TOOLTIP_ROWS[String(name)]
-                    const text = Array.isArray(value)
-                      ? `${value[0]}–${value[1]} km/h`
-                      : `${value} km/h`
-                    return (
-                      <TooltipRow
-                        label={row?.label}
-                        color={row?.color}
-                        value={text}
-                      />
-                    )
-                  }}
-                />
-              }
-            />
-            <Area
-              dataKey="range"
-              type="monotone"
-              fill="var(--color-range)"
-              fillOpacity={0.15}
-              stroke="none"
-              activeDot={false}
-              isAnimationActive={false}
-            />
-            <Line
-              dataKey="gust"
-              type="monotone"
-              stroke="var(--color-gust)"
-              strokeWidth={2}
-              strokeDasharray="0.1 4"
-              strokeLinecap="round"
-              dot={false}
-              isAnimationActive={false}
-            />
-            <Line
-              dataKey="tenMin"
-              type="monotone"
-              stroke="var(--color-tenMin)"
-              strokeWidth={2}
-              strokeDasharray="4 3"
-              dot={false}
-              isAnimationActive={false}
-            />
-            <Line
-              dataKey="mean"
-              type="monotone"
-              stroke="var(--color-mean)"
-              strokeWidth={2}
-              dot={false}
-              isAnimationActive={false}
-            />
-          </ComposedChart>
-        </ChartContainer>
-      </div>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="date"
+            ticks={ticks}
+            tickFormatter={(date: string) =>
+              formatAxisDate(date, Boolean(ticks))
+            }
+            tickLine={false}
+            axisLine={false}
+            tickMargin={8}
+            minTickGap={8}
+          />
+          <YAxis
+            width="auto"
+            domain={[0, speedTicks[speedTicks.length - 1]]}
+            ticks={speedTicks}
+            tickLine={false}
+            axisLine={false}
+          />
+          <ChartTooltip
+            cursor={{ stroke: "var(--border)" }}
+            content={({ active, label, payload }) => (
+              <ChartTooltipContent
+                active={active}
+                label={label}
+                payload={inOrder(payload, ["gust", "tenMin", "range", "mean"])}
+                labelFormatter={(value) => formatDate(String(value))}
+                formatter={(value, name) => {
+                  const row = TOOLTIP_ROWS[String(name)]
+                  const text = Array.isArray(value)
+                    ? `${value[0]}–${value[1]} km/h`
+                    : `${value} km/h`
+                  return (
+                    <TooltipRow
+                      label={row?.label}
+                      color={row?.color}
+                      value={text}
+                    />
+                  )
+                }}
+              />
+            )}
+          />
+          <Area
+            dataKey="range"
+            type="monotone"
+            fill="var(--color-range)"
+            fillOpacity={0.15}
+            stroke="none"
+            activeDot={false}
+            isAnimationActive={false}
+          />
+          <Line
+            dataKey="gust"
+            type="monotone"
+            stroke="var(--color-gust)"
+            strokeWidth={2}
+            strokeDasharray="0.1 4"
+            strokeLinecap="round"
+            dot={false}
+            isAnimationActive={false}
+          />
+          <Line
+            dataKey="tenMin"
+            type="monotone"
+            stroke="var(--color-tenMin)"
+            strokeWidth={2}
+            strokeDasharray="4 3"
+            dot={false}
+            isAnimationActive={false}
+          />
+          <Line
+            dataKey="mean"
+            type="monotone"
+            stroke="var(--color-mean)"
+            strokeWidth={2}
+            dot={false}
+            isAnimationActive={false}
+          />
+        </ComposedChart>
+      </ChartContainer>
 
       <SeriesLegend
         items={[
-          { label: "Mean wind speed", color: MEAN, shape: "line" },
+          { label: "Mean", color: MEAN, shape: "line" },
           { label: "Hourly mean range", color: MEAN, shape: "area" },
           { label: "Max. 10-min mean", color: TEN_MIN, shape: "dashed" },
           { label: "Max. gust", color: GUST, shape: "dotted" },
         ]}
-      />
-      <DateRangeSlider
-        dates={points.map((point) => point.date)}
-        value={[start, end]}
-        onValueChange={setRange}
       />
     </>
   )
@@ -191,8 +186,8 @@ export function WindSpeedChart({ data }: { data: WindRow[] }) {
 
   return (
     <ChartCard
-      title="Wind speed measurements"
-      description="Daily mean, gusts and sustained winds."
+      title="How hard it blew"
+      description="Daily mean, sustained wind and peak gust, in km/h."
       chart={chart}
       table={table}
       learnMore={
