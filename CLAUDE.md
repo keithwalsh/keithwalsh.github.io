@@ -136,6 +136,10 @@ Mockup are full-height workspaces: `PageHeader`, then their own panes.
   aliases it to `src/lib/utils.ts`, which registers the custom `--text-*`
   sizes (`text-eyebrow`, `text-meta`, `text-display`). Add any new `--text-*`
   token there too, or `cn()` reads it as a text colour and drops it.
+- **Empty states come in two sizes.** A route with nothing to show (the 404
+  page, a missing post, the empty blog) renders `ZeroState` from
+  `components/editorial.tsx`. A tool panel waiting for input puts the shadcn
+  `Empty` on that panel's own surface.
 - **`verbatimModuleSyntax`** is on: type-only imports must use `import type`.
 - **`erasableSyntaxOnly`** is on: no `enum`, no constructor parameter properties.
 - `noUnusedLocals` and `noUnusedParameters` are errors, so `typecheck` fails on

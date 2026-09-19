@@ -217,15 +217,16 @@ export default function TextToAsciiPage() {
             {visibleOutput}
           </pre>
         ) : (
-          <Empty className="border">
+          // The filled output's surface, so the panel doesn't restyle on input.
+          <Empty className="rounded-lg border border-solid bg-muted/40">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <Type />
               </EmptyMedia>
               <EmptyDescription>
                 {hasText
-                  ? "ASCII art will appear here"
-                  : "Enter some text to get started"}
+                  ? "ASCII art will appear here."
+                  : "Enter some text to get started."}
               </EmptyDescription>
             </EmptyHeader>
           </Empty>

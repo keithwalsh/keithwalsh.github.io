@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import { ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
 
-import { eyebrowClass, sectionClass } from "@/components/editorial"
+import { eyebrowClass, sectionClass, ZeroState } from "@/components/editorial"
 import { PageHeader } from "@/components/page"
 import { formatPostDate, posts } from "@/lib/posts"
 import { cn } from "@/lib/utils"
@@ -19,7 +19,6 @@ import {
   rowDateClass,
   rowLinkClass,
   rowTitleClass,
-  ZeroState,
 } from "@/pages/blog/blog-shared"
 
 // Every tag with the number of posts carrying it, most used first; ties keep
@@ -42,7 +41,11 @@ function countOf(n: number, noun: string) {
 export default function BlogPage() {
   if (posts.length === 0) {
     return (
-      <ZeroState numeral="00" lines={["Nothing", "published yet"]}>
+      <ZeroState
+        numeral="00"
+        lines={["Nothing", "published yet"]}
+        action={{ label: "Home page", to: "/" }}
+      >
         First write-ups are in progress. They land here when they're ready.
       </ZeroState>
     )

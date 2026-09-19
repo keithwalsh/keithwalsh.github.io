@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"
 import { ArrowUpRight } from "lucide-react"
 import { Link, useOutletContext, useParams } from "react-router"
 
-import { eyebrowClass, sectionClass } from "@/components/editorial"
+import { eyebrowClass, sectionClass, ZeroState } from "@/components/editorial"
 import { formatPostDate, posts } from "@/lib/posts"
 import { cn } from "@/lib/utils"
 import {
@@ -17,7 +17,6 @@ import {
   rowDateClass,
   rowLinkClass,
   rowTitleClass,
-  ZeroState,
 } from "@/pages/blog/blog-shared"
 import { PostBody } from "@/pages/blog/post-body"
 
@@ -27,7 +26,11 @@ export default function PostPage() {
 
   if (index === -1) {
     return (
-      <ZeroState numeral="404" lines={["Post not", "in the index"]}>
+      <ZeroState
+        numeral="404"
+        lines={["Post not", "in the index"]}
+        action={{ label: "All posts", to: "/blog" }}
+      >
         That URL does not match a published post. It may have been a draft, or
         the slug changed.
       </ZeroState>
