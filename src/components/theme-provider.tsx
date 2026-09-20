@@ -4,13 +4,6 @@ import * as React from "react"
 type Theme = "dark" | "light" | "system"
 type ResolvedTheme = "dark" | "light"
 
-type ThemeProviderProps = {
-  children: React.ReactNode
-  defaultTheme?: Theme
-  storageKey?: string
-  disableTransitionOnChange?: boolean
-}
-
 type ThemeProviderState = {
   theme: Theme
   setTheme: (theme: Theme) => void
@@ -18,6 +11,8 @@ type ThemeProviderState = {
 
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)"
 const THEME_VALUES: Theme[] = ["dark", "light", "system"]
+// Matches the inline script in index.html that applies the theme before paint.
+const STORAGE_KEY = "theme"
 
 const ThemeProviderContext = React.createContext<
   ThemeProviderState | undefined
@@ -77,50 +72,32 @@ function isEditableTarget(target: EventTarget | null) {
   return false
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "theme",
-  disableTransitionOnChange = true,
-  ...props
-}: ThemeProviderProps) {
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = React.useState<Theme>(() => {
-    const storedTheme = localStorage.getItem(storageKey)
+    const storedTheme = localStorage.getItem(STORAGE_KEY)
     if (isTheme(storedTheme)) {
       return storedTheme
     }
 
-    return defaultTheme
+    return "system"
   })
 
-  const setTheme = React.useCallback(
-    (nextTheme: Theme) => {
-      localStorage.setItem(storageKey, nextTheme)
-      setThemeState(nextTheme)
-    },
-    [storageKey]
-  )
-
-  const applyTheme = React.useCallback(
-    (nextTheme: Theme) => {
-      const root = document.documentElement
-      const resolvedTheme =
-        nextTheme === "system" ? getSystemTheme() : nextTheme
-      const restoreTransitions = disableTransitionOnChange
-        ? disableTransitionsTemporarily()
-        : null
-
-      root.classList.remove("light", "dark")
-      root.classList.add(resolvedTheme)
-
-      if (restoreTransitions) {
-        restoreTransitions()
-      }
-    },
-    [disableTransitionOnChange]
-  )
+  const setTheme = React.useCallback((nextTheme: Theme) => {
+    localStorage.setItem(STORAGE_KEY, nextTheme)
+    setThemeState(nextTheme)
+  }, [])
 
   React.useEffect(() => {
+    const applyTheme = (nextTheme: Theme) => {
+      const root = document.documentElement
+      const restoreTransitions = disableTransitionsTemporarily()
+
+      root.classList.remove("light", "dark")
+      root.classList.add(nextTheme === "system" ? getSystemTheme() : nextTheme)
+
+      restoreTransitions()
+    }
+
     applyTheme(theme)
 
     if (theme !== "system") {
@@ -137,7 +114,7 @@ export function ThemeProvider({
     return () => {
       mediaQuery.removeEventListener("change", handleChange)
     }
-  }, [theme, applyTheme])
+  }, [theme])
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -167,7 +144,7 @@ export function ThemeProvider({
                 ? "light"
                 : "dark"
 
-        localStorage.setItem(storageKey, nextTheme)
+        localStorage.setItem(STORAGE_KEY, nextTheme)
         return nextTheme
       })
     }
@@ -177,32 +154,7 @@ export function ThemeProvider({
     return () => {
       window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [storageKey])
-
-  React.useEffect(() => {
-    const handleStorageChange = (event: StorageEvent) => {
-      if (event.storageArea !== localStorage) {
-        return
-      }
-
-      if (event.key !== storageKey) {
-        return
-      }
-
-      if (isTheme(event.newValue)) {
-        setThemeState(event.newValue)
-        return
-      }
-
-      setThemeState(defaultTheme)
-    }
-
-    window.addEventListener("storage", handleStorageChange)
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange)
-    }
-  }, [defaultTheme, storageKey])
+  }, [])
 
   const value = React.useMemo(
     () => ({
@@ -213,7 +165,7 @@ export function ThemeProvider({
   )
 
   return (
-    <ThemeProviderContext.Provider {...props} value={value}>
+    <ThemeProviderContext.Provider value={value}>
       {children}
     </ThemeProviderContext.Provider>
   )

@@ -2,7 +2,6 @@ import { lazy } from "react"
 import { Route, Routes } from "react-router"
 
 import { AppLayout } from "@/components/app-layout"
-import { siteConfig } from "@/config/site"
 
 const AboutPage = lazy(() => import("@/pages/about/about-page"))
 const BlogPage = lazy(() => import("@/pages/blog/blog-page"))
@@ -27,7 +26,6 @@ const MarkdownTablePage = lazy(
 const TextToAsciiPage = lazy(
   () => import("@/pages/tools/text-to-ascii/text-to-ascii-page")
 )
-const TestPage = lazy(() => import("@/pages/test-page/test-page"))
 const ProfessionalProjectsPage = lazy(
   () => import("@/pages/projects/professional-projects-page")
 )
@@ -54,9 +52,6 @@ export function App() {
         <Route path="tools/json-explorer" element={<JsonExplorerPage />} />
         <Route path="tools/markdown-table" element={<MarkdownTablePage />} />
         <Route path="tools/text-to-ascii" element={<TextToAsciiPage />} />
-        {siteConfig.showTestPage && (
-          <Route path="test-page" element={<TestPage />} />
-        )}
         <Route
           path="projects/professional"
           element={<ProfessionalProjectsPage />}

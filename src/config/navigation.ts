@@ -1,8 +1,6 @@
 import type { ComponentType } from "react"
 import { ChartColumn, House, Mail, PenLine, Rocket, Wrench } from "lucide-react"
 
-import { siteConfig } from "@/config/site"
-
 export type NavIcon = ComponentType<{ className?: string }>
 
 // Section items render label-only in the sidebar, so only top-level rows
@@ -39,9 +37,6 @@ export const sectionNav: NavSection[] = [
       { title: "JSON Explorer", url: "/tools/json-explorer" },
       { title: "Markdown Table", url: "/tools/markdown-table" },
       { title: "Text to ASCII", url: "/tools/text-to-ascii" },
-      ...(siteConfig.showTestPage
-        ? [{ title: "Test Page", url: "/test-page" }]
-        : []),
     ],
   },
   {
