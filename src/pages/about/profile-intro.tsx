@@ -6,6 +6,7 @@ import {
   sectionClass,
   StatusBar,
 } from "@/components/editorial"
+import { siteConfig } from "@/config/site"
 import journey from "@/data/professionalJourney.json"
 import { assetUrl } from "@/lib/browser"
 import {
@@ -46,7 +47,9 @@ export function ProfileIntro() {
         "relative overflow-hidden pt-page-top pb-header-bottom"
       )}
     >
-      <StatusBar>Ballindine, Co. Mayo, Ireland</StatusBar>
+      <StatusBar meta={siteConfig.tagline}>
+        Ballindine, Co. Mayo, Ireland
+      </StatusBar>
 
       <div className="flex flex-wrap items-start gap-stack pt-stack">
         <div className="relative w-[clamp(7.25rem,15vw,10.5rem)] flex-none">
@@ -81,11 +84,14 @@ export function ProfileIntro() {
           </div>
 
           <p data-reveal="3" className={cn(leadClass, "mt-0.5")}>
-            I turn messy operational data into things people actually use —
-            pipelines that run themselves, dashboards that answer the question,
-            and reports that end the argument. Fifteen years across payments,
-            risk, client support and e-commerce, usually sitting between the
-            technical team and the people waiting on an answer.
+            I build the data layer people decide from. At Portwest I built one
+            from scratch: a tested, 104-model dbt project over a global Infor M3
+            ERP estate, and an MCP server that lets AI tools read the ERP schema
+            safely. Before that, four years of SQL and Python on Snowflake at
+            Pitney Bowes, plus internal and client-facing Tableau and Power BI
+            dashboards. Fifteen years across payments, risk, client support and
+            e-commerce taught me why it matters: when everyone works from one
+            trusted source, the argument is about the decision, not the numbers.
           </p>
         </div>
       </div>

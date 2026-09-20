@@ -2,51 +2,56 @@
   "positions": [
     {
       "year": "2025",
-      "title": "Data & Integrations Analyst",
+      "title": "Digital Support Engineer",
       "company": "Portwest",
       "companyDescription": "Irish manufacturer of workwear, PPE and safety footwear, founded in 1904.",
       "companyDescription2": "Sells internationally through its own e-commerce platform and a distributor network.",
-      "dateRange": "2025 – Present",
-      "location": "Ireland",
+      "dateRange": "April 2025 – Present",
+      "location": "Westport, Co. Mayo",
       "details": [
-        "Maintain and extend the Laravel sync layer that pulls the Akeneo PIM and the Infor M3 ERP into the MySQL schema behind the company webshop.",
-        "Diagnose pricing defects across the full resolution chain — customer price list, general price list, promotion, clearance, cost factor and uplift.",
-        "Delivered a dual-warehouse rollout showing Poland and Milan stock side by side for Italian customers, behind a staged go-live gate.",
-        "Took ownership of the courier shipping station used by the Poland warehouse, covering the GLS and FedEx API integrations and delivery confirmation back into M3.",
-        "Built internal MCP servers and CLI tooling giving the team documented read access to M3 and the data warehouse replica."
+        "Designed and maintain a 104-model dbt project over Infor M3 ERP data (57 staging, 16 intermediate, 15 mart, 16 admin), with generic and custom tests.",
+        "Built the SQL views, Azure SQL Managed Instance structures and Python automation behind daily refreshes, incremental loads and large-scale exports.",
+        "Wrote the reference documentation for 149 M3 tables, separating vendor-defined field semantics from measured local usage so reports and models read each field the same way.",
+        "Built a Python MCP server giving AI tools read-only access to the M3 schema (six tools, 141 tables, 2,936 field definitions, self-test harness). Wrote six reusable agent skills and the API endpoints exposing M3 data to Copilot.",
+        "Trace data defects across the ERP, webshop, PIM and warehouse systems, and built a cron-health dashboard after finding scheduled jobs were failing silently.",
+        "Work with IT, Digital, Sales, Finance and Supply Chain to turn business requirements into tested, documented technical solutions.",
+        "Principal developer on the internal Laravel platform (217 classes, ~46% of commits), working through Git branches and pull requests, with an 88-file Pest test suite I introduced.",
+        "Found and fixed an unauthenticated SQL injection on a public endpoint, then audited access control across every report endpoint and added regression tests."
       ],
       "technologies": [
-        "PHP",
-        "Laravel",
-        "MySQL",
+        "dbt",
+        "SQL",
         "Python",
-        "Infor M3",
-        "Akeneo PIM",
-        "REST APIs"
+        "Azure SQL Managed Instance",
+        "Git",
+        "MCP",
+        "Copilot",
+        "Laravel",
+        "Pest",
+        "Infor M3"
       ]
     },
     {
       "year": "2021",
       "title": "Data Analyst",
       "company": "Pitney Bowes",
-      "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
-      "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
+      "companyDescription": "Pitney Bowes is a US multinational founded in 1920.",
+      "companyDescription2": "Provides mailing, shipping and financial services to businesses worldwide.",
       "dateRange": "March 2021 – December 2024",
       "location": "Dublin, Ireland",
       "details": [
-        "Developed a rerate tool using Python and SQL to recalculate client invoices, integrating multiple pricing structures and data sources.",
-        "Built automated Python/SQL scripts to detect invoice errors and validate refund calculations, cutting manual effort by ~50%.",
-        "Provided data analysis solutions that enabled the Claims team to expedite claim adjudications, and created dashboards for the Client Engagement team to improve retention strategies.",
-        "Developed algorithms and reporting tools to streamline the Loss Prevention team’s operations and inform risk assessments",
-        "Designed and maintained both internal and client-facing dashboards using Tableau and Power BI, offering real-time insights.",
-        "Automated workflows with Power Automate, Jira automation rules, and Python scripts, saving significant administrative time.",
-        "Worked with various teams to identify operational bottlenecks and provide data-led solutions, improving overall efficiency.",
-        "Received leadership recognition for developing a universal analytics toolkit.",
-        "Earned the Cross-Functional Collaboration Award (2023–2024) with four quarterly nominations."
+        "Built a rerate tool in Python and SQL over Snowflake to recalculate client invoices across multiple pricing structures and data sources.",
+        "Wrote automated Python and SQL checks over Snowflake to detect invoice errors and validate refund calculations, cutting manual effort by over 50%.",
+        "Designed and maintained internal and client-facing Tableau and Power BI dashboards, including retention dashboards for Client Engagement and analysis that sped up claim adjudication.",
+        "Developed algorithms and reporting tools to streamline the Loss Prevention team's operations and inform risk assessment.",
+        "Automated workflows with Power Automate, Jira automation rules and Python, and worked across teams to find operational bottlenecks and deliver data-led fixes.",
+        "Pitney Bowes Recognition Award (2023–2024): multiple nominations for cross-functional collaboration and support.",
+        "The role ended in December 2024 with the closure of the Global E-commerce division."
       ],
       "technologies": [
-        "Python",
         "SQL",
+        "Python",
+        "Snowflake",
         "Tableau",
         "Power BI",
         "Power Automate",
@@ -57,17 +62,16 @@
       "year": "2019",
       "title": "Client Support Manager",
       "company": "Pitney Bowes",
-      "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
-      "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
+      "companyDescription": "Pitney Bowes is a US multinational founded in 1920.",
+      "companyDescription2": "Provides mailing, shipping and financial services to businesses worldwide.",
       "dateRange": "November 2019 – February 2021",
       "location": "Dublin, Ireland",
       "details": [
-        "Oversaw a team of 13 agents, driving performance reviews, career development plans, and resource allocation.",
-        "Developed automated KPI reports to monitor performance metrics and identify service delivery gaps.",
-        "Led daily stand-ups and one-on-ones to clarify goals, provide feedback, and align with company objectives.",
-        "Collaborated with department leaders to refine cross-functional workflows, improving communication and reducing escalations by 25%.",
-        "Implemented training for new tools and processes, enhancing team efficiency and client engagement quality.",
-        "Took 3rd place in the Continuous Innovation Award (2021) for the Client Connect & Support Platform."
+        "Led a team of 13 agents, owning performance reviews, development plans and resource allocation.",
+        "Built automated KPI reporting to monitor performance and surface service delivery gaps.",
+        "Refined cross-functional workflows with department leaders, reducing escalations by 25%.",
+        "Implemented training for new tools and processes, improving team efficiency and engagement quality.",
+        "Pitney Bowes Innovation Award 2021: 3rd place, Continuous Innovation."
       ],
       "technologies": [
         "KPI Automation",
@@ -76,17 +80,17 @@
       ]
     },
     {
-      "year": "2017",
+      "year": "2018",
       "title": "Client Support Business Analyst",
       "company": "Pitney Bowes",
-      "companyDescription": "P.B. is a U.S. multinational founded in 1920.",
-      "companyDescription2": "Provides mailing, e-commerce and financial services to ~1M customers globally.",
-      "dateRange": "June 2017 – October 2019",
+      "companyDescription": "Pitney Bowes is a US multinational founded in 1920.",
+      "companyDescription2": "Provides mailing, shipping and financial services to businesses worldwide.",
+      "dateRange": "June 2018 – October 2019",
       "location": "Dublin, Ireland",
       "details": [
-        "Created Agent Proficiency Score (APS) system, enabling better performance tracking and weekly trend analysis.",
-        "Developed browser extension to automate tasks, boosting productivity 23% and improving accuracy.",
-        "Deployed custom scripts to streamline agent tasks, reducing average handling times by 15%."
+        "Developed a browser extension automating agent tasks, improving productivity by 23% and increasing accuracy.",
+        "Created the Agent Proficiency Score (APS) system, enabling performance tracking and weekly trend analysis.",
+        "Deployed custom scripts that reduced average handling times by 15%."
       ],
       "technologies": ["Browser Extensions", "Automation", "Analytics"]
     },
@@ -95,13 +99,14 @@
       "title": "Payments & Risk Management Analyst",
       "company": "BetBright / 888",
       "companyDescription": "Dublin-based Irish startup which specialised in online sports betting.",
-      "companyDescription2": "BetBright was acquired by 888 Holdings in 2017.",
-      "dateRange": "April 2015 – June 2017",
+      "companyDescription2": "Its sportsbook platform and Dublin office were bought by 888 Holdings in March 2019.",
+      "dateRange": "April 2015 – June 2018",
       "location": "Dublin, Ireland",
       "details": [
-        "Led risk assessment initiatives and fraud prevention systems, reducing payment disputes by 28%",
-        "Streamlined KYC/AML processes, halving client verification times while maintaining compliance",
-        "Collaborated with IT on payment gateway API integrations to enhance transaction security"
+        "Led risk assessment and fraud prevention initiatives, reducing payment disputes by 28%.",
+        "Built and managed a team of three Fraud & Payments Analysts, introducing structured training and KPI tracking.",
+        "Streamlined KYC/AML processes, halving verification times while maintaining compliance.",
+        "Worked with IT on payment gateway API integrations to strengthen transaction security."
       ],
       "technologies": ["Risk Management", "KYC/AML", "Payment APIs"]
     },
@@ -110,30 +115,35 @@
       "title": "Fraud Analyst",
       "company": "GVC / Sportingbet",
       "companyDescription": "International sports betting and gambling company.",
-      "companyDescription2": "Acquired by Entain in 2021.",
+      "companyDescription2": "Sportingbet was bought by GVC Holdings, which was renamed Entain in 2020.",
       "dateRange": "January 2013 – March 2015",
       "location": "Dublin, Ireland",
       "details": [
-        "Analysed transaction data using Oracle to identify fraud patterns and prevent financial loss",
-        "Monitored multi-channel activity to assess fraud risk, collaborating with law enforcement and payment processors when needed",
-        "Processed chargeback notifications and analysed account histories to take preventive action against suspicious accounts"
+        "Analysed transaction data in Oracle to identify fraud patterns and prevent losses."
       ],
       "technologies": ["Oracle", "Fraud Analytics"]
     },
     {
       "year": "2011",
-      "title": "Payments Analyst",
+      "title": "Payments Administrator",
       "company": "GVC / Sportingbet",
       "companyDescription": "International sports betting and gambling company.",
-      "companyDescription2": "Acquired by Entain in 2021.",
+      "companyDescription2": "Sportingbet was bought by GVC Holdings, which was renamed Entain in 2020.",
       "dateRange": "November 2011 – January 2013",
       "location": "Dublin, Ireland",
-      "details": [
-        "Performed transaction-level reconciliation and customer journal adjustments to maintain financial accuracy",
-        "Monitored payment systems across website and internal platforms to ensure operational reliability",
-        "Collaborated with VIP, Risk & Fraud and Finance teams on process improvements and compliance checks"
-      ],
-      "technologies": ["Reconciliation", "Payment Systems"]
+      "details": [],
+      "technologies": ["Payment Systems"]
+    },
+    {
+      "year": "2010",
+      "title": "Billing Administrator",
+      "company": "Airtricity",
+      "companyDescription": "Irish energy supplier.",
+      "companyDescription2": "Owned by SSE since 2008 and now trading as SSE Airtricity.",
+      "dateRange": "October 2010 – October 2011",
+      "location": "Dublin, Ireland",
+      "details": [],
+      "technologies": ["Billing"]
     }
   ]
 }

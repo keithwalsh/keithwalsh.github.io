@@ -1,14 +1,11 @@
+import { ChartColumn, Database, Layers } from "lucide-react"
 import { useRef } from "react"
-import type { IconType } from "react-icons"
 import {
-  SiCss,
-  SiHtml5,
-  SiJavascript,
-  SiMysql,
-  SiNodedotjs,
-  SiPhp,
+  SiGit,
+  SiLaravel,
+  SiModelcontextprotocol,
   SiPython,
-  SiReact,
+  SiSnowflake,
   SiTypescript,
 } from "react-icons/si"
 
@@ -18,20 +15,23 @@ import {
   nudgeClass,
   sectionClass,
 } from "@/components/editorial"
+import type { NavIcon } from "@/config/navigation"
 import skillsData from "@/data/skills.json"
 import { cn } from "@/lib/utils"
 import { COUNT_WORDS, useReducedMotion } from "@/pages/about/about-shared"
 
-const ICONS: Record<string, IconType> = {
+// No dbt or Power BI mark in react-icons (and one Tableau logo would
+// misrepresent the combined row), so SQL, dbt and BI use lucide icons.
+const ICONS: Record<string, NavIcon> = {
+  sql: Database,
+  dbt: Layers,
   python: SiPython,
-  database: SiMysql,
-  javascript: SiJavascript,
+  snowflake: SiSnowflake,
+  git: SiGit,
+  bi: ChartColumn,
+  mcp: SiModelcontextprotocol,
+  laravel: SiLaravel,
   typescript: SiTypescript,
-  php: SiPhp,
-  html: SiHtml5,
-  css: SiCss,
-  react: SiReact,
-  node: SiNodedotjs,
 }
 
 export function SkillList() {

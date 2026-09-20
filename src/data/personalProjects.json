@@ -1,51 +1,66 @@
 {
   "projects": [
     {
-      "title": "Personal Portfolio Website (← You are here! 👋)",
+      "title": "Jira Data ETL",
       "points": [
-        "Plot twist: This is the very website you're looking at right now",
-        "Modern, responsive portfolio built with React, TypeScript, Tailwind CSS and shadcn/ui",
-        "Implements accessibility considerations and dark mode support (try it, it's cool)",
-        "Features component-based architecture for maintainability (meta: like this component!)"
+        "Loads one JQL query from Jira Cloud (REST API v3) or Jira Data Center (v2) into four tables in DuckDB or MySQL: issues, custom field values, the full changelog and comments, each at a documented grain.",
+        "Flattens Jira's nested JSON and Atlassian Document Format rich text into plain columns, and stores custom fields in long format so a new Jira field adds rows and the schema never changes under a downstream model.",
+        "Keeps the changelog row for row as the source of truth for time in status, because an issue's current status is only a snapshot.",
+        "Runs end to end against Apache's public Jira (a KAFKA test query loaded 35 issues, matching Jira's own count), is published on PyPI, and is tested with pytest against recorded API responses in GitHub Actions CI.",
+        "Next, at design stage with no code yet: a tested dbt project over these tables (jira-dbt) and an MCP server over its catalog (dbt-catalog-mcp), both on GitHub."
+      ],
+      "repoUrl": "https://github.com/keithwalsh/jira-data-etl",
+      "technologies": [
+        "Python",
+        "Jira REST API",
+        "DuckDB",
+        "MySQL",
+        "pytest",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "title": "Personal Website",
+      "points": [
+        "The site you are reading: a hash-routed static single-page app built with React 19, TypeScript, Tailwind CSS v4 and shadcn/ui, linted, built and deployed to GitHub Pages by GitHub Actions.",
+        "Hosts six in-browser tools, including a cron expression builder, a JSON explorer and a Markdown table generator, with no backend.",
+        "Includes a weather visualisation built with Recharts from CSV files fetched at runtime, so replacing the files updates the charts without a code change.",
+        "Supports dark mode, applied before first paint so the page does not flash, and an adjustable font size, built on Radix primitives with a label on every icon button."
       ],
       "repoUrl": "https://github.com/keithwalsh/keithwalsh.github.io",
-      "demoUrl": "https://keithwalsh.github.io",
-      "technologies": ["React", "TypeScript", "Tailwind CSS", "shadcn/ui", "Vite"]
+      "demoUrl": "https://www.keithwalsh.ie",
+      "technologies": [
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS v4",
+        "shadcn/ui",
+        "Recharts",
+        "Vite"
+      ]
     },
     {
       "title": "React Markdown Table",
       "points": [
-        "React component for rendering and editing markdown tables with TypeScript support",
-        "Built with Material-UI for an intuitive interface",
-        "Features include column sorting and row operations",
-        "Maintains markdown compatibility with customizable styling options"
+        "React component that converts a 2D array of strings into Markdown table syntax, keeping delimiters aligned across columns of variable width.",
+        "Supports per-column alignment, a compact mode, auto-generated A, B, C headers and line breaks converted to <br> tags.",
+        "Displays the output in a styled code block with optional line numbers and light and dark themes, and validates its input with typed errors.",
+        "Published on npm, with Jest tests, Codecov coverage and Storybook documentation."
       ],
       "repoUrl": "https://github.com/keithwalsh/react-markdown-table-ts",
       "demoUrl": "https://main--67509fe7e9653ea59a634ef5.chromatic.com/?path=/docs/components-markdowntable--docs&globals=backgrounds.grid:!false;backgrounds.value:transparent&singleStory=true",
-      "technologies": ["React", "TypeScript", "Material-UI", "Markdown"]
-    },
-    {
-      "title": "Jira Data ETL",
-      "points": [
-        "An ETL (Extract, Transform, Load) utility for Jira data analysis",
-        "This tool extracts data from a Jira Cloud instance",
-        "The extracted data is transformed into a structured format suitable for a SQL DB",
-        "It then loads it into a database for easy reporting"
-      ],
-      "repoUrl": "https://github.com/keithwalsh/jira-data-etl",
-      "technologies": ["Python", "Jira API", "SQLAlchemy", "Pandas"]
+      "technologies": ["React", "TypeScript", "Markdown", "Jest", "Storybook"]
     },
     {
       "title": "React Spreadsheet",
       "points": [
-        "A lightweight, fully-typed React spreadsheet component",
-        "Features including CSV export, cell formatting, clipboard operations, and undo/redo functionality",
-        "Built with TypeScript and Material-UI",
-        "Supports theming, row/column operations, and multi-cell selection while maintaining a clean, modern interface"
+        "Lightweight, fully typed React spreadsheet component built with TypeScript and Material UI.",
+        "Supports cell formatting (bold, italic, code, alignment, links), adding and removing rows and columns, transposing the table and CSV export.",
+        "Handles single-cell, multi-cell, row and column selection, copy and paste from external sources, and undo and redo.",
+        "Published on npm, with an onChange callback that receives the full dataset on every change."
       ],
       "repoUrl": "https://github.com/keithwalsh/react-spreadsheet-ts",
       "demoUrl": "https://main--66fec51ab2591570ea1067cd.chromatic.com/?path=/docs/spreadsheet--docs&globals=backgrounds.grid:!false;backgrounds.value:transparent&singleStory=true",
-      "technologies": ["React", "TypeScript", "Material-UI", "Redux"]
+      "technologies": ["React", "TypeScript", "Material UI", "Jotai", "Jest"]
     }
   ]
 }

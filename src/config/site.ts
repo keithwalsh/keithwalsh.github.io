@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Keith Walsh",
   // Keep in sync with the static <title> and og: tags in index.html.
-  tagline: "Data & Software Engineer",
+  tagline: "Analytics Engineer",
   domain: "keithwalsh.ie",
   analyticsId: "G-Y3YL6PG2XD",
   // false removes the Test Page from the sidebar and makes /test-page a 404.

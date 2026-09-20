@@ -3,56 +3,56 @@
     {
       "name": "SQL",
       "category": "Data",
-      "iconKey": "database",
-      "context": "Daily against an Infor M3 replica and the MySQL schema behind a live webshop."
+      "iconKey": "sql",
+      "context": "Daily for five years: 104 dbt models and Azure SQL Managed Instance views, incremental loads and refreshes at Portwest; Snowflake at Pitney Bowes."
+    },
+    {
+      "name": "dbt",
+      "category": "Data modelling",
+      "iconKey": "dbt",
+      "context": "A tested 104-model project over M3 ERP data, layered into staging, intermediate and marts."
     },
     {
       "name": "Python",
-      "category": "Data & Automation",
+      "category": "Data & automation",
       "iconKey": "python",
-      "context": "ETL pipelines, invoice rerating, reporting and internal CLI tooling."
+      "context": "Load automation and the MCP server at Portwest; invoice rerate and error-check tools at Pitney Bowes; jira-data-etl on PyPI."
     },
     {
-      "name": "PHP",
-      "category": "Backend",
-      "iconKey": "php",
-      "context": "Laravel services syncing a PIM and an ERP into an e-commerce platform."
+      "name": "Snowflake",
+      "category": "Data warehouses",
+      "iconKey": "snowflake",
+      "context": "Used daily at Pitney Bowes from 2021 to 2024. Azure SQL Managed Instance at Portwest now."
     },
     {
-      "name": "TypeScript",
+      "name": "Git & CI",
+      "category": "Engineering practice",
+      "iconKey": "git",
+      "context": "Git and Bitbucket, branch-and-pull-request workflow on the Portwest Laravel platform (~46% of commits), command line daily; GitHub Actions CI on my public repos."
+    },
+    {
+      "name": "Tableau & Power BI",
+      "category": "Dashboards",
+      "iconKey": "bi",
+      "context": "Internal and client-facing dashboards at Pitney Bowes, some supporting client retention."
+    },
+    {
+      "name": "MCP & AI tools",
+      "category": "AI tooling",
+      "iconKey": "mcp",
+      "context": "A Python MCP server giving LLMs read-only access to the M3 schema (141 tables, 2,936 fields), plus six agent skills."
+    },
+    {
+      "name": "PHP & Laravel",
+      "category": "Applications",
+      "iconKey": "laravel",
+      "context": "Principal developer on an internal platform: 217 classes and an 88-file Pest suite."
+    },
+    {
+      "name": "TypeScript & React",
       "category": "Frontend",
       "iconKey": "typescript",
       "context": "Two published npm component libraries and every tool on this site."
-    },
-    {
-      "name": "React",
-      "category": "Frontend",
-      "iconKey": "react",
-      "context": "react-spreadsheet-ts, react-markdown-table-ts and this site."
-    },
-    {
-      "name": "JavaScript",
-      "category": "Frontend",
-      "iconKey": "javascript",
-      "context": "Browser extensions and workflow automation for support teams."
-    },
-    {
-      "name": "Node.js",
-      "category": "Tooling",
-      "iconKey": "node",
-      "context": "Build pipelines, scripts and publishing packages to npm."
-    },
-    {
-      "name": "HTML",
-      "category": "Frontend",
-      "iconKey": "html",
-      "context": "Semantic markup and accessibility, including this site's keyboard support."
-    },
-    {
-      "name": "CSS",
-      "category": "Frontend",
-      "iconKey": "css",
-      "context": "Tailwind CSS v4 and shadcn/ui, light and dark themes."
     }
   ]
 }

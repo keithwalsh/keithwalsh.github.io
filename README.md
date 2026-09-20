@@ -1,9 +1,9 @@
 # Personal Website
 
-Source for [www.keithwalsh.ie](https://www.keithwalsh.ie) — a personal site plus a
-small collection of in-browser tools (cron expression builder, JSON explorer,
-code annotator, browser mockup, Markdown table generator, text-to-ASCII) and
-weather visualisations.
+Source for [www.keithwalsh.ie](https://www.keithwalsh.ie): my personal site and
+analytics engineering portfolio, plus a small collection of in-browser tools
+(cron expression builder, JSON explorer, code annotator, browser mockup,
+Markdown table generator, text-to-ASCII) and weather visualisations.
 
 ## Tech Stack
 
@@ -11,7 +11,7 @@ weather visualisations.
 - **shadcn/ui** (Radix primitives, Nova style) on **Tailwind CSS v4**
 - **Recharts** through shadcn's chart components for the weather page
 - **React Router** with hash routing, so deep links work on GitHub Pages
-- **Vite 8** — dev server and build tool
+- **Vite 8**: dev server and build tool
 - Deployed to **GitHub Pages** via GitHub Actions
 
 ## Getting Started
