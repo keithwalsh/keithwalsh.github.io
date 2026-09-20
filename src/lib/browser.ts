@@ -5,24 +5,11 @@ export function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`
 }
 
-/** Copies text, falling back to execCommand where the Clipboard API is unavailable. */
+/** Copies text. The site is HTTPS-only, so the Clipboard API is always there. */
 async function copyToClipboard(text: string): Promise<boolean> {
   try {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(text)
-      return true
-    }
-
-    const textarea = document.createElement("textarea")
-    textarea.value = text
-    textarea.setAttribute("readonly", "")
-    textarea.style.position = "fixed"
-    textarea.style.opacity = "0"
-    document.body.appendChild(textarea)
-    textarea.select()
-    const copied = document.execCommand("copy")
-    textarea.remove()
-    return copied
+    await navigator.clipboard.writeText(text)
+    return true
   } catch {
     return false
   }

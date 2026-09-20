@@ -5,16 +5,16 @@ export type NavIcon = ComponentType<{ className?: string }>
 
 // Section items render label-only in the sidebar, so only top-level rows
 // (primary items and sections) carry an icon.
-export type NavItem = {
+type NavItem = {
   title: string
   url: string
 }
 
-export type PrimaryNavItem = NavItem & {
+type PrimaryNavItem = NavItem & {
   icon: NavIcon
 }
 
-export type NavSection = {
+type NavSection = {
   title: string
   icon: NavIcon
   items: NavItem[]

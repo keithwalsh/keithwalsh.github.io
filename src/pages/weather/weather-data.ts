@@ -36,7 +36,7 @@ export type RainRow = {
   rainfall_bucket: RainfallBucket
 }
 
-export const WIND_SPEED_BINS = [
+const WIND_SPEED_BINS = [
   "0-5",
   "5-10",
   "10-15",
@@ -48,7 +48,7 @@ export const WIND_SPEED_BINS = [
 
 export type WindSpeedBin = (typeof WIND_SPEED_BINS)[number]
 
-export const COMPASS_DIRECTIONS = [
+const COMPASS_DIRECTIONS = [
   "N",
   "NNE",
   "NE",
@@ -67,7 +67,7 @@ export const COMPASS_DIRECTIONS = [
   "NNW",
 ] as const
 
-export type WindRoseSector = {
+type WindRoseSector = {
   direction: (typeof COMPASS_DIRECTIONS)[number]
   hours: Record<WindSpeedBin, number>
   total: number

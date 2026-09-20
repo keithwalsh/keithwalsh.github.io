@@ -23,16 +23,11 @@ type RenderOptions = {
    * to capture the element exactly as it is, transparency included.
    */
   framed?: boolean
-  backgroundColor?: string
 }
 
 async function renderPng(
   element: HTMLElement,
-  {
-    pixelRatio = window.devicePixelRatio || 1,
-    framed = true,
-    backgroundColor = pageBackgroundColor(),
-  }: RenderOptions
+  { pixelRatio = window.devicePixelRatio || 1, framed = true }: RenderOptions
 ) {
   const capture = await toCanvas(element, { pixelRatio })
   let canvas = capture
@@ -47,7 +42,7 @@ async function renderPng(
       throw new Error("Canvas isn't supported in this browser")
     }
 
-    context.fillStyle = backgroundColor
+    context.fillStyle = pageBackgroundColor()
     context.fillRect(0, 0, canvas.width, canvas.height)
     context.shadowColor = "rgba(0, 0, 0, 0.15)"
     context.shadowBlur = 8 * pixelRatio

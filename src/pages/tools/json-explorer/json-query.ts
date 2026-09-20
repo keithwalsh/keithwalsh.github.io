@@ -1,5 +1,4 @@
-export type JsonResult =
-  { ok: true; value: unknown } | { ok: false; error: string }
+type JsonResult = { ok: true; value: unknown } | { ok: false; error: string }
 
 export function parseJson(text: string): JsonResult {
   try {

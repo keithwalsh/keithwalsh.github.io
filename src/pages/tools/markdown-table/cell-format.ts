@@ -1,4 +1,4 @@
-export type TextFormat = {
+type TextFormat = {
   bold: boolean
   italic: boolean
   code: boolean

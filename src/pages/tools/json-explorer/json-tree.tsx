@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-export type JsonTreeOptions = {
+type JsonTreeOptions = {
   /** `true` collapses everything; a number collapses nodes at that depth or deeper. */
   collapsed: boolean | number
   /** Truncate strings longer than this; click a truncated string to expand it. */

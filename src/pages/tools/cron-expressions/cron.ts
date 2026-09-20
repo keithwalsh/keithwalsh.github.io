@@ -245,7 +245,7 @@ export function listValues(value: string) {
   return /^\d+(,\d+)*$/.test(value) ? value.split(",").map(Number) : []
 }
 
-export type CronSegment = { text: string; keys: CronFieldKey[] }
+type CronSegment = { text: string; keys: CronFieldKey[] }
 
 const DESCRIPTOR_OPTIONS = {
   use24hourTimeFormat: false,

@@ -2,9 +2,9 @@ import type { ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
 
-export type LegendShape = "line" | "dashed" | "dotted" | "area" | "square"
+type LegendShape = "line" | "dashed" | "dotted" | "area" | "square"
 
-export type LegendItem = {
+type LegendItem = {
   label: string
   color: string
   shape: LegendShape

@@ -4,7 +4,7 @@ import "@/components/code-highlighter.css"
 import { highlightCode } from "@/lib/code-highlight"
 import { cn } from "@/lib/utils"
 
-export type CodeHighlighterProps = {
+type CodeHighlighterProps = {
   code: string
   language: string
   showLineNumbers?: boolean

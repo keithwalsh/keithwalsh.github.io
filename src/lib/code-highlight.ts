@@ -18,9 +18,9 @@ import "prismjs/components/prism-go"
 import "prismjs/components/prism-rust"
 import "prismjs/components/prism-yaml"
 
-export type LineKind = "add" | "remove"
+type LineKind = "add" | "remove"
 
-export type HighlightedLine = {
+type HighlightedLine = {
   html: string
   kind?: LineKind
   highlighted: boolean

@@ -7,7 +7,7 @@ export type TableData = {
   alignments: Alignment[]
 }
 
-export type TableEdit =
+type TableEdit =
   | {
       type: "setCell"
       row: number
