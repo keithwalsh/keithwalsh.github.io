@@ -1,6 +1,6 @@
 ---
 title: Two meanings of the same field
-date: 2026-08-28
+date: 2026-09-20
 summary: The vendor documents what a field is for. The business decides what goes in it. A model that reads only the first of those inherits a bug.
 tags: Data modelling, Documentation
 draft: true

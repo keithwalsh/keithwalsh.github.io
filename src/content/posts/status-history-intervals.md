@@ -1,6 +1,6 @@
 ---
 title: The status column is a snapshot
-date: 2026-09-11
+date: 2026-09-20
 summary: A current state tells you where something is, not how long it took to get there. Turning a change log into intervals is most of the work, and one test decides whether you can trust them.
 tags: Data modelling, Testing
 draft: true
@@ -71,9 +71,9 @@ loader stores timestamps at.
 The first two catch obvious breakage. The third is the one that earns its keep.
 **A reconciliation test is worth more than any number of not-null tests**,
 because a missing interval is not null anywhere. It is simply absent, and every
-row that survives it still looks correct. Unique passes. Not-null passes. The
-mart builds green, the total is quietly too small, and nobody notices until
-somebody who knows the process says a figure looks low.
+surviving row still looks correct. Unique passes. Not-null passes. The mart
+builds green, the total is quietly too small, and nobody notices until somebody
+who knows the process says a figure looks low.
 
 ## Reconstructed, not recorded
 

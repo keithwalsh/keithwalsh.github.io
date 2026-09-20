@@ -1,6 +1,6 @@
 ---
 title: The job that never ran
-date: 2026-09-04
+date: 2026-09-18
 summary: A scheduled job that fails loudly is a bug. A scheduled job that never started is worse, because nothing anywhere is wrong.
 tags: Reliability, Testing
 draft: true
@@ -51,8 +51,7 @@ Then invert the alert. Do not alert on the error that was thrown; alert on the
 expected run that is missing.
 
 ```sql expected_runs_missing.sql
--- Everything that should have run today, against what actually did.
--- A null start time is the row worth waking someone for.
+-- What should have run today, against what actually did.
 select
     s.job_name,
     s.expected_by,
