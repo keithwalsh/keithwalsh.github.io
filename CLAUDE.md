@@ -90,11 +90,14 @@ hardcode copy. Two rules that are not obvious from the files themselves:
   (`pages/about/professional-journey.tsx`) and the Professional Projects page.**
   A duplicate `professionalProjects.json` used to exist and drifted out of sync on
   three date ranges — do not reintroduce a second copy of role data.
-- Entries carry a `year` marker alongside a `dateRange`; `year` must be the start
-  year of the range or the timeline renders a misleading label.
+- The timeline's year marker is the first four-digit year in `dateRange`, read
+  by `professional-journey.tsx`. Entries carry no `year` field of their own, so
+  start every `dateRange` with its start year's month, e.g. `April 2025 – Present`.
 
 Runtime data is different: `public/data/*.csv` is fetched by the weather page at
-load, so replacing those files changes the charts with no rebuild.
+load, so replacing those files changes the charts with no rebuild. It is also
+the one untyped input: `weather-data.ts` keeps a row only if its `date` is
+`YYYY-MM-DD` and every number is finite, and the charts rely on that.
 
 ### Cross-cutting behaviours
 
@@ -124,6 +127,25 @@ each a label row (label or `TabsList` on the left, `IconButton`s on the right)
 over its surface — and any help `Card` last. Cron Expressions and Browser
 Mockup are full-height workspaces: `PageHeader`, then their own panes.
 
+The SQL Playground runs DuckDB-WASM, and four of its choices look wrong until
+you know why (all in `sql-playground/duckdb.ts`):
+
+- **`@duckdb/duckdb-wasm` is pinned to an exact stable version.** npm's `latest`
+  tag points at a dev build, so a bare `npm i` or a caret range pulls one in.
+- **Only the `eh` bundle ships**, imported with `?url` so Vite emits the 34 MB
+  wasm and its worker as assets (about 8 MB over the wire, fetched only on
+  this page). Adding the `mvp` bundle doubles `dist/`.
+- **Extension autoload and autoinstall are switched off at start-up.** Parquet,
+  JSON and ICU are not linked into the npm build; left on, a query that
+  touches one fetches it from `extensions.duckdb.org`, which breaks the
+  no-network rule. That is why the tool takes CSV and TSV only.
+- **The engine is a module-level singleton that is never terminated**, so
+  loaded tables survive route changes and StrictMode can't start two.
+
+Arrow JS hands results back typed `any` and misreads DuckDB's `INTERVAL`;
+`runQuery` formats every cell to `string | null` on arrival, so nothing past
+that file touches Arrow.
+
 ## Conventions
 
 - **Prettier**: no semicolons, double quotes, 80 columns, ES5 trailing commas,
@@ -148,6 +170,14 @@ Mockup are full-height workspaces: `PageHeader`, then their own panes.
   page, a missing post, the empty blog) renders `ZeroState` from
   `components/editorial.tsx`. A tool panel waiting for input puts the shadcn
   `Empty` on that panel's own surface.
+- **`noUncheckedIndexedAccess`** is on: `array[i]` and `record[key]` are
+  `T | undefined`. Narrow with a guard, a destructuring default or `.at()`,
+  and type fixed-length constants `as const` so their indexes stay defined.
+  Do not reach for `!`.
+- **No `any` crosses a boundary.** Lint runs the typed `no-unsafe-*` rules on
+  `src/` (not `components/ui/`). Read localStorage through `readStoredObject()`
+  in `lib/browser.ts`, which returns `unknown` values to check one by one, and
+  give anything else from `JSON.parse` or a library's `any` a type on arrival.
 - **`verbatimModuleSyntax`** is on: type-only imports must use `import type`.
 - **`erasableSyntaxOnly`** is on: no `enum`, no constructor parameter properties.
 - `noUnusedLocals` and `noUnusedParameters` are errors, so `typecheck` fails on

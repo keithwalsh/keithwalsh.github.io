@@ -53,8 +53,8 @@ export function TableEditor({
   const columnCount = table.alignments.length
   const row = Math.min(active.row, rowCount - 1)
   const column = Math.min(active.column, columnCount - 1)
-  const alignment = table.alignments[column]
-  const { text, format } = parseCellFormat(table.cells[row][column])
+  const alignment = table.alignments[column] ?? "none"
+  const { text, format } = parseCellFormat(table.cells[row]?.[column] ?? "")
   const activeFormats = (["bold", "italic", "code"] as const).filter(
     (key) => format[key]
   )
@@ -298,7 +298,7 @@ export function TableEditor({
                       className={cn(
                         "block field-sizing-content min-h-9 w-full min-w-32 resize-none bg-transparent px-2.5 py-2 outline-none placeholder:text-muted-foreground/60 focus-visible:bg-accent/40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset",
                         r === 0 && "font-medium",
-                        ALIGN_CLASS[table.alignments[c]]
+                        ALIGN_CLASS[table.alignments[c] ?? "none"]
                       )}
                     />
                   </td>

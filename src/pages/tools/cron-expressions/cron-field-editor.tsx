@@ -274,7 +274,7 @@ function SpecificPicker({ field, value, onChange }: FieldEditorProps) {
 }
 
 function RangePicker({ field, value, onChange }: FieldEditorProps) {
-  const [from, to] = value.split("-").map(Number)
+  const [from = field.min, to = from] = value.split("-").map(Number)
   const setRange = (start: number, end: number) =>
     onChange(start <= end ? `${start}-${end}` : `${end}-${start}`)
 

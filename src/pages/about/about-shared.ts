@@ -40,9 +40,11 @@ export function trackRows(
     }
   })
 
-  if (bar) {
-    const first = present[0].getBoundingClientRect()
-    const last = present[present.length - 1].getBoundingClientRect()
+  const firstRow = present[0]
+  const lastRow = present.at(-1)
+  if (bar && firstRow && lastRow) {
+    const first = firstRow.getBoundingClientRect()
+    const last = lastRow.getBoundingClientRect()
     const span = Math.max(1, last.bottom - first.top - window.innerHeight * 0.2)
     const done = Math.min(1, Math.max(0, (anchor - first.top) / span))
     bar.style.width = `${(done * 100).toFixed(1)}%`

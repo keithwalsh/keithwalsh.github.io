@@ -162,12 +162,12 @@ function splitIntoLines(html: string): string[] {
     current += html.slice(lastIndex, match.index)
     lastIndex = match.index + match[0].length
     const token = match[0]
+    const sentinel = SENTINELS[token]
 
     if (token === "\n") {
       lines.push(current + closeMark() + "</span>".repeat(openTags.length))
       current = openTags.join("") + openMark()
-    } else if (token in SENTINELS) {
-      const sentinel = SENTINELS[token]
+    } else if (sentinel) {
       current += closeMark()
       mark = sentinel.open ? sentinel.mark : null
       current += openMark()

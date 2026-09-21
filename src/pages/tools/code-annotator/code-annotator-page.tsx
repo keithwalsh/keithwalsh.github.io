@@ -21,7 +21,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { useDownloadImage } from "@/hooks/use-download-image"
-import { copyWithToast } from "@/lib/browser"
+import { copyWithToast, readStoredObject } from "@/lib/browser"
 import { toMarkdownCodeBlock } from "@/lib/code-highlight"
 import { cn } from "@/lib/utils"
 
@@ -115,30 +115,33 @@ const DEFAULT_STATE: AnnotatorState = {
 // The input and display options persist between visits. Anything unrecognised
 // in storage falls back to its default.
 function loadState(): AnnotatorState {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null")
-    if (!saved || typeof saved !== "object") return DEFAULT_STATE
-    const text = (key: "code" | "language" | "filename") =>
-      typeof saved[key] === "string" ? (saved[key] as string) : undefined
-    const language = text("language")
-    return {
-      code: text("code") ?? DEFAULT_STATE.code,
-      language:
-        language && LANGUAGE_OPTIONS.some((option) => option.value === language)
-          ? language
-          : DEFAULT_STATE.language,
-      filename: text("filename") ?? DEFAULT_STATE.filename,
-      options: Object.fromEntries(
-        DISPLAY_OPTIONS.map(({ key }) => [
+  const saved = readStoredObject(STORAGE_KEY)
+  if (!saved) return DEFAULT_STATE
+  const text = (key: "code" | "language" | "filename") => {
+    const value = saved[key]
+    return typeof value === "string" ? value : undefined
+  }
+  const language = text("language")
+  const options: Record<string, unknown> =
+    saved.options && typeof saved.options === "object"
+      ? { ...saved.options }
+      : {}
+  return {
+    code: text("code") ?? DEFAULT_STATE.code,
+    language:
+      language && LANGUAGE_OPTIONS.some((option) => option.value === language)
+        ? language
+        : DEFAULT_STATE.language,
+    filename: text("filename") ?? DEFAULT_STATE.filename,
+    options: Object.fromEntries(
+      DISPLAY_OPTIONS.map(({ key }) => {
+        const value = options[key]
+        return [
           key,
-          typeof saved.options?.[key] === "boolean"
-            ? saved.options[key]
-            : DEFAULT_STATE.options[key],
-        ])
-      ) as DisplayOptions,
-    }
-  } catch {
-    return DEFAULT_STATE
+          typeof value === "boolean" ? value : DEFAULT_STATE.options[key],
+        ]
+      })
+    ) as DisplayOptions,
   }
 }
 

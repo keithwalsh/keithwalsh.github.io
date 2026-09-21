@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 import { Link, useOutletContext, useParams } from "react-router"
 
 import { eyebrowClass, sectionClass, ZeroState } from "@/components/editorial"
-import { formatPostDate, posts } from "@/lib/posts"
+import { formatPostDate, posts, type Post as PostData } from "@/lib/posts"
 import { cn } from "@/lib/utils"
 import {
   pad,
@@ -23,8 +23,9 @@ import { PostBody } from "@/pages/blog/post-body"
 export default function PostPage() {
   const { slug } = useParams()
   const index = posts.findIndex((post) => post.slug === slug)
+  const post = posts[index]
 
-  if (index === -1) {
+  if (!post) {
     return (
       <ZeroState
         numeral="404"
@@ -39,11 +40,10 @@ export default function PostPage() {
 
   // Keyed by slug so moving to the next post replays the entrance and resets
   // the Contents rail rather than reusing this post's state.
-  return <Post key={slug} index={index} />
+  return <Post key={slug} post={post} index={index} />
 }
 
-function Post({ index }: { index: number }) {
-  const post = posts[index]
+function Post({ post, index }: { post: PostData; index: number }) {
   const next = posts[index + 1]
   const header = useOutletContext<HTMLElement | null>()
   const reduced = useReducedMotion()
@@ -56,7 +56,7 @@ function Post({ index }: { index: number }) {
   // inside a code sample is not mistaken for one.
   const sections = [
     ...post.body.replace(/^```[\s\S]*?^```/gm, "").matchAll(/^## (.+)$/gm),
-  ].map(([, title]) => title.replace(/[`*]/g, "").trim())
+  ].map(([, title = ""]) => title.replace(/[`*]/g, "").trim())
   const minutes = Math.max(1, Math.round(post.body.split(/\s+/).length / 200))
 
   const sectionNodes = () =>

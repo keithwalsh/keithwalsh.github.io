@@ -72,7 +72,7 @@ function useDetectedCountry(fallback: Country) {
       .then((data: { country_code?: string } | null) => {
         const code = data?.country_code?.toUpperCase()
         if (code && isSupportedCountry(code)) {
-          setCountry(code as Country)
+          setCountry(code)
         }
       })
       .catch(() => {

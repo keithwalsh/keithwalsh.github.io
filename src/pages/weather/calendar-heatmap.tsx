@@ -125,6 +125,7 @@ export function CalendarHeatmap({ year }: { year: WeatherYear }) {
     if (!box) return
     let frame = 0
     const observer = new ResizeObserver(([entry]) => {
+      if (!entry) return
       cancelAnimationFrame(frame)
       frame = requestAnimationFrame(() =>
         setWidth(Math.round(entry.contentRect.width))
@@ -288,7 +289,7 @@ export function CalendarHeatmap({ year }: { year: WeatherYear }) {
         <SeriesLegend
           items={legend.map((label, index) => ({
             label,
-            color: colors[index],
+            color: colors[index] ?? "transparent",
             shape: "square",
           }))}
         />

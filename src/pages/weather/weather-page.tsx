@@ -58,9 +58,8 @@ export default function WeatherPage() {
     years.find((entry) => entry.year === year) ??
     years.findLast((entry) => !entry.partial) ??
     years.at(-1)
-  const span = years.length
-    ? `${years[0].year}–${years[years.length - 1].year}`
-    : undefined
+  const [first, last] = [years[0], years.at(-1)]
+  const span = first && last ? `${first.year}–${last.year}` : undefined
   const readings = data
     ? `${data.temperature.length.toLocaleString("en-IE")} days of readings, updated monthly.`
     : "Updated monthly."

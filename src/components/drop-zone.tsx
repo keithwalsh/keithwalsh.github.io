@@ -1,15 +1,18 @@
 import { useState } from "react"
-import { ImageUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-/** Makes an area accept a dropped file, with an overlay while dragging over it. */
+/** Makes an area accept dropped files, with an overlay while dragging over it. */
 export function DropZone({
-  onFile,
+  onFiles,
+  icon,
+  message,
   className,
   children,
 }: {
-  onFile: (file: File) => void
+  onFiles: (files: File[]) => void
+  icon: React.ReactNode
+  message: string
   className?: string
   children: React.ReactNode
 }) {
@@ -33,18 +36,18 @@ export function DropZone({
       onDrop={(event) => {
         event.preventDefault()
         setIsDragging(false)
-        const file = event.dataTransfer.files[0]
-        if (file) onFile(file)
+        const files = [...event.dataTransfer.files]
+        if (files.length > 0) onFiles(files)
       }}
       className={cn("relative", className)}
     >
       {children}
       {isDragging && (
         <div className="pointer-events-none absolute inset-3 z-10 flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-brand bg-background/70 backdrop-blur-[2px]">
-          <div className="flex size-10 items-center justify-center rounded-lg bg-brand-strong text-brand">
-            <ImageUp className="size-5" />
+          <div className="flex size-10 items-center justify-center rounded-lg bg-brand-strong text-brand [&>svg]:size-5">
+            {icon}
           </div>
-          <p className="text-sm font-medium">Drop your image to frame it</p>
+          <p className="text-sm font-medium">{message}</p>
         </div>
       )}
     </div>

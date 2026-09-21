@@ -22,7 +22,9 @@ dist-ssr
 !.vscode/extensions.json
 .idea
 .cursor
-.claude
+# Project skills are versioned; the rest of .claude is per-machine.
+.claude/*
+!.claude/skills/
 .agents
 skills-lock.json
 .DS_Store

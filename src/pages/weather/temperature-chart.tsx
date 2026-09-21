@@ -126,6 +126,8 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
   }, [data])
 
   const rows = data.slice(start, end + 1)
+  const firstRow = rows[0]
+  const lastRow = rows.at(-1)
   const visible = points.slice(start, end + 1)
   const ticks = monthTicks(visible.map((point) => point.date))
   const tickFormatter = (date: string) => formatAxisDate(date, Boolean(ticks))
@@ -223,7 +225,7 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
                       <TooltipRow
                         label="Humidity"
                         color={HUMIDITY}
-                        value={`${item.payload.rh}%`}
+                        value={`${(item.payload as { rh: number }).rh}%`}
                       />
                     )
                   }
@@ -299,10 +301,9 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
             { label: "Relative humidity", color: HUMIDITY, shape: "line" },
           ]}
         />
-        {rows.length > 0 && (
+        {firstRow && lastRow && (
           <span className="text-xs whitespace-nowrap text-muted-foreground tabular-nums">
-            {formatDate(rows[0].date)} –{" "}
-            {formatDate(rows[rows.length - 1].date)}
+            {formatDate(firstRow.date)} – {formatDate(lastRow.date)}
           </span>
         )}
       </div>
@@ -314,7 +315,7 @@ export function TemperatureChart({ data }: { data: TemperatureRow[] }) {
           step={1}
           minStepsBetweenThumbs={1}
           value={[start, end]}
-          onValueChange={([nextStart, nextEnd]) =>
+          onValueChange={([nextStart = start, nextEnd = end]) =>
             setBrush({ rows: data, range: [nextStart, nextEnd] })
           }
         />

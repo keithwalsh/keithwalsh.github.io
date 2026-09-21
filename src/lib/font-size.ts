@@ -1,3 +1,5 @@
+import { readStoredObject } from "@/lib/browser"
+
 const STORAGE_KEY = "accessibilitySettings"
 
 export const FONT_SIZE = { min: 12, max: 24, step: 1, default: 16 } as const
@@ -7,18 +9,9 @@ export function clampFontSize(size: number) {
 }
 
 export function getStoredFontSize(): number {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null") as {
-      fontSize?: unknown
-    } | null
-    const size = Number(saved?.fontSize)
-    if (Number.isFinite(size)) {
-      return clampFontSize(size)
-    }
-  } catch {
-    // Unreadable or blocked storage falls back to the default size.
-  }
-  return FONT_SIZE.default
+  // Unreadable or blocked storage falls back to the default size.
+  const size = Number(readStoredObject(STORAGE_KEY)?.fontSize)
+  return Number.isFinite(size) ? clampFontSize(size) : FONT_SIZE.default
 }
 
 /** Scales the whole UI, since every Tailwind size is rem-based. */

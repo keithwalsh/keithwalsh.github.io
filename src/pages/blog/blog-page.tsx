@@ -9,7 +9,7 @@ import {
   ZeroState,
 } from "@/components/editorial"
 import { PageHeader } from "@/components/page"
-import { formatPostDate, posts } from "@/lib/posts"
+import { formatPostDate, posts, type Post } from "@/lib/posts"
 import { cn } from "@/lib/utils"
 import {
   COUNT_WORDS,
@@ -44,7 +44,8 @@ function countOf(n: number, noun: string) {
 }
 
 export default function BlogPage() {
-  if (posts.length === 0) {
+  const [latest] = posts
+  if (!latest) {
     return (
       <ZeroState
         numeral="00"
@@ -56,10 +57,10 @@ export default function BlogPage() {
     )
   }
 
-  return <PostIndex />
+  return <PostIndex latest={latest} />
 }
 
-function PostIndex() {
+function PostIndex({ latest }: { latest: Post }) {
   const [active, setActive] = useState(0)
   const reduced = useReducedMotion()
   const revealRef = useReveal<HTMLDivElement>(!reduced)
@@ -92,7 +93,7 @@ function PostIndex() {
               )}
             </>
           }
-          meta={`Last edit ${formatPostDate(posts[0].date, { month: "short" })}`}
+          meta={`Last edit ${formatPostDate(latest.date, { month: "short" })}`}
           title={["Problems", "worth the detour"]}
           aside={
             subjects.length > 0 && (
@@ -132,7 +133,7 @@ function PostIndex() {
                 {pad(active + 1)}
               </div>
               <div className="text-body-sm leading-normal text-pretty text-foreground/85">
-                {posts[active].title}
+                {posts[active]?.title}
               </div>
               <div className={cn(metaClass, "flex items-center gap-3")}>
                 <span>

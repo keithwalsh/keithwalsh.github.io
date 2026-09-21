@@ -94,6 +94,11 @@ type WindRoseRow = {
 const isNumber = (value: unknown): value is number =>
   typeof value === "number" && Number.isFinite(value)
 
+// Every chart slices the year and month out of `date`, so a row is only kept
+// if its date is a real `YYYY-MM-DD` with a month of 01–12.
+const isIsoDate = (value: unknown): value is string =>
+  typeof value === "string" && /^\d{4}-(0[1-9]|1[0-2])-\d{2}$/.test(value)
+
 async function fetchCsv<T>(filename: string) {
   // Cache-bust hourly, so a monthly data drop shows up without a rebuild.
   const version = Math.floor(Date.now() / 3_600_000)
@@ -127,7 +132,8 @@ function aggregateWindRose(rows: Partial<WindRoseRow>[]) {
       typeof row.datetime === "string" ? row.datetime.slice(0, 4) : ""
     if (!year || !row.direction_bin || !WIND_SPEED_BINS.includes(bin)) continue
 
-    const directions = byYear.get(year) ?? new Map()
+    const directions =
+      byYear.get(year) ?? new Map<string, Record<WindSpeedBin, number>>()
     const hours = directions.get(row.direction_bin) ?? emptyHours()
     hours[bin] += 1
     directions.set(row.direction_bin, hours)
@@ -158,7 +164,7 @@ export async function loadWeatherData(): Promise<WeatherData> {
   return {
     temperature: temperature.filter(
       (row): row is TemperatureRow =>
-        typeof row.date === "string" &&
+        isIsoDate(row.date) &&
         isNumber(row.max_temp) &&
         isNumber(row.min_temp) &&
         isNumber(row.mean_temp) &&
@@ -166,7 +172,7 @@ export async function loadWeatherData(): Promise<WeatherData> {
     ),
     wind: wind.filter(
       (row): row is WindRow =>
-        typeof row.date === "string" &&
+        isIsoDate(row.date) &&
         isNumber(row.mean_wind_speed_kph) &&
         isNumber(row.max_hourly_mean_wind_speed_kph) &&
         isNumber(row.min_hourly_mean_wind_speed_kph) &&
@@ -175,7 +181,7 @@ export async function loadWeatherData(): Promise<WeatherData> {
     ),
     rain: rain.filter(
       (row): row is RainRow =>
-        typeof row.date === "string" &&
+        isIsoDate(row.date) &&
         isNumber(row.rain_amount_mm) &&
         RAINFALL_BUCKETS.includes(row.rainfall_bucket as RainfallBucket)
     ),
@@ -231,6 +237,6 @@ export const MONTH_LABELS = Array.from({ length: 12 }, (_, month) =>
 export const monthIndex = (date: string) => Number(date.slice(5, 7)) - 1
 
 export function formatDate(date: string) {
-  const [year, month, day] = date.split("-").map(Number)
-  return `${day} ${MONTH_LABELS[month - 1]} ${year}`
+  const [year, month = 0, day] = date.split("-").map(Number)
+  return `${day} ${MONTH_LABELS[month - 1] ?? ""} ${year}`
 }

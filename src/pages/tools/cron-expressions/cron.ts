@@ -170,7 +170,7 @@ function isValidNumber(field: CronField, text: string) {
 }
 
 function isValidNumberOrRange(field: CronField, text: string) {
-  const [start, end, ...rest] = text.split("-")
+  const [start = "", end, ...rest] = text.split("-")
   if (end === undefined) return isValidNumber(field, start)
   return (
     rest.length === 0 &&
@@ -187,7 +187,7 @@ export function isValidField(key: CronFieldKey, value: string) {
   if (value === "*") return true
   if (value === "?") return key === "dayOfMonth" || key === "dayOfWeek"
 
-  const [base, step, ...rest] = value.split("/")
+  const [base = "", step, ...rest] = value.split("/")
   if (step === undefined) {
     return base.split(",").every((part) => isValidNumberOrRange(field, part))
   }
@@ -355,8 +355,12 @@ export function describeSegments(fields: CronFields): CronSegment[] {
   }
 
   const [first, ...rest] = segments
+  if (!first) return segments
   return [
-    { ...first, text: first.text[0].toUpperCase() + first.text.slice(1) },
+    {
+      ...first,
+      text: first.text.charAt(0).toUpperCase() + first.text.slice(1),
+    },
     ...rest,
   ]
 }

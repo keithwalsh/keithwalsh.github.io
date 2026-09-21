@@ -14,7 +14,7 @@ const files = import.meta.glob("/src/content/posts/*.md", {
   query: "?raw",
   import: "default",
   eager: true,
-}) as Record<string, string>
+})
 
 const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/
 
@@ -22,7 +22,7 @@ function parsePost(path: string, raw: string): Post {
   const matched = FRONTMATTER.exec(raw)
   const fields: Record<string, string> = {}
 
-  for (const line of matched?.[1].split(/\r?\n/) ?? []) {
+  for (const line of matched?.[1]?.split(/\r?\n/) ?? []) {
     const separator = line.indexOf(":")
     if (separator > 0) {
       fields[line.slice(0, separator).trim()] = line
@@ -35,7 +35,7 @@ function parsePost(path: string, raw: string): Post {
   }
 
   return {
-    slug: path.split("/").pop()!.replace(/\.md$/, ""),
+    slug: (path.split("/").pop() ?? path).replace(/\.md$/, ""),
     title: fields.title ?? "Untitled",
     date: fields.date ?? "",
     summary: fields.summary ?? "",

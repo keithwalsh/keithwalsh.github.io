@@ -10,19 +10,21 @@ import {
   Copy,
   Download,
   ImageIcon,
+  ImageUp,
   SquareDashed,
   Upload,
 } from "lucide-react"
 
+import { DropZone } from "@/components/drop-zone"
 import { brandFillClass } from "@/components/editorial"
 import { PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import { useDownloadImage } from "@/hooks/use-download-image"
+import { readStoredObject } from "@/lib/browser"
 import { cn } from "@/lib/utils"
 import { BrowserWindow } from "@/pages/tools/browser-mockup/browser-window"
-import { DropZone } from "@/pages/tools/browser-mockup/drop-zone"
 import {
   DEFAULT_SETTINGS,
   PADDING,
@@ -57,25 +59,21 @@ const clamp = (value: unknown, { min, max }: { min: number; max: number }) =>
 // Settings (not the image) persist between visits. Anything unrecognised in
 // storage falls back to its default.
 function loadSettings(): MockupSettings {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null")
-    if (!saved || typeof saved !== "object") return DEFAULT_SETTINGS
-    const pick = <K extends keyof MockupSettings>(
-      key: K,
-      allowed: readonly MockupSettings[K][]
-    ) => (allowed.includes(saved[key]) ? saved[key] : DEFAULT_SETTINGS[key])
-    return {
-      width: clamp(saved.width, WIDTH) ?? DEFAULT_SETTINGS.width,
-      padding: clamp(saved.padding, PADDING) ?? DEFAULT_SETTINGS.padding,
-      frame: pick("frame", ["mac", "minimal"]),
-      chrome: pick("chrome", ["dark", "light"]),
-      backdrop: pick("backdrop", ["none", "solid", "gradient"]),
-      shadow: pick("shadow", ["none", "soft", "deep"]),
-      scale: pick("scale", [1, 2, 3]),
-      url: typeof saved.url === "string" ? saved.url : DEFAULT_SETTINGS.url,
-    }
-  } catch {
-    return DEFAULT_SETTINGS
+  const saved = readStoredObject(STORAGE_KEY)
+  if (!saved) return DEFAULT_SETTINGS
+  const pick = <K extends keyof MockupSettings>(
+    key: K,
+    allowed: readonly MockupSettings[K][]
+  ) => allowed.find((value) => value === saved[key]) ?? DEFAULT_SETTINGS[key]
+  return {
+    width: clamp(saved.width, WIDTH) ?? DEFAULT_SETTINGS.width,
+    padding: clamp(saved.padding, PADDING) ?? DEFAULT_SETTINGS.padding,
+    frame: pick("frame", ["mac", "minimal"]),
+    chrome: pick("chrome", ["dark", "light"]),
+    backdrop: pick("backdrop", ["none", "solid", "gradient"]),
+    shadow: pick("shadow", ["none", "soft", "deep"]),
+    scale: pick("scale", [1, 2, 3]),
+    url: typeof saved.url === "string" ? saved.url : DEFAULT_SETTINGS.url,
   }
 }
 
@@ -260,7 +258,9 @@ export default function BrowserMockupPage() {
           />
 
           <DropZone
-            onFile={handleFile}
+            onFiles={([file]) => file && handleFile(file)}
+            icon={<ImageUp />}
+            message="Drop your image to frame it"
             className="flex h-[60svh] min-h-[420px] min-w-0 flex-col overflow-hidden bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] @3xl/mockup:h-auto @3xl/mockup:min-h-0 @3xl/mockup:flex-1 dark:bg-tool-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
           >
             {error && (

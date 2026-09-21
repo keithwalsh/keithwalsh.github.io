@@ -188,7 +188,7 @@ function RangeControl({
         id={id}
         {...range}
         value={[value]}
-        onValueChange={([next]) => onValueChange(next)}
+        onValueChange={([next = value]) => onValueChange(next)}
         className="py-1.25 [&_[data-slot=slider-range]]:bg-brand [&_[data-slot=slider-thumb]]:border-brand [&_[data-slot=slider-thumb]]:ring-brand/30"
       />
     </div>

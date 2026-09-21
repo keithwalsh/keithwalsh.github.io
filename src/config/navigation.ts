@@ -36,6 +36,7 @@ export const sectionNav: NavSection[] = [
       { title: "Cron Expressions", url: "/tools/cron-expressions" },
       { title: "JSON Explorer", url: "/tools/json-explorer" },
       { title: "Markdown Table", url: "/tools/markdown-table" },
+      { title: "SQL Playground", url: "/tools/sql-playground" },
       { title: "Text to ASCII", url: "/tools/text-to-ascii" },
     ],
   },

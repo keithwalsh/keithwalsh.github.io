@@ -110,7 +110,7 @@ function applyEdit(table: TableData, edit: TableEdit): TableData {
           }
     case "transpose":
       return {
-        cells: alignments.map((_, c) => cells.map((row) => row[c])),
+        cells: alignments.map((_, c) => cells.map((row) => row[c] ?? "")),
         alignments: cells.map(() => DEFAULT_ALIGNMENT),
       }
     case "clear":

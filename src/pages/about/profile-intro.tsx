@@ -74,14 +74,16 @@ export function ProfileIntro() {
         <div className="flex min-w-0 flex-[1_1_18.75rem] flex-col gap-stack-sm">
           <Masthead lines={NAME_LINES} />
 
-          <div
-            data-reveal="2"
-            className="flex flex-wrap items-center gap-2.5 font-mono text-meta text-foreground/85 uppercase"
-          >
-            <span>{currentRole.title}</span>
-            <span aria-hidden="true" className="h-px w-[1.125rem] bg-brand" />
-            <span>{currentRole.company}</span>
-          </div>
+          {currentRole && (
+            <div
+              data-reveal="2"
+              className="flex flex-wrap items-center gap-2.5 font-mono text-meta text-foreground/85 uppercase"
+            >
+              <span>{currentRole.title}</span>
+              <span aria-hidden="true" className="h-px w-[1.125rem] bg-brand" />
+              <span>{currentRole.company}</span>
+            </div>
+          )}
 
           <p data-reveal="3" className={cn(leadClass, "mt-0.5")}>
             I build the data layer people decide from. At Portwest I built one

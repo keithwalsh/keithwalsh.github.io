@@ -82,7 +82,8 @@ function JsonContainer({
     collapsed === false || (typeof collapsed === "number" && depth < collapsed)
   )
   const isArray = Array.isArray(value)
-  const entries = Object.entries(value)
+  // `Object.entries(object)` types its values as `any`.
+  const entries: [string, unknown][] = Object.entries(value)
   const [openBracket, closeBracket] = isArray ? ["[", "]"] : ["{", "}"]
 
   if (entries.length === 0) {

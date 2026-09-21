@@ -16,7 +16,11 @@ import {
   useScrollEffect,
 } from "@/pages/about/about-shared"
 
-const { positions } = journey
+// The year marker is read off `dateRange`, so the two can never disagree.
+const positions = journey.positions.map((position) => ({
+  ...position,
+  year: /\d{4}/.exec(position.dateRange)?.[0] ?? "",
+}))
 
 export function ProfessionalJourney() {
   const [active, setActive] = useState(0)
@@ -32,6 +36,8 @@ export function ProfessionalJourney() {
   useScrollEffect(!reduced, () => {
     setActive(trackRows(rowRefs.current, progressRef.current))
   })
+
+  if (!current) return null
 
   return (
     <section className={cn(sectionClass, "py-section")}>

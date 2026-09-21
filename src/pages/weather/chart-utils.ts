@@ -5,9 +5,13 @@ import {
 } from "@/pages/weather/weather-data"
 
 /** The five-step ordinal ramp, least to most. */
-export const SCALE = [1, 2, 3, 4, 5].map(
-  (step) => `var(--weather-scale-${step})`
-)
+export const SCALE = [
+  "var(--weather-scale-1)",
+  "var(--weather-scale-2)",
+  "var(--weather-scale-3)",
+  "var(--weather-scale-4)",
+  "var(--weather-scale-5)",
+] as const
 
 // The ordinal ramp has five distinguishable steps, so the two rarest,
 // heaviest buckets share a colour; the rainfall table keeps all six apart.
@@ -65,7 +69,7 @@ export function groupByMonth<T extends { date: string }>(rows: T[]) {
     .sort(([a], [b]) => a - b)
     .map(([month, items]) => ({
       month,
-      label: MONTH_LABELS[month],
+      label: MONTH_LABELS[month] ?? "",
       rows: items,
     }))
 }
@@ -108,7 +112,7 @@ export function monthTicks(dates: string[]) {
 }
 
 export function formatAxisDate(date: string, monthly: boolean) {
-  const month = MONTH_LABELS[monthIndex(date)]
+  const month = MONTH_LABELS[monthIndex(date)] ?? ""
   return monthly ? month : `${Number(date.slice(8, 10))} ${month}`
 }
 

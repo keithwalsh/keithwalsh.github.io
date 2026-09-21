@@ -45,7 +45,7 @@ export function generateMarkdownTable(
       .replace(/\r?\n/g, convertLineBreaks ? "<br>" : " ")
 
   const header = hasHeader
-    ? data[0]
+    ? (data[0] ?? [])
     : Array.from({ length: columnCount }, (_, index) => columnName(index))
   const rows = [header, ...(hasHeader ? data.slice(1) : data)].map((row) =>
     Array.from({ length: columnCount }, (_, column) =>
@@ -60,7 +60,7 @@ export function generateMarkdownTable(
   const widths = isCompact
     ? null
     : alignments.map((_, column) =>
-        Math.max(3, ...rows.map((row) => row[column].length))
+        Math.max(3, ...rows.map((row) => row[column]?.length ?? 0))
       )
   const pad = hasTabs ? "\t" : hasPadding ? " " : ""
 
@@ -94,11 +94,10 @@ export function generateMarkdownTable(
   }
 
   const toRow = (cells: string[]) => `|${cells.join("|")}|`
-  const [headerRow, ...bodyRows] = rows
 
-  return [
-    toRow(headerRow.map(formatCell)),
-    toRow(alignments.map(formatDivider)),
-    ...bodyRows.map((row) => toRow(row.map(formatCell))),
-  ].join("\n")
+  // The divider goes under the header, which is always the first row.
+  return rows
+    .map((row) => toRow(row.map(formatCell)))
+    .toSpliced(1, 0, toRow(alignments.map(formatDivider)))
+    .join("\n")
 }

@@ -86,7 +86,7 @@ export function WindSpeedChart({ data }: { data: WindRow[] }) {
           />
           <YAxis
             width="auto"
-            domain={[0, speedTicks[speedTicks.length - 1]]}
+            domain={[0, speedTicks.at(-1) ?? "auto"]}
             ticks={speedTicks}
             tickLine={false}
             axisLine={false}

@@ -23,6 +23,9 @@ const JsonExplorerPage = lazy(
 const MarkdownTablePage = lazy(
   () => import("@/pages/tools/markdown-table/markdown-table-page")
 )
+const SqlPlaygroundPage = lazy(
+  () => import("@/pages/tools/sql-playground/sql-playground-page")
+)
 const TextToAsciiPage = lazy(
   () => import("@/pages/tools/text-to-ascii/text-to-ascii-page")
 )
@@ -51,6 +54,7 @@ export function App() {
         />
         <Route path="tools/json-explorer" element={<JsonExplorerPage />} />
         <Route path="tools/markdown-table" element={<MarkdownTablePage />} />
+        <Route path="tools/sql-playground" element={<SqlPlaygroundPage />} />
         <Route path="tools/text-to-ascii" element={<TextToAsciiPage />} />
         <Route
           path="projects/professional"

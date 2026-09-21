@@ -58,7 +58,7 @@ function polar(radius: number, angle: number) {
   return [
     CENTER + radius * Math.sin(radians),
     CENTER - radius * Math.cos(radians),
-  ]
+  ] as const
 }
 
 function sectorPath(inner: number, outer: number, start: number, end: number) {
@@ -127,7 +127,7 @@ export function WindRoseChart({
             hours,
             inner,
             outer: radiusFor(cumulative),
-            color: SPEED_CLASSES[index].color,
+            color: SPEED_CLASSES[index]?.color,
           }
         })
         return {
@@ -308,7 +308,7 @@ export function WindRoseChart({
                 key={speedClass.key}
                 label={speedClass.label}
                 color={speedClass.color}
-                value={`${activeSector.classHours[index].toLocaleString("en-IE")} h`}
+                value={`${(activeSector.classHours[index] ?? 0).toLocaleString("en-IE")} h`}
               />
             ))}
           </div>

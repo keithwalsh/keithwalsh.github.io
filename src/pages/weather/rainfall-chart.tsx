@@ -72,7 +72,8 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
         ) as Record<RainfallBucket, number>
     )
     for (const row of data) {
-      months[monthIndex(row.date)][row.rainfall_bucket] += 1
+      const counts = months[monthIndex(row.date)]
+      if (counts) counts[row.rainfall_bucket] += 1
     }
     return months
   }, [data])
@@ -85,7 +86,7 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
       month: MONTH_LABELS[month],
       name: MONTH_NAMES[month],
       // Whichever class ends up on top of the stack gets the rounded corners.
-      top: RAIN_CLASSES.findLast((_, index) => days[index] > 0)?.key,
+      top: RAIN_CLASSES.findLast((_, index) => (days[index] ?? 0) > 0)?.key,
       ...Object.fromEntries(
         RAIN_CLASSES.map(({ key }, index) => [key, days[index]])
       ),
@@ -121,7 +122,10 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
                 label={label}
                 // Only the bands that month had, driest first as stacked.
                 payload={payload.filter((item) => item.value)}
-                labelFormatter={(_, [item]) => item?.payload.name}
+                // Recharts types the datum it hands back as `any`.
+                labelFormatter={(_, [item]) =>
+                  (item?.payload as { name?: string } | undefined)?.name
+                }
                 formatter={(value, name) => {
                   const rainClass = RAIN_CLASSES.find(({ key }) => key === name)
                   return (
@@ -147,7 +151,11 @@ export function RainfallChart({ data }: { data: RainRow[] }) {
               shape={(props: BarShapeProps) => (
                 <Rectangle
                   {...props}
-                  radius={props.payload.top === key ? [4, 4, 0, 0] : 0}
+                  radius={
+                    (props.payload as { top?: string } | undefined)?.top === key
+                      ? [4, 4, 0, 0]
+                      : 0
+                  }
                 />
               )}
               isAnimationActive={false}
