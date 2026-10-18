@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ \"$CLAUDE_CODE_REMOTE\" = \"true\" ]; then git -C \"$CLAUDE_PROJECT_DIR\" config author.name \"Keith Walsh\" && git -C \"$CLAUDE_PROJECT_DIR\" config author.email keithwalsh@gmail.com; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
