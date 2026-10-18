@@ -48,10 +48,13 @@ export function NewTabHint() {
 export function StatusBar({
   children,
   meta,
+  alert = false,
 }: {
   children: ReactNode
   /** Pushed to the far end of the line. */
   meta?: ReactNode
+  /** Holds the dot still and turns it red, for a status that is not live. */
+  alert?: boolean
 }) {
   return (
     <div
@@ -64,7 +67,10 @@ export function StatusBar({
       <span className="flex items-center gap-2.5">
         <span
           aria-hidden="true"
-          className="block size-1.25 rounded-full bg-brand motion-safe:animate-halo"
+          className={cn(
+            "block size-1.25 rounded-full",
+            alert ? "bg-destructive" : "bg-brand motion-safe:animate-halo"
+          )}
         />
         {children}
       </span>

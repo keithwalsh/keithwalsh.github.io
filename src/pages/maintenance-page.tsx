@@ -16,7 +16,9 @@ export default function MaintenancePage() {
         "flex min-h-svh flex-col justify-center gap-4.5 py-page-top"
       )}
     >
-      <StatusBar meta={siteConfig.domain}>Offline</StatusBar>
+      <StatusBar meta={siteConfig.domain} alert>
+        Offline
+      </StatusBar>
       <Masthead lines={[siteConfig.name]} />
       <p className={leadClass}>
         This site is offline for now. Please check back soon.
