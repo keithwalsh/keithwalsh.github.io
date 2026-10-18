@@ -112,6 +112,12 @@ the one untyped input: `weather-data.ts` keeps a row only if its `date` is
 - **Routes can portal into the header.** `app-layout.tsx` passes the header
   element as outlet context (`useOutletContext`); the blog post portals its
   reading-progress hairline into it. It is `null` under `?notoolbar`.
+- **`siteConfig.online` is the kill switch.** When it is `false`, a plugin in
+  `vite.config.ts` points `index.html` at `src/maintenance.tsx` instead of
+  `main.tsx` and drops every `public/` file outside its allowlist, so the
+  deploy ships a maintenance page and nothing of the app. `npm run dev` shows
+  the same page. Because `vite.config.ts` imports `site.ts`, keep that file
+  free of imports.
 - **Analytics only initialise in production builds** and page views are sent
   manually per route change via `trackPageView`, not by gtag's automatic tracking.
 
