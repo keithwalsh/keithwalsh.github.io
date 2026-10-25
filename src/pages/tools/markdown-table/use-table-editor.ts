@@ -1,6 +1,5 @@
 import { useReducer } from "react"
-
-import type { Alignment } from "@/lib/markdown-table"
+import type { Alignment } from "react-markdown-table-ts"
 
 export type TableData = {
   cells: string[][]

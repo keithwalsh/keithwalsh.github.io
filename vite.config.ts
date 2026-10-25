@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig, type Plugin } from "vite"
 
-import { siteConfig } from "./src/config/site"
+import { siteConfig } from "./src/config/site.ts"
 
 // public/ files an offline build still needs: icons, the hash-route redirect
 // and the og:image. Anything else (the CV, the weather CSVs) is left out.

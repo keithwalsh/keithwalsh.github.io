@@ -58,7 +58,8 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b border-sidebar-border/80 px-3.5 pt-3.5 pb-3">
+      {/* Same height as the app header, so the bottom borders meet. */}
+      <SidebarHeader className="h-14 shrink-0 border-b border-sidebar-border/80 px-3.5 pt-3.5 pb-3">
         <Link
           to="/"
           onClick={closeOnMobile}

@@ -22,7 +22,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -250,6 +249,41 @@ function Sidebar({
   )
 }
 
+// Lucide's panel-left, with the divider free to travel. Shifts are a
+// percentage of the 24-wide viewBox, so they stay in the icon's own units
+// when the font size scales. 0 leaves the stroke at x=9 (sidebar open).
+// -12.5% parks it at x=6, a narrow column still clear of the frame, when
+// the sidebar is shut. The 200ms linear ease matches the sidebar's slide.
+function SidebarToggleIcon() {
+  const { isMobile, open, openMobile } = useSidebar()
+  const expanded = isMobile ? openMobile : open
+
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="18" height="18" x="3" y="3" rx="2" />
+      <path
+        d="M9 3v18"
+        className={cn(
+          "transition-transform duration-200 ease-linear [transform-box:view-box] motion-reduce:transition-none",
+          // Hover previews the click: the divider travels the full way to
+          // where it will sit afterwards. Open, that is x=6. Closed, x=9.
+          expanded
+            ? "group-hover/button:-translate-x-[12.5%] group-focus-visible/button:-translate-x-[12.5%]"
+            : "-translate-x-[12.5%] group-hover/button:translate-x-0 group-focus-visible/button:translate-x-0"
+        )}
+      />
+    </svg>
+  )
+}
+
 function SidebarTrigger({
   className,
   onClick,
@@ -270,7 +304,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <SidebarToggleIcon />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

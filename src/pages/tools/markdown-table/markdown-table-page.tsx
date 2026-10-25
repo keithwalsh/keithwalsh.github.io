@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react"
 import { Copy, Download, Settings2 } from "lucide-react"
+import { generateMarkdownTable } from "react-markdown-table-ts"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
 import { IconButton } from "@/components/icon-button"
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { copyWithToast, downloadTextFile } from "@/lib/browser"
-import { generateMarkdownTable } from "@/lib/markdown-table"
 import { MarkdownPreview } from "@/pages/tools/markdown-table/markdown-preview"
 import { TableEditor } from "@/pages/tools/markdown-table/table-editor"
 import { useTableEditor } from "@/pages/tools/markdown-table/use-table-editor"

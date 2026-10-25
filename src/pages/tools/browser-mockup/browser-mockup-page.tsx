@@ -17,7 +17,6 @@ import {
 
 import { DropZone } from "@/components/drop-zone"
 import { brandFillClass } from "@/components/editorial"
-import { PageHeader } from "@/components/page"
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
@@ -202,12 +201,7 @@ export default function BrowserMockupPage() {
     // still fits beside the canvas when the site sidebar is open.
     <div className="@container/mockup flex flex-1 flex-col">
       <div className="flex flex-1 flex-col @3xl/mockup:h-[calc(100svh-3.5rem)] @3xl/mockup:flex-none">
-        {/* Flush with the toolbar below rather than centred like `Page`, since
-            the workspace runs full width. */}
-        <div className="shrink-0 px-4 py-6 md:py-8 @3xl/mockup:px-5">
-          <PageHeader />
-        </div>
-        <div className="flex h-15 shrink-0 items-center gap-3 border-y px-4 @3xl/mockup:px-5">
+        <div className="flex h-15 shrink-0 items-center gap-3 border-b px-4 @3xl/mockup:px-5">
           <button
             type="button"
             onClick={chooseFile}

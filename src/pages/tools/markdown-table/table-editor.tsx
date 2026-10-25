@@ -1,4 +1,5 @@
 import { useRef, useState } from "react"
+import type { Alignment } from "react-markdown-table-ts"
 import {
   AlignCenter,
   AlignLeft,
@@ -17,7 +18,6 @@ import {
 import { IconButton } from "@/components/icon-button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { columnName, type Alignment } from "@/lib/markdown-table"
 import { cn } from "@/lib/utils"
 import {
   formatCellValue,
@@ -33,6 +33,14 @@ const ALIGN_CLASS: Record<Alignment, string> = {
   center: "text-center",
   right: "text-right",
   none: "text-left",
+}
+
+function columnName(index: number) {
+  let name = ""
+  for (let i = index; i >= 0; i = Math.floor(i / 26) - 1) {
+    name = String.fromCharCode((i % 26) + 65) + name
+  }
+  return name
 }
 
 export function TableEditor({
