@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { useLocation } from "react-router"
 
-import { leadClass, Masthead, StatusBar } from "@/components/editorial"
+import { leadClass, Masthead } from "@/components/editorial"
 import { findNavLocation } from "@/config/navigation"
 import { cn } from "@/lib/utils"
 
@@ -18,23 +18,18 @@ function Page({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 /**
- * The title block every page opens with: a status line, the masthead and an
- * optional lead. The title and status line default to the page's sidebar label
- * and section, so the masthead matches the breadcrumb and browser tab. The
- * status line is left out when there is neither.
+ * The title block every page opens with: the masthead and an optional lead.
+ * The title defaults to the page's sidebar label, so the masthead matches the
+ * breadcrumb and browser tab.
  */
 function PageHeader({
   title,
-  eyebrow,
-  meta,
   description,
   aside,
   className,
 }: {
   /** A string, or one string per masthead line. */
   title?: string | string[]
-  eyebrow?: ReactNode
-  meta?: ReactNode
   description?: ReactNode
   /** Sits beside the masthead, aligned to its last line. */
   aside?: ReactNode
@@ -42,18 +37,11 @@ function PageHeader({
 }) {
   const { pathname } = useLocation()
   const location = findNavLocation(pathname)
-  const label = eyebrow ?? location?.section?.title
   const lines = title ?? location?.item.title ?? ""
 
   return (
     <header className={cn("flex flex-col", className)}>
-      {label && <StatusBar meta={meta}>{label}</StatusBar>}
-      <div
-        className={cn(
-          "flex flex-wrap items-end justify-between gap-columns",
-          label && "pt-stack"
-        )}
-      >
+      <div className="flex flex-wrap items-end justify-between gap-columns">
         <Masthead
           lines={typeof lines === "string" ? [lines] : lines}
           className="min-w-0 flex-[1_1_26rem]"

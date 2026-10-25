@@ -1,12 +1,6 @@
 import { useRef } from "react"
 
-import {
-  leadClass,
-  Masthead,
-  sectionClass,
-  StatusBar,
-} from "@/components/editorial"
-import { siteConfig } from "@/config/site"
+import { leadClass, Masthead, sectionClass } from "@/components/editorial"
 import journey from "@/data/professionalJourney.json"
 import { assetUrl } from "@/lib/browser"
 import {
@@ -47,11 +41,7 @@ export function ProfileIntro() {
         "relative overflow-hidden pt-page-top pb-header-bottom"
       )}
     >
-      <StatusBar meta={siteConfig.tagline}>
-        Ballindine, Co. Mayo, Ireland
-      </StatusBar>
-
-      <div className="flex flex-wrap items-start gap-stack pt-stack">
+      <div className="flex flex-wrap items-start gap-stack">
         <div className="relative w-[clamp(7.25rem,15vw,10.5rem)] flex-none">
           <div
             ref={glowRef}

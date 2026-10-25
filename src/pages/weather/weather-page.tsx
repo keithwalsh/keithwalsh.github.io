@@ -59,15 +59,14 @@ export default function WeatherPage() {
     years.findLast((entry) => !entry.partial) ??
     years.at(-1)
   const [first, last] = [years[0], years.at(-1)]
-  const span = first && last ? `${first.year}–${last.year}` : undefined
+  const span = first && last ? ` from ${first.year} to ${last.year}` : ""
   const readings = data
-    ? `${data.temperature.length.toLocaleString("en-IE")} days of readings, updated monthly.`
+    ? `${data.temperature.length.toLocaleString("en-IE")} days of readings${span}, updated monthly.`
     : "Updated monthly."
 
   return (
     <Page className="gap-10 md:pb-14">
       <PageHeader
-        meta={span ? `Claremorris · ${span}` : "Claremorris"}
         description={`Recorded at the Claremorris Met Éireann station, about 2 km south of my home town in County Mayo, Ireland. ${readings}`}
       />
 

@@ -249,37 +249,51 @@ function Sidebar({
   )
 }
 
-// Lucide's panel-left, with the divider free to travel. Shifts are a
+// Lucide's panel-left, plus the chevron from panel-left-close. Shifts are a
 // percentage of the 24-wide viewBox, so they stay in the icon's own units
-// when the font size scales. 0 leaves the stroke at x=9 (sidebar open).
-// -12.5% parks it at x=6, a narrow column still clear of the frame, when
-// the sidebar is shut. The 200ms linear ease matches the sidebar's slide.
+// when the font size scales. 0 leaves the divider at x=9 (sidebar open).
+// -12.5% parks the divider at x=6 when the sidebar is shut, and the
+// chevron follows so the turn doesn't leave it against the right edge.
+// The chevron rotates on click only, over 500ms, slower than the divider's
+// 200ms slide. Hover slides both together and leaves its direction alone.
 function SidebarToggleIcon() {
   const { isMobile, open, openMobile } = useSidebar()
   const expanded = isMobile ? openMobile : open
+  const glide =
+    "transition-transform duration-200 ease-linear motion-reduce:transition-none"
+  // The same shift for the divider and the chevron, so a hover moves them
+  // as one. Closed, both rest 12.5% to the left.
+  const shift = expanded
+    ? "group-hover/button:-translate-x-[12.5%] group-focus-visible/button:-translate-x-[12.5%]"
+    : "-translate-x-[12.5%] group-hover/button:translate-x-0 group-focus-visible/button:translate-x-0"
 
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
+      className="size-5"
     >
       <rect width="18" height="18" x="3" y="3" rx="2" />
       <path
-        d="M9 3v18"
-        className={cn(
-          "transition-transform duration-200 ease-linear [transform-box:view-box] motion-reduce:transition-none",
-          // Hover previews the click: the divider travels the full way to
-          // where it will sit afterwards. Open, that is x=6. Closed, x=9.
-          expanded
-            ? "group-hover/button:-translate-x-[12.5%] group-focus-visible/button:-translate-x-[12.5%]"
-            : "-translate-x-[12.5%] group-hover/button:translate-x-0 group-focus-visible/button:translate-x-0"
-        )}
+        d="M9 4v16"
+        className={cn(glide, "[transform-box:view-box]", shift)}
       />
+      {/* Translation lives on the group, in viewBox units. Rotation stays
+          on the path, around the chevron itself, and follows the open state. */}
+      <g className={cn(glide, "[transform-box:view-box]", shift)}>
+        <path
+          d="m16 15-3-3 3-3"
+          className={cn(
+            "origin-center transition-transform duration-500 ease-linear [transform-box:fill-box] motion-reduce:transition-none",
+            expanded ? "rotate-0" : "rotate-180"
+          )}
+        />
+      </g>
     </svg>
   )
 }

@@ -9,10 +9,9 @@ import {
   ZeroState,
 } from "@/components/editorial"
 import { PageHeader } from "@/components/page"
-import { formatPostDate, posts, type Post } from "@/lib/posts"
+import { formatPostDate, posts } from "@/lib/posts"
 import { cn } from "@/lib/utils"
 import {
-  COUNT_WORDS,
   pad,
   trackRows,
   useReducedMotion,
@@ -37,15 +36,8 @@ const subjects = [
     ),
 ].sort((a, b) => b[1] - a[1])
 
-const drafts = posts.filter((post) => post.draft).length
-
-function countOf(n: number, noun: string) {
-  return `${COUNT_WORDS[n] ?? n} ${noun}${n === 1 ? "" : "s"}`
-}
-
 export default function BlogPage() {
-  const [latest] = posts
-  if (!latest) {
+  if (posts.length === 0) {
     return (
       <ZeroState
         numeral="00"
@@ -57,10 +49,10 @@ export default function BlogPage() {
     )
   }
 
-  return <PostIndex latest={latest} />
+  return <PostIndex />
 }
 
-function PostIndex({ latest }: { latest: Post }) {
+function PostIndex() {
   const [active, setActive] = useState(0)
   const reduced = useReducedMotion()
   const revealRef = useReveal<HTMLDivElement>(!reduced)
@@ -79,21 +71,6 @@ function PostIndex({ latest }: { latest: Post }) {
     <div ref={revealRef} className="flex flex-col">
       <section className={cn(sectionClass, "pt-page-top pb-header-bottom")}>
         <PageHeader
-          eyebrow={
-            <>
-              {countOf(posts.length, "write-up")}
-              {/* Drafts are only ever listed by the dev server. */}
-              {drafts > 0 && (
-                <span>
-                  ·{" "}
-                  {drafts === posts.length
-                    ? "all drafts"
-                    : countOf(drafts, "draft")}
-                </span>
-              )}
-            </>
-          }
-          meta={`Last edit ${formatPostDate(latest.date, { month: "short" })}`}
           title={["Problems", "worth the detour"]}
           aside={
             subjects.length > 0 && (
