@@ -51,6 +51,11 @@ type CountryOption = { value?: Country; label: string }
  * The trigger shows the flag and dial code; a transparent native `<select>`
  * sits on top of it, so the picker is the platform's own — keyboard
  * type-ahead on desktop, the system wheel on mobile.
+ *
+ * The menu is that OS popup. It inherits the page foreground, which is
+ * near-white in dark mode, while Windows paints the popup white — so the
+ * names vanish except for the highlighted row. A light colour scheme and an
+ * explicit dark option colour keep the list readable.
  */
 function CountrySelect({
   value: selectedCountry,
@@ -80,7 +85,7 @@ function CountrySelect({
         disabled={disabled}
         value={selectedCountry ?? ""}
         onChange={(event) => onChange(event.target.value as Country)}
-        className="absolute inset-0 cursor-pointer opacity-0"
+        className="absolute inset-0 cursor-pointer text-neutral-950 scheme-light opacity-0 [&_option]:text-neutral-950"
       >
         {countries.map(({ value, label }) => (
           <option key={value} value={value}>
