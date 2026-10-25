@@ -141,10 +141,12 @@ export function AppSidebar() {
                       <span className="ml-auto font-mono text-meta text-muted-foreground">
                         {section.items.length}
                       </span>
-                      <ChevronRight className="size-3.5! text-muted-foreground transition-transform duration-150 group-data-[state=open]/collapsible:rotate-90" />
+                      <ChevronRight className="size-3.5! text-muted-foreground transition-transform duration-300 ease-glide group-data-[state=open]/collapsible:rotate-90 motion-reduce:transition-none" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
-                  <CollapsibleContent>
+                  {/* overflow-hidden also keeps the list's margins inside the
+                      measured height, so the animation ends without a jump. */}
+                  <CollapsibleContent className="overflow-hidden duration-300 ease-glide data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down motion-reduce:animate-none">
                     {/* mt-0.75 rather than the prototype's 2px: there the
                         rows' 1px gap also sat above the list. */}
                     <SidebarMenuSub className="mt-0.75 mr-0 mb-1.5 ml-5 translate-x-0 gap-0 p-0 pl-3.5">
