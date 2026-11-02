@@ -7,6 +7,7 @@ import {
   outlinePillClass,
   sectionClass,
 } from "@/components/editorial"
+import { siteConfig } from "@/config/site"
 import certData from "@/data/certifications.json"
 import { assetUrl } from "@/lib/browser"
 import { cn } from "@/lib/utils"
@@ -56,14 +57,16 @@ export function EducationCerts() {
       </div>
 
       <div className="flex flex-wrap items-center gap-4 pt-2">
-        <a
-          href={assetUrl("keith-walsh-cv.pdf")}
-          download
-          className={brandPillClass}
-        >
-          Download CV
-          <ArrowDown className="size-4" />
-        </a>
+        {siteConfig.showCvDownload && (
+          <a
+            href={assetUrl("keith-walsh-cv.pdf")}
+            download
+            className={brandPillClass}
+          >
+            Download CV
+            <ArrowDown className="size-4" />
+          </a>
+        )}
         <Link to="/contact" className={outlinePillClass}>
           Get in touch
           <ArrowUpRight className="size-4" />

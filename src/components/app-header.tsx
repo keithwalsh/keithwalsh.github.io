@@ -20,6 +20,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { findNavLocation, notFoundTitle } from "@/config/navigation"
+import { siteConfig } from "@/config/site"
 import { assetUrl } from "@/lib/browser"
 
 export function AppHeader({ ref }: { ref?: Ref<HTMLElement> }) {
@@ -63,12 +64,14 @@ export function AppHeader({ ref }: { ref?: Ref<HTMLElement> }) {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="ml-auto flex items-center gap-1">
-        <Button variant="outline" size="sm" asChild>
-          <a href={assetUrl("keith-walsh-cv.pdf")} download>
-            <Download />
-            CV
-          </a>
-        </Button>
+        {siteConfig.showCvDownload && (
+          <Button variant="outline" size="sm" asChild>
+            <a href={assetUrl("keith-walsh-cv.pdf")} download>
+              <Download />
+              CV
+            </a>
+          </Button>
+        )}
         <AccessibilityMenu />
         <ModeToggle />
       </div>
