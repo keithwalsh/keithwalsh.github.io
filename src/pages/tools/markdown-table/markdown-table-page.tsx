@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { Copy, Download, Settings2 } from "lucide-react"
-import { generateMarkdownTable, MarkdownTable } from "react-markdown-table-ts"
+import { MarkdownTable, useMarkdownTable } from "react-markdown-table-ts"
 
 import { IconButton } from "@/components/icon-button"
 import { Page, PageHeader } from "@/components/page"
@@ -37,14 +37,10 @@ export default function MarkdownTablePage() {
     hasPadding: true,
   })
 
-  const markdown = useMemo(
-    () =>
-      generateMarkdownTable(table.cells, {
-        columnAlignments: table.alignments,
-        ...options,
-      }),
-    [table, options]
-  )
+  const { markdown } = useMarkdownTable(table.cells, {
+    columnAlignments: table.alignments,
+    ...options,
+  })
 
   return (
     <Page>
@@ -109,16 +105,13 @@ export default function MarkdownTablePage() {
           </div>
         </div>
         <TabsContent value="markdown">
-          <div className="overflow-hidden rounded-lg border bg-muted/40 pt-3 text-xs [--rmt-background:transparent] [--rmt-border-radius:0] [--rmt-color:var(--foreground)] [--rmt-font-family:var(--font-mono)] [--rmt-line-number-color:var(--muted-foreground)] [--rmt-selection-background:Highlight] [--rmt-text-shadow:none] [&_.rmt-line-numbers]:border-border!">
-            <MarkdownTable
-              inputData={table.cells}
-              columnAlignments={table.alignments}
-              {...options}
-              topPadding={0}
-              role="region"
-              aria-label="Generated Markdown"
-            />
-          </div>
+          <MarkdownTable
+            markdown={markdown}
+            theme="inherit"
+            role="region"
+            aria-label="Generated Markdown"
+            className="border [--rmt-background:color-mix(in_oklab,var(--muted)_40%,transparent)] [--rmt-border-radius:var(--radius-lg)] [--rmt-font-family:var(--font-mono)] [--rmt-font-size:var(--text-xs)] [--rmt-line-number-border:1px_solid_var(--border)] [--rmt-line-number-color:var(--muted-foreground)] [--rmt-padding:0.75rem] [--rmt-width:100%]"
+          />
         </TabsContent>
         <TabsContent value="preview">
           <MarkdownPreview markdown={markdown} />
