@@ -4,7 +4,7 @@ export const siteConfig = {
   online: false,
   // Shows the "CV" download button in the header and the "Download CV" link
   // on the About page. The PDF itself still ships either way.
-  showCvDownload: true,
+  showCvDownload: false,
   name: "Keith Walsh",
   // Keep in sync with the static <title> and og: tags in index.html.
   tagline: "Analytics Engineer",
