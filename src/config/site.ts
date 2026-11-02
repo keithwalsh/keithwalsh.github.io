@@ -1,7 +1,13 @@
 export const siteConfig = {
-  // Master switch. Set to false and push to main to take the site offline:
-  // the build then ships only a maintenance page (see vite.config.ts).
-  online: false,
+  // Master switch, one value per Vite mode: `npm run dev` runs in
+  // development mode, `npm run build` (and so the deploy) in production mode.
+  // Set production to false and push to main to take the live site offline:
+  // the build then ships only a maintenance page (see vite.config.ts), while
+  // development can stay online so the app is still there to work on.
+  online: {
+    development: true,
+    production: false,
+  },
   // Shows the "CV" download button in the header and the "Download CV" link
   // on the About page. The PDF itself still ships either way.
   showCvDownload: false,

@@ -7,7 +7,7 @@ import {
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 
-/** Shown in place of the whole site while `siteConfig.online` is false. */
+/** Shown in place of the whole site while `siteConfig.online` is off. */
 export default function MaintenancePage() {
   return (
     <main
