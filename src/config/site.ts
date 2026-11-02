@@ -2,6 +2,9 @@ export const siteConfig = {
   // Master switch. Set to false and push to main to take the site offline:
   // the build then ships only a maintenance page (see vite.config.ts).
   online: false,
+  // Shows the "CV" download button in the header and the "Download CV" link
+  // on the About page. The PDF itself still ships either way.
+  showCvDownload: true,
   name: "Keith Walsh",
   // Keep in sync with the static <title> and og: tags in index.html.
   tagline: "Analytics Engineer",
