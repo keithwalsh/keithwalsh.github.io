@@ -1,7 +1,7 @@
 export const siteConfig = {
   // Master switch. Set to false and push to main to take the site offline:
   // the build then ships only a maintenance page (see vite.config.ts).
-  online: true,
+  online: false,
   name: "Keith Walsh",
   // Keep in sync with the static <title> and og: tags in index.html.
   tagline: "Analytics Engineer",
