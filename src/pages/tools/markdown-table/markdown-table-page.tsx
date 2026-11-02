@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react"
 import { Copy, Download, Settings2 } from "lucide-react"
-import { generateMarkdownTable } from "react-markdown-table-ts"
+import { generateMarkdownTable, MarkdownTable } from "react-markdown-table-ts"
 
-import { CodeHighlighter } from "@/components/code-highlighter"
 import { IconButton } from "@/components/icon-button"
 import { Page, PageHeader } from "@/components/page"
 import { Card, CardContent } from "@/components/ui/card"
@@ -110,13 +109,16 @@ export default function MarkdownTablePage() {
           </div>
         </div>
         <TabsContent value="markdown">
-          <CodeHighlighter
-            code={markdown}
-            language="markdown"
-            annotations={false}
-            wrap={false}
-            showLineNumbers
-          />
+          <div className="overflow-hidden rounded-lg border bg-muted/40 pt-3 text-xs [--rmt-background:transparent] [--rmt-border-radius:0] [--rmt-color:var(--foreground)] [--rmt-font-family:var(--font-mono)] [--rmt-line-number-color:var(--muted-foreground)] [--rmt-selection-background:Highlight] [--rmt-text-shadow:none] [&_.rmt-line-numbers]:border-border!">
+            <MarkdownTable
+              inputData={table.cells}
+              columnAlignments={table.alignments}
+              {...options}
+              topPadding={0}
+              role="region"
+              aria-label="Generated Markdown"
+            />
+          </div>
         </TabsContent>
         <TabsContent value="preview">
           <MarkdownPreview markdown={markdown} />

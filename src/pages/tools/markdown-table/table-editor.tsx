@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import type { Alignment } from "react-markdown-table-ts"
+import { getColumnName, type Alignment } from "react-markdown-table-ts"
 import {
   AlignCenter,
   AlignLeft,
@@ -34,15 +34,6 @@ const ALIGN_CLASS: Record<Alignment, string> = {
   right: "text-right",
   none: "text-left",
 }
-
-function columnName(index: number) {
-  let name = ""
-  for (let i = index; i >= 0; i = Math.floor(i / 26) - 1) {
-    name = String.fromCharCode((i % 26) + 65) + name
-  }
-  return name
-}
-
 export function TableEditor({
   table,
   canUndo,
@@ -265,7 +256,7 @@ export function TableEditor({
                     c === column && "bg-muted text-foreground"
                   )}
                 >
-                  {columnName(c)}
+                  {getColumnName(c)}
                 </th>
               ))}
             </tr>
@@ -288,7 +279,7 @@ export function TableEditor({
                       rows={1}
                       value={value}
                       data-cell={`${r}-${c}`}
-                      aria-label={`Cell ${columnName(c)}${r + 1}`}
+                      aria-label={`Cell ${getColumnName(c)}${r + 1}`}
                       placeholder={r === 0 ? "Header" : undefined}
                       spellCheck={false}
                       onFocus={() => setActive({ row: r, column: c })}
