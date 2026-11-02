@@ -21,23 +21,30 @@ const offlinePublicFiles = new Set([
 ])
 
 /**
- * The kill switch behind `siteConfig.online`. Offline, index.html boots
+ * The kill switch behind `siteConfig.online`, read for the current Vite mode:
+ * the development value under `npm run dev`, the production value for any
+ * other mode, including `npm run build`. Offline, index.html boots
  * src/maintenance.tsx instead of the app, so no app code is bundled, and the
  * build drops every public/ file not listed above.
  */
 function maintenanceMode(): Plugin {
+  let online = true
   let outDir = ""
   let publicDir = ""
   return {
     name: "maintenance-mode",
     configResolved(config) {
+      online =
+        config.mode === "development"
+          ? siteConfig.online.development
+          : siteConfig.online.production
       outDir = path.resolve(config.root, config.build.outDir)
       publicDir = config.publicDir
     },
     transformIndexHtml: {
       order: "pre",
       handler(html) {
-        if (siteConfig.online) return html
+        if (online) return html
         if (!html.includes("/src/main.tsx")) {
           throw new Error("maintenance-mode: no /src/main.tsx in index.html")
         }
@@ -45,7 +52,7 @@ function maintenanceMode(): Plugin {
       },
     },
     closeBundle() {
-      if (siteConfig.online || !publicDir) return
+      if (online || !publicDir) return
       for (const name of fs.readdirSync(publicDir)) {
         if (offlinePublicFiles.has(name)) continue
         fs.rmSync(path.join(outDir, name), { recursive: true, force: true })
