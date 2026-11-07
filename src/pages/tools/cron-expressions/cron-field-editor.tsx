@@ -72,11 +72,11 @@ export function CronFieldEditor({
               value={key}
               onPointerEnter={() => onHoverChange([key])}
               onPointerLeave={() => onHoverChange([])}
-              className="flex min-w-0 flex-col items-start gap-1 border-b-2 border-transparent px-1.5 pt-3.5 pb-3 text-left transition-[background-color,border-color] duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset data-[state=active]:border-brand data-[state=active]:bg-tool-tab @md:px-3.5"
+              className="flex min-w-0 flex-col items-center gap-1 border-b-2 border-transparent px-1.5 pt-3.5 pb-3 text-center transition-[background-color,border-color] duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset data-[state=active]:border-brand data-[state=active]:bg-tool-tab @md:px-3.5"
             >
               <span
                 className={cn(
-                  "max-w-full truncate text-meta font-medium text-subtle uppercase transition-colors duration-150",
+                  "max-w-full truncate text-micro font-medium text-subtle uppercase transition-colors duration-150",
                   isHighlighted && "text-brand"
                 )}
               >
