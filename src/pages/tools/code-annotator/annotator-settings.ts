@@ -65,11 +65,19 @@ export const SYNTAX = [
   },
 ]
 
+// The default input explains the tool while exercising every marker.
 export const DEFAULT_CODE = `<?php
+// highlight-next-line
+echo "Code Annotator turns plain code into an annotated snippet.";
+echo "Paste code here and mark it up with comments to show";
 // Remove
-echo "Hello [-Room-]";
+echo "the line you [-replaced-]";
 // Add
-echo "Hello [+World+]";
+echo "the line you [+added+]";
+// highlight-start
+echo "and the block worth a closer look.";
+// highlight-end
+echo "Then copy it as Markdown or download it as a PNG.";
 ?>`
 
 export type AnnotatorState = {
