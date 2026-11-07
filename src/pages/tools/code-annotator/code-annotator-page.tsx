@@ -1,116 +1,31 @@
-import { useDeferredValue, useEffect, useRef, useState } from "react"
-import { Copy, Download, Images } from "lucide-react"
+import {
+  useDeferredValue,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
+import { Copy, Download, FileCode2, Images, SquareDashed } from "lucide-react"
 
 import { CodeHighlighter } from "@/components/code-highlighter"
 import { brandFillClass } from "@/components/editorial"
-import { IconButton } from "@/components/icon-button"
-import { InlineCode } from "@/components/inline-code"
-import { Page, PageHeader } from "@/components/page"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Field, FieldLabel, FieldTitle } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
-import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { useDownloadImage } from "@/hooks/use-download-image"
 import { copyWithToast, readStoredObject } from "@/lib/browser"
 import { toMarkdownCodeBlock } from "@/lib/code-highlight"
 import { cn } from "@/lib/utils"
-
-/** `commentEnd` is set for languages whose comments have to be closed. */
-const LANGUAGE_OPTIONS: {
-  value: string
-  label: string
-  comment: string
-  commentEnd?: string
-}[] = [
-  { value: "javascript", label: "JavaScript", comment: "//" },
-  { value: "typescript", label: "TypeScript", comment: "//" },
-  { value: "tsx", label: "TSX", comment: "//" },
-  { value: "python", label: "Python", comment: "#" },
-  { value: "java", label: "Java", comment: "//" },
-  { value: "csharp", label: "C#", comment: "//" },
-  { value: "c", label: "C", comment: "//" },
-  { value: "cpp", label: "C++", comment: "//" },
-  { value: "go", label: "Go", comment: "//" },
-  { value: "rust", label: "Rust", comment: "//" },
-  { value: "ruby", label: "Ruby", comment: "#" },
-  { value: "php", label: "PHP", comment: "//" },
-  { value: "sql", label: "SQL", comment: "--" },
-  { value: "bash", label: "Bash", comment: "#" },
-  { value: "markup", label: "HTML", comment: "<!--", commentEnd: "-->" },
-  { value: "css", label: "CSS", comment: "/*", commentEnd: "*/" },
-  { value: "json", label: "JSON", comment: "//" },
-  { value: "yaml", label: "YAML", comment: "#" },
-  { value: "markdown", label: "Markdown", comment: "<!--", commentEnd: "-->" },
-]
-
-const DISPLAY_OPTIONS = [
-  { key: "showLineNumbers", id: "code-line-numbers", label: "Line numbers" },
-  { key: "wrap", id: "code-wrap", label: "Wrap lines" },
-  {
-    key: "strikethrough",
-    id: "code-strikethrough",
-    label: "Strike through removed words",
-  },
-] as const
-
-type DisplayOptions = Record<(typeof DISPLAY_OPTIONS)[number]["key"], boolean>
-
-// `comment: true` markers are written in the selected language's comment style.
-const SYNTAX = [
-  {
-    comment: true,
-    markers: ["Add", "Remove"],
-    effect: "Marks the next line as added or removed",
-  },
-  {
-    comment: false,
-    markers: ["[+new+]", "[-old-]"],
-    effect: "Marks the wrapped text as added or removed",
-  },
-  {
-    comment: true,
-    markers: ["highlight-next-line"],
-    effect: "Highlights the next line",
-  },
-  {
-    comment: true,
-    markers: ["highlight-start", "highlight-end"],
-    effect: "Highlights every line between them",
-  },
-]
-
-const DEFAULT_CODE = `<?php
-// Remove
-echo "Hello [-Room-]";
-// Add
-echo "Hello [+World+]";
-?>`
+import {
+  DEFAULT_STATE,
+  DISPLAY_OPTIONS,
+  findLanguage,
+  type AnnotatorState,
+  type DisplayOptions,
+} from "@/pages/tools/code-annotator/annotator-settings"
+import { SettingsRail } from "@/pages/tools/code-annotator/settings-rail"
 
 const STORAGE_KEY = "code-annotator"
-
-type AnnotatorState = {
-  code: string
-  language: string
-  filename: string
-  options: DisplayOptions
-}
-
-const DEFAULT_STATE: AnnotatorState = {
-  code: DEFAULT_CODE,
-  language: "php",
-  filename: "",
-  options: { showLineNumbers: true, wrap: true, strikethrough: true },
-}
 
 // The input and display options persist between visits. Anything unrecognised
 // in storage falls back to its default.
@@ -129,9 +44,7 @@ function loadState(): AnnotatorState {
   return {
     code: text("code") ?? DEFAULT_STATE.code,
     language:
-      language && LANGUAGE_OPTIONS.some((option) => option.value === language)
-        ? language
-        : DEFAULT_STATE.language,
+      language && findLanguage(language) ? language : DEFAULT_STATE.language,
     filename: text("filename") ?? DEFAULT_STATE.filename,
     options: Object.fromEntries(
       DISPLAY_OPTIONS.map(({ key }) => {
@@ -155,10 +68,29 @@ function imageName(filename: string) {
   )
 }
 
+/** The rendered size of an element, for the canvas readout. */
+function useElementSize<T extends HTMLElement>() {
+  const ref = useRef<T>(null)
+  const [size, setSize] = useState({ width: 0, height: 0 })
+
+  useLayoutEffect(() => {
+    const element = ref.current
+    if (!element) return
+    const update = () =>
+      setSize({ width: element.offsetWidth, height: element.offsetHeight })
+    update()
+    const observer = new ResizeObserver(update)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
+
+  return { ref, size }
+}
+
 export default function CodeAnnotatorPage() {
   const [state, setState] = useState(loadState)
   const { code, language, filename, options } = state
-  const outputRef = useRef<HTMLDivElement>(null)
+  const { ref: outputRef, size } = useElementSize<HTMLDivElement>()
   const { downloadImage, copyImage, isDownloading, isCopying } =
     useDownloadImage()
 
@@ -178,11 +110,9 @@ export default function CodeAnnotatorPage() {
   const deferredCode = useDeferredValue(code)
 
   const hasCode = code.trim().length > 0
-  const selected = LANGUAGE_OPTIONS.find((option) => option.value === language)
-  const writeComment = (marker: string) =>
-    [selected?.comment ?? "//", marker, selected?.commentEnd]
-      .filter(Boolean)
-      .join(" ")
+  const lineCount = code.split("\n").length
+  const languageLabel = findLanguage(language)?.label ?? language
+  const title = filename.trim()
 
   const handleDownload = () => {
     if (!outputRef.current) return
@@ -195,141 +125,136 @@ export default function CodeAnnotatorPage() {
   }
 
   return (
-    <Page>
-      <PageHeader description="Mark lines and words as added, removed or highlighted, then copy the result as Markdown or download it as a PNG." />
-
-      <Card>
-        <CardContent className="flex flex-wrap items-center gap-x-8 gap-y-4">
-          <Field orientation="horizontal" className="w-auto">
-            <FieldLabel htmlFor="code-language">Language</FieldLabel>
-            <Select
-              value={language}
-              onValueChange={(value) => update({ language: value })}
+    // Breakpoints follow the page's own width, not the viewport's, so the rail
+    // still fits beside the canvas when the site sidebar is open.
+    <div className="@container/annotator flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col @3xl/annotator:h-[calc(100svh-3.5rem)] @3xl/annotator:flex-none">
+        <div className="flex h-15 shrink-0 items-center gap-3 border-b px-4 @3xl/annotator:px-5">
+          {/* Clicking the chip focuses the filename field in the rail. */}
+          <label
+            htmlFor="code-filename"
+            title="Name the file"
+            className="flex min-w-0 cursor-pointer items-center gap-2 rounded-full bg-card py-1 pr-2.5 pl-2 text-caption text-muted-foreground ring-1 ring-tool-control-ring transition-colors duration-150 hover:bg-tool-raised-hover dark:bg-card"
+          >
+            <FileCode2 className="size-3.5 shrink-0" />
+            <span
+              className={cn(
+                "truncate font-mono text-xs",
+                title ? "text-foreground" : "text-subtle"
+              )}
             >
-              <SelectTrigger id="code-language" className="w-36">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {LANGUAGE_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-          <Field orientation="horizontal" className="w-auto">
-            <FieldLabel htmlFor="code-filename">Filename</FieldLabel>
-            <Input
-              id="code-filename"
-              value={filename}
-              onChange={(event) => update({ filename: event.target.value })}
-              placeholder="Optional"
-              spellCheck={false}
-              autoComplete="off"
-              className="w-40"
-            />
-          </Field>
-          {DISPLAY_OPTIONS.map(({ key, id, label }) => (
-            <Field key={key} orientation="horizontal" className="w-auto">
-              <Switch
-                id={id}
-                checked={options[key]}
-                onCheckedChange={(checked) =>
-                  update({ options: { ...options, [key]: checked } })
-                }
-              />
-              <FieldLabel htmlFor={id}>{label}</FieldLabel>
-            </Field>
-          ))}
-        </CardContent>
-      </Card>
+              {title || "Untitled"}
+            </span>
+            <span className="shrink-0 whitespace-nowrap tabular-nums @max-5xl/annotator:hidden">
+              {languageLabel} · {lineCount} {lineCount === 1 ? "line" : "lines"}
+            </span>
+          </label>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Field>
-          <FieldLabel htmlFor="code-input">Input</FieldLabel>
-          <Textarea
-            id="code-input"
-            value={code}
-            onChange={(event) => update({ code: event.target.value })}
-            spellCheck={false}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            className="min-h-64 font-mono text-xs leading-relaxed md:text-xs"
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            <Button
+              variant="outline"
+              disabled={!hasCode}
+              onClick={() =>
+                copyWithToast(
+                  toMarkdownCodeBlock(code, language),
+                  "Markdown copied"
+                )
+              }
+            >
+              <Copy />
+              <span className="@max-2xl/annotator:sr-only">Copy Markdown</span>
+            </Button>
+            <Button
+              variant="outline"
+              disabled={!hasCode || isCopying}
+              onClick={handleCopyImage}
+            >
+              {isCopying ? <Spinner /> : <Images />}
+              <span className="@max-2xl/annotator:sr-only">Copy image</span>
+            </Button>
+            <Button
+              disabled={!hasCode || isDownloading}
+              onClick={handleDownload}
+              className={cn(brandFillClass, "px-3 font-semibold")}
+            >
+              {isDownloading ? <Spinner /> : <Download />}
+              <span className="@max-2xl/annotator:sr-only">Download PNG</span>
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex min-h-0 flex-1 flex-col @3xl/annotator:flex-row-reverse">
+          <SettingsRail
+            state={state}
+            onChange={update}
+            className="@max-3xl/annotator:order-last @max-3xl/annotator:border-t"
           />
-        </Field>
-        <Field>
-          <div className="flex items-center justify-between gap-2">
-            <FieldTitle>Output</FieldTitle>
-            <div className="-my-1 flex items-center gap-1">
-              <IconButton
-                label="Copy as Markdown"
-                disabled={!hasCode}
-                onClick={() =>
-                  copyWithToast(
-                    toMarkdownCodeBlock(code, language),
-                    "Markdown copied"
-                  )
-                }
-              >
-                <Copy />
-              </IconButton>
-              <IconButton
-                label="Copy image"
-                disabled={!hasCode || isCopying}
-                onClick={handleCopyImage}
-              >
-                {isCopying ? <Spinner /> : <Images />}
-              </IconButton>
-              {/* The same primary export as Browser Mockup's. */}
-              <Button
-                size="sm"
-                disabled={!hasCode || isDownloading}
-                onClick={handleDownload}
-                className={cn(brandFillClass, "ml-1 font-semibold")}
-              >
-                {isDownloading ? <Spinner /> : <Download />}
-                Download PNG
-              </Button>
-            </div>
-          </div>
-          {/* Unwrapped lines scroll here rather than inside the block, so the
-              downloaded image isn't cropped to the visible width. */}
-          <div className={cn(!options.wrap && "overflow-x-auto")}>
-            <CodeHighlighter
-              ref={outputRef}
-              code={deferredCode}
-              language={language}
-              title={filename.trim() || undefined}
-              className={cn(!options.wrap && "w-max min-w-full")}
-              {...options}
-            />
-          </div>
-        </Field>
-      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Syntax</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <dl className="grid items-baseline gap-x-6 gap-y-3 sm:grid-cols-[auto_1fr]">
-            {SYNTAX.map(({ comment, markers, effect }) => (
-              <div key={effect} className="flex flex-col gap-1 sm:contents">
-                <dt className="flex flex-wrap gap-1.5">
-                  {markers.map((marker) => (
-                    <InlineCode key={marker}>
-                      {comment ? writeComment(marker) : marker}
-                    </InlineCode>
-                  ))}
-                </dt>
-                <dd className="text-muted-foreground">{effect}</dd>
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+            <section
+              aria-label="Input"
+              className="flex shrink-0 flex-col border-b"
+            >
+              <div className="flex h-10 items-center justify-between border-b border-foreground/6 px-5">
+                <label
+                  htmlFor="code-input"
+                  className="font-mono text-eyebrow text-muted-foreground uppercase"
+                >
+                  Input
+                </label>
+                <span className="font-mono text-2xs text-subtle tabular-nums">
+                  {lineCount} {lineCount === 1 ? "line" : "lines"} ·{" "}
+                  {code.length} chars
+                </span>
               </div>
-            ))}
-          </dl>
-        </CardContent>
-      </Card>
-    </Page>
+              <Textarea
+                id="code-input"
+                value={code}
+                onChange={(event) => update({ code: event.target.value })}
+                spellCheck={false}
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                className="field-sizing-fixed h-72 max-h-[70svh] min-h-32 resize-y rounded-none border-0 px-5 py-4 font-mono text-xs leading-relaxed focus-visible:ring-0 md:text-xs dark:bg-transparent"
+              />
+            </section>
+
+            {/* The rendered block sits on the same dotted canvas as Browser
+                Mockup's preview. It scrolls here rather than inside the block,
+                so the downloaded image isn't cropped to the visible size. */}
+            <section
+              aria-label="Output"
+              className="relative flex min-h-[20rem] flex-1 overflow-auto bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] @3xl/annotator:min-h-0 dark:bg-tool-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
+            >
+              <div
+                className={cn(
+                  "m-auto px-7 pt-7 pb-11",
+                  options.wrap ? "w-full max-w-[45.5rem]" : "w-max"
+                )}
+              >
+                <div className="min-w-80 rounded-lg shadow-xl shadow-black/15 dark:shadow-black/50">
+                  <CodeHighlighter
+                    ref={outputRef}
+                    code={deferredCode}
+                    language={language}
+                    title={title || undefined}
+                    className="bg-card dark:bg-[color:oklch(0.17_0_0)]"
+                    {...options}
+                  />
+                </div>
+              </div>
+
+              <p className="pointer-events-none absolute bottom-3.5 left-4.5 flex items-center gap-2 font-mono text-2xs text-subtle @max-xl/annotator:hidden">
+                <SquareDashed className="size-3.25" />
+                The preview is what gets exported
+              </p>
+              <p className="pointer-events-none absolute right-4.5 bottom-3.5 font-mono text-2xs text-subtle tabular-nums">
+                {size.width} × {size.height}
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
