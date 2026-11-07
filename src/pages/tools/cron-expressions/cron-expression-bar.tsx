@@ -1,23 +1,15 @@
-import { useRef, useState } from "react"
-import { Copy, Dices } from "lucide-react"
+import { useState } from "react"
 
-import { linkClass } from "@/components/editorial"
-import { IconButton } from "@/components/icon-button"
 import { Input } from "@/components/ui/input"
-import { copyWithToast } from "@/lib/browser"
 import { cn } from "@/lib/utils"
 import {
   CRON_FIELDS,
   FIELD_KEYS,
   formatCronExpression,
   parseCronExpression,
-  randomCronFields,
   type CronFieldKey,
   type CronFields,
 } from "@/pages/tools/cron-expressions/cron"
-
-const ICON_BUTTON =
-  "size-11 rounded-lg border-0 bg-tool-raised ring-1 ring-foreground/8 hover:bg-tool-raised-hover dark:hover:bg-tool-raised-hover"
 
 // A label's column narrows as other tokens grow. Below these widths the label
 // switches to an abbreviation rather than running into its neighbour.
@@ -41,10 +33,16 @@ const ABBREVIATIONS: Partial<
   },
 }
 
+/**
+ * The five tokens of the expression, or a text box for pasting one. The
+ * paste toggle lives in the page toolbar, so `isPasting` is owned there.
+ */
 export function CronExpressionBar({
   fields,
   active,
   hover,
+  isPasting,
+  onPastingChange,
   onActiveChange,
   onHoverChange,
   onFieldsChange,
@@ -52,21 +50,19 @@ export function CronExpressionBar({
   fields: CronFields
   active: CronFieldKey
   hover: CronFieldKey[]
+  isPasting: boolean
+  onPastingChange: (isPasting: boolean) => void
   onActiveChange: (key: CronFieldKey) => void
   onHoverChange: (keys: CronFieldKey[]) => void
   onFieldsChange: (fields: CronFields) => void
 }) {
   const expression = formatCronExpression(fields)
-  const [isPasting, setIsPasting] = useState(false)
   // Typed text is shown only while it still matches the fields, so a preset
   // or random roll made meanwhile replaces it.
   const [draft, setDraft] = useState<{
     text: string
     expression: string
   } | null>(null)
-  // Changing the key remounts the dice icon so its spin replays on every roll.
-  const [rolls, setRolls] = useState(0)
-  const pasteToggle = useRef<HTMLButtonElement>(null)
 
   const rawText = draft?.expression === expression ? draft.text : expression
 
@@ -81,15 +77,10 @@ export function CronExpressionBar({
     })
   }
 
-  const togglePasting = () => {
-    setIsPasting((current) => !current)
-    setDraft(null)
-  }
-
   return (
     // Tokens and labels share subgrid columns sized by each token's value, so
     // longer values like */15 get room without breaking the label alignment.
-    <div className="grid grid-cols-[repeat(5,minmax(0,auto))_2.75rem_2.75rem] gap-x-2 gap-y-3.5">
+    <div className="grid grid-cols-[repeat(5,minmax(0,auto))] gap-x-1 gap-y-2.5">
       {isPasting ? (
         <Input
           autoFocus
@@ -101,21 +92,21 @@ export function CronExpressionBar({
           onFocus={(event) => event.currentTarget.select()}
           onKeyDown={(event) => {
             if (event.key === "Enter" || event.key === "Escape") {
-              togglePasting()
-              pasteToggle.current?.focus()
+              setDraft(null)
+              onPastingChange(false)
             }
           }}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="col-span-5 h-11 rounded-lg bg-background px-3 font-mono text-lg tracking-wider md:text-lg dark:bg-background"
+          className="col-span-5 h-14 rounded-xl bg-background px-4 font-mono text-xl tracking-wider md:text-xl dark:bg-background"
         />
       ) : (
         <div
           role="group"
           aria-label="Expression fields"
-          className="col-span-5 grid h-11 grid-cols-subgrid items-center gap-x-1 rounded-lg bg-tool-raised px-1.5 ring-1 ring-foreground/8"
+          className="col-span-5 grid h-14 grid-cols-subgrid items-center gap-x-1 rounded-xl bg-tool-pane p-1.5 ring-1 ring-foreground/8"
         >
           {FIELD_KEYS.map((key) => (
             <button
@@ -129,7 +120,7 @@ export function CronExpressionBar({
               onFocus={() => onHoverChange([key])}
               onBlur={() => onHoverChange([])}
               className={cn(
-                "h-8 min-w-0 truncate rounded-md px-2 text-center font-mono text-lg font-medium transition-colors duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+                "h-full min-w-0 truncate rounded-lg px-2 text-center font-mono text-xl font-medium transition-colors duration-150 outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
                 hover.includes(key) && "bg-brand-soft text-brand",
                 key === active && "bg-brand-strong text-brand"
               )}
@@ -139,29 +130,6 @@ export function CronExpressionBar({
           ))}
         </div>
       )}
-
-      <IconButton
-        label="Random expression"
-        size="icon"
-        onClick={() => {
-          setRolls((count) => count + 1)
-          onFieldsChange(randomCronFields())
-        }}
-        className={ICON_BUTTON}
-      >
-        <Dices
-          key={rolls}
-          className={cn(rolls > 0 && "motion-safe:animate-roll")}
-        />
-      </IconButton>
-      <IconButton
-        label="Copy expression"
-        size="icon"
-        onClick={() => copyWithToast(expression, "Expression copied")}
-        className={ICON_BUTTON}
-      >
-        <Copy />
-      </IconButton>
 
       <div
         aria-hidden="true"
@@ -173,7 +141,13 @@ export function CronExpressionBar({
           // As size containers the labels have no intrinsic width, so only
           // the tokens size the shared columns.
           return (
-            <span key={key} className="@container whitespace-nowrap">
+            <span
+              key={key}
+              className={cn(
+                "@container whitespace-nowrap",
+                key === active && "text-brand"
+              )}
+            >
               {abbreviation ? (
                 <>
                   <span className={abbreviation.full}>
@@ -190,17 +164,6 @@ export function CronExpressionBar({
           )
         })}
       </div>
-      <button
-        ref={pasteToggle}
-        type="button"
-        onClick={togglePasting}
-        className={cn(
-          linkClass,
-          "col-span-2 h-6 rounded-sm text-xs text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        )}
-      >
-        {isPasting ? "Done" : "Paste expression"}
-      </button>
     </div>
   )
 }
