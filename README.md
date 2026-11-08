@@ -3,7 +3,7 @@
 Source for [www.keithwalsh.ie](https://www.keithwalsh.ie): my personal site and
 analytics engineering portfolio, plus a small collection of in-browser tools
 (cron expression builder, JSON explorer, code annotator, browser mockup,
-Markdown table generator, text-to-ASCII) and weather visualisations.
+Markdown table generator) and weather visualisations.
 
 ## Tech Stack
 
