@@ -19,16 +19,18 @@ import { cn } from "@/lib/utils"
 import {
   DEFAULT_STATE,
   DISPLAY_OPTIONS,
+  clampInputHeight,
   findLanguage,
   type AnnotatorState,
   type DisplayOptions,
 } from "@/pages/tools/code-annotator/annotator-settings"
+import { InputResizeHandle } from "@/pages/tools/code-annotator/input-resize-handle"
 import { SettingsRail } from "@/pages/tools/code-annotator/settings-rail"
 
 const STORAGE_KEY = "code-annotator"
 
-// The input and display options persist between visits. Anything unrecognised
-// in storage falls back to its default.
+// The input, display options and input height persist between visits.
+// Anything unrecognised in storage falls back to its default.
 function loadState(): AnnotatorState {
   const saved = readStoredObject(STORAGE_KEY)
   if (!saved) return DEFAULT_STATE
@@ -41,6 +43,7 @@ function loadState(): AnnotatorState {
     saved.options && typeof saved.options === "object"
       ? { ...saved.options }
       : {}
+  const inputHeight = Number(saved.inputHeight)
   return {
     code: text("code") ?? DEFAULT_STATE.code,
     language:
@@ -55,6 +58,9 @@ function loadState(): AnnotatorState {
         ]
       })
     ) as DisplayOptions,
+    inputHeight: Number.isFinite(inputHeight)
+      ? clampInputHeight(inputHeight)
+      : DEFAULT_STATE.inputHeight,
   }
 }
 
@@ -89,8 +95,11 @@ function useElementSize<T extends HTMLElement>() {
 
 export default function CodeAnnotatorPage() {
   const [state, setState] = useState(loadState)
-  const { code, language, filename, options } = state
+  const { code, language, filename, options, inputHeight } = state
   const { ref: outputRef, size } = useElementSize<HTMLDivElement>()
+  // The input panel reads its height from this variable. A drag writes it
+  // here directly and only commits to state once the pointer lifts.
+  const inputRef = useRef<HTMLElement>(null)
   const { downloadImage, copyImage, isDownloading, isCopying } =
     useDownloadImage()
 
@@ -192,8 +201,12 @@ export default function CodeAnnotatorPage() {
 
           <div className="flex min-h-0 min-w-0 flex-1 flex-col">
             <section
+              ref={inputRef}
               aria-label="Input"
-              className="flex shrink-0 flex-col border-b"
+              className="relative flex shrink-0 flex-col border-b"
+              style={
+                { "--input-height": `${inputHeight}rem` } as React.CSSProperties
+              }
             >
               <div className="flex h-10 items-center justify-between border-b border-foreground/6 px-5">
                 <label
@@ -215,7 +228,17 @@ export default function CodeAnnotatorPage() {
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
-                className="field-sizing-fixed h-72 max-h-[70svh] min-h-32 resize-y rounded-none border-0 px-5 py-4 font-mono text-xs leading-relaxed focus-visible:ring-0 md:text-xs dark:bg-transparent"
+                className="field-sizing-fixed h-(--input-height) resize-none rounded-none border-0 px-5 py-4 font-mono text-xs leading-relaxed focus-visible:ring-0 md:text-xs dark:bg-transparent"
+              />
+              <InputResizeHandle
+                height={inputHeight}
+                onPreview={(height) =>
+                  inputRef.current?.style.setProperty(
+                    "--input-height",
+                    `${height}rem`
+                  )
+                }
+                onCommit={(height) => update({ inputHeight: height })}
               />
             </section>
 
