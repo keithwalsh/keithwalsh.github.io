@@ -30,11 +30,3 @@ export function saveSidebarWidth(width: number) {
     // The width still applies for this visit without storage.
   }
 }
-
-/** Converts a pointer distance in CSS pixels to rem at the current root size. */
-export function pxToRem(px: number) {
-  const rootSize = parseFloat(
-    getComputedStyle(document.documentElement).fontSize
-  )
-  return px / (Number.isFinite(rootSize) && rootSize > 0 ? rootSize : 16)
-}
