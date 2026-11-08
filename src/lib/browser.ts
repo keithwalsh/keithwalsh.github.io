@@ -5,6 +5,14 @@ export function assetUrl(path: string) {
   return `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`
 }
 
+/** Converts a pointer distance in CSS pixels to rem at the current root size. */
+export function pxToRem(px: number) {
+  const rootSize = parseFloat(
+    getComputedStyle(document.documentElement).fontSize
+  )
+  return px / (Number.isFinite(rootSize) && rootSize > 0 ? rootSize : 16)
+}
+
 /**
  * A JSON object saved in localStorage, or null when it is missing, malformed
  * or storage is blocked. Values are `unknown`: check each before using it.

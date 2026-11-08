@@ -6,11 +6,11 @@ import { cn } from "cn"
 import { Slot } from "radix-ui"
 
 import { useIsMobile } from "@/hooks/use-mobile"
+import { pxToRem } from "@/lib/browser"
 import {
   SIDEBAR_WIDTH,
   clampSidebarWidth,
   getStoredSidebarWidth,
-  pxToRem,
   saveSidebarWidth,
 } from "@/lib/sidebar-width"
 import { Button } from "@/components/ui/button"
