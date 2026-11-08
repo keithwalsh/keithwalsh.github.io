@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import { Link, useLocation } from "react-router"
 import { ChevronRight } from "lucide-react"
 
@@ -180,17 +181,85 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      {/* The same tooltip as the header's icon buttons, in place of the
-          browser's own title bubble. It anchors to the rail, so it sits at
-          the rail's midpoint beside the sidebar's edge. */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <SidebarRail />
-        </TooltipTrigger>
-        <TooltipContent side="right">
-          Drag to resize, click to toggle
-        </TooltipContent>
-      </Tooltip>
+      <SidebarRailTooltip />
     </Sidebar>
+  )
+}
+
+// Matches TooltipProvider's delayDuration, since this tooltip is opened by
+// hand rather than by its trigger.
+const RAIL_TOOLTIP_DELAY = 1000
+const RAIL_TOOLTIP_ID = "sidebar-rail-tooltip"
+
+// The rail is a full-height strip, so a tooltip anchored to it would sit at
+// mid-screen however high the pointer is. Instead the trigger is a
+// zero-height marker inside the rail that follows the pointer, and the rail's
+// own hover and focus open the tooltip, with the same delay as every other
+// tooltip. The marker takes no pointer events, so the rail's drag and click
+// are untouched.
+function SidebarRailTooltip() {
+  const [open, setOpen] = useState(false)
+  // Pointer height within the rail; null centres the marker, for keyboard
+  // focus.
+  const [pointerY, setPointerY] = useState<number | null>(null)
+  const timer = useRef<number | null>(null)
+
+  const cancelOpen = () => {
+    if (timer.current !== null) {
+      window.clearTimeout(timer.current)
+      timer.current = null
+    }
+  }
+  const close = () => {
+    cancelOpen()
+    setOpen(false)
+  }
+  useEffect(() => cancelOpen, [])
+
+  return (
+    <Tooltip open={open} onOpenChange={setOpen}>
+      <SidebarRail
+        aria-describedby={open ? RAIL_TOOLTIP_ID : undefined}
+        onPointerEnter={(event) => {
+          if (event.pointerType !== "mouse") return
+          cancelOpen()
+          timer.current = window.setTimeout(() => {
+            timer.current = null
+            setOpen(true)
+          }, RAIL_TOOLTIP_DELAY)
+        }}
+        onPointerMove={(event) => {
+          const { top } = event.currentTarget.getBoundingClientRect()
+          setPointerY(event.clientY - top)
+        }}
+        onPointerLeave={close}
+        // A press starts a drag or a toggle; neither wants the hint over it.
+        onPointerDown={close}
+        onFocus={(event) => {
+          if (event.currentTarget.matches(":focus-visible")) {
+            setPointerY(null)
+            setOpen(true)
+          }
+        }}
+        onBlur={close}
+      >
+        <TooltipTrigger asChild>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 h-0"
+            style={{ top: pointerY ?? "50%" }}
+          />
+        </TooltipTrigger>
+      </SidebarRail>
+      {/* The marker moves by style alone, which the default position watcher
+          misses, so re-measure every frame while open. */}
+      <TooltipContent
+        id={RAIL_TOOLTIP_ID}
+        side="right"
+        updatePositionStrategy="always"
+      >
+        Drag to resize, click to toggle
+      </TooltipContent>
+    </Tooltip>
   )
 }
