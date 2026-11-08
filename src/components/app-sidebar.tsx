@@ -23,6 +23,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { findNavLocation, primaryNav, sectionNav } from "@/config/navigation"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { siteConfig } from "@/config/site"
 import { assetUrl } from "@/lib/browser"
 import { cn } from "@/lib/utils"
@@ -175,7 +180,17 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarRail />
+      {/* The same tooltip as the header's icon buttons, in place of the
+          browser's own title bubble. It anchors to the rail, so it sits at
+          the rail's midpoint beside the sidebar's edge. */}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <SidebarRail />
+        </TooltipTrigger>
+        <TooltipContent side="right">
+          Drag to resize, click to toggle
+        </TooltipContent>
+      </Tooltip>
     </Sidebar>
   )
 }

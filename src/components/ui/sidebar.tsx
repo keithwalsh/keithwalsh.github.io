@@ -434,7 +434,6 @@ function SidebarRail({
       aria-valuemax={SIDEBAR_WIDTH.max}
       aria-valuenow={Math.round(width)}
       tabIndex={0}
-      title="Drag to resize, click to toggle"
       onClick={(event) => {
         onClick?.(event)
         if (event.defaultPrevented) return
