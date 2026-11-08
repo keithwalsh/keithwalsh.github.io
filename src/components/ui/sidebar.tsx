@@ -6,6 +6,13 @@ import { cn } from "cn"
 import { Slot } from "radix-ui"
 
 import { useIsMobile } from "@/hooks/use-mobile"
+import {
+  SIDEBAR_WIDTH,
+  clampSidebarWidth,
+  getStoredSidebarWidth,
+  pxToRem,
+  saveSidebarWidth,
+} from "@/lib/sidebar-width"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
@@ -25,10 +32,11 @@ import {
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
-const SIDEBAR_WIDTH = "16rem"
 const SIDEBAR_WIDTH_MOBILE = "18rem"
 const SIDEBAR_WIDTH_ICON = "3rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
+// A press that travels less than this many pixels is a click, not a drag.
+const SIDEBAR_DRAG_THRESHOLD = 3
 
 type SidebarContextProps = {
   state: "expanded" | "collapsed"
@@ -38,6 +46,12 @@ type SidebarContextProps = {
   setOpenMobile: (open: boolean) => void
   isMobile: boolean
   toggleSidebar: () => void
+  /** Desktop width in rem, clamped to `SIDEBAR_WIDTH`. */
+  width: number
+  setWidth: (width: number) => void
+  /** True while the rail is being dragged, so width transitions pause. */
+  resizing: boolean
+  setResizing: (resizing: boolean) => void
 }
 
 const SidebarContext = React.createContext<SidebarContextProps | null>(null)
@@ -107,6 +121,14 @@ function SidebarProvider({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [toggleSidebar])
 
+  // The user's chosen width, in rem. Clamped on the way in, so a stale or
+  // edited localStorage value can't push the sidebar off the page.
+  const [width, _setWidth] = React.useState(getStoredSidebarWidth)
+  const setWidth = React.useCallback((value: number) => {
+    _setWidth(clampSidebarWidth(value))
+  }, [])
+  const [resizing, setResizing] = React.useState(false)
+
   // We add a state so that we can do data-state="expanded" or "collapsed".
   // This makes it easier to style the sidebar with Tailwind classes.
   const state = open ? "expanded" : "collapsed"
@@ -120,23 +142,41 @@ function SidebarProvider({
       openMobile,
       setOpenMobile,
       toggleSidebar,
+      width,
+      setWidth,
+      resizing,
+      setResizing,
     }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+    [
+      state,
+      open,
+      setOpen,
+      isMobile,
+      openMobile,
+      setOpenMobile,
+      toggleSidebar,
+      width,
+      setWidth,
+      resizing,
+    ]
   )
 
   return (
     <SidebarContext.Provider value={contextValue}>
       <div
         data-slot="sidebar-wrapper"
+        data-resizing={resizing || undefined}
         style={
           {
-            "--sidebar-width": SIDEBAR_WIDTH,
+            "--sidebar-width": `${width}rem`,
             "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
             ...style,
           } as React.CSSProperties
         }
         className={cn(
           "group/sidebar-wrapper flex min-h-svh w-full has-data-[variant=inset]:bg-sidebar",
+          // No text selection while the rail is dragged across the page.
+          "data-resizing:select-none",
           className
         )}
         {...props}
@@ -160,7 +200,7 @@ function Sidebar({
   variant?: "sidebar" | "floating" | "inset"
   collapsible?: "offcanvas" | "icon" | "none"
 }) {
-  const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
+  const { isMobile, state, openMobile, setOpenMobile, resizing } = useSidebar()
 
   if (collapsible === "none") {
     return (
@@ -210,6 +250,7 @@ function Sidebar({
       data-collapsible={state === "collapsed" ? collapsible : ""}
       data-variant={variant}
       data-side={side}
+      data-resizing={resizing || undefined}
       data-slot="sidebar"
     >
       {/* This is what handles the sidebar gap on desktop */}
@@ -217,6 +258,8 @@ function Sidebar({
         data-slot="sidebar-gap"
         className={cn(
           "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+          // The width follows the pointer during a drag, with no easing.
+          "group-data-resizing:transition-none",
           "group-data-[collapsible=offcanvas]:w-0",
           "group-data-[side=right]:rotate-180",
           variant === "floating" || variant === "inset"
@@ -229,6 +272,7 @@ function Sidebar({
         data-side={side}
         className={cn(
           "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] md:flex",
+          "group-data-resizing:transition-none",
           // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
@@ -324,26 +368,163 @@ function SidebarTrigger({
   )
 }
 
-function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
-  const { toggleSidebar } = useSidebar()
+// The sidebar's right edge: drag it to resize, click it to toggle. It is the
+// WAI-ARIA window-splitter pattern (a focusable `separator`), so the arrow
+// keys resize it too, Home/End jump to the limits and Enter toggles. Width
+// is in rem to keep pace with the font-size setting, and is saved once a
+// drag or key press ends rather than on every pointer move.
+function SidebarRail({
+  className,
+  onClick,
+  onKeyDown,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  ...props
+}: React.ComponentProps<"div">) {
+  const {
+    isMobile,
+    state,
+    toggleSidebar,
+    width,
+    setWidth,
+    resizing,
+    setResizing,
+  } = useSidebar()
+  const drag = React.useRef<{
+    pointerId: number
+    startX: number
+    startWidth: number
+    width: number
+    direction: 1 | -1
+    moved: boolean
+  } | null>(null)
+  // Set when a drag just ended, so the click that follows it doesn't toggle.
+  const skipClick = React.useRef(false)
+
+  const commit = (value: number) => {
+    const next = clampSidebarWidth(value)
+    setWidth(next)
+    saveSidebarWidth(next)
+  }
+
+  const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const current = drag.current
+    if (!current || current.pointerId !== event.pointerId) return
+    drag.current = null
+    setResizing(false)
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
+    if (current.moved) {
+      skipClick.current = true
+      saveSidebarWidth(current.width)
+    }
+  }
 
   return (
-    <button
+    <div
       data-sidebar="rail"
       data-slot="sidebar-rail"
-      aria-label="Toggle Sidebar"
-      tabIndex={-1}
-      onClick={toggleSidebar}
-      title="Toggle Sidebar"
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="Resize sidebar"
+      aria-valuemin={SIDEBAR_WIDTH.min}
+      aria-valuemax={SIDEBAR_WIDTH.max}
+      aria-valuenow={Math.round(width)}
+      tabIndex={0}
+      title="Drag to resize, click to toggle"
+      onClick={(event) => {
+        onClick?.(event)
+        if (event.defaultPrevented) return
+        if (skipClick.current) {
+          skipClick.current = false
+          return
+        }
+        toggleSidebar()
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event)
+        if (event.defaultPrevented) return
+        // The rail sits on the sidebar's trailing edge, so on the right-hand
+        // variant the arrow that widens it points the other way.
+        const side = event.currentTarget.closest("[data-side]")
+        const grow = side?.getAttribute("data-side") === "right" ? -1 : 1
+        switch (event.key) {
+          case "ArrowRight":
+            commit(width + grow * SIDEBAR_WIDTH.step)
+            break
+          case "ArrowLeft":
+            commit(width - grow * SIDEBAR_WIDTH.step)
+            break
+          case "Home":
+            commit(SIDEBAR_WIDTH.min)
+            break
+          case "End":
+            commit(SIDEBAR_WIDTH.max)
+            break
+          case "Enter":
+            toggleSidebar()
+            break
+          default:
+            return
+        }
+        event.preventDefault()
+      }}
+      onPointerDown={(event) => {
+        onPointerDown?.(event)
+        if (event.defaultPrevented) return
+        // A collapsed rail has no width to drag; its click still toggles.
+        // The mobile sheet sets its own width, so there is nothing to drag.
+        if (event.button !== 0 || state === "collapsed" || isMobile) return
+        const side = event.currentTarget.closest("[data-side]")
+        drag.current = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startWidth: width,
+          width,
+          direction: side?.getAttribute("data-side") === "right" ? -1 : 1,
+          moved: false,
+        }
+        event.currentTarget.setPointerCapture(event.pointerId)
+      }}
+      onPointerMove={(event) => {
+        onPointerMove?.(event)
+        const current = drag.current
+        if (!current || current.pointerId !== event.pointerId) return
+        const distance = event.clientX - current.startX
+        if (!current.moved) {
+          if (Math.abs(distance) < SIDEBAR_DRAG_THRESHOLD) return
+          current.moved = true
+          setResizing(true)
+        }
+        current.width = clampSidebarWidth(
+          current.startWidth + current.direction * pxToRem(distance)
+        )
+        setWidth(current.width)
+      }}
+      onPointerUp={(event) => {
+        onPointerUp?.(event)
+        endDrag(event)
+      }}
+      onPointerCancel={(event) => {
+        onPointerCancel?.(event)
+        endDrag(event)
+      }}
       className={cn(
-        "absolute inset-y-0 z-20 hidden w-4 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:start-1/2 after:w-[2px] hover:after:bg-sidebar-border sm:flex ltr:-translate-x-1/2 rtl:-translate-x-1/2",
-        "in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize",
+        "absolute inset-y-0 z-20 hidden w-4 touch-none outline-hidden transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:start-1/2 after:w-[2px] hover:after:bg-sidebar-border focus-visible:after:bg-ring sm:flex ltr:-translate-x-1/2 rtl:-translate-x-1/2",
+        // The hairline stays lit for the whole drag, even once the pointer
+        // outruns the rail.
+        "data-resizing:after:bg-sidebar-border",
+        "in-data-[side=left]:cursor-col-resize in-data-[side=right]:cursor-col-resize",
         "[[data-side=left][data-state=collapsed]_&]:cursor-e-resize [[data-side=right][data-state=collapsed]_&]:cursor-w-resize",
         "group-data-[collapsible=offcanvas]:translate-x-0 group-data-[collapsible=offcanvas]:after:left-full hover:group-data-[collapsible=offcanvas]:bg-sidebar",
         "[[data-side=left][data-collapsible=offcanvas]_&]:-right-2",
         "[[data-side=right][data-collapsible=offcanvas]_&]:-left-2",
         className
       )}
+      data-resizing={resizing || undefined}
       {...props}
     />
   )
