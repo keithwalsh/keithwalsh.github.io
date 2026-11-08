@@ -46,7 +46,7 @@ export function JsonTree({
   ...options
 }: JsonTreeOptions & { value: unknown; path: JsonPath }) {
   return (
-    <div className="w-max min-w-full px-3 pl-7 font-mono text-xs leading-5">
+    <div className="px-3 pl-7 font-mono text-xs leading-5">
       <JsonNode
         value={value}
         path={path}
@@ -78,8 +78,10 @@ function JsonNode({ name, value, path, depth, inArray, options }: NodeProps) {
   )
 
   if (!isContainer(value)) {
+    // Long values wrap, so a tall tree never hides a sideways scrollbar at
+    // its foot.
     return (
-      <div className="rounded-sm whitespace-nowrap hover:bg-tool-row-hover">
+      <div className="rounded-sm wrap-anywhere hover:bg-tool-row-hover">
         {key}
         <JsonValue value={value} options={options} />
       </div>
@@ -172,7 +174,7 @@ function JsonContainer({
         <>
           {/* The guide line runs under this node's chevron. */}
           <div
-            className="-ml-2 border-l border-border"
+            className="-ml-2 border-l border-foreground/12"
             style={{ paddingLeft: `calc(${options.indentWidth}ch + 1rem)` }}
           >
             {entries.map(([entryKey, entryValue]) => (

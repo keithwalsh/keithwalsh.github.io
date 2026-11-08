@@ -134,6 +134,14 @@ export default function JsonExplorerPage() {
     }
   }, [settings])
 
+  // A query swaps in a different subtree, so show it from the top rather
+  // than wherever the previous tree was scrolled to.
+  const canvasRef = useRef<HTMLDivElement>(null)
+  const pathKey = formatPath(path)
+  useEffect(() => {
+    canvasRef.current?.scrollTo({ top: 0 })
+  }, [pathKey])
+
   const updateSettings = (patch: Partial<ExplorerSettings>) =>
     setSettings((current) => ({ ...current, ...patch }))
 
@@ -354,7 +362,12 @@ export default function JsonExplorerPage() {
               aria-label="Tree"
               className="relative flex min-h-[26rem] flex-1 flex-col bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] @3xl/explorer:min-h-0 dark:bg-tool-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
             >
-              <div className="flex flex-1 flex-col items-center px-7 pt-7 pb-12 @3xl/explorer:absolute @3xl/explorer:inset-0 @3xl/explorer:overflow-auto">
+              <div
+                ref={canvasRef}
+                // On a wide page the scroll area stops above the hints at
+                // the foot of the canvas, so a tall tree never runs under them.
+                className="flex flex-1 flex-col items-center px-7 pt-7 pb-12 @3xl/explorer:absolute @3xl/explorer:top-0 @3xl/explorer:right-0 @3xl/explorer:bottom-8 @3xl/explorer:left-0 @3xl/explorer:overflow-auto @3xl/explorer:pb-7"
+              >
                 {!parsed ? (
                   <Empty className="m-auto max-w-sm flex-none">
                     <EmptyHeader>
@@ -382,7 +395,9 @@ export default function JsonExplorerPage() {
                     column={parsed.column}
                   />
                 ) : (
-                  <div className="w-full max-w-3xl overflow-hidden rounded-xl bg-card shadow-xl ring-1 shadow-black/15 ring-foreground/6 dark:bg-[color:oklch(0.17_0_0)] dark:shadow-black/50">
+                  // `shrink-0`: a flex child with hidden overflow would otherwise
+                  // shrink to the canvas instead of scrolling it.
+                  <div className="w-full max-w-3xl shrink-0 overflow-hidden rounded-xl bg-card shadow-xl ring-1 shadow-black/15 ring-foreground/6 dark:bg-[color:oklch(0.17_0_0)] dark:shadow-black/50">
                     <div className="flex h-11 items-center gap-3 border-b border-foreground/6 pr-2 pl-2.5">
                       <Breadcrumb
                         aria-label="Query path"
@@ -522,7 +537,7 @@ function ParseErrorCard({
   return (
     <div
       role="alert"
-      className="w-full max-w-2xl overflow-hidden rounded-xl bg-card shadow-xl ring-1 shadow-black/15 ring-foreground/6 dark:bg-[color:oklch(0.17_0_0)] dark:shadow-black/50"
+      className="w-full max-w-2xl shrink-0 overflow-hidden rounded-xl bg-card shadow-xl ring-1 shadow-black/15 ring-foreground/6 dark:bg-[color:oklch(0.17_0_0)] dark:shadow-black/50"
     >
       <div className="flex items-center gap-2.5 border-b border-foreground/6 px-4 py-3">
         <CircleAlert className="size-4 shrink-0 text-destructive" />
