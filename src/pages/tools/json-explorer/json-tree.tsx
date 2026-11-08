@@ -2,28 +2,33 @@ import { useState } from "react"
 import { ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import {
+  countLabel,
+  isContainer,
+  type JsonPath,
+} from "@/pages/tools/json-explorer/json-query"
 
 type JsonTreeOptions = {
   /** `true` collapses everything; a number collapses nodes at that depth or deeper. */
   collapsed: boolean | number
   /** Truncate strings longer than this; click a truncated string to expand it. */
-  collapseStringsAfterLength: number | false
-  displayDataTypes: boolean
-  displayObjectSize: boolean
-  displayArrayKey: boolean
+  stringLimit: number | false
+  /** Indent per level, in characters. */
   indentWidth: number
+  showArrayIndices: boolean
+  showDataTypes: boolean
+  showItemCounts: boolean
+  /** Called with a key's full path when the key is clicked. */
+  onPick: (path: JsonPath) => void
 }
 
 type NodeProps = {
   name?: string
   value: unknown
+  path: JsonPath
   depth: number
   inArray: boolean
   options: JsonTreeOptions
-}
-
-function isContainer(value: unknown): value is object {
-  return typeof value === "object" && value !== null
 }
 
 function typeLabel(value: unknown) {
@@ -34,46 +39,70 @@ function typeLabel(value: unknown) {
   return typeof value
 }
 
+/** Renders `value`, whose own path is `path`, as a collapsible tree. */
 export function JsonTree({
   value,
+  path,
   ...options
-}: JsonTreeOptions & { value: unknown }) {
+}: JsonTreeOptions & { value: unknown; path: JsonPath }) {
   return (
-    <div className="pl-4 font-mono text-xs leading-relaxed">
-      <JsonNode value={value} depth={0} inArray={false} options={options} />
+    <div className="w-max min-w-full px-3 pl-7 font-mono text-xs leading-5">
+      <JsonNode
+        value={value}
+        path={path}
+        depth={0}
+        inArray={false}
+        options={options}
+      />
     </div>
   )
 }
 
-function JsonNode({ name, value, depth, inArray, options }: NodeProps) {
-  const showKey = name !== undefined && (!inArray || options.displayArrayKey)
+function JsonNode({ name, value, path, depth, inArray, options }: NodeProps) {
+  const showKey = name !== undefined && (!inArray || options.showArrayIndices)
   const key = showKey && (
     <>
-      <span className="text-code-number">{inArray ? name : `"${name}"`}</span>
+      <button
+        type="button"
+        title={`Query ${path.join(".")}`}
+        onClick={() => options.onPick(path)}
+        className={cn(
+          "rounded-xs underline-offset-3 transition-colors duration-150 hover:text-brand hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+          inArray ? "text-muted-foreground" : "text-foreground/85"
+        )}
+      >
+        {inArray ? name : `"${name}"`}
+      </button>
       <span className="text-muted-foreground">: </span>
     </>
   )
 
   if (!isContainer(value)) {
     return (
-      <div className="break-all">
+      <div className="rounded-sm whitespace-nowrap hover:bg-tool-row-hover">
         {key}
         <JsonValue value={value} options={options} />
       </div>
     )
   }
 
-  return <JsonContainer {...{ keyLabel: key, value, depth, options }} />
+  return (
+    <JsonContainer {...{ name, keyLabel: key, value, path, depth, options }} />
+  )
 }
 
 function JsonContainer({
+  name,
   keyLabel,
   value,
+  path,
   depth,
   options,
 }: {
+  name?: string
   keyLabel: React.ReactNode
   value: object
+  path: JsonPath
   depth: number
   options: JsonTreeOptions
 }) {
@@ -85,10 +114,11 @@ function JsonContainer({
   // `Object.entries(object)` types its values as `any`.
   const entries: [string, unknown][] = Object.entries(value)
   const [openBracket, closeBracket] = isArray ? ["[", "]"] : ["{", "}"]
+  const label = `${open ? "Collapse" : "Expand"} ${name ?? path.at(-1) ?? "root"}`
 
   if (entries.length === 0) {
     return (
-      <div>
+      <div className="rounded-sm whitespace-nowrap hover:bg-tool-row-hover">
         {keyLabel}
         <span className="text-muted-foreground">
           {openBracket}
@@ -100,52 +130,57 @@ function JsonContainer({
 
   return (
     <div>
-      <div className="relative">
+      <div className="relative rounded-sm whitespace-nowrap hover:bg-tool-row-hover">
         <button
           type="button"
           onClick={() => setOpen(!open)}
           aria-expanded={open}
-          aria-label={open ? "Collapse" : "Expand"}
+          aria-label={label}
           className="absolute top-0.5 -left-4 flex size-4 items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
           <ChevronRight
-            className={cn("size-3 transition-transform", open && "rotate-90")}
+            className={cn(
+              "size-3 transition-transform duration-150",
+              open && "rotate-90"
+            )}
           />
         </button>
         {keyLabel}
         <span className="text-muted-foreground">
           {openBracket}
           {!open && (
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              className="px-0.5 hover:text-foreground"
-            >
-              …
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={() => setOpen(true)}
+                aria-label={label}
+                className="mx-0.5 rounded-xs bg-tool-symbol px-1 text-2xs leading-4 hover:text-foreground"
+              >
+                …
+              </button>
+              {closeBracket}
+            </>
           )}
-          {!open && closeBracket}
         </span>
-        {options.displayObjectSize && (
-          <span className="ml-2 text-2xs text-muted-foreground italic">
-            {entries.length} {entries.length === 1 ? "item" : "items"}
+        {options.showItemCounts && (
+          <span className="ml-2.5 font-sans text-2xs text-subtle italic">
+            {countLabel(value)}
           </span>
         )}
       </div>
       {open && (
         <>
+          {/* The guide line runs under this node's chevron. */}
           <div
-            className="border-l border-border"
-            style={{
-              marginLeft: "0.3ch",
-              paddingLeft: `${options.indentWidth}ch`,
-            }}
+            className="-ml-2 border-l border-border"
+            style={{ paddingLeft: `calc(${options.indentWidth}ch + 1rem)` }}
           >
             {entries.map(([entryKey, entryValue]) => (
               <JsonNode
                 key={entryKey}
                 name={entryKey}
                 value={entryValue}
+                path={[...path, entryKey]}
                 depth={depth + 1}
                 inArray={isArray}
                 options={options}
@@ -167,27 +202,31 @@ function JsonValue({
   options: JsonTreeOptions
 }) {
   const [expanded, setExpanded] = useState(false)
-  const limit = options.collapseStringsAfterLength
-  const dataType = options.displayDataTypes && (
-    <span className="mr-1 text-2xs text-muted-foreground">
-      {typeLabel(value)}
-    </span>
+  const limit = options.stringLimit
+  const dataType = options.showDataTypes && (
+    <span className="mr-1.5 text-2xs text-subtle">{typeLabel(value)}</span>
   )
 
   if (typeof value === "string") {
-    const isTruncated = limit !== false && !expanded && value.length > limit
+    if (limit === false || value.length <= limit) {
+      return (
+        <>
+          {dataType}
+          <span className="text-code-string">"{value}"</span>
+        </>
+      )
+    }
     return (
       <>
         {dataType}
-        <span
-          className={cn(
-            "text-code-string",
-            limit !== false && value.length > limit && "cursor-pointer"
-          )}
+        <button
+          type="button"
+          title={expanded ? "Shorten" : `Show all ${value.length} characters`}
           onClick={() => setExpanded(!expanded)}
+          className="rounded-xs text-left text-code-string focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
         >
-          "{isTruncated ? `${value.slice(0, limit)}…` : value}"
-        </span>
+          "{expanded ? value : `${value.slice(0, limit)}…`}"
+        </button>
       </>
     )
   }
@@ -197,8 +236,8 @@ function JsonValue({
       {dataType}
       <span
         className={cn(
-          (typeof value === "number" || typeof value === "boolean") &&
-            "text-code-number",
+          typeof value === "number" && "text-code-number",
+          typeof value === "boolean" && "text-code-function",
           value === null && "text-code-keyword"
         )}
       >
