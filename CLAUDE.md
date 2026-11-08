@@ -134,8 +134,13 @@ the existing folder-per-tool shape rather than adding shared tool infrastructure
 Tools come in two shapes. Most stack inside `Page` in one order: `PageHeader`
 with a description, one options `Card`, then the input and output panels —
 each a label row (label or `TabsList` on the left, `IconButton`s on the right)
-over its surface — and any help `Card` last. Cron Expressions and Browser
-Mockup are full-height workspaces: `PageHeader`, then their own panes.
+over its surface — and any help `Card` last. Browser Mockup, Code Annotator,
+Cron Expressions and JSON Explorer are full-height workspaces instead: a
+toolbar (a summary chip on the left, actions on the right with the brand-fill
+button last), a dotted canvas, and a `bg-tool-pane` rail on the right that
+stacks below the canvas on a narrow page. Their breakpoints are container
+queries on the page, not the viewport, so the rail still fits when the site
+sidebar is open.
 
 The SQL Playground runs DuckDB-WASM, and four of its choices look wrong until
 you know why (all in `sql-playground/duckdb.ts`):
