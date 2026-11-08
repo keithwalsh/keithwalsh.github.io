@@ -1,5 +1,11 @@
 import { useState } from "react"
-import { AArrowDown, AArrowUp, Accessibility, RotateCcw } from "lucide-react"
+import {
+  AArrowDown,
+  AArrowUp,
+  Accessibility,
+  PanelLeftDashed,
+  RotateCcw,
+} from "lucide-react"
 
 import { IconButton } from "@/components/icon-button"
 import {
@@ -11,6 +17,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useSidebar } from "@/components/ui/sidebar"
 import {
   applyFontSize,
   clampFontSize,
@@ -18,9 +25,18 @@ import {
   getStoredFontSize,
   saveFontSize,
 } from "@/lib/font-size"
+import { SIDEBAR_WIDTH, saveSidebarWidth } from "@/lib/sidebar-width"
 
 export function AccessibilityMenu() {
   const [fontSize, setFontSize] = useState(getStoredFontSize)
+  // The mobile sidebar is a sheet with a fixed width, so there is nothing
+  // to reset there.
+  const { isMobile, width, setWidth } = useSidebar()
+
+  const resetSidebarWidth = () => {
+    setWidth(SIDEBAR_WIDTH.default)
+    saveSidebarWidth(SIDEBAR_WIDTH.default)
+  }
 
   const updateFontSize = (size: number) => {
     const next = clampFontSize(size)
@@ -71,6 +87,22 @@ export function AccessibilityMenu() {
             Reset font size
           </DropdownMenuItem>
         </DropdownMenuGroup>
+        {!isMobile && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>Sidebar</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                disabled={width === SIDEBAR_WIDTH.default}
+                onSelect={keepOpen(resetSidebarWidth)}
+              >
+                <PanelLeftDashed />
+                Reset sidebar width
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )
