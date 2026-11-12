@@ -24,6 +24,7 @@ import { DropZone } from "@/components/drop-zone"
 import { brandFillClass } from "@/components/editorial"
 import { IconButton } from "@/components/icon-button"
 import { InlineCode } from "@/components/inline-code"
+import { InputResizeHandle } from "@/components/input-resize-handle"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -43,6 +44,7 @@ import {
 } from "@/components/ui/empty"
 import { Textarea } from "@/components/ui/textarea"
 import { assetUrl, copyWithToast, readStoredObject } from "@/lib/browser"
+import { readInputHeight } from "@/lib/input-height"
 import { cn } from "@/lib/utils"
 import {
   collapsedFor,
@@ -105,6 +107,10 @@ function loadSettings(): ExplorerSettings {
         ]
       })
     ) as DisplayOptions,
+    inputHeight: readInputHeight(
+      saved.inputHeight,
+      DEFAULT_SETTINGS.inputHeight
+    ),
   }
 }
 
@@ -124,7 +130,10 @@ export default function JsonExplorerPage() {
   const [path, setPath] = useState<JsonPath>([])
   const [draft, setDraft] = useState("")
   const [settings, setSettings] = useState(loadSettings)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  // The input panel reads its height from this variable. A drag writes it
+  // here directly and only commits to settings once the pointer lifts.
+  const inputRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     try {
@@ -201,7 +210,7 @@ export default function JsonExplorerPage() {
     }
   }
 
-  const chooseFile = () => inputRef.current?.click()
+  const chooseFile = () => fileInputRef.current?.click()
 
   const copyJson = () => {
     if (result?.found) {
@@ -295,8 +304,14 @@ export default function JsonExplorerPage() {
             className="flex min-h-0 min-w-0 flex-1 flex-col"
           >
             <section
+              ref={inputRef}
               aria-label="Input"
-              className="flex shrink-0 flex-col border-b"
+              className="relative flex shrink-0 flex-col border-b"
+              style={
+                {
+                  "--input-height": `${settings.inputHeight}rem`,
+                } as React.CSSProperties
+              }
             >
               <div className="flex h-10 items-center justify-between gap-3 border-b border-foreground/6 pr-3 pl-5">
                 <label
@@ -351,7 +366,17 @@ export default function JsonExplorerPage() {
                 autoComplete="off"
                 autoCorrect="off"
                 autoCapitalize="off"
-                className="field-sizing-fixed h-56 max-h-[60svh] min-h-28 resize-y rounded-none border-0 px-5 py-4 font-mono text-xs leading-relaxed focus-visible:ring-0 md:text-xs dark:bg-transparent"
+                className="field-sizing-fixed h-(--input-height) resize-none rounded-none border-0 px-5 py-4 font-mono text-xs leading-relaxed focus-visible:ring-0 md:text-xs dark:bg-transparent"
+              />
+              <InputResizeHandle
+                height={settings.inputHeight}
+                onPreview={(height) =>
+                  inputRef.current?.style.setProperty(
+                    "--input-height",
+                    `${height}rem`
+                  )
+                }
+                onCommit={(height) => updateSettings({ inputHeight: height })}
               />
             </section>
 
@@ -494,7 +519,7 @@ export default function JsonExplorerPage() {
         </div>
 
         <input
-          ref={inputRef}
+          ref={fileInputRef}
           type="file"
           accept=".json,application/json"
           tabIndex={-1}
