@@ -80,32 +80,12 @@ echo "and the block worth a closer look.";
 echo "Then copy it as Markdown or download it as a PNG.";
 ?>`
 
-/**
- * Input panel height in rem, so it keeps pace with the font-size setting.
- * 18rem is the old fixed `h-72`. The effective maximum is also capped to a
- * share of the viewport, see `maxInputHeight`.
- */
-export const INPUT_HEIGHT = { min: 8, max: 48, step: 1, default: 18 } as const
-
-export function clampInputHeight(height: number, max = maxInputHeight()) {
-  return Math.min(max, Math.max(INPUT_HEIGHT.min, height))
-}
-
-/** The tallest the input may be here: 70% of the viewport, within the scale. */
-export function maxInputHeight() {
-  const rootSize = parseFloat(
-    getComputedStyle(document.documentElement).fontSize
-  )
-  const viewportRem = (window.innerHeight * 0.7) / (rootSize || 16)
-  return Math.min(INPUT_HEIGHT.max, Math.max(INPUT_HEIGHT.min, viewportRem))
-}
-
 export type AnnotatorState = {
   code: string
   language: string
   filename: string
   options: DisplayOptions
-  /** Height of the input panel, in rem. */
+  /** Height of the input panel, in rem, see `lib/input-height.ts`. */
   inputHeight: number
 }
 
@@ -114,7 +94,8 @@ export const DEFAULT_STATE: AnnotatorState = {
   language: "php",
   filename: "",
   options: { showLineNumbers: true, wrap: true, strikethrough: true },
-  inputHeight: INPUT_HEIGHT.default,
+  // The old fixed `h-72`.
+  inputHeight: 18,
 }
 
 export function findLanguage(value: string) {

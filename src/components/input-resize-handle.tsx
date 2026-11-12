@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 
 import {
   Tooltip,
@@ -6,17 +6,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { pxToRem } from "@/lib/browser"
-import { cn } from "@/lib/utils"
 import {
   INPUT_HEIGHT,
   clampInputHeight,
   maxInputHeight,
-} from "@/pages/tools/code-annotator/annotator-settings"
+} from "@/lib/input-height"
+import { cn } from "@/lib/utils"
 
 // Matches TooltipProvider's delayDuration, since this tooltip is opened by
 // hand rather than by its trigger.
 const TOOLTIP_DELAY = 1000
-const TOOLTIP_ID = "code-input-resize-tooltip"
 
 /**
  * The input panel's bottom edge, the same window-splitter pattern as the
@@ -25,7 +24,8 @@ const TOOLTIP_ID = "code-input-resize-tooltip"
  *
  * A drag previews the height through `onPreview` and hands the final value to
  * `onCommit` once the pointer lifts, so the page state (and localStorage) is
- * written once per drag rather than once per pointer move.
+ * written once per drag rather than once per pointer move. Heights are in rem
+ * on the scale in `lib/input-height.ts`.
  */
 export function InputResizeHandle({
   height,
@@ -44,6 +44,7 @@ export function InputResizeHandle({
     max: number
   } | null>(null)
   const [resizing, setResizing] = useState(false)
+  const tooltipId = useId()
 
   // The tooltip anchors to a zero-width marker that follows the pointer along
   // the handle, so it sits beside the cursor instead of at the handle's
@@ -86,7 +87,7 @@ export function InputResizeHandle({
         aria-valuemin={INPUT_HEIGHT.min}
         aria-valuemax={Math.round(max)}
         aria-valuenow={Math.round(height)}
-        aria-describedby={open ? TOOLTIP_ID : undefined}
+        aria-describedby={open ? tooltipId : undefined}
         tabIndex={0}
         data-resizing={resizing || undefined}
         className={cn(
@@ -175,7 +176,7 @@ export function InputResizeHandle({
       {/* The marker moves by style alone, which the default position watcher
           misses, so re-measure every frame while open. */}
       <TooltipContent
-        id={TOOLTIP_ID}
+        id={tooltipId}
         side="bottom"
         updatePositionStrategy="always"
       >

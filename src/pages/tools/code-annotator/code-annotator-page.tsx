@@ -12,19 +12,19 @@ import { brandFillClass } from "@/components/editorial"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
+import { InputResizeHandle } from "@/components/input-resize-handle"
 import { useDownloadImage } from "@/hooks/use-download-image"
 import { copyWithToast, readStoredObject } from "@/lib/browser"
 import { toMarkdownCodeBlock } from "@/lib/code-highlight"
+import { readInputHeight } from "@/lib/input-height"
 import { cn } from "@/lib/utils"
 import {
   DEFAULT_STATE,
   DISPLAY_OPTIONS,
-  clampInputHeight,
   findLanguage,
   type AnnotatorState,
   type DisplayOptions,
 } from "@/pages/tools/code-annotator/annotator-settings"
-import { InputResizeHandle } from "@/pages/tools/code-annotator/input-resize-handle"
 import { SettingsRail } from "@/pages/tools/code-annotator/settings-rail"
 
 const STORAGE_KEY = "code-annotator"
@@ -43,7 +43,6 @@ function loadState(): AnnotatorState {
     saved.options && typeof saved.options === "object"
       ? { ...saved.options }
       : {}
-  const inputHeight = Number(saved.inputHeight)
   return {
     code: text("code") ?? DEFAULT_STATE.code,
     language:
@@ -58,9 +57,7 @@ function loadState(): AnnotatorState {
         ]
       })
     ) as DisplayOptions,
-    inputHeight: Number.isFinite(inputHeight)
-      ? clampInputHeight(inputHeight)
-      : DEFAULT_STATE.inputHeight,
+    inputHeight: readInputHeight(saved.inputHeight, DEFAULT_STATE.inputHeight),
   }
 }
 
