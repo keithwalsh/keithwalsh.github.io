@@ -36,6 +36,8 @@ export type ExplorerSettings = {
   stringLimit: StringLimit
   indent: number
   display: DisplayOptions
+  /** Height of the input panel, in rem, see `lib/input-height.ts`. */
+  inputHeight: number
 }
 
 export const DEFAULT_SETTINGS: ExplorerSettings = {
@@ -47,6 +49,8 @@ export const DEFAULT_SETTINGS: ExplorerSettings = {
     showDataTypes: false,
     showItemCounts: true,
   },
+  // The old fixed `h-56`.
+  inputHeight: 14,
 }
 
 export const PATH_SYNTAX = [
