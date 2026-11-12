@@ -18,9 +18,13 @@ import { cn } from "@/lib/utils"
 const TOOLTIP_DELAY = 1000
 
 /**
- * The input panel's bottom edge, the same window-splitter pattern as the
- * sidebar rail turned on its side: drag it to set the panel height, or with
- * focus step it with the arrow keys and jump to the limits with Home/End.
+ * A panel's resizable edge, the same window-splitter pattern as the sidebar
+ * rail turned on its side: drag it to set the panel height, or with focus
+ * step it with the arrow keys and jump to the limits with Home/End.
+ *
+ * An input panel above the canvas takes the default `bottom` edge. A panel
+ * below the canvas (Markdown Table's output) takes `top`, where dragging up
+ * makes it taller.
  *
  * A drag previews the height through `onPreview` and hands the final value to
  * `onCommit` once the pointer lifts, so the page state (and localStorage) is
@@ -31,11 +35,19 @@ export function InputResizeHandle({
   height,
   onPreview,
   onCommit,
+  edge = "bottom",
+  label = "Resize input",
 }: {
   height: number
   onPreview: (height: number) => void
   onCommit: (height: number) => void
+  /** Which edge of its panel the handle sits on. */
+  edge?: "top" | "bottom"
+  label?: string
 }) {
+  // Moving the edge away from the panel makes it taller: down for a bottom
+  // edge, up for a top one.
+  const direction = edge === "bottom" ? 1 : -1
   const drag = useRef<{
     pointerId: number
     startY: number
@@ -83,7 +95,7 @@ export function InputResizeHandle({
       <div
         role="separator"
         aria-orientation="horizontal"
-        aria-label="Resize input"
+        aria-label={label}
         aria-valuemin={INPUT_HEIGHT.min}
         aria-valuemax={Math.round(max)}
         aria-valuenow={Math.round(height)}
@@ -91,8 +103,9 @@ export function InputResizeHandle({
         tabIndex={0}
         data-resizing={resizing || undefined}
         className={cn(
-          // Straddles the section's bottom border, above the output canvas.
-          "absolute inset-x-0 -bottom-2 z-10 h-4 cursor-row-resize touch-none outline-hidden",
+          // Straddles the section's border with the canvas, above both.
+          "absolute inset-x-0 z-10 h-4 cursor-row-resize touch-none outline-hidden",
+          edge === "bottom" ? "-bottom-2" : "-top-2",
           "after:absolute after:inset-x-0 after:top-1/2 after:h-[2px] after:-translate-y-1/2 hover:after:bg-border focus-visible:after:bg-ring",
           // The hairline stays lit for the whole drag, even once the pointer
           // outruns the handle.
@@ -102,11 +115,17 @@ export function InputResizeHandle({
           const step = (delta: number) =>
             onCommit(clampInputHeight(height + delta, max))
           switch (event.key) {
+            // Up and down move the edge itself; right and left always grow
+            // and shrink.
             case "ArrowDown":
+              step(direction * INPUT_HEIGHT.step)
+              break
+            case "ArrowUp":
+              step(-direction * INPUT_HEIGHT.step)
+              break
             case "ArrowRight":
               step(INPUT_HEIGHT.step)
               break
-            case "ArrowUp":
             case "ArrowLeft":
               step(-INPUT_HEIGHT.step)
               break
@@ -150,7 +169,8 @@ export function InputResizeHandle({
           const current = drag.current
           if (!current || current.pointerId !== event.pointerId) return
           current.height = clampInputHeight(
-            current.startHeight + pxToRem(event.clientY - current.startY),
+            current.startHeight +
+              direction * pxToRem(event.clientY - current.startY),
             current.max
           )
           onPreview(current.height)
@@ -177,7 +197,7 @@ export function InputResizeHandle({
           misses, so re-measure every frame while open. */}
       <TooltipContent
         id={tooltipId}
-        side="bottom"
+        side={edge}
         updatePositionStrategy="always"
       >
         Drag to resize
