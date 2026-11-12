@@ -128,7 +128,7 @@ export default function CronExpressionsPage() {
               preview. Also a size container, so the presets grid follows it. */}
           <section
             aria-label="Schedule"
-            className="@container relative flex min-h-[32rem] min-w-0 flex-1 flex-col items-center overflow-auto bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] px-6 pt-8 pb-14 @3xl/cron:min-h-0 @3xl/cron:px-12 dark:bg-tool-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
+            className="@container flex min-h-[32rem] min-w-0 flex-1 flex-col items-center overflow-auto bg-[color:oklch(0.97_0_0)] bg-[image:radial-gradient(oklch(0_0_0/7%)_1px,transparent_1px)] bg-size-[16px_16px] px-6 pt-8 pb-3.5 @3xl/cron:min-h-0 @3xl/cron:px-12 dark:bg-tool-raised dark:bg-[image:radial-gradient(oklch(1_0_0/7%)_1px,transparent_1px)]"
           >
             {/* Centred in the space above the schedule; the matching spacer
                 below keeps the schedule block in the middle. */}
@@ -172,14 +172,20 @@ export default function CronExpressionsPage() {
               />
             </div>
 
-            <div aria-hidden="true" className="w-full flex-1" />
+            <div aria-hidden="true" className="min-h-5 w-full flex-1" />
 
-            <div className="absolute bottom-3.5 left-4.5 @max-xl/cron:hidden">
-              <CronLegend />
-            </div>
-            <p className="pointer-events-none absolute right-4.5 bottom-3.5 font-mono text-2xs text-subtle">
-              5 fields · standard cron
-            </p>
+            {/* In flow, not absolutely positioned: an absolute footer pins to
+                the canvas's visible box, so it would sit over the presets as
+                soon as the schedule block scrolls. The negative margins pull
+                it out to the canvas edge, past the content padding. */}
+            <footer className="-mx-1.5 flex items-end justify-between gap-x-6 self-stretch @3xl/cron:-mx-7.5">
+              <div className="min-w-0 @max-xl/cron:hidden">
+                <CronLegend />
+              </div>
+              <p className="ml-auto shrink-0 font-mono text-2xs whitespace-nowrap text-subtle">
+                5 fields · standard cron
+              </p>
+            </footer>
           </section>
         </div>
       </div>
